@@ -1,0 +1,935 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/shared/_Layout.cshtml";
+    var mdetails = ViewBag.list;
+}
+<style>
+     /*.cs_Closed {
+        color: lightgreen;
+    }
+
+    .cs_Inprogress {
+        color: cornflowerblue;
+    }*/
+
+    /*.prograss_Bar {
+        height: 15px;
+    }*/
+
+    .container {
+        height: 200px;
+        width: 430px;
+        padding: 10px;
+        border: 1px solid white;
+        overflow: auto;
+        overflow-x: hidden;
+    }
+    /* noUISlider ================================== */
+    .noUi-target {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -ms-touch-action: none;
+        touch-action: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        position: relative;
+        direction: ltr;
+    }
+
+        .noUi-target * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -ms-touch-action: none;
+            touch-action: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+    .noUi-base {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+    .noUi-origin {
+        position: absolute;
+        right: 0;
+        top: 6px;
+        left: 0;
+        bottom: 0;
+    }
+
+    .noUi-handle {
+        position: relative;
+        z-index: 1;
+    }
+
+    .noUi-stacking .noUi-handle {
+        z-index: 10;
+    }
+
+    .noUi-state-tap .noUi-origin {
+        -webkit-transition: left 0.25s, top 0.25s;
+        transition: left 0.25s, top 0.25s;
+    }
+
+    .noUi-state-drag * {
+        cursor: inherit !important;
+    }
+
+    .noUi-base {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .noUi-horizontal {
+        height: 18px;
+    }
+
+        .noUi-horizontal .noUi-handle {
+            width: 34px;
+            height: 28px;
+            left: -17px;
+            top: -6px;
+        }
+
+    .noUi-vertical {
+        width: 18px;
+    }
+
+        .noUi-vertical .noUi-handle {
+            width: 28px;
+            height: 34px;
+            left: -6px;
+            top: -17px;
+        }
+
+    .noUi-background {
+        background: #FAFAFA;
+        box-shadow: inset 0 1px 1px #f0f0f0;
+    }
+
+    .noUi-connect {
+        background: #3FB8AF;
+        box-shadow: inset 0 0 3px rgba(51, 51, 51, 0.45);
+        -webkit-transition: background 450ms;
+        transition: background 450ms;
+    }
+
+    /*.noUi-origin {
+              border-radius: 2px; }*/
+
+    .noUi-target {
+        border-radius: 4px;
+        border: 1px solid #D3D3D3;
+        box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
+    }
+
+        .noUi-target.noUi-connect {
+            box-shadow: inset 0 0 3px rgba(51, 51, 51, 0.45), 0 3px 6px -5px #BBB;
+        }
+
+    .noUi-dragable {
+        cursor: w-resize;
+    }
+
+    .noUi-vertical .noUi-dragable {
+        cursor: n-resize;
+    }
+
+    .noUi-handle {
+        border: 1px solid #D9D9D9;
+        border-radius: 3px;
+        background: #FFF;
+        cursor: default;
+        box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
+    }
+
+    .noUi-active {
+        box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #DDD, 0 3px 6px -3px #BBB;
+    }
+
+    .noUi-handle:before {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 14px;
+        width: 1px;
+        background: #E8E7E6;
+        left: 14px;
+        top: 6px;
+    }
+
+    .noUi-handle:after {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 14px;
+        width: 1px;
+        background: #E8E7E6;
+        left: 14px;
+        top: 6px;
+        left: 17px;
+    }
+
+    .noUi-vertical .noUi-handle:before {
+        width: 14px;
+        height: 1px;
+        left: 6px;
+        top: 14px;
+    }
+
+    .noUi-vertical .noUi-handle:after {
+        width: 14px;
+        height: 1px;
+        left: 6px;
+        top: 14px;
+        top: 17px;
+    }
+
+    [disabled].noUi-connect, [disabled] .noUi-connect {
+        background: #B8B8B8;
+    }
+
+    [disabled].noUi-origin, [disabled] .noUi-handle {
+        cursor: not-allowed;
+    }
+
+    .noUi-target {
+        box-shadow: none;
+        border: none;
+    }
+
+    .noUi-base {
+        height: 15px;
+        top: -6px;
+    }
+
+    .noUi-background {
+        height: 6px;
+        top: 6px;
+        background-color: #FFFfff; /* #bfbfbf;*/
+        box-shadow: none;
+    }
+
+    .noUi-background1 {
+        height: 6px;
+        top: 6px;
+        background-color: red; /* #bfbfbf;*/
+        box-shadow: none;
+    }
+
+    .noUi-horizontal {
+        height: 3px;
+    }
+
+    .noUi-connect {
+        height: 6px;
+        top: 6px;
+        background-color: #46a626; /* #26A69A;*/
+        box-shadow: none;
+    }
+
+    .noUi-horizontal .noUi-handle {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        box-shadow: none;
+        background-color: #000000; /*#26A69A*/
+        border: none;
+        /*left: -5px;*/
+        top: -10px;
+        transition: width 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), height 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), left 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), top 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    .noUi-handle:before, .noUi-handle:after {
+        content: none;
+    }
+
+    .noUi-target .noUi-active.noUi-handle {
+        -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        -ms-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .noUi-target .range-label {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        top: -17px;
+        left: -2px;
+        background-color: #26A69A;
+        border-radius: 50%;
+        transition: border-radius 0.25s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+        transform: scale(0.5) rotate(-45deg);
+        transform-origin: 50% 100%;
+    }
+
+    .noUi-target .noUi-active .range-label {
+        border-radius: 15px 15px 15px 0;
+        transform: rotate(-45deg) translate(23px, -25px);
+    }
+
+    .range-label span {
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        font-size: 12px;
+        transform: rotate(45deg);
+        opacity: 0;
+        position: absolute;
+        top: 7px;
+        left: -1px;
+        transition: opacity 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    .noUi-active .range-label span {
+        opacity: 1;
+    }
+    .bg-grow-before {
+        background-color: darkcyan;
+    }
+    
+</style>
+
+<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+@*<script src="~/Asset/Scripts/Prograssbarjs.js"></script>*@
+
+
+<a class="card-title">Dashboard</a>
+<div style="padding: 1em;">
+    <div class="row">
+  
+        <div class="col-lg-12 card" style="margin-bottom:20px;min-height:250px;">
+            <div class="row">
+                <table>
+                    <tr>
+                        <td style="text-align:left;vertical-align:top;"><a class="card-title">Project Name :</a>@Session["Project_Name"]</td>
+                        <td style="text-align:right;vertical-align:top;"><a class="card-title">Instance Name :</a> @Session["Instance_Name"]</td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%">
+                            <div class="card mb-3 widget-content bg-grow-before" id="AssDivId">
+                                <div class="widget-content-wrapper text-white">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">Assesment</div>
+                                        <div class="widget-subheading">Readiness Check</div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-white"><span id="AssId">0 %</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>                    
+                </table>
+                </div>
+              <hr style="margin-top:-20px !important;"/>
+                <div class="row" style="padding:0em 1em 1em 1em;">
+                    <div class="card-body">
+                        <h5 class="card-title">S4 Hana System Conversion</h5>
+                        <form class="">
+                            @if (ViewBag.count != null)
+                            {
+                                int i = ViewBag.count;
+                                string progress = "noUi-origin noUi-background1";
+                                string progress1 = "noUi-origin noUi-background1";
+                                string progress2 = "noUi-origin noUi-background1";
+                                string color = "black";
+                                string color1 = "black";
+                                string color2 = "black";
+                                string color3 = "black";
+                                if (i == 1)
+                                {
+                                    //progress = "noUi-origin noUi-connect";
+                                    color = "Green";
+                                }
+                                else if (i == 2)
+                                {
+                                    progress = "noUi-origin noUi-connect";
+                                    // progress1 = "noUi-origin noUi-connect";
+                                    color = "Green";
+                                    color1 = "Green";
+                                }
+                                else if (i == 3)
+                                {
+                                    progress = "noUi-origin noUi-connect";
+                                    progress1 = "noUi-origin noUi-connect";
+                                    // progress2 = "noUi-origin noUi-connect";
+                                    color = "Green";
+                                    color1 = "Green";
+                                    color2 = "Green";
+                                }
+                                else if (i == 4)
+                                {
+                                    progress = "noUi-origin noUi-connect";
+                                    progress1 = "noUi-origin noUi-connect";
+                                    progress2 = "noUi-origin noUi-connect";
+                                    color = "Green";
+                                    color1 = "Green";
+                                    color2 = "Green";
+                                    color3 = "Green";
+                                }
+
+
+                                <div id="nouislider_range_example" class="noUi-target noUi-ltr noUi-horizontal" style="margin-top: 25px;">
+                                    <div class="noUi-base">
+
+                                        <div class="@progress" style="left: 20%;">
+                                            <div class="noUi-handle noUi-handle-lower" style="background-color:@color">
+                                                <br>
+                                                <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PRE MIGRATION</p>
+                                            </div>
+                                        </div>
+                                        <div class="@progress1" style="left: 40%;">
+                                            <div class="noUi-handle noUi-handle-upper" style="background-color:@color1">
+                                                <br>
+                                                <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PULL & PUSH</p>
+                                            </div>
+                                        </div>
+                                        <div class="@progress2" style="left: 60%;">
+                                            <div class="noUi-handle noUi-handle-upper" style="background-color:@color2">
+                                                <br>
+                                                <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;POST MIGRATION</p>
+                                            </div>
+                                        </div>
+                                        <div class="noUi-origin noUi-background" style="left: 80%;background-color: white !important;">
+                                            <div class="noUi-handle noUi-handle-upper" style="background-color:@color3">
+                                                <br>
+                                                <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;VALIDATION</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (ViewBag.count != null)
+                            {
+                                int i = ViewBag.count;
+                                int value = 0;
+                                if (i == 1)
+                                {
+                                    value = 10;
+                                }
+                                else if (i == 2)
+                                {
+                                    value = 35;
+                                }
+                                else if (i == 3)
+                                {
+                                    value = 70;
+                                }
+                                else if (i == 4)
+                                {
+                                    value = 100;
+                                }
+                                @*<fieldset class="position-relative form-group" style="top: 50px;">
+                                    <monkey-bar min="0" max="100" now=@value class="prograss_Bar" labeled striped></monkey-bar>
+                                </fieldset>*@
+                            }
+                            @*<div class="position-relative form-check">
+                        <label class="form-check-label"><input name="radio1" type="radio" class="form-check-input"> Option one is this and that—be sure to include why it's great</label>
+                    </div>
+                    <div class="position-relative form-check">
+                        <label class="form-check-label">
+                            <input name="radio1" type="radio" class="form-check-input"> Option two can be something else and selecting it will deselect option
+                            one
+                        </label>
+                    </div>
+                    <div class="position-relative form-check disabled"><label class="form-check-label"><input name="radio1" disabled="" type="radio" class="form-check-input"> Option three is disabled</label></div>*@
+
+                            @*<div class="position-relative form-check"><label class="form-check-label"><input type="checkbox" class="form-check-input"> Check me out</label></div>*@
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <div class="col-lg-12 card" style="margin-bottom:20px;">
+            <div class="row">           
+                <div class="col-lg-3 card text-center" >
+                    <label>Pre Conversion</label>
+                    <canvas id="chart-Pre_Conversion"></canvas>
+                    <label>Total:244</label>
+                </div>
+                <div class="col-lg-3 card text-center">
+                    <label>Conversion</label>
+                    <canvas id="chart-Conversion"></canvas>
+                    <label>Total:365</label>
+                </div>
+                <div class="col-lg-3 card text-center">
+                    <label>Post Conversion</label>
+                    <canvas id="chart-Post_Conversion"></canvas>
+                    <label>Total:215</label>
+                </div>
+                <div class="col-lg-3 card text-center">
+                    <label>Validation</label>
+                    <canvas id="chart-Validation"></canvas>
+                    <label>Total:215</label>
+                </div>
+            </div>
+
+        </div>
+      
+  
+        <div class="col-lg-12 card" style="margin-bottom:20px !important;">
+            <div class="row">
+                @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                {
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <label for="exampleEmail" class="">Customer Name</label>
+                            @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
+                            @*@Html.DropDownList("Project", (IEnumerable<SelectListItem>), "- SELECT-", new { id = "IDProject", @class = "form-control" })*@
+                        </div>
+                    </div>
+                }
+            <div class="col-md-4">
+                <label class="">Project Name</label>
+                @if (User.IsInRole("Customer"))
+                {
+                @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
+                }
+                else
+                {
+                @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
+                       "Select a Customer", new { id = "IDProject", @class = "form-control" })
+                }
+            </div>
+                <div class="col-md-2">
+                    <label for="exampleEmail" class="">Instance Name</label>
+                    @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
+                    "-Select-", new { id = "IDInstance", @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <label for="exampleEmail" class="">.</label>
+                    <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
+                        Select Instance
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 card" >
+            <div class="row" >
+
+                <div class="col-lg-12 card">
+                    <div class="card-body">
+                        <h5 class="card-title">Recent Updates</h5>
+                        <table class="mb-0 table table-hover">
+
+                            <thead>
+                                <tr>
+                                    <th>Tasks</th>
+                                    <th>Progress</th>
+                                    <th>Status</th>
+                                    <th>Deadline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    <td>Carry out pricing related updates</td>
+                                    <td>
+                                        <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                    </td>
+                                    <td>InProgress</td>
+                                    <td>08 Apr 2020</td>
+                                </tr>
+                                <tr>
+
+                                    <td>Migration to Material Ledger</td>
+                                    <td>
+                                        <monkey-bar min="0" max="100" now="100" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                    </td>
+                                    <td>Completed</td>
+                                    <td>08 Apr 2020</td>
+                                </tr>
+                                <tr>
+
+                                    <td>Pull and Push Data</td>
+                                    <td>
+                                        <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                    </td>
+                                    <td>InProgress</td>
+                                    <td>08 Apr 2020</td>
+                                </tr>
+                                <tr>
+                                    <td>Pricing Data Model Changes</td>
+
+                                    <td>
+                                        <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                    </td>
+                                    <td>InProgress</td>
+                                    <td>08 Apr 2020</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+<script>
+	//This Project & Instance
+    $("#chart-Assessment").click(
+	function (evt) {
+		window.location.href = "@Url.Action("ReadinessReport","Assessment")";
+	}
+	);
+    jQuery(document).ready(function ($) {
+
+        var In=@ViewBag.Instance;
+        if (In == 0) {
+            $("#AssDivId").removeClass("bg-grow-early");
+            $("#AssDivId").last().addClass("bg-grow-before");
+            $("#AssId").html("0 %")
+            AssId
+        }
+        else {
+            $("#AssDivId").removeClass("bg-grow-before");
+            $("#AssDivId").last().addClass("bg-grow-early");
+            $("#AssId").html("100 %")
+        }
+
+            $("#IDInstance").prop("disabled", true);
+            $('#SubmitInstance').prop("disabled", true);
+            $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                },
+                error: function (a) {
+                    debugger;
+                    alert(a);
+                }
+            });
+        });
+            $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstance","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+            });
+            $('#IDInstance').change(function () {
+                var id = $(this).val();
+                if (id == ""||id =="0") {
+                     $('#SubmitInstance').prop("disabled", true);
+                } else {
+					$('#SubmitInstance').prop("disabled", false);
+                }
+            });
+    });
+    $('#SubmitInstance').click(function () {
+        var IDInstance = $("#IDInstance").val();
+         $.ajax({
+                    //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+                 url: '@Url.Action("SubmitInstance", "Home")',
+                 type: "POST",
+                 data: { 'IDInstance': IDInstance },
+                 success: function (result) {
+                     alert("New Live Instance updated");
+                     location.reload();
+                 }
+                });
+    });
+
+</script>
+<script type="text/javascript">
+    //var randomScalingFactor = function () {
+    //    return Math.round(Math.random() * 100);
+    //};
+
+    //Chart.defaults.global.defaultFontFamily = "Verdana";
+
+    //var ctx = document.getElementById("chart-Assessment").getContext("2d");
+    var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
+    var ctx2 = document.getElementById("chart-Conversion").getContext("2d");
+    var ctx3 = document.getElementById("chart-Post_Conversion").getContext("2d");
+    var ctx4 = document.getElementById("chart-Validation").getContext("2d");
+
+    //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
+
+    window.onload = function () {
+        //var ctx = document.getElementById("chart-Assessment").getContext("2d");
+        //window.myRadialGauge = new Chart(ctx, config);
+
+        var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
+        window.myRadialGauge = new Chart(ctx1, config1);
+
+        var ctx2 = document.getElementById("chart-Conversion").getContext("2d");
+        window.myRadialGauge = new Chart(ctx2, config2);
+
+        var ctx3 = document.getElementById("chart-Post_Conversion").getContext("2d");
+        window.myRadialGauge = new Chart(ctx3, config3);
+
+        var ctx4 = document.getElementById("chart-Validation").getContext("2d");
+        window.myRadialGauge = new Chart(ctx4, config4);
+
+        //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
+        //window.myRadialGauge = new Chart(ctx5, config5);
+    };
+
+    //var gradientStroke_ = ctx.createLinearGradient(500, 0, 100, 0);
+    //gradientStroke_.addColorStop(0, "#FDB777");
+    //gradientStroke_.addColorStop(1, "#FD9346");
+
+    var gradientStroke_1 = ctx1.createLinearGradient(500, 0, 100, 0);
+    gradientStroke_1.addColorStop(0, "#FDB777");
+    gradientStroke_1.addColorStop(1, "#FD9346");
+
+    var gradientStroke_2 = ctx2.createLinearGradient(500, 0, 100, 0);
+    gradientStroke_2.addColorStop(0, "#FB291B");
+    gradientStroke_2.addColorStop(1, "#CD1B2D");
+
+    var gradientStroke_3 = ctx3.createLinearGradient(500, 0, 100, 0);
+    gradientStroke_3.addColorStop(0, "#FDB777");
+    gradientStroke_3.addColorStop(1, "#FD9346");
+
+    var gradientStroke_4 = ctx4.createLinearGradient(500, 0, 100, 0);
+    gradientStroke_4.addColorStop(0, "#FB291B");
+    gradientStroke_4.addColorStop(1, "#CD1B2D");
+
+    //var gradientStroke_5 = ctx5.createLinearGradient(500, 0, 100, 0);
+    //gradientStroke_5.addColorStop(0, "#FDB777");
+    //gradientStroke_5.addColorStop(1, "#FD9346");
+
+    //var config = {
+    //    type: "radialGauge",
+    //    data: {
+    //        labels: ["In Progress"],
+    //        datasets: [
+    //            {
+    //                data: [60],
+    //                backgroundColor: [gradientStroke_],
+    //                borderWidth: 0,
+    //                label: "Score"
+    //            }
+    //        ]
+    //    },
+    //    options: {
+    //        responsive: true,
+    //        legend: {},
+    //        title: {
+    //            display: false,
+    //            text: "Radial gauge chart"
+    //        },
+    //        centerPercentage: 60,
+    //        centerArea: {
+    //            displayText: true,
+    //            text: "60%"
+    //        }
+    //    }
+    //};
+
+    var config1 = {
+        type: "radialGauge",
+        data: {
+            labels: ["Closed"],
+            datasets: [
+                {
+                    data: [40],
+                    backgroundColor: [gradientStroke_1],
+                    borderWidth: 0,
+                    label: "Score"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {},
+            title: {
+                display: false,
+                text: "Radial gauge chart"
+            },
+            centerPercentage: 60,
+            centerArea: {
+                displayText: true,
+                text: "40%"
+            }
+        }
+    };
+    var config2 = {
+        type: "radialGauge",
+        data: {
+            labels: ["In Progress"],
+            datasets: [
+                {
+                    data: [60],
+                    backgroundColor: [gradientStroke_2],
+                    borderWidth: 0,
+                    label: "Score"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {},
+            title: {
+                display: false,
+                text: "Radial gauge chart"
+            },
+            centerPercentage: 60,
+            centerArea: {
+                displayText: true,
+                text: "60%"
+            }
+        }
+    };
+
+    var config3 = {
+        type: "radialGauge",
+        data: {
+            labels: ["Closed"],
+            datasets: [
+                {
+                    data: [40],
+                    backgroundColor: [gradientStroke_3],
+                    borderWidth: 0,
+                    label: "Score"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {},
+            title: {
+                display: false,
+                text: "Radial gauge chart"
+            },
+            centerPercentage: 60,
+            centerArea: {
+                displayText: true,
+                text: "40%"
+            }
+        }
+    };
+
+    var config4 = {
+        type: "radialGauge",
+        data: {
+            labels: ["In Progress"],
+            datasets: [
+                {
+                    data: [60],
+                    backgroundColor: [gradientStroke_4],
+                    borderWidth: 0,
+                    label: "Score"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {},
+            title: {
+                display: false,
+                text: "Radial gauge chart"
+            },
+            centerPercentage: 60,
+            centerArea: {
+                displayText: true,
+                text: "60%"
+            }
+        }
+    };
+
+    //var config5 = {
+    //    type: "radialGauge",
+    //    data: {
+    //        labels: ["In Progress"],
+    //        datasets: [
+    //            {
+    //                data: [60],
+    //                backgroundColor: [gradientStroke_5],
+    //                borderWidth: 0,
+    //                label: "Score"
+    //            }
+    //        ]
+    //    },
+    //    options: {
+    //        responsive: true,
+    //        legend: {},
+    //        title: {
+    //            display: false,
+    //            text: "Radial gauge chart"
+    //        },
+    //        centerPercentage: 40,
+    //        centerArea: {
+    //            displayText: true,
+    //            text: "2.05 TB"
+    //        }
+    //    }
+    //};
+
+
+</script>

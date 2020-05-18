@@ -1,0 +1,430 @@
+﻿
+@{
+	ViewBag.Title = "EditTable";
+	Layout = "~/Views/shared/_Layout.cshtml";
+}
+	@*<title>jqGrid Loading Data - Alternate Row Background</title>*@
+	<!-- The jQuery library is a prerequisite for all jqSuite products -->
+	@*<script type="text/ecmascript" src="../../../js/jquery.min.js"></script>*@
+	@*<script type="text/ecmascript" src="../../../js/jquery-ui.min.js"></script>*@
+
+	<!-- We support more than 40 localizations -->
+	@*<script type="text/ecmascript" src="../../../js/trirand/i18n/grid.locale-en.js"></script>*@
+	<script src="~/Asset/Jquery/jqGrid/grid.locale-en.js"></script>
+	<!-- This is the Javascript file of jqGrid -->
+	@*<script type="text/ecmascript" src="../../../js/trirand/src/jquery.jqGrid.js"></script>*@
+	<script src="~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"></script>
+	<!-- This is the localization file of the grid controlling messages, labels, etc.
+	<!-- A link to a jQuery UI ThemeRoller theme, more than 22 built-in and many more custom -->
+	@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">*@
+	@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css">*@
+	<link href="~/Asset/Jquery/jqGrid/css/octicons.css" rel="stylesheet" />
+	<!---
+	   <link rel="stylesheet" href="../../../css/iconic/font/css/open-iconic-bootstrap.css">
+	   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	--->
+	<!-- The link to the CSS that the grid needs -->
+	@*<link rel="stylesheet" type="text/css" media="screen" href="../../../css/trirand/ui.jqgrid-bootstrap4.css" />*@
+	<link href="~/Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css" rel="stylesheet" />
+	<script>
+		//$.jgrid.defaults.width =1000;
+		$.jgrid.defaults.responsive = true;
+		$.jgrid.defaults.styleUI = 'Bootstrap4';
+		$.jgrid.defaults.iconSet = "Octicons";
+	</script>
+	<!--
+	   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	-->
+	@*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>*@
+	<style>
+		.ui-jqgrid {
+			font-size: 0.8rem
+		}
+	</style>
+	<a class="card-title">Consistency Report</a>
+	<div style="margin-left:20px;margin-top:20px">
+		<table id="jqGrid"></table>
+		<div id="jqGridPager"></div>
+		<span class="oi oi-person"></span>
+	</div>
+	<script type="text/javascript">
+		
+		$(document).ready(function () {
+			// altrows are set with table striped class for Boostrap
+			//$.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered table-striped";
+			var lastSelection;
+			var editParameters = {
+				keys: true,
+				//successfunc: editSuccessful,
+				errorfunc: false,
+				restoreAfterError: false,
+				extraparam: {
+					valor: 'texto', any: '20164',
+					clave1: function () {
+						var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+						var value = $("#grid").jqGrid('getCell', sel_id, 'pas1');
+						return value;
+					},
+					obra: function () {
+						var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+						var value = $("#grid").jqGrid('getCell', sel_id, 'obra');
+						return value;
+					},
+					empresa: function () {
+						var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+						var value = $("#grid").jqGrid('getCell', sel_id, 'empresa');
+						return value;
+					}
+				}
+			};
+			var grid = $("#grid");
+			var cancelEditing = function (myGrid) {
+				var lrid;
+				if (typeof lastSelection !== "undefined") {
+					// cancel editing of the previous selected row if it was in editing state.
+					// jqGrid hold intern savedRow array inside of jqGrid object,
+					// so it is safe to call restoreRow method with any id parameter
+					// if jqGrid not in editing state
+					myGrid.jqGrid('restoreRow', lastSelection);
+
+
+					// now we need to restore the icons in the formatter:"actions"
+					lrid = $.jgrid.jqID(lastSelection);
+					$("tr#" + lrid + " div.ui-inline-edit, " + "tr#" + lrid + " div.ui-inline-del").show();
+					$("tr#" + lrid + " div.ui-inline-save, " + "tr#" + lrid + " div.ui-inline-cancel").hide();
+					$("div.ui-inline-close").show();
+				}
+			};
+
+			var getColumnIndexByName = function (grid, columnName) {
+				var cm = grid.jqGrid('getGridParam', 'colModel'), i, l = cm.length;
+				for (i = 0; i < l; i++) {
+					if (cm[i].name === columnName) {
+						return i; // return the index
+					}
+				}
+				return -1;
+			}
+
+			$("#jqGrid").jqGrid({
+				url: "@Url.Action("EditGetData","PreConvertion")",
+				datatype: "json",
+				editurl:"@Url.Action("EditSubmit","PreConvertion")",
+				colModel: [
+                    { label: 'ID', name: 'ID', width: 25, editable: false },
+					{label: 'Last Consistency Result', name : 'Last_Consistency_Result',index :'Last_Consistency_Result',width:70,
+											sortable:true,
+											align:'center',
+											editable:true,
+											cellEdit:true,
+											edittype: 'select', 
+											formatter: 'select',
+											//editoptions: {
+											//    value: "FE:FedEx;TN:TNT;DH:DHL",
+											//    defaultValue: "DH"
+											//}
+
+                        editoptions: {
+                            value:
+							GetDropDown()
+                               // getAllSelectOptions()
+                        }
+                    },
+					{label: 'Exemption Possible', name : 'Exemption_Possible',index :'Exemption_Possible',width:55,
+											sortable:true,
+											align:'center',
+											editable:true,
+											cellEdit:true,
+											edittype: 'select', 
+											formatter: 'select',
+											//editoptions: {
+											//    value: "FE:FedEx;TN:TNT;DH:DHL",
+											//    defaultValue: "DH"
+											//}
+
+                        editoptions: {
+                            value:
+							GetDropDown()
+                               // getAllSelectOptions()
+                        }
+					},
+                    //{
+                    //    label: 'Last Consistency Result', name: 'Last_Consistency_Result',
+                    //    width: 90, editable: true
+                    //},
+					//{ label: 'Exemption Possible', name: 'Exemption_Possible', width: 100, sortable: true, editable: true },
+					{ label: 'SAP_ID', name: 'SAP_ID', width: 80, sorttype: 'integer', editable: false },
+					// sorttype is used only if the data is loaded locally or loadonce is set to true
+					{ label: 'Title', name: 'Title', width: 80, sorttype: 'number', editable: false },
+					
+					{
+						name: "",
+						label: "Actions",
+						width: 25,
+						align: "center",
+						formatter: "actions",
+						formatoptions: {
+                            keys: true,
+                            delbutton: false,
+                            editformbutton: false,//Determines if popup should open or not
+                            afterSave: function (rowid, response, postdata, options) {
+                                alert("success");
+                            }
+                        }
+                        
+					}
+					//{
+					//    name: "",
+					//    label: "Shop",
+					//    width: 50,
+					//    align: "center",
+					//    template: "string",
+					//    editable: false,
+					//    formatter: function (cellvalue, options, rowObject) {
+
+					//        var optionsRowId = options.rowId;
+					//        return "<input type='button' style=\"background-color:lightgreen;color:black\" value='+'   onclick=\"javascript:alert('" + rowObject.SAP_ID + "')\" \>";
+					//    }
+					//},
+					//{
+					//    name: "Actions",
+					//    width: 50,
+					//    formatter: "actions",
+					//    formatoptions: {
+					//        delbutton: false,
+					//        edittext: "Editar",
+					//        edittitle: "Editar",
+					//        cancel: false,
+					//        keys: true,
+					//       // extraparam: editParameters.extraparam,
+					//        editOptions: {
+					//            edittitle: "Editar",
+					//        },
+					//        addOptions: {},
+					//        onEdit: function (id) {
+					//            if (typeof (lastSelection) !== "undefined" && id !== lastSelection) {
+					//                cancelEditing($('#grid'));
+					//            }
+					//            lastSelection = id;
+					//            $("#" + id + " div.ui-inline-close").hide();
+					//        },
+					//        afterRestore: function (id) {
+					//            $("#" + id + " div.ui-inline-close").show();
+					//        },
+					//        afterSave: function (id) {
+					//            alert(id);
+					//            $("#" + id + " div.ui-inline-close").show();
+					//            // actualiza los totales.
+					//            var $grid = $('#grid');
+					//            editRow(id);
+					//            //var colSum1 = $grid.jqGrid('getCol', 'diferencia', false, 'sum');
+					//            //var colSum2 = $grid.jqGrid('getCol', 'total', false, 'sum');
+					//            //$grid.jqGrid('footerData', 'set', {
+					//            //    observacion: 'Totales:',
+					//            //    diferencia: colSum1,
+					//            //    total: colSum2
+					//            //});
+					//        }
+
+					//    }
+					//}
+				],
+				loadonce: true,
+				altRows: true,
+				//rownumbers : true,
+				//multiselect : true,
+                width: 1000,
+                colMenu: true,
+                menubar: true,
+				viewrecords: false,
+				hoverrows: true,
+				height:'auto',
+				rowNum: 10,
+				caption: 'Pre Convertion',
+				sortable: true,
+                grouping: false,
+     //           editparams: {
+					
+     //               Aftersavefunc: function (ROWID, response) {
+     //                   alert("IN");
+     //                   $("#jqGrid").Trigger("Reloadgrid");
+     //                   return true;
+     //               }
+     //           },
+     //           onclickSubmit: function (response, postdata) {
+					//AddPost(postdata);
+     //               alert("MEssage");
+     //           },
+				//aftersavefunc: function (id, response, options) {
+    //                        alert("row with rowid=" + id + " is successfuly modified.");
+    //                    },
+				//sortorder:"asc",
+				//sortGrid: "ID",
+				//groupingView: {
+				//    groupField: ["Relevance"],
+				//    groupColumnShow: [true],
+				//    groupText: ["<b>{0}</b>"],
+				//    groupOrder: ["asc"],
+				//    groupSummary: [false],
+				//    groupCollapse: false
+				//},
+				//altRows: true, This does not work in boostrarap
+				// altclass: '....'
+				pager: "#jqGridPager",
+                loadComplete: function () {
+                }
+				// set table stripped class in table style in bootsrap
+            });
+            //$("#grid").jqGrid('editRow', rowid, true, null, null, null, {}, aftersavefunc);
+            //function aftersavefunc(rowid, result) {
+            //    alert("In");
+            //    $("#grid").trigger("reloadGrid");
+            //}
+			$('#jqGrid').navGrid('#jqGridPager',
+			    // the buttons to appear on the toolbar of the grid
+			    { edit: false, add: false, del: false, search: true, refresh: false, view: false, position: "left", cloneToTop: false },
+			    // options for the Edit Dialog
+			    {
+			        editCaption: "The Edit Dialog",
+			        recreateForm: true,
+			        checkOnUpdate: true,
+			        checkOnSubmit: true,
+			        closeAfterEdit: true,
+			        errorTextFormat: function (data) {
+			            alert("in"+data.responseText);
+			            return 'Error: ' + data.responseText
+			        }
+			    },
+			    // options for the Add Dialog
+			    {
+			        closeAfterAdd: true,
+			        recreateForm: true,
+			        errorTextFormat: function (data) {
+			            return 'Error: ' + data.responseText
+			        }
+			    },
+			    // options for the Delete Dailog
+			    {
+			        errorTextFormat: function (data) {
+			            return 'Error: ' + data.responseText
+			        }
+			    },
+			    {
+			        multipleSearch: true,
+			        showQuery: false
+			    } // search options - define multiple search
+			);
+			//$("#jqGrid").jqGrid('menubarAdd', [
+			//    {
+			//        id: 'das',
+			//        //cloasoncall : true,
+			//        title: 'Sort by Category',
+			//        click: function (event) {
+			//            $("#jqGrid").jqGrid('sortGrid', 'CategoryName');
+			//        }
+			//    },
+			//    {
+			//        divider: true,
+			//    },
+			//	{
+			//	    id: 'was',
+			//	    cloasoncall : true,
+			//	    title: 'Toggle Visibility',
+			//	    click: function (event) {
+			//	        var state = (this.p.gridstate === 'visible') ? 'hidden' : 'visible';
+			//	        $("#jqGrid").jqGrid('setGridState', state);
+			//	    }
+			//	}
+			//]);
+            function AddPost(params) {
+                //Here you need to define ajax call for insert records to server
+                console.log(params);
+            }
+            function GetDropDown() {
+
+                var Parameters = {};
+                var Result
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetPicturetoDatas","PreConvertion")',
+                    //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (Data) {
+                        //for (var i = 0; i < Data.length; i++) {
+                        //   var obj = {}; 
+                        //    var GivenName = Data[i].GivenName;
+                        //    var key = ""+Data[i].ID;
+                        //    obj[key] = GivenName;
+                        //    Parameters.push(obj);
+                        //}
+                        //Result = $.extend({}, Parameters);
+
+						 for (var i = 0; i < Data.length; i++) {
+                           var obj = {}; 
+                            var GivenName = Data[i].GivenName;
+                            var key = ""+Data[i].ID;
+                            Parameters[key] = GivenName;
+                        }
+                    }
+                });
+				return Parameters;
+            }
+
+
+			//function getAllSelectOptions() {
+			//	var states = {
+			//		'1': 'Alabama', '2': 'California', '3': 'Florida',
+			//		'4': 'Hawaii', '5': 'London', '6': 'Oxford'
+			//	};
+
+			//	return states;
+
+			//}
+			//var grid = $('#jqGrid').jqGrid({
+			//	// ... some grid properties ...
+			//	editurl: 'clientArray',
+			//	cellEdit: false, // that's the default, but just to make clear that wer'e in inline edit mode
+			//	onSelectRow: utils.onSelectRow
+			//	// ... some more grid properties ...
+			//});
+			//var utils = {
+			//	prevRowId: null, // we have to keep the previous row id
+			//	onSelectRow: function (rowId, selectionStatus, event) {
+			//		if (rowId && rowId !== utils.prevRowId) {
+			//			var $grid = $(event.target).closest('table');
+			//			$grid.jqGrid('saveRow', utils.prevRowId);
+			//			$grid.jqGrid('editRow', rowId, { keys: true });
+			//			utils.prevRowId = rowId;
+			//		}
+			//	},
+			//};
+		//	function editRow(rowid) {
+		//		debugger;
+		//		jQuery("#jqGrid").jqGrid('saveRow',rowid, successfunc, url, extraparam, aftersavefunc,errorfunc, afterrestorefunc);
+		//		//if (id && id !== lastSelection) {
+		//		//    debugger;
+
+	 ////               var grid = $("#jqGrid");
+	 ////               //grid.jqGrid('restoreRow',id);
+	 ////               grid.jqGrid('editRow',id, {
+		//			//	keys: true,
+	 ////                   onEnter:
+	 ////                       function (rowid, options, event) {
+		//			//		if (confirm("Save the row with ID: "+rowid) === true) {
+		//			//			$(this).jqGrid("saveRow", rowid, options );
+		//			//		}
+		//			//	}
+		//			//});
+		//			//lastSelection = id;
+		//		//}
+		//	}
+			//jQuery("#grid_id").saveRow(rowid, successfunc, url, extraparam, aftersavefunc, errorfunc, afterrestorefunc);
+			
+		});
+
+	</script>
+
+

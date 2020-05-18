@@ -1,0 +1,340 @@
+﻿@model ProACC_DB.Customer
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+    <style>
+        .required::after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <a class="card-title">Update Customer</a>
+        <hr />
+        <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserName, "User Name", htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @id = "Username", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @id = "txtPassword" } })
+                @Html.EditorFor(model => model.Cre_on, new { htmlAttributes = new { @id = "txtcust_cre_on" } })
+
+                @*<div class="position-relative form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @id = "txtPassword", @class = "form-control", @type = "password" } })
+            </div>
+        </div>*@
+
+                @*<div class="form-group">
+            @Html.LabelFor(model => model.UserTypeID, "User Type", htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                @Html.DropDownList("UserTypeID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "txtName", @class = "form-control", @onchange = "ValidateName()" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        <span id="lblName" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Work_Function, "Industry Sector", htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Work_Function, new { htmlAttributes = new { @id = "txtwork1", @class = "form-control", @onchange = "ValidateWork1()" } })
+                        @Html.ValidationMessageFor(model => model.Work_Function, "", new { @class = "text-danger" })
+                        <span id="lblwork1" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @id = "txtMobId", @class = "form-control", @onchange = "ValidateMobileNumber()" } })
+                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                        <span id="lblMob" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.AlternatePhone, "Alternate Phone", htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AlternatePhone, new { htmlAttributes = new { @id = "txtAltMobId", @class = "form-control", @onchange = "ValidateAltPhone()" } })
+                        @Html.ValidationMessageFor(model => model.AlternatePhone, "", new { @class = "text-danger" })
+                        <span id="lblAltMob" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @id = "txtEmail", @class = "form-control", @onchange = "ValidateEmail()" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        <span id="lblEmail" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.AlternateEmail, "Alternate Email", htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AlternateEmail, new { htmlAttributes = new { @id = "txtAltEmail", @class = "form-control", @onchange = "ValidateAltEmai();" } })
+                        @Html.ValidationMessageFor(model => model.AlternateEmail, "", new { @class = "text-danger" })
+                        <span id="lblAltEmail" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EstimatedSale, "Estimated Sale", htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EstimatedSale, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EstimatedSale, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lbllastcontact" class="control-label col-md-5">Last Contact Date</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LastContact_Dt, "Last Contact Date", new { htmlAttributes = new { @id = "txtLastDt", @class = "form-control checkVal" } })
+                        @*@Html.EditorFor(model => model.LastContact_Dt, new { htmlAttributes = new { @class = "form-control", @type = "date" } })*@
+                        @Html.ValidationMessageFor(model => model.LastContact_Dt, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lblnextaction" class="control-label col-md-5">Next Action Date</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NextAction_Dt, "Next Action Date", new { htmlAttributes = new { @id = "txtNextDt", @class = "form-control checkVal" } })
+                        @*@Html.EditorFor(model => model.NextAction_Dt, new { htmlAttributes = new { @class = "form-control", @type = "date" } })*@
+                        @Html.ValidationMessageFor(model => model.NextAction_Dt, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lblleadstatus" class="control-label col-md-5">Lead Status</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("LeadStatus", null, htmlAttributes: new { @class = "form-control" })
+                        @*@Html.EditorFor(model => model.LeadStatus, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.LeadStatus, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lblleadsource" class="control-label col-md-5">Lead Source</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LeadSource, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LeadSource, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+            <label id="lblcuststatus" class="control-label col-md-5">Customer Status</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Conv_Cust_Status, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Conv_Cust_Status, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+                <div class="position-relative form-group ">
+                    @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" id="savecstmr" value="Save" class="btn btn-secondary" onclick="Savecustomer()" />
+                    </div>
+                </div>
+                <div class="col-lg-5" style="float:right;">
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+    }
+
+    <script>
+        $("#Username").prop("readonly", true);
+
+        $("#txtPassword").hide();
+        $("#txtcust_cre_on").hide();
+    </script>
+    
+    <script>       
+
+        var result = "success";
+        function ValidateName()
+      {
+          debugger;
+          var name = document.getElementById("txtName").value;
+          var lblName = document.getElementById("lblName");
+          lblName.innerHTML = "";
+          var letters = /^[A-Za-z, ]+$/;
+            if (!letters.test(name)) {
+                lblName.innerHTML = "Please enter valid Name";
+                result = "error";
+            }
+            else {
+                result = "success";
+            }
+            validateSave();
+    }
+
+        function ValidateWork1() {
+            debugger;
+          var work1 = document.getElementById("txtwork1").value;
+          var lblwork1 = document.getElementById("lblwork1");
+          lblwork1.innerHTML = "";
+          var letters = /^[A-Za-z, ]+$/;
+        if (!letters.test(work1)) {
+            lblwork1.innerHTML = "Please enter a valid Company Name";
+            result = "error";
+        }
+        else {
+            result = "success";
+            }
+            validateSave();
+        }
+        //function ValidateComp()
+        //{
+        //      debugger;
+        //      var Comp = document.getElementById("txtComp").value;
+        //      var lblComp = document.getElementById("lblComp");
+        //      lblComp.innerHTML = "";
+        //      var letters = /^[A-Za-z, ]+$/;
+        //    if (!letters.test(Comp)) {
+        //        lblComp.innerHTML = "Please enter a valid Company Name";
+        //        result = "error";
+        //    }
+        //    else {
+        //        result = "success";
+        //    }
+        //    validateSave();
+        //}
+
+        function ValidateEmail() {
+        //debugger;
+        var email = document.getElementById("txtEmail").value;
+        var lblEmail = document.getElementById("lblEmail");
+        lblEmail.innerHTML = "";
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (!expr.test(email)) {
+                lblEmail.innerHTML = "Please enter valid email address.";
+                result = "error";
+            } else {
+                result = "success";
+            }
+            validateSave();
+    }
+
+    function ValidateMobileNumber() {
+        var mob = /^[1-9]{1}[0-9]{9}$/;
+        var txtMobile = document.getElementById("txtMobId").value;
+        lblMob.innerHTML = "";
+        if (mob.test(txtMobile) == false) {
+            lblMob.innerHTML = "Please enter valid mobile number.";
+            result = "error";
+        }
+        else {
+            result = "success";
+        }
+        validateSave();
+    }
+
+        function ValidateAltPhone() {
+        //debugger;
+        var mob = /^[1-9]{1}[0-9]{9}$/;
+        var txtAltMobile = document.getElementById("txtAltMobId").value;
+        var lblAltMob= document.getElementById("lblAltMob");
+        lblAltMob.innerHtml = "";
+            if (txtAltMobile == "") {
+                lblAltMob.innerHTML = "";
+            }
+            else if (!mob.test(txtAltMobile) && txtAltMobile != "") {
+                lblAltMob.innerHTML = "Please enter valid mobile number.";
+                result = "error";
+            }
+            else {
+                result = "success";
+            }
+            validateSave();
+        }
+
+        function ValidateAltEmai() {
+        //debugger;
+        var Altemail = document.getElementById("txtAltEmail").value;
+        var lblAltEmail = document.getElementById("lblAltEmail");
+        lblAltEmail.innerHTML = "";
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (Altemail == "") {
+                lblAltEmail.innerHTML = "";
+            }
+            else if (!expr.test(Altemail) && Altemail != "") {
+                lblAltEmail.innerHTML = "Please enter valid email address.";
+                result = "error";
+            }
+            else {
+                result = "success";
+            }
+            validateSave();
+        }
+
+        function validateSave() {
+        if (result == "error") {
+            $("#savecstmr").prop("disabled", true);
+        }
+        else {
+            $("#savecstmr").prop("disabled", false);
+        }
+        }   
+
+        function Savecustomer() {
+        //debugger;
+        var Name = $("#txtName").val();
+        var Work = $("#txtwork1").val();
+        var Mobile = $("#txtMobId").val();
+        var Email = $("#txtEmail").val();
+        
+        var lblName = $("#lblName").text(); 
+        var lblwork = $("#lblwork1").text();
+        var lblMob = $("#lblMob").text();
+        
+
+        if (Name.length > 0 && Work.length > 0 && Mobile.length > 0 && Email.length > 0 && lblName =="" && lblwork== "" && lblMob=="") {
+            $("#savecstmr").prop("disabled", false);
+        }
+        else {
+            $("#savecstmr").prop("disabled", true);
+        }
+    }
+
+    </script>
+
+   

@@ -1,0 +1,89 @@
+﻿
+
+@{
+    var pendingdetails = ViewBag.Pendingdetails;
+}
+
+
+<table class="table" id="tblQ">
+    <thead>
+        <tr>
+            <th>
+                PendingName
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in pendingdetails)
+        {
+            <tr>
+
+                <td>
+                    <a class="txtG" value="@item.PendingName">@item.PendingName</a>
+                </td>
+
+                <td>
+                    <a href="#" id="btnEdit" class="editPending fa fa-edit"></a><input type="hidden" value="@item.Id" /> |
+                    <a href="#" class="btnPendingDelete fa fa-trash"></a><input type="hidden" value="@item.Id" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(".btnPendingDelete").on("click", function () {
+        var id = $(this).next().val();
+       var pendVal = confirm("Do you want to delete ?");
+               if( pendVal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","Pending")', 
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Pending name deleted successfully!");
+                        //window.location="/PhaseMaster/Index"
+                        location.reload();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
+    });
+
+    $(".editPending").on("click", function () {
+        debugger;
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetPendingById","Pending")', 
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+                
+                $("#PendingId").val(result.Id);
+                $("#txtPendingName").val(result.PendingName);
+                $("#pendcre_on").val(result.Cre_on);
+                $("#pendcre_By").val(result.Cre_By);
+                $("#btnPendingUpdate").show();
+                $("#btnPendingCreate").hide();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    });
+</script>

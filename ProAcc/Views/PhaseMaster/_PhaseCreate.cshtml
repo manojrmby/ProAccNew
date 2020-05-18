@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+   
+    <a class="card-title">Create Phase</a>
+    <div style="padding:1em;">
+        <div class="row">
+            <div class="col-6">
+                
+                <input type="hidden" id="PhaseId" />
+                <input type="hidden" id="pcre_on" />
+                <input type="hidden" id="pcre_By" />
+                <div class="form-group">
+                    <label class="control-label col-md-4 required">Phase Name</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="txtPhaseName" />
+                        <span id="lblPhaseName" style="color:red" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="button" value="Create" class="btn btn-primary" id="btnPhaseCreate" />
+                        <input type="button" value="Update" class="btn btn-info" id="btnPhaseUpdate" style="display:none" />                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<script>
+
+    $(document).ready(function () {
+        $("#btnPhaseCreate").prop('disabled', true);
+
+        $("#txtPhaseName").bind('copy paste cut', function (e) {
+            e.preventDefault();
+         });
+    });
+
+   
+    $("#txtPhaseName").keypress(function (event) {
+        debugger;
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+          
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) { 
+                    event.preventDefault(); 
+                    $("#lblPhaseName").html("Not Allowed").show().fadeOut(2000);
+        }
+        $("#btnPhaseCreate").prop('disabled', false);
+    });
+
+    $("#btnPhaseCreate").on("click", function () {
+        debugger;
+        var PhaseName = $("#txtPhaseName").val().trim();
+        if (PhaseName == "") {
+            //alert("Please enter the Phase Name")
+            $("#lblPhaseName").html("Please enter the Phase Name").show().fadeOut(2000);
+        }
+        else {
+            $.ajax({
+              url: '@Url.Action("CheckPhase","PhaseMaster")',
+              type: "GET",
+              data: { name: PhaseName,id:null },
+              dataType: "json",
+              success: function (data) {
+                  if (data != "success") {
+                      $("#lblPhaseName").html("This Phase name is already taken,please select another").show().fadeOut(2000);
+                      //alert("This Phase name is already taken,please select another.");
+                      //$("#txtPhaseName").val("");
+                  }
+                  else {
+                      $("#btnPhaseCreate").prop('disabled', false);
+                      $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Create","PhaseMaster")',
+                    data: { phaseName: PhaseName},
+                    //dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                            $("#txtPhaseName").val("");
+                            alert("Phase Saved successfully!");
+                            location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+                  }
+              },
+              error: function (err) {
+                    
+                     alert(err);
+               }        
+            });
+
+        }        
+    });
+
+
+     $("#btnPhaseUpdate").on("click", function () {
+         debugger;
+         var id = $("#PhaseId").val();
+        var PhaseName = $("#txtPhaseName").val().trim();
+        var cre_on = $("#pcre_on").val();
+        var cre_By = $("#pcre_By").val();
+
+         var model = {
+             Id: id,
+             PhaseName: PhaseName,
+             Cre_on: cre_on,
+             Cre_By: cre_By
+         }
+        if (PhaseName == "") {
+            //alert("Please enter the Phase Name")
+            $("#lblPhaseName").html("Please enter the Phase Name").show().fadeOut(2000);
+        }
+        else {
+            $.ajax({
+              url: '@Url.Action("CheckPhase","PhaseMaster")',
+              type: "GET",
+              data: { name: PhaseName,id:id },
+              dataType: "json",
+              success: function (data) {
+                  if (data != "success") {
+                      $("#lblPhaseName").html("this Phase name is already taken,please select another").show().fadeOut(2000);
+                      //alert("This Phase name is already taken,please select another.");
+                      //$("#txtPhaseName").val("");
+                      //location.reload();
+                  }
+                  else {
+                      $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit","PhaseMaster")',
+                    data: { model : model},
+                    //dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Phase Edited successfully!");
+                            //Getda();
+                            location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+                  }
+              },
+              error: function (err) {
+
+                     alert(err);
+               }
+            });
+        }
+     });
+
+    $("#btnPhaseCancel").on("click", function () {
+        debugger;
+        var cre_on = $("#pcre_on").val();
+
+         $("#PhaseId").val("");
+         $("#txtPhaseName").val("");
+         $("#pcre_on").val("");
+        $("#pcre_By").val("");
+        $("#btnPhaseUpdate").hide();
+        $("#btnPhaseCancel").hide();
+        $("#btnPhaseCreate").show();
+    })
+</script>

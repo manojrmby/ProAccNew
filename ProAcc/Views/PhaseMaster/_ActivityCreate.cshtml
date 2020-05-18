@@ -1,0 +1,230 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+    <a class="card-title">Create Activity</a>
+<div style="padding:1em;">
+    <div class="row">
+        <div class="col-6">
+            <input type="hidden" id="ActivityId" />
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Activity Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtActivityName" />
+                    <span id="lblActivityName" style="color:red" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Phase Name</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="drpPhase">
+                        <option value="0">Select Item</option>
+                        @foreach (var item in ViewBag.phasedetails)
+                        {
+                            <option value="@item.Id">@item.PhaseName</option>
+                        }
+                    </select>
+                    <span id="lblPhaseID" style="color:red" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-6 required">Application Area Name</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="drpArea">
+                        <option value="0">Select Item</option>
+                        @foreach (var item in ViewBag.ApplicationAreadetails)
+                        {
+                            <option value="@item.Id">@item.ApplicationArea</option>
+                        }
+                    </select>
+                    <span id="lblAppID" style="color:red" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Create" class="btn btn-primary" id="btnActivityCreate" />
+                    <input type="button" value="Update" class="btn btn-info" id="btnActivityUpdate" style="display:none" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#btnActivityCreate").prop('disabled', true);
+
+        var ActivityName = $("#txtActivityName").val().trim();
+        var phaseid = $("#drpPhase").val();
+        var applicationid = $("#drpArea").val();
+
+         $("#txtActivityName").keypress(function (event) {
+        debugger;
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                    event.preventDefault();
+                    $("#lblActivityName").html("Not Allowed").show().fadeOut(2000);
+            }
+       $("#btnActivityCreate").prop('disabled', false);
+    });
+
+         $("#txtActivityName").bind('copy paste cut', function (e) {
+            e.preventDefault();
+         });
+
+         $('#drpPhase').change(function () {             debugger;            if (phaseid != "" && applicationid != ""&&ActivityName!=null) {                $("#createcustproj").prop("disabled", false);            }         });
+        $('#drpArea').change(function () {             debugger;            if (phaseid != "" && applicationid != ""&&ActivityName!=null) {                $("#createcustproj").prop("disabled", false);            }        });
+
+        $("#txtActivityName").on("focusout", function () {
+            $.ajax({
+              url: '@Url.Action("CheckActivity","ActivityMaster")',
+              type: "GET",
+              data: { name: ActivityName,id:null },
+              dataType: "json",
+              success: function (data) {
+                  if (data != "success") {
+                      $("#lblActivityName").html("This Activity name is already taken,please select another").show().fadeOut(2000);
+                  }
+                  else {
+                     
+                  }
+              },
+              error: function (err) {
+
+                     alert(err);
+               }
+            });
+        })
+    });
+
+   
+       $("#btnActivityCreate").on("click", function () {
+        debugger;
+        var ActivityName = $("#txtActivityName").val().trim();
+        var phaseid = $("#drpPhase").val();
+        var applicationid = $("#drpArea").val();
+        if (ActivityName == "") {
+            $("#lblActivityName").html("Please enter the Activity Name").show().fadeOut(2000);
+        }
+        else if(phaseid==0)
+        {
+            $("#lblPhaseID").html("Please select the Phase").show().fadeOut(2000);
+        }
+        else if (applicationid == 0)
+        {
+            $("#lblAppID").html("Please select the Application").show().fadeOut(2000);
+        }
+        else {
+            $.ajax({
+              url: '@Url.Action("CheckActivity","ActivityMaster")',
+              type: "GET",
+              data: { name: ActivityName,id:null },
+              dataType: "json",
+              success: function (data) {
+                  if (data != "success") {
+                      $("#lblActivityName").html("This Activity name is already taken,please select another").show().fadeOut(2000);
+                      //alert("This Activity name is already taken,please select another.");
+                      //$("#txtActivityName").val("");
+                  }
+                  else {
+                      $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Create","ActivityMaster")',
+                    data: { PhaseID:phaseid,ApplicationAreaID:applicationid,Activity: ActivityName},
+                    //dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                             alert("Activity Saved successfully!");
+                            //window.location = "/Employee/Index"
+                            location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+                  }
+              },
+              error: function (err) {
+
+                     alert(err);
+               }
+            });
+        }
+    });
+
+       $("#btnActivityUpdate").on("click", function () {
+         debugger;
+         var id = $("#ActivityId").val();
+        var ActivityName = $("#txtActivityName").val().trim();
+        var phaseid = $("#drpPhase").val();
+         var applicationid = $("#drpArea").val();
+         var model = {
+             Id: id,
+             Activity: ActivityName,
+             PhaseId: phaseid,
+             ApplicationAreaId: applicationid
+         }
+        if (ActivityName == "") {
+            $("#lblActivityName").html("Please enter the Activity Name").show().fadeOut(2000);
+        }
+        else if(phaseid==0)
+        {
+            $("#lblPhaseID").html("Please select the Phase").show().fadeOut(2000);
+        }
+        else if (applicationid == 0)
+        {
+            $("#lblAppID").html("Please select the Application").show().fadeOut(2000);
+        }
+        else {
+            $.ajax({
+              url: '@Url.Action("CheckActivity","ActivityMaster")',
+              type: "GET",
+              data: { name: ActivityName, id:id },
+              dataType: "json",
+              success: function (data) {
+                  if (data != "success") {
+                      $("#lblActivityName").html("This Activity name is already taken,please select another").show().fadeOut(2000);
+                      //alert("This Activity name is already taken,please select another.");
+                      //$("#txtActivityName").val("");
+                  }
+                  else {
+                      $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit","ActivityMaster")',
+                    data: { model : model},
+                    //dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Activity Edited successfully!");
+                            location.reload();
+                              //window.location = "/Employee/Index"
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+                  }
+              },
+              error: function (err) {
+
+                     alert(err);
+               }
+            });
+        }
+     });
+
+</script>

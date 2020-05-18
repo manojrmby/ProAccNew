@@ -1,0 +1,161 @@
+﻿
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<a class="card-title">Create Application Area</a>
+<div style="padding:1em;">
+    <div class="row">
+        <div class="col-6">
+            <input type="hidden" id="AppId" />
+            <input type="hidden" id="acre_on" />
+            <input type="hidden" id="acre_By" />
+            <div class="form-group">
+                <label class="control-label col-md-6 required">Application Area Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtApplicationName" />
+                    <span id="lblApplicationName" style="color:red" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Create" class="btn btn-primary" id="btnApplicationCreate" />
+                    <input type="button" value="Update" class="btn btn-info" id="btnApplicationUpdate" style="display:none" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+     $(document).ready(function () {
+         $("#btnApplicationCreate").prop('disabled', true);
+
+         $("#txtApplicationName").bind('copy paste cut', function (e) {
+            e.preventDefault();
+         });
+    });
+
+    $("#txtApplicationName").keypress(function (event) {
+        debugger;
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                    event.preventDefault();
+                    $("#lblApplicationName").html("Not Allowed").show().fadeOut(2000);
+        }
+        $("#btnApplicationCreate").prop('disabled', false);
+    });
+
+
+    $("#btnApplicationCreate").on("click", function () {
+        debugger;
+        var ApplicationAreaName = $("#txtApplicationName").val().trim();
+        if (ApplicationAreaName == "") {
+            //alert("Please enter the Application Area Name")
+            $("#lblPhaseName").html("Please enter the Application Name").show().fadeOut(2000);
+        }
+        else {
+            $.ajax({
+              url: '@Url.Action("CheckApplicationArea","ApplicationArea")',
+              type: "GET",
+              data: { name: ApplicationAreaName,id:null },
+              dataType: "json",
+              success: function (data) {
+                  if (data != "success") {
+                      $("#lblApplicationName").html("This Application name is already taken,please select another.").show().fadeOut(2000);
+                      //alert("This Application name is already taken,please select another.");
+                      //$("#txtApplicationName").val("");
+                  }
+                  else {
+                       $("#btnApplicationCreate").prop('disabled', false);
+                      $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Create","ApplicationArea")',
+                    dataType: "json",
+                    data: { ApplicationArea: ApplicationAreaName},
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("ApplicationArea Saved successfully!");
+                            location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+                  }
+              },
+              error: function (err) {
+
+                     alert(err);
+               }
+            });
+        }
+    });
+
+    $("#btnApplicationUpdate").on("click", function () {
+         debugger;
+         var id = $("#AppId").val();
+        var ApplicationArea = $("#txtApplicationName").val();
+        var acre_on = $("#acre_on").val();
+        var acre_By = $("#acre_By").val();
+
+         var model = {
+             Id: id,
+             ApplicationArea: ApplicationArea,
+             Cre_on: acre_on,
+             Cre_By: acre_By
+         }
+        if (ApplicationArea == "") {
+            alert("Please enter the Application Area Name")
+        }
+        else {
+            $.ajax({
+              url: '@Url.Action("CheckApplicationArea","ApplicationArea")',
+              type: "GET",
+              data: { name: ApplicationArea,id:id },
+              dataType: "json",
+              success: function (data) {
+                  if (data != "success") {
+                      $("#lblApplicationName").html("This Application name is already taken,please select another").show().fadeOut(2000);
+                      //alert("This Application Area name is already taken,please select another.");
+                      //$("#txtApplicationName").val("");
+                      //location.reload();
+                  }
+                  else {
+                      $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit","ApplicationArea")',
+                    data: { model : model},
+                    //dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Application Edited successfully!");
+                            location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+                  }
+              },
+              error: function (err) {
+
+                     alert(err);
+               }
+            });
+        }
+    });
+</script>

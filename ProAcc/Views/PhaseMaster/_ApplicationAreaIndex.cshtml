@@ -1,0 +1,88 @@
+﻿
+
+@{
+    var adetails = ViewBag.ApplicationAreadetails;
+}
+
+
+<table class="table" id="tblQ">
+    <thead>
+        <tr>
+            <th>
+                PhaseName
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in adetails)
+        {
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.ApplicationArea">@item.ApplicationArea</a>
+                </td>
+
+                <td>
+                    <a href="#" class="btnApplicaionAreaEdit fa fa-edit"></a><input type="hidden" value="@item.Id" /> |
+                    <a href="#" class="btnApplicaionAreaDelete fa fa-trash"></a><input type="hidden" value="@item.Id" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(".btnApplicaionAreaDelete").on("click", function () {
+        var id = $(this).next().val();
+       var aVal = confirm("Do you want to delete ?");
+               if( aVal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","ApplicationArea")',//"/ApplicationArea/Delete",
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Applicaion Area deleted successfully!");
+                        //window.location="/PhaseMaster/Index"
+                        location.reload();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
+    });
+
+    $(".btnApplicaionAreaEdit").on("click", function () {
+        debugger;
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetAppById","ApplicationArea")', 
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+                
+                $("#AppId").val(result.Id);
+                $("#txtApplicationName").val(result.ApplicationArea);
+                $("#acre_on").val(result.Cre_on);
+                $("#acre_By").val(result.Cre_By);
+                $("#btnApplicationUpdate").show();
+                $("#btnApplicationCreate").hide();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    });
+</script>

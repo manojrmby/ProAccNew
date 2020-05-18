@@ -1,0 +1,209 @@
+﻿@model ProACC_DB.ProjectInstanceConfig
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<div style="min-height:100%;">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+
+        <a class="card-title">PROJECT INSTANCE CONFIGURATION</a>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-12">
+            <div class="col-lg-6">
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.InstaceName, "Instance Name", htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.InstaceName, new { htmlAttributes = new { @id = "txtInstName", @class = "form-control", @onchange = "ValidateInstName()",@maxlength = "3" } })
+                        @Html.ValidationMessageFor(model => model.InstaceName, "", new { @class = "text-danger" })
+                        <span id="lblInstName" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.CustProjconfigID, "Customer Project", htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("CustProjconfigID", null, htmlAttributes: new { @class = "form-control" ,@id="CustProjconfig" })
+                        @Html.ValidationMessageFor(model => model.CustProjconfigID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-12">
+            <div class="position-relative form-group">
+                <div class="col-md-offset-2 col-md-5">
+                    <input type="submit" value="Create" id="createProjInst" class="btn btn-primary" />
+                    <p style="float:right;">@Html.ActionLink("Back to List", "Index")</p>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
+
+<script>
+    //function ValidateInstName() {
+    //    debugger;
+    //    var Instname = document.getElementById("txtInstName").value.trim();
+    //    var lblInstName = document.getElementById("lblInstName");
+    //    lblInstName.innerHTML = "";
+    //    var letters = /^[A-Za-z, ]+$/;
+    //    if (!letters.test(Instname)) {
+    //        lblInstName.innerHTML = "Please enter valid Instance Name";
+    //    }
+    //}
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#createProjInst").prop("disabled",true)
+    });
+
+    $("#txtInstName").keyup(function() {
+        debugger;
+        var letters = /^[A-Za-z0-9]+$/
+        var InstName = $("#txtInstName").val().trim();
+        if (!letters.test(InstName)) {
+            $("#lblInstName").html("Instance Name is not valid").show().fadeOut(2000);
+            $("#txtInstName").val("");
+            $("#createProjInst").prop("disabled",true)
+        }
+        else {
+            //$("#createProjInst").prop('disabled', false);
+            $.ajax({
+                url: '@Url.Action("CheckProjInstNameAvailability","ProjectInstanceConfigs")',
+                type: "GET",
+                data: { projinstdata: InstName },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblInstName").html("This Instance name is already taken,please select another").show().fadeOut(2000);
+                        $("#createProjInst").prop("disabled",true)
+                    }
+                    else {
+                        $("#createProjInst").prop("disabled",false)
+                    }
+                }
+            });
+        }
+        
+    });
+
+
+
+    @*$("#createProjInst").on("click", function () {
+        debugger;
+        var InstName = $("#txtInstName").val().trim();
+        var CustProjconfigID = $("#CustProjconfig").val().trim();
+        if (InstName == "") {
+            $("#lblInstName").html("Please enter the Instance Name").show().fadeOut(2000);
+            $("#createProjInst").prop("disabled", true)
+        }
+        else if (InstName != "" && CustProjconfigID!= "") {
+            $.ajax({
+                url: '@Url.Action("CheckPrjtCust","ProjectInstanceConfigs")',
+                type: "GET",
+                data: { name: InstName,custId:CustProjconfigID },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        //$("#lblInstName").html("This Team name is already taken,please select another").show().fadeOut(2000);
+                        alert("Same Instance is already created in the project")
+                        $("#createProjInst").prop('disabled', true);
+                        break;
+                    }
+                    else {
+
+                    }
+                }
+            });
+        }
+    });*@
+
+   
+    $(function () {
+        var msg = '@ViewBag.Message';
+        if (msg == 'True')
+        {
+        alert("Enter the Details");
+        }
+        var msg1 = '@ViewBag.me';
+        if (msg1== 'True') {
+            alert("Instance Already Present Try Different Name");
+        }
+    });
+</script>
+
+@*<div class="form-group">
+        @Html.LabelFor(model => model.isActive, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.isActive)
+                @Html.ValidationMessageFor(model => model.isActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>*@
+
+@*<div class="form-group">
+        @Html.LabelFor(model => model.LastUpdated_Dt, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.LastUpdated_Dt, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LastUpdated_Dt, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Cre_on, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Cre_on, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Cre_on, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Cre_By, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Cre_By, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Cre_By, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Modified_On, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Modified_On, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Modified_On, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Modified_by, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Modified_by, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Modified_by, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsDeleted)
+                @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>*@
+
+
+

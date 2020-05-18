@@ -1,0 +1,394 @@
+﻿
+@{
+	ViewBag.Title = "CustomReport";
+	Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>
+
+
+<a class="card-title">Custom Code Analysis</a>
+<div style="padding:1em;">
+	<div class="row">
+		<div class="col-md-6 card">
+			<canvas id="Chart_CustomCode"></canvas>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-lg-12 card" style="padding:0px;">
+
+			<div class="tableFixHead outer table-striped table-hover">
+				<table class="mb-0 table table-striped table-hover">
+					<thead class="thead-light">
+						<tr>
+							<th style="width:52px; padding:8px; table-hover">S.NO</th>
+							<th>Custom Code Topic</th>
+							<th>Status</th>
+							<th>Application Component</th>
+							<th>Custom Code Note</th>
+						</tr>
+					</thead>
+					<tbody id="Table_Body">
+	                </tbody>
+					@*<tbody>
+							@foreach (var item in ViewBag.CRReport)
+							{
+
+								<tr>
+									<td class="text-center">
+										@item.S_No.
+									</td>
+									<td>
+										@item.Custom_Code_Topic
+									</td>
+									<td>
+										@item.Status
+									</td>
+									<td>
+										@item.Application_Component
+									</td>
+									<td>
+
+										@{
+											var result = "";
+											if (@item.Custom_Code_Note != null)
+											{
+												var data = @item.Custom_Code_Note;
+												result = (data.Length > 6) ? data.Substring(data.Length - 6, 6) : data;
+											}
+											<a href="@item.Custom_Code_Note">@result</a>
+										}
+									</td>
+
+								</tr>
+
+
+
+							}
+						</tbody>*@
+				</table>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div>
+	@Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
+	<div style="visibility:hidden">
+		<div id="dialog-message" title="Info">
+			<p>
+				<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+				@ViewBag.Message
+			</p>
+		</div>
+	</div>
+
+	@if (ViewBag.Message != null)
+	{
+		<script type="text/javascript">
+			$(function () {
+
+				$("#dialog-message").dialog({
+					modal: true,
+					buttons: {
+						Ok: function () {
+							$(this).dialog("close");
+							var url = $("#RedirectTo").val();
+							location.href = url;
+						}
+					}
+				});
+			});
+		</script>
+
+	}
+</div>
+
+<script type="text/javascript" charset="utf-8">
+	function Ajax_CustomCode_Bar() {
+
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetCustomCode_Bar")',
+			//data: '{LOB: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			success: function (Data) {
+				var Output = Data._List;
+				var inpName = [];
+                var inpVal = [];
+				var backColor = [];
+				var C = 0;
+				for (var i = 0; i < Output.length; i++) {
+
+					inpName.push(Output[i].Name);
+                    inpVal.push(Output[i]._Value);
+					backColor.push("#36A2EB");
+
+					//var _Name = Output[i].Name;
+
+					//if (_Name == 'Custom Code Adaption') {
+					//	inpName.push(Output[i].Name);
+					//	inpVal.push(Output[i]._Value);
+					//} else if (_Name == 'Customizing / Configuration') {
+					//	inpName.push(Output[i].Name);
+					//	inpVal.push(Output[i]._Value);
+					//} else if (_Name == 'User Training') {
+					//	inpName.push(Output[i].Name);
+					//	inpVal.push(Output[i]._Value);
+					//} else {
+					//	C = C + Output[i]._Value;
+					//}
+				}
+				//inpName.push("Others");
+				//inpVal.push(C);
+				labels = inpName;
+				data_ = inpVal;
+				renderCustomBarChart(data_, labels,backColor);
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+	}
+	function renderCustomBarChart(data, labels,backColor) {
+		var maxval = Math.max.apply(Math, data);
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
+		var maxval = Math.max.apply(Math,data);
+		var ctx = document.getElementById("Chart_CustomCode").getContext("2d");
+
+		//var gradientStroke_ = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_.addColorStop(0, "#FDB777");
+		//gradientStroke_.addColorStop(1, "#FD9346");
+
+		//var gradientStroke_2 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_2.addColorStop(0, "#FB291B");
+		//gradientStroke_2.addColorStop(1, "#CD1B2D");
+
+		//var gradientStroke_3 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_3.addColorStop(0, "#FDB777");
+		//gradientStroke_3.addColorStop(1, "#FD9346");
+
+		//var gradientStroke_4 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_4.addColorStop(0, "#FB291B");
+		//gradientStroke_4.addColorStop(1, "#CD1B2D");
+
+		//var numberWithCommas = function(x) {
+  //  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  //};
+		//Chart.defaults.global.defaultFontColor = 'black';
+		// Chart.defaults.global.defaultFontSize = 16;
+
+		var config = {
+			//type: "horizontalBar",
+			type: "bar",
+
+			data: {
+				labels: labels,
+				datasets: [{
+
+                    data: data,
+					backgroundColor:backColor,
+					//backgroundColor: [
+     //                       '#FF6384',
+     //                       '#36A2EB',
+     //                       '#FFCE56'
+     //                   ],
+					//label:"",
+					//backgroundColor: [gradientStroke_, gradientStroke_2],
+					//backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+					//hoverBackgroundColor='red'
+		 //           fill: true,
+		 //pointHoverRadius: 5,
+		 //pointHoverBackgroundColor: 'red'
+					//borderWidth: 2,
+					//label: "Score"
+				}]
+			},
+			//options: {
+
+			//	responsive: true,
+			//	legend: {
+			//		display: false
+			//	},
+			//	title: {
+			//		display: false,
+			//		text: "Radial gauge chart"
+			//	},
+			//	centerPercentage: 60,
+			//	centerArea: {
+			//		displayText: true,
+			//		text: "100%"
+			//	},
+			//	//scales: {
+			//	//	xAxes: [{
+			//	//		stacked: true
+			//	//	}],
+			//	//	yAxes: [{
+			//	//		stacked: true
+			//	//	}]
+			//	//}
+			//	animation: {
+			//		duration: 5000
+			//	},
+			//	scales: {
+			//		xAxes: [{
+			//			ticks: {
+			//				display: false //this will remove only the label
+			//			}
+			//		}]
+			//	}
+			//}
+
+			options: {
+
+                legend: {
+                    display: false,
+                    position: "right",
+					onClick: null
+				},
+				 //tooltips: {
+					//mode: 'label',
+	 //     callbacks: {
+	 //         label: function (tooltipItem, data) {
+
+	 //     	return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+	 //     }
+	 //     }
+	 //    },
+                title: {
+                    display: false,
+					text: "Custom Code Analysis"
+				},
+				hover: {
+					animationDuration: 0
+				},
+				//animation: {
+				//	duration: 5000,
+				//	onComplete: function () {
+				//		var chartInstance = this.chart,
+				//		ctx = chartInstance.ctx;
+				//		ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+				//		ctx.textAlign = 'center';
+				//		ctx.textBaseline = 'bottom';
+				//		var height = chartInstance.controller.boxes[0].bottom;
+				//		this.data.datasets.forEach(function (dataset, i) {
+				//			var meta = chartInstance.controller.getDatasetMeta(i);
+				//			meta.data.forEach(function (bar, index) {
+				//				var data = dataset.data[index];
+				//				 ctx.fillStyle = '#333';
+				//				ctx.fillText(data, bar._model.x, height - ((height - bar._model.y) / 2) - 10);
+
+				//			});
+				//		}
+				//		);
+				//	}
+				//},
+			//	scales: {
+			//		xAxes: [{
+			//			ticks: {
+			//				display: false //this will remove only the label
+			//			},
+			//			gridLines: {
+			//				display: false,
+			//				drawBorder: false,
+			//				 beginAtZero:true,
+			//}
+			//		}],
+			//		yAxes: [{
+			//			ticks: {
+			//				display: false //this will remove only the label
+			//			},
+			//			gridLines: {
+			//				display: false,
+			//				drawBorder: false,
+			//				beginAtZero: false,
+			//			},
+			//			ticks: {
+			//			//	//beginAtZero: false,
+			//			//	//steps: 10,
+			//			//	//stepValue: 5,
+			//				max: maxval + 10
+			//			}
+			//		}]
+                //	}
+                plugins: {
+                    labels: {
+                        render: 'value'
+                    }
+                },
+				scales: {
+                    xAxes: [{
+						display: false,
+						ticks: {
+							display: false //this will remove only the label
+						}
+					}],
+                    yAxes: [{
+                        display: false,
+                        ticks: {
+                            beginAtZero: true,
+							steps: 10,
+							stepValue: 5,
+							max: maxval +1
+						}
+					}]
+				}
+			}
+
+
+		};
+		window.myRadialGauge = new Chart(ctx, config);
+    }
+
+	function TableAjax() {
+			$.ajax({
+                type: "POST",
+                url: '@Url.Action("CustomCodeTable")',
+                //data: '{LOB: ' + JSON.stringify(a) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (Data) {
+                     $("#Table_Body").empty();
+                    $(Data).each(function (index, value) {
+                        var Result = "";
+                        if (value.SAP_Notes != null) {
+                            var d = value.SAP_Notes
+                             Result = d.substr(d.length - 6);
+                            //Result = (d.Length > 6) ? d.Substring(d.Length - 6, 6) : d;
+                        }
+
+
+                        var table = '<tr><td>' + value.S_No +
+                            '</td><td>' + value.Custom_Code_Topic +
+                            '</td><td>' + value.Status +
+                            '</td><td>' + value.Application_Component +
+                            '</td><td>' + value.Custom_Code_Note
+                            + '</td></tr>';
+                        $('#Table_Body').append( table );
+                        });
+                },
+				 error: function () {
+                    alert("Error while inserting data");
+                }
+            }).done(function (response) {
+                //chart.data = response;
+
+            });
+    }
+
+	jQuery(document).ready(function ($) {
+
+	var Ses_InstanceId = '@Session["InstanceId"]';
+        if (Ses_InstanceId != "") {
+            Ajax_CustomCode_Bar();
+			TableAjax()
+        }
+	});
+</script>

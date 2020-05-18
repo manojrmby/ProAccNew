@@ -1,0 +1,132 @@
+﻿@model ProACC_DB.CustomerProjectConfig
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <a class="card-title">Customer Project Configuration</a>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProjectName, "Project Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @id = "txtProjName", @class = "form-control", @onchange = "ValidateProjName();" } })
+                @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                <span id="lblProjName" style="color:red"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerID, "Customer Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @*@Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control", onchange = "SelectedIndexChanged()" });*@
+                @Html.DropDownList("CustomerID", (IEnumerable<SelectListItem>)ViewBag.CustomerID, "--select--", htmlAttributes: new { @class = "form-control", onchange = "SelectedIndexChanged()" })
+
+                @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConsultantID, "SAP Consultant Name", htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-6">
+                @Html.DropDownList("ConsultantID", (IEnumerable<SelectListItem>)ViewBag.ConsultantID, "--select--", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ConsultantID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <input type="submit" id="createcustproj" value="Create" class="btn btn-primary" />
+                <p style="float:right;"> @Html.ActionLink("Back to List", "Index")</p>
+               
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    //function ValidateProjName() {
+        
+    //    var Projname = document.getElementById("txtProjName").value;
+    //    var lblProjName = document.getElementById("lblProjName");
+    //    lblProjName.innerHTML = "";
+    //    var letters = /^[a-zA-Z0-9, ,-]+$/;
+    //    if (!letters.test(Projname)) {
+    //        lblProjName.innerHTML = "Please enter valid Project Name";
+    //        $("#createcustproj").prop("disabled", true);
+    //    }
+    //    else {
+    //         $("#createcustproj").prop("disabled", false);
+    //    }
+    //}
+
+     $("#txtProjName").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (inputValue != 38) {
+            if (!(inputValue >= 65 && inputValue <= 123) && (inputValue != 32 && inputValue != 0)) {
+                event.preventDefault();
+                $("#lblProjName").html("Not Allowed").show().fadeOut(2000);
+            }
+        }
+    });
+
+    $('#txtProjName').on('focusout', function () {
+            debugger;
+            var ProjName = $("#txtProjName").val().trim();
+            if (ProjName == "") {
+                $("#lblProjName").html("Please Enter valid Project name").show().fadeOut(2000);
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckProjectNameAvailability", "CustomerProjectConfigs")',
+                type: "GET",
+                data: { projdata: ProjName },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblProjName").html("This Project name is already taken,please select another").show();
+
+                    }
+                    else {
+                        $("#lblProjName").html("").hide();
+                    }
+
+                },
+                error: function (err) {
+
+                    alert(err);
+                }
+            });
+            }
+            
+        });
+
+
+    jQuery(document).ready(function ($) {         var Projname = document.getElementById("txtProjName").value;        var CustomerID = $("#CustomerID").val();        var ConsultantID = $("#ConsultantID").val();                if (CustomerID != "" && ConsultantID != "") {            $("#createcustproj").prop("disabled", false);        } else {            $("#createcustproj").prop("disabled", true);        }         $('#CustomerID').change(function () {             debugger;            CustomerID = $("#CustomerID").val();            ConsultantID = $("#ConsultantID").val();            if (CustomerID != "" && ConsultantID != ""&&Projname!=null) {                $("#createcustproj").prop("disabled", false);            }         });        $('#ConsultantID').change(function () {             debugger;            CustomerID = $("#CustomerID").val();            ConsultantID = $("#ConsultantID").val();            if (CustomerID != "" && ConsultantID != ""&&Projname!=null) {                $("#createcustproj").prop("disabled", false);            }        });    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        var msg = '@ViewBag.Message';
+        if (msg == 'True')
+        {
+        alert("Enter the Details");
+        }
+        var msg1 = '@ViewBag.me';
+        if (msg1== 'True') {
+            alert("Project Already Present Try Different Name");
+        }
+    });
+</script>
+

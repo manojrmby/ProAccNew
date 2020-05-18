@@ -1,0 +1,314 @@
+﻿
+@{
+	ViewBag.Title = "FioriAppsReport";
+	Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<a class="card-title">Fiori Apps Report</a>
+
+<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>
+
+<style>
+	.chartWrapper {
+		position: relative;
+	}
+
+		.chartWrapper > canvas {
+			position: absolute;
+			left: 0;
+			top: 0;
+			pointer-events: none;
+		}
+
+	.chartAreaWrapper {
+		width: 600px;
+		overflow-x: scroll;
+	}
+</style>
+<div style="padding:1em;">
+	<div class="row">
+		<div class="col-md-12 card" id="Chart123">
+			<div class="row" style="padding:0em 1em 1em 1em;">
+				<div class="col-lg-6">
+
+				</div>
+				<div class="col-lg-6">
+
+					@Html.DropDownList("Roles", (IEnumerable<SelectListItem>)ViewBag.Roles, "ALL", new { id = "IDRoles", @class = "form-control" })
+				</div>
+			</div>
+
+		</div>
+		<div class="chartWrapper">
+			<div class="chartAreaWrapper">
+				<div class="chartAreaWrapper2">
+					<canvas id="Chart_FioriApps" height="300" width="1200"></canvas>
+				</div>
+			</div>
+			<canvas id="axis-Test" height="300" width="0"></canvas>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-lg-12 card" style="padding:0px;">
+
+			<div class="tableFixHead outer table-striped table-hover" style="font-size:12px;">
+				<table>
+					<thead>
+						<tr>
+							<th style="width:70px;padding:8px;">S.NO</th>
+							<th style="width: 132px;">Role</th>
+							<th style="width: 200px;">Name</th>
+							<th style="width: 110px;">Application Area</th>
+							<th>Description</th>
+						</tr>
+
+					</thead>
+					<tbody>
+						@foreach (var item in ViewBag.FiRReport)
+						{
+
+							<tr>
+								<td class="text-center">
+									@item.S_No.
+								</td>
+								<td>
+									@item.Role
+								</td>
+								<td>
+									@item.Name
+								</td>
+								<td>
+									@item.Application_Area
+								</td>
+								<td>
+									@item.Description
+								</td>
+
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div>
+	@Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
+	<div style="visibility:hidden">
+		<div id="dialog-message" title="Info">
+			<p>
+				<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+				@ViewBag.Message
+			</p>
+		</div>
+	</div>
+
+	@if (ViewBag.Message != null)
+	{
+		<script type="text/javascript">
+			$(function () {
+
+				$("#dialog-message").dialog({
+					modal: true,
+					buttons: {
+						Ok: function () {
+							$(this).dialog("close");
+							var url = $("#RedirectTo").val();
+							location.href = url;
+						}
+					}
+				});
+			});
+		</script>
+
+	}
+</div>
+
+<script type="text/javascript" charset="utf-8">
+	 function addData(numData, chart) {
+            for (var i = 0; i < numData; i++) {
+                //chart.data.datasets[0].data.push(Math.random() * 100);
+                //chart.data.labels.push("Label" + i);
+                var newwidth = $('.chartAreaWrapper2').width() + 60;
+                $('.chartAreaWrapper2').width(newwidth);
+            }
+    }
+
+    function renderChart(data, labels,backColor) {
+        $("canvas#Chart_FioriApps").remove();
+
+		$("#Chart123").append('<canvas id="Chart_FioriApps" class="animated fadeIn" height="150"></canvas>');
+		//var ctx = document.getElementById("Chart_FioriApps").getContext("2d");
+
+		//var randomScalingFactor = function () {
+		//	return Math.round(Math.random() * 100);
+		//};
+		var canvasTest = $('#Chart_FioriApps');
+
+		var maxval = Math.max.apply(Math, data);
+
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
+		var config = new Chart(canvasTest, {
+			//type: "horizontalBar",
+			type: "bar",
+
+			data: {
+				labels: labels,
+				datasets: [
+					{
+
+                        data: data,
+						backgroundColor:backColor,
+					}
+				]
+			},
+			options: {
+
+				responsive: true,
+				legend: {
+					display: false
+				},
+				title: {
+					display: false,
+					text: "Radial gauge chart"
+				},
+				centerPercentage: 60,
+				centerArea: {
+					displayText: true,
+					text: "100%"
+                },
+				plugins: {
+                    labels: {
+                        render: 'value'
+                    }
+                },
+
+				//animation: {
+				//		duration:5000
+				//},
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false,//this will remove only the label
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: true,
+
+                        }
+                    }],
+                    yAxes: [{
+                        display: false,
+
+                        ticks: {
+							beginAtZero: true,
+                            steps: 10,
+                            stepValue: 5,
+							//stepSize:.5,
+                            max: maxval + 10
+
+                        }
+                    }]
+
+
+                }
+     //           ,
+				 //animation: {
+     //                   onComplete: function () {
+     //                       if (!rectangleSet) {
+     //                           var scale = window.devicePixelRatio;
+
+     //                           var sourceCanvas = chartTest.chart.canvas;
+     //                           var copyWidth = chartTest.scales['y-axis-0'].width - 10;
+     //                           var copyHeight = chartTest.scales['y-axis-0'].height + chartTest.scales['y-axis-0'].top + 10;
+
+     //                           var targetCtx = document.getElementById("axis-Test").getContext("2d");
+
+     //                           targetCtx.scale(scale, scale);
+     //                           targetCtx.canvas.width = copyWidth * scale;
+     //                           targetCtx.canvas.height = copyHeight * scale;
+
+     //                           targetCtx.canvas.style.width = `${copyWidth}px`;
+     //                           targetCtx.canvas.style.height = `${copyHeight}px`;
+     //                           targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth * scale, copyHeight * scale, 0, 0, copyWidth * scale, copyHeight * scale);
+
+     //                           var sourceCtx = sourceCanvas.getContext('2d');
+
+     //                           // Normalize coordinate system to use css pixels.
+
+     //                           sourceCtx.clearRect(0, 0, copyWidth * scale, copyHeight * scale);
+     //                           rectangleSet = true;
+     //                       }
+     //                   },
+     //                   onProgress: function () {
+     //                       if (rectangleSet === true) {
+     //                           var copyWidth = chartTest.scales['y-axis-0'].width;
+     //                           var copyHeight = chartTest.scales['y-axis-0'].height + chartTest.scales['y-axis-0'].top + 10;
+
+     //                           var sourceCtx = chartTest.chart.canvas.getContext('2d');
+     //                           sourceCtx.clearRect(0, 0, copyWidth, copyHeight);
+     //                       }
+     //                   }
+     //               }
+			}
+        });
+		addData(data.length, config);
+		//window.myRadialGauge = new Chart(ctx, config);
+		
+	}
+
+	function Ajax_Call(a) {
+
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetFioriAppsReportt_Bar")',
+			data: '{Input: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			success: function (Data) {
+
+				var Output = Data._List;
+
+				var inpName = []; var inpVal = []; var backColor = [];
+				for (var i = 0; i < Output.length; i++) {
+					inpName.push(Output[i].Name);
+					inpVal.push(Output[i]._Value);
+                    backColor.push("#36A2EB");
+				}
+				labels = inpName;
+				data_ = inpVal;
+				renderChart(data_,labels,backColor);
+
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+	}
+
+	jQuery(document).ready(function ($) {
+
+        var a = $('#IDRoles option:selected').text();
+		var Ses_InstanceId = '@Session["InstanceId"]';
+        if (Ses_InstanceId != "") {
+            Ajax_Call(a);
+        }
+
+	});
+	$("#IDRoles").change(function () {
+
+		var a = $('#IDRoles option:selected').text();
+		var Ses_InstanceId = '@Session["InstanceId"]';
+        if (Ses_InstanceId != "") {
+            Ajax_Call(a);
+        }
+	   });
+</script>

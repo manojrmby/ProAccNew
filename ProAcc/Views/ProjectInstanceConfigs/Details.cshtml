@@ -1,0 +1,91 @@
+﻿@model ProACC_DB.ProjectInstanceConfig
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@*<h2>Details</h2>*@
+
+<div>
+    <h4>ProjectInstanceConfig Details</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InstaceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InstaceName)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.LastUpdated_Dt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdated_Dt)
+        </dd>*@
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.isActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cre_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cre_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cre_By)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cre_By)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Modified_On)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Modified_On)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Modified_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Modified_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerProjectConfig.ProjectName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerProjectConfig.ProjectName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

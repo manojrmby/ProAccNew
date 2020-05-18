@@ -3,3 +3,10 @@
 ################################################################################
 
 /.vs
+/LocalProAccDB
+/packages
+/ProAcc/bin
+/ProAcc/obj
+/ProACC_DB/Properties
+/ProACC_DB/obj
+/ProACC_DB/bin

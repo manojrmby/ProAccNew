@@ -1,0 +1,182 @@
+﻿@model ProAcc.BL.Model.UserModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Promantus ProAcc Login</title>
+
+    <link rel="icon" type="image/png" href="~/Asset/images/icons/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="~/Asset/css/main_Login.css" />
+    <link rel="stylesheet" type="text/css" href="~/Asset/css/Menu.css" />
+    
+    <style>
+        .Cl_Tagname {
+            font-weight: bolder;
+            font-size: 16px;
+            /*color: #57b846 !important;*/
+        }
+
+        .container-login100 {
+            background: #000000;
+        }
+
+        .wrap-login100 {
+            background: #f0f5f7;
+            /*background: linear-gradient(344deg, rgba(7,213,213,1) 24%, rgba(1,157,208,1) 64%) !important;*/
+        }
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("Validate", "Login"))
+    {
+      
+        <div class="limiter">
+            <div class="container-login100">                
+                <div class="wrap-login100">
+                   
+                    <img src="~/Asset/images/image_2020_04_26T06_25_25_806Z.png" style="width:350px;height:300px;" />
+
+
+                    <div style="float:right !important;" class="text-center">
+                        <form class="login100-form validate-form">
+                            <span class="login100-form-title js-tilt">
+                                <img style="width:225px;" src="~/Asset/images/promantus-new-logo.png" alt="IMG" />
+                            </span>
+
+                            <div class="wrap-input100 validate-input"
+                                 data-validate="Valid UserName is required">
+                                <input class="input100 fa fa-envelope-square"
+                                       type="text"
+                                       name="Username"
+                                       placeholder="User Name" id="Username" style="width:225px;" />
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="wrap-input100 validate-input"
+                                 data-validate="Password is required">
+                                <input class="input100 fa fa-envelope-square"
+                                       type="password"
+                                       name="Password"
+                                       placeholder="Password" id="Password" style="width:225px;" />
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="panel-footer" style="max-width:222px;">
+                                @if (TempData["Message"] != null)
+                                {
+                                    <span style="color:red;">@TempData["Message"].ToString()</span>
+                                }
+                                <label id="dis"></label><br>
+                            </div>
+                            <div class="container-login100-form-btn">
+                                <button class="login100-form-btn" id="loginclick" type="submit">
+                                    Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                        
+                        <footer>
+                            <a class="Cl_Tagname"><a style="font-size:xx-large;font-weight:600;">ProAcc</a> - <strong>S4HANA Conversion Tool</strong></a><br />
+                            <a class="copyright" style="color:gray !important;">©Copyright 2020 Promantus Inc.,All Rights Reserved</a>
+                        </footer>
+                </div>
+            </div>
+        </div>
+    }
+    <script src="~/Asset/Scripts/jquery.min.js"></script>
+    <script src="~/Asset/Scripts/bootstrap.min.js"></script>
+    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+        <script src="~/Scripts/bootstrap.min.js"></script>*@
+
+    <script src="~/Asset/Scripts/tilt.jquery.min.js"></script>
+    <script>
+        $(".js-tilt").tilt({
+            scale: 1.2
+
+        });
+    </script>
+
+
+    <script>
+      @*  $('#loginclick').on('click', function () {
+            debugger;
+            $('#dis').slideDown().html('');
+            var UserName = $('#Username').val();
+            var Password = $('#Password').val();
+            if (UserName === "") {
+                $('#dis').slideDown().html('<span id="errorLogin">Please type Username</span>');
+                return;
+            }
+            //if (!validateEmail(UserName)) {
+            //    $('#dis').slideDown().html('<span id="errorLogin">Invalid Email Address</span>');
+            //    return;
+            //}
+            if (Password === "") {
+                $('#dis').slideDown().html('<span id="errorLogin">Please type Password</span>');
+                return;
+            }
+            var model = {
+                UserName: $('#User_Name').val(),
+                Password: $('#Pass_word').val()
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ValidateUser","Login")',
+                data: JSON.stringify(model),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (Data) {
+                    debugger;
+                 data_ = [Data.R, Data.RC, Data.RC_NON, Data.R_NON];
+                 labels = ["Relevant", "Relevance to be Checked", "Relevance to be Checked (Non-strategic)", "Relevant (Non-strategic)"];
+                 renderChart(data_, labels);
+
+                },
+                error: function () {
+                    debugger;
+                    alert("Error while inserting data");
+                }
+            });
+    @*$.ajax({
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(model),
+            dataType: 'json',
+            cache: false,
+            async: true,
+            url: '@Url.Action("ValidateUser","Login")',
+            //url: '/Login/Login/ValidateUser',//Call server side code
+            success: function (result) {
+                debugger;
+                var vm = JSON.parse(result);
+                if (vm.IsExists != "0") {
+                    if (vm.IsExists === "1") {
+                        location.href = '/Home'; // on Successfull vaildation
+                    } else {
+                        $('#dis').slideDown().html('<span id="errorLogin">Invalid UserID or Password! or InActive Login</span>');
+                    }
+                } else {
+                    $('#dis').slideDown().html('<span id="errorLogin">Invalid UserID or Password!or InActive Login</span>');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger;
+            },
+        });
+
+    });*@
+    </script>
+</body>
+</html>

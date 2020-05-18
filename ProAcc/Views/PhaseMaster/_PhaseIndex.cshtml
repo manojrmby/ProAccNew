@@ -1,0 +1,138 @@
+﻿
+@{
+    var pdetails = ViewBag.phasedetails;
+}
+@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>*@
+
+<table class="table" id="tblPhase">
+    <thead>
+        <tr>
+            <th>
+                PhaseName
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in pdetails)
+        {
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.PhaseName">@item.PhaseName</a>
+                </td>
+
+                <td>
+                    <a href="#" id="btnEdit" class="editPhase fa fa-edit"></a><input type="hidden" value="@item.Id" /> |
+                    <a href="#" class="btnDelete fa fa-trash"></a><input type="hidden" value="@item.Id" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*<script>
+        $(document).ready(function () {
+            $('#tblPhase').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("PhaseIndex","PhaseMaster")',
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "PhaseName" }                   
+                ]
+            });
+        } );
+</script>*@
+
+<script type="text/javascript">
+     //$(document).ready(function () {
+
+     //   $('#tblPhase').DataTable({
+     //       'aoColumnDefs': [{
+     //           'bSortable': false,
+     //           'aTargets': ['nosort']
+     //       }]
+     //   });
+     //});
+
+    $(document).ready(function () {
+        $("#tblPhase").dataTable();
+        //funct();
+        //Getda();
+        
+    });
+
+    function Getda() {
+        //debugger;
+        window.location.href='@Url.Action("Index","PhaseMaster")'
+        //debugger;
+        @*$.ajax({
+            url: '@Url.Action("Index","PhaseMaster")',
+            success: function () {
+          //      alert("Success");
+            }
+        });*@
+
+    }
+
+    function funct() {
+            $("#tblPhase").dataTable();
+     }
+
+    $(".btnDelete").on("click", function () {
+        var id = $(this).next().val();
+       var retVal = confirm("Do you want to delete ?");
+               if( retVal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","PhaseMaster")',//"/PhaseMaster/Delete",
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Phase name deleted successfully!");
+                        //window.location="/PhaseMaster/Index"
+                        location.reload();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
+    });
+
+    $(".editPhase").on("click", function () {
+        //debugger;
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetPhaseById","PhaseMaster")',
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+
+                $("#PhaseId").val(result.Id);
+                $("#txtPhaseName").val(result.PhaseName);
+                $("#pcre_on").val(result.Cre_on);
+                $("#pcre_By").val(result.Cre_By);
+                $("#btnPhaseUpdate").show();
+                $("#btnPhaseCreate").hide();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    });
+</script>

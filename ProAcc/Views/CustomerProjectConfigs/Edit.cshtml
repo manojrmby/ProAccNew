@@ -1,0 +1,79 @@
+﻿@model ProACC_DB.CustomerProjectConfig
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@*<h2>Edit</h2>*@
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <a class="card-title">Customer Project Config Edit</a>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProjectName, "Project Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @id = "txtProjName", @class = "form-control", @onchange = "ValidateProjName()" } })
+                @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                <span id="lblProjName" style="color:red"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerID, "Customer Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConsultantID, "Consultant Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ConsultantID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ConsultantID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.EditorFor(model => model.Cre_on, new { htmlAttributes = new { @id = "customerCre_on", @class = "form-control" } })
+        @Html.EditorFor(model => model.LastUpdated_Dt, new { htmlAttributes = new { @id = "customerLastUpd", @class = "form-control" } })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="SaveCustProj" value="Save" class="btn btn-secondary" />
+            </div>
+        </div>
+        <div style="float:right;">
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+}
+
+<script>
+    $('#customerCre_on').hide();
+    $('#customerLastUpd').hide();
+    function ValidateProjName()
+      {
+          debugger;
+          var Projname = document.getElementById("txtProjName").value;
+          var lblProjName = document.getElementById("lblProjName");
+          lblProjName.innerHTML = "";
+          var letters = /^[A-Za-z0-9, ,-]+$/;
+        if (!letters.test(Projname)) {
+            lblProjName.innerHTML = "Please enter valid Project Name";
+            $("#SaveCustProj").prop("disabled", true);
+        }
+        else {
+            $("#SaveCustProj").prop("disabled", false);
+        }
+      }
+</script>
+
+
+

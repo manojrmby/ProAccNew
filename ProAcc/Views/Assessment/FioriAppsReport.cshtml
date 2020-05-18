@@ -1,0 +1,490 @@
+﻿
+@{
+    ViewBag.Title = "FioriAppsReport";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<a class="card-title">Fiori Apps Report</a>
+
+
+<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>
+
+
+<style>
+    .chartWrapper {
+        position: relative;
+    }
+
+        .chartWrapper > canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+        }
+
+    .chartAreaWrapper {
+        /*width: 50%!important;*/
+        overflow-x: scroll;
+    }
+</style>
+<div style="padding:1em;" class="col-md-12">
+    <div class="row">
+        <div class="col-md-12 card" id="Chart123">
+            <div class="row" style="padding:0em 1em 1em 1em;">
+                <div class="col-lg-6">
+
+                </div>
+                <div class="col-lg-6">
+
+                    @Html.DropDownList("Roles", (IEnumerable<SelectListItem>)ViewBag.Roles, "ALL", new { id = "IDRoles", @class = "form-control" })
+                </div>
+            </div>
+            <div class="chartWrapper card" id="chartWrapper" style="max-width:925px;">
+                <div class="chartAreaWrapper col-md-12">
+                    <div class="chartAreaWrapper2">
+                        <canvas id="chart-Test"></canvas>
+                    </div>
+                    <canvas id="axis-Test"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+        @*<canvas id="Chart_FioriApps"></canvas>*@
+    </div>
+
+</div>
+<br />
+<div class="row">
+    <div class="col-lg-12 card" style="padding:0px;">
+
+        <div class="tableFixHead outer table-striped table-hover" style="font-size:12px;">
+            @*<table>*@
+            <table class="mb-0 table table-striped table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width:70px;padding:8px;">S.NO</th>
+                        <th style="width: 132px;">Role</th>
+                        <th style="width: 200px;">Name</th>
+                        <th style="width: 110px;">Application Area</th>
+                        <th>Description</th>
+                    </tr>
+
+                </thead>
+                <tbody id="Table_Body">
+                </tbody>
+                @*<tbody>
+                        @foreach (var item in ViewBag.FiRReport)
+                        {
+
+                            <tr>
+                                <td class="text-center">
+                                    @item.S_No.
+                                </td>
+                                <td>
+                                    @item.Role
+                                </td>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td>
+                                    @item.Application_Area
+                                </td>
+                                <td>
+                                    @item.Description
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>*@
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<div>
+    @Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
+    <div style="visibility:hidden">
+        <div id="dialog-message" title="Info">
+            <p>
+                <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+                @ViewBag.Message
+            </p>
+        </div>
+    </div>
+
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+
+                $("#dialog-message").dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function () {
+                            $(this).dialog("close");
+                            var url = $("#RedirectTo").val();
+                            location.href = url;
+                        }
+                    }
+                });
+            });
+        </script>
+
+    }
+</div>
+
+<script type="text/javascript" charset="utf-8">
+
+ //   function renderChart(data, labels,backColor) {
+ //       $("canvas#Chart_FioriApps").remove();
+
+	//	$("#Chart123").append('<canvas id="Chart_FioriApps" class="animated fadeIn" height="150"></canvas>');
+	//	var ctx = document.getElementById("chart-Test").getContext("2d");
+
+	//	//var randomScalingFactor = function () {
+	//	//	return Math.round(Math.random() * 100);
+	//	//};
+
+
+	//	var maxval = Math.max.apply(Math, data);
+
+	//	//Chart.defaults.global.defaultFontFamily = "Verdana";
+	//	var config = {
+	//		//type: "horizontalBar",
+	//		type: "bar",
+
+	//		data: {
+	//			labels: labels,
+	//			datasets: [
+	//				{
+
+ //                       data: data,
+	//					backgroundColor:backColor,
+	//				}
+	//			]
+	//		},
+	//		options: {
+
+	//			responsive: true,
+	//			legend: {
+	//				display: false
+	//			},
+	//			title: {
+	//				display: false,
+	//				text: "Radial gauge chart"
+	//			},
+	//			centerPercentage: 60,
+	//			centerArea: {
+	//				displayText: true,
+	//				text: "100%"
+ //               },
+	//			plugins: {
+ //                   labels: {
+ //                       render: 'value'
+ //                   }
+ //               },
+
+	//			//animation: {
+	//			//		duration:5000
+	//			//},
+ //               scales: {
+ //                   xAxes: [{
+ //                       ticks: {
+ //                           display: false,//this will remove only the label
+ //                           beginAtZero: true
+ //                       },
+ //                       gridLines: {
+ //                           display: false,
+ //                           drawBorder: true,
+
+ //                       }
+ //                   }],
+ //                   yAxes: [{
+ //                       display: false,
+
+ //                       ticks: {
+	//						beginAtZero: true,
+ //                           steps: 10,
+ //                           stepValue: 5,
+	//						//stepSize:.5,
+ //                           max: maxval +5
+ //                       }
+ //                   }]
+
+
+ //               }
+	//		}
+	//	};
+	//	window.myRadialGauge = new Chart(ctx, config);
+
+	//}
+	function Ajax_Call(a) {
+
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetFioriAppsReportt_Bar")',
+			data: '{Input: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+				var Output = Data._List;
+
+				var inpName = []; var inpVal = []; var backColor = [];
+				for (var i = 0; i < Output.length; i++) {
+					inpName.push(Output[i].Name);
+					inpVal.push(Output[i]._Value);
+                    backColor.push("#36A2EB");
+				}
+				labels = inpName;
+				data_ = inpVal;
+                //renderChart(data_, labels, backColor);
+                renderChart2(data_,labels,backColor);
+
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+	}
+
+        var a = $('#IDRoles option:selected').text();
+		var Ses_InstanceId = '@Session["InstanceId"]';
+        if (Ses_InstanceId != "") {
+            Ajax_Call(a);
+        }
+	$("#IDRoles").change(function () {
+
+		var a = $('#IDRoles option:selected').text();
+		var Ses_InstanceId = '@Session["InstanceId"]';
+        if (Ses_InstanceId != "") {
+            Ajax_Call(a);
+            TableAjax(a);
+        }
+	   });
+        //function generateLabels() {
+        //    var chartLabels = [];
+        //    for (x = 0; x < 100; x++) {
+        //        chartLabels.push("Label" + x);
+        //    }
+        //    return chartLabels;
+        //}
+
+        //function generateData() {
+        //    var chartData = [];
+        //    for (x = 0; x < 100; x++) {
+        //        chartData.push(Math.floor((Math.random() * 100) + 1));
+        //    }
+        //    return chartData;
+        //}
+
+    function addData(numData, chart) {
+
+            for (var i = 0; i < numData; i++) {
+                //chart.data.datasets[0].data.push(1 * 100);
+                //chart.data.labels.push("Label" + i);
+                if (numData==1) {
+
+                    //$(".chartAreaWrapper").remove();
+                    $('#Chart123').removeClass('col-md-12').addClass('col-md-6');
+                    $('#axis-Test').remove();
+                }
+
+                if (numData > 1) {
+                    $('#Chart123').removeClass('col-md-6').addClass('col-md-12');
+
+                    var newwidth = $('.chartAreaWrapper2').width() + 15;
+                $('.chartAreaWrapper2').width(newwidth);
+                $('.chartAreaWrapper2').height("200px")
+                }
+
+            }
+        }
+
+        //var chartData = {
+        //    labels: generateLabels(),
+        //    datasets: [{
+        //        label: "Test Data Set",
+        //        data: generateData()
+        //    }]
+        //};
+        function renderChart2(data, labels, backColor) {
+            //var rectangleSet = false;
+            var maxval = Math.max.apply(Math, data);
+            $(".chartAreaWrapper").remove();
+
+           // debugger;
+            $("#chartWrapper").append('<div class="chartAreaWrapper col-md-12"><div class="chartAreaWrapper2"><canvas id="chart-Test"></canvas></div><canvas id="axis-Test"></canvas></div>');
+            if ($('#axis-Test').length > 0) {} else { $('#chartWrapper').append('<canvas id="axis-Test"></canvas>'); }
+		//var ctx = document.getElementById("chart-Test").getContext("2d");
+            var canvasTest = $('#chart-Test');
+            //canvasTest.height = 500;
+            var chartTest = new Chart(canvasTest, {
+                //type: "horizontalBar",
+                type: 'bar',
+                borderWidth: 2,
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            data: data,
+                            backgroundColor: backColor,
+                        }
+                    ]
+                },
+
+                options: {
+                    animation: {
+                        duration: 5000
+                    },
+                    responsive: true,
+				legend: {
+					display: false
+				},
+				title: {
+					display: false,
+					text: "Radial gauge chart"
+				},
+				centerPercentage: 10,
+				centerArea: {
+					displayText: true,
+					text: "100%"
+                },
+                    plugins: {
+                        labels: {
+                            render: 'value'
+                        }
+                    },
+                    scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false,//this will remove only the label
+                            beginAtZero: false,
+
+							//stepSize:.5,
+                            max: maxval + 5,
+
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: true,
+
+                        }
+                    }],
+                        yAxes: [{
+                            display: false,
+
+                            ticks: {
+                                beginAtZero: true,
+
+							//stepSize:.5,
+                            max: maxval + 5,
+
+                        }
+                        ,
+                            gridLines: {
+                                display: true,
+                                drawBorder: true,
+
+                        }
+                    }]
+
+
+                    }
+
+                    //animation: {
+                    //    onComplete: function () {
+                            //if (!rectangleSet) {
+                            //    var scale = window.devicePixelRatio;
+                            //    debugger;
+                            //    var sourceCanvas = chartTest.chart.canvas;
+                            //    var copyWidth = chartTest.scales['y-axis-0'].width - 10;
+                            //    var copyHeight = chartTest.scales['y-axis-0'].height + chartTest.scales['y-axis-0'].top +10;
+
+                            //    var targetCtx = document.getElementById("axis-Test").getContext("2d");
+
+                            //    targetCtx.scale(scale, scale);
+                            //    targetCtx.canvas.width = copyWidth * scale;
+                            //    targetCtx.canvas.height = copyHeight * scale;
+
+                            //    targetCtx.canvas.style.width = `${copyWidth}px`;
+                            //    targetCtx.canvas.style.height = `${copyHeight}px`;
+                            //    targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth * scale, copyHeight * scale, 0, 0, copyWidth * scale, copyHeight * scale);
+
+                            //    var sourceCtx = sourceCanvas.getContext('2d');
+
+                            //    // Normalize coordinate system to use css pixels.
+
+                            //    sourceCtx.clearRect(0, 0, copyWidth * scale, copyHeight * scale);
+                            //    rectangleSet = true;
+                            //}
+                        //}
+                        //,
+                        //onProgress: function () {
+                        //    if (rectangleSet === true) {
+                        //        var copyWidth = chartTest.scales['y-axis-0'].width;
+                        //        var copyHeight = chartTest.scales['y-axis-0'].height + chartTest.scales['y-axis-0'].top + 10;
+
+                        //        var sourceCtx = chartTest.chart.canvas.getContext('2d');
+                        //        sourceCtx.clearRect(0, 0, copyWidth, copyHeight);
+                        //    }
+                        //}
+                    //}
+               }
+            });
+            addData(data.length, chartTest);
+        }
+        //});
+
+    function TableAjax(a) {
+			$.ajax({
+                type: "POST",
+                url: '@Url.Action("FioriAppsTable")',
+               // data: '{LOB: ' + JSON.stringify(a) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (Data) {
+                     $("#Table_Body").empty();
+                    $(Data).each(function (index, value) {
+                        var Result = "";
+                        if (value.SAP_Notes != null) {
+                            var d = value.SAP_Notes
+                             Result = d.substr(d.length - 6);
+                            //Result = (d.Length > 6) ? d.Substring(d.Length - 6, 6) : d;
+                        }
+
+
+                        var table = '<tr><td>' + value.S_No +
+                            '</td><td>' + value.Role +
+                            '</td><td>' + value.Name +
+                            '</td><td>' + value.Application_Area +
+                            '</td><td>' + value.Description
+                            + '</td></tr>';
+                        $('#Table_Body').append( table );
+                        });
+                },
+				 error: function () {
+                    alert("Error while inserting data");
+                }
+            }).done(function (response) {
+                //chart.data = response;
+
+            });
+    }
+
+    jQuery(document).ready(function ($) {
+
+        var a = $('#IDRoles option:selected').text();
+		var Ses_InstanceId = '@Session["InstanceId"]';
+       if (Ses_InstanceId != "") {
+           Ajax_Call(a);
+           TableAjax(a);
+        }
+	});
+</script>

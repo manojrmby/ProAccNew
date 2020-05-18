@@ -1,0 +1,112 @@
+=====Exception Log DateTime:5/13/2020 4:02:48 PM=======
+https://localhost:44376/Login/Validate
+
+NameSpace : ProAcc.Controllers
+ClassName : LoginController
+MethodName : Validate
+MethodArguments :  , UserModel , userString , returnUrl
+SOURCE    : mscorlib
+Type      : System.FormatException
+MESSAGE   : Unrecognized Guid format.
+TARGETSITE: Boolean TryParseGuid(System.String, GuidStyles, GuidResult ByRef)
+STACKTRACE:    at System.Guid.TryParseGuid(String g, GuidStyles flags, GuidResult& result)
+   at System.Guid.Parse(String input)
+   at ProAcc.BL.Base.UserValidation(LogedUser user) in D:\Office\Projects\ProACC\ProAcc\ProAcc\BL\Base.cs:line 33
+   at ProAcc.Controllers.LoginController.Validate(UserModel user, String returnUrl) in D:\Office\Projects\ProACC\ProAcc\ProAcc\Controllers\LoginController.cs:line 43
+
+=====Exception Log End=======
+
+
+=====Exception Log DateTime:5/13/2020 4:03:38 PM=======
+https://localhost:44376/Login/Validate
+
+NameSpace : ProAcc.Controllers
+ClassName : LoginController
+MethodName : Validate
+MethodArguments :  , UserModel , userString , returnUrl
+SOURCE    : mscorlib
+Type      : System.FormatException
+MESSAGE   : Unrecognized Guid format.
+TARGETSITE: Boolean TryParseGuid(System.String, GuidStyles, GuidResult ByRef)
+STACKTRACE:    at System.Guid.TryParseGuid(String g, GuidStyles flags, GuidResult& result)
+   at System.Guid.Parse(String input)
+   at ProAcc.BL.Base.UserValidation(LogedUser user) in D:\Office\Projects\ProACC\ProAcc\ProAcc\BL\Base.cs:line 33
+   at ProAcc.Controllers.LoginController.Validate(UserModel user, String returnUrl) in D:\Office\Projects\ProACC\ProAcc\ProAcc\Controllers\LoginController.cs:line 43
+
+=====Exception Log End=======
+
+
+=====Exception Log DateTime:5/13/2020 6:58:17 PM=======
+https://localhost:44376/Login/Validate
+
+NameSpace : ProAcc.Controllers
+ClassName : LoginController
+MethodName : Validate
+MethodArguments :  , UserModel , userString , returnUrl
+SOURCE    : mscorlib
+Type      : System.FormatException
+MESSAGE   : Unrecognized Guid format.
+TARGETSITE: Boolean TryParseGuid(System.String, GuidStyles, GuidResult ByRef)
+STACKTRACE:    at System.Guid.TryParseGuid(String g, GuidStyles flags, GuidResult& result)
+   at System.Guid.Parse(String input)
+   at ProAcc.BL.Base.UserValidation(LogedUser user)
+   at ProAcc.Controllers.LoginController.Validate(UserModel user, String returnUrl)
+
+=====Exception Log End=======
+
+
+=====Exception Log DateTime:5/13/2020 7:02:09 PM=======
+https://localhost:44376/Login/Validate
+
+NameSpace : ProAcc.Controllers
+ClassName : LoginController
+MethodName : Validate
+MethodArguments :  , UserModel , userString , returnUrl
+SOURCE    : mscorlib
+Type      : System.FormatException
+MESSAGE   : Unrecognized Guid format.
+TARGETSITE: Boolean TryParseGuid(System.String, GuidStyles, GuidResult ByRef)
+STACKTRACE:    at System.Guid.TryParseGuid(String g, GuidStyles flags, GuidResult& result)
+   at System.Guid.Parse(String input)
+   at ProAcc.BL.Base.UserValidation(LogedUser user)
+   at ProAcc.Controllers.LoginController.Validate(UserModel user, String returnUrl)
+
+=====Exception Log End=======
+
+
+=====Exception Log DateTime:5/13/2020 7:07:31 PM=======
+https://localhost:44376/Login/Validate
+
+NameSpace : ProAcc.Controllers
+ClassName : LoginController
+MethodName : Validate
+MethodArguments :  , UserModel , userString , returnUrl
+SOURCE    : System.Data
+Type      : System.IndexOutOfRangeException
+MESSAGE   : Cannot find table 0.
+TARGETSITE: System.Data.DataTable get_Item(Int32)
+STACKTRACE:    at System.Data.DataTableCollection.get_Item(Int32 index)
+   at ProAcc.BL.Base.UserValidation(LogedUser user)
+   at ProAcc.Controllers.LoginController.Validate(UserModel user, String returnUrl)
+
+=====Exception Log End=======
+
+
+=====Exception Log DateTime:5/13/2020 7:08:38 PM=======
+https://localhost:44376/Login/Validate
+
+NameSpace : ProAcc.Controllers
+ClassName : LoginController
+MethodName : Validate
+MethodArguments :  , UserModel , userString , returnUrl
+SOURCE    : System.Data
+Type      : System.IndexOutOfRangeException
+MESSAGE   : Cannot find table 0.
+TARGETSITE: System.Data.DataTable get_Item(Int32)
+STACKTRACE:    at System.Data.DataTableCollection.get_Item(Int32 index)
+   at ProAcc.BL.Base.UserValidation(LogedUser user)
+   at ProAcc.Controllers.LoginController.Validate(UserModel user, String returnUrl)
+
+=====Exception Log End=======
+
+

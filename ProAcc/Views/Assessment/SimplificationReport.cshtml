@@ -1,0 +1,360 @@
+﻿
+@{
+    ViewBag.Title = "SimplificationReport";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>
+<a class="card-title">Simplification Report</a>
+<div style="padding:1em;">
+    <div class="row">
+        <div class="col-md-6 card" id="Chart123" style="background-color:white!important; min-width:100%;">
+            <div class="row">
+                <div class="col-lg-6">
+
+                </div>
+                <div class="col-lg-6">
+
+                    @Html.DropDownList("LOB", (IEnumerable<SelectListItem>)ViewBag.LOB, "ALL", new { id = "IDLob", @class = "form-control" })
+                </div>
+            </div>
+            <canvas class="col-md-6" id="Chart_Relevant"></canvas>
+        </div>
+
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-lg-12 card" style="padding:0px;">
+            <div class="table-responsive tableFixHead outer">
+                @*<table id="t01" class="table table-bordered table-hover tableFixHead outer table-striped" style="width:100% !important;">*@
+                <table class="mb-0 table table-striped table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th cope="col" style="width:5%;text-align:center;">
+                                #
+                            </th>
+                            <th>Title</th>
+                            <th style="width: 11.5%;">Category</th>
+                            <th style="width: 11%;">Relevance</th>
+                            <th style="width: 11.5%;">Lob/ Technology</th>
+                            <th>Business Area</th>
+                            <th style="width: 7.5%;">Manual Status</th>
+                            <th style="width: 7.5%;">SAP Notes</th>
+                            <th>Relevance Summary</th>
+                        </tr>
+
+                    </thead>
+                    <tbody id="Table_Body">
+                    </tbody>
+                    @*<tbody>
+                            @foreach (var item in ViewBag.SRReport)
+                            {
+
+                                <tr>
+                                    <td class="text-center">
+                                        @item.S_No.
+                                    </td>
+                                    <td>
+                                        @item.Title
+                                    </td>
+                                    <td>
+                                        @item.Category
+                                    </td>
+                                    <td>
+                                        @item.Relevance
+                                    </td>
+                                    <td>
+                                        @item.LoB_Technology
+                                    </td>
+                                    <td>
+                                        @item.Business_Area
+                                    </td>
+
+                                    <td>
+                                        @item.Manual_Status
+                                    <td>
+
+                                        @{
+                                            var result = "";
+                                            if (@item.SAP_Notes != null)
+                                            {
+                                                var data = @item.SAP_Notes;
+                                                result = (data.Length > 6) ? data.Substring(data.Length - 6, 6) : data;
+                                            }
+                                            <a href="@item.SAP_Notes">@result</a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.Relevance_Summary
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>*@
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    @Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
+    <div style="visibility:hidden">
+        <div id="dialog-message" title="Info">
+            <p>
+                <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+                @ViewBag.Message
+            </p>
+        </div>
+    </div>
+
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+
+                $("#dialog-message").dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function () {
+                            $(this).dialog("close");
+                            var url = $("#RedirectTo").val();
+                            location.href = url;
+                        }
+                    }
+                });
+            });
+        </script>
+
+    }
+</div>
+
+<script type="text/javascript" charset="utf-8">
+
+    function renderChart(data, labels,backColor) {
+        $("canvas#Chart_Relevant").remove();
+
+		$("#Chart123").append('<canvas id="Chart_Relevant" class="animated fadeIn"></canvas>');
+		var ctx = document.getElementById("Chart_Relevant").getContext("2d");
+
+		//var randomScalingFactor = function () {
+		//	return Math.round(Math.random() * 100);
+		//};
+
+
+		var maxval = Math.max.apply(Math, data);
+
+		Chart.defaults.global.defaultFontFamily = "Verdana";
+
+
+		//var gradientStroke_ = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_.addColorStop(0, "#FDB777");
+		//gradientStroke_.addColorStop(1, "#FD9346");
+
+		//var gradientStroke_2 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_2.addColorStop(0, "#FB291B");
+		//gradientStroke_2.addColorStop(1, "#CD1B2D");
+
+		//var gradientStroke_3 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_3.addColorStop(0, "#FDB777");
+		//gradientStroke_3.addColorStop(1, "#FD9346");
+
+		//var gradientStroke_4 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_4.addColorStop(0, "#FB291B");
+		//gradientStroke_4.addColorStop(1, "#CD1B2D");
+
+		var config = {
+			//type: "horizontalBar",
+			type: "bar",
+
+			data: {
+				labels: labels,
+				datasets: [
+					{
+
+                        data: data,
+						backgroundColor:backColor,
+						//backgroundColor: [
+      //                      '#FF6384',
+      //                      '#36A2EB',
+      //                      '#FFCE56',
+						//	'#FF6384',
+      //                      '#36A2EB',
+      //                      '#FFCE56',
+						//	'#FF6384',
+      //                      '#36A2EB',
+      //                      '#FFCE56',
+						//	'#FF6384',
+      //                      '#36A2EB',
+      //                      '#FFCE56'
+      //                  ],
+						//backgroundColor: [gradientStroke_, gradientStroke_2],
+						//backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850","#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850","#8e5ea2"],
+						//borderWidth: 2,
+						//label: "Score"
+					}
+				]
+			},
+			options: {
+
+				responsive: true,
+				legend: {
+					display: false
+				},
+				title: {
+					display: false,
+					text: "Radial gauge chart"
+				},
+				centerPercentage: 60,
+				centerArea: {
+					displayText: true,
+					text: "100%"
+                },
+				plugins: {
+                    labels: {
+                        render: 'value'
+                    }
+                },
+
+				//animation: {
+				//		duration:5000
+				//},
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false,//this will remove only the label
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: true,
+
+                        }
+                    }],
+                    yAxes: [{
+                        display: false,
+
+                        ticks: {
+							beginAtZero: true,
+                            steps: 10,
+                            stepValue: 5,
+							//stepSize:.5,
+                            max: maxval +5
+                        }
+                    }]
+
+
+                }
+			}
+		};
+		window.myRadialGauge = new Chart(ctx, config);
+
+	}
+
+        function Ajax_Call(a) {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetSimplificationReport_Bar")',
+                data: '{LOB: ' + JSON.stringify(a) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (Data) {
+
+                    var Output = Data._List;
+
+                    var inpName = []; var inpVal = []; var backColor = [];
+                    for (var i = 0; i < Output.length; i++) {
+                        inpName.push(Output[i].Name);
+                        inpVal.push(Output[i]._Value);
+                        backColor.push("#36A2EB");
+                    }
+                    //debugger;
+                    // data_ = [Data.R, Data.RC, Data.RC_NON, Data.R_NON];
+                    //labels = ["Relevant", "Relevance to be Checked", "Relevance to be Checked (Non-strategic)", "Relevant (Non-strategic)"];
+                    labels = inpName;
+                    data_ = inpVal;
+                    renderChart(data_, labels, backColor);
+
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            }).done(function (response) {
+                //chart.data = response;
+
+            });
+        }
+
+		$("#IDLob").change(function () {
+
+        var a = $('#IDLob option:selected').text();
+		var Ses_InstanceId = '@Session["InstanceId"]';
+        if (Ses_InstanceId!= "") {
+            Ajax_Call(a);
+            TableAjax(a);
+        }
+	   });
+
+    function TableAjax(a) {
+			$.ajax({
+                type: "POST",
+                url: '@Url.Action("SimplicationTable")',
+                data: '{LOB: ' + JSON.stringify(a) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (Data) {
+                     $("#Table_Body").empty();
+                    $(Data).each(function (index, value) {
+                        var Result = "";
+                        if (value.SAP_Notes != null) {
+                            var d = value.SAP_Notes
+                             Result = d.substr(d.length - 6);
+                            //Result = (d.Length > 6) ? d.Substring(d.Length - 6, 6) : d;
+                        }
+                       
+
+                        var table = '<tr><td>' + value.S_No +
+                            '</td><td>' + value.Title +
+                            '</td><td>' + value.Category +
+                            '</td><td>' + value.Relevance +
+                            '</td><td>' + value.LoB_Technology +
+                            '</td><td>' + value.Business_Area +
+                            //'</td><td>' + value.Consistency_Status +
+                            '</td><td>' + value.Manual_Status +
+                            '</td><td><a href="'+value.SAP_Notes+'">'+Result+'</a>' +
+                            '</td><td>' + value.Relevance_Summary
+                            + '</td></tr>';
+                        $('#Table_Body').append( table );
+                        });
+                },
+				 error: function () {
+                    alert("Error while inserting data");
+                }
+            }).done(function (response) {
+                //chart.data = response;
+
+            });
+        }
+
+
+
+	jQuery(document).ready(function ($) {
+
+        var a = $('#IDLob option:selected').text();
+		var Ses_InstanceId = '@Session["InstanceId"]';
+       if (Ses_InstanceId != "") {
+           Ajax_Call(a);
+           TableAjax(a);
+        }
+
+
+
+
+
+
+
+
+	});
+
+</script>

@@ -1,0 +1,75 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model List<ProACC_DB.CustomerProjectConfig>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+
+<a class="card-title">CUSTOMER PROJECT LIST</a>
+<hr />
+<table id="Index" style="font-size:12px;" class="table-hover table-bordered">
+    <thead>
+        <tr>
+            <th cope="col" style="width:3%;text-align:center;">
+                #
+            </th>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Project Name
+            </th>
+            <th>
+                SAP Consultant Name
+            </th>
+            <th class="nosort">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    @{int j = 1;}
+    @foreach (var item in Model.Select((x, i) => new { Data = x, Index = i }))
+    {
+        <tr>
+            <td>
+                @j
+            </td>
+            @{j++;}
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.Customer.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.ProjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.Consultant.Name)
+            </td>
+            <td>
+                <div class="row">
+                    &nbsp;&nbsp;<a class="fa fa-pencil-alt" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("Edit", "CustomerProjectConfigs", new { id = item.Data.Id })"></a> &nbsp;&nbsp;
+                    <a class="fa fa-info" data-toggle="tooltip" data-placement="top" title="Details!" href="@Url.Action("Details", "CustomerProjectConfigs", new { id = item.Data.Id })"></a> &nbsp;&nbsp;
+                    <a class="fa fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Delete!" href="@Url.Action("Delete", "CustomerProjectConfigs", new { id = item.Data.Id })"></a>
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+
+<script>
+    $(document).ready(function () {
+
+        $('#Index').DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': ['nosort']
+            }]
+        });
+    });
+</script>
+

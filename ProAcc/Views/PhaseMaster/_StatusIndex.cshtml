@@ -1,0 +1,89 @@
+﻿
+
+
+@{
+    var statusdetails = ViewBag.Statusdetails;
+}
+
+
+<table class="table" id="tblQ">
+    <thead>
+        <tr>
+            <th>
+                Status Name
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in statusdetails)
+        {
+            <tr>
+
+                <td>
+                    <a class="txtG" value="@item.StatusName">@item.StatusName</a>
+                </td>
+
+                <td>
+                    <a href="#" id="btnEdit" class="editStatus fa fa-edit"></a><input type="hidden" value="@item.Id" /> |
+                    <a href="#" class="btnStatusDelete fa fa-trash"></a><input type="hidden" value="@item.Id" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(".btnStatusDelete").on("click", function () {
+        var id = $(this).next().val();
+       var staVal = confirm("Do you want to delete ?");
+               if( staVal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","Status")',
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Status name deleted successfully!");
+                        //window.location="/PhaseMaster/Index"
+                        location.reload();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
+    });
+
+    $(".editStatus").on("click", function () {
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetStatusById","Status")', //"/ActivityMaster/GetActivityById",
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+
+                $("#StatusId").val(result.Id);
+                $("#txtStatusName").val(result.StatusName);
+                $("#stacre_on").val(result.Cre_on);
+                $("#stacre_By").val(result.Cre_By);
+                $("#btnStatusUpdate").show();
+                $("#btnStatusCreate").hide();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    });
+</script>

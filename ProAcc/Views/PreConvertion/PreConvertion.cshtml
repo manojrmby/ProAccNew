@@ -1,0 +1,274 @@
+﻿
+@{
+    ViewBag.Title = "PreConvertion";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+@*<script src="~/Asset/Scripts/Prograssbarjs.js"></script>*@
+<style>
+    .prograss_Bar{
+        height:15px;
+    }
+</style>
+<div style="padding:1em;">
+    <div class="row">
+
+        <div class="col-lg-8">
+            <div class="main-card mb-6 card">
+                <div class="card-body">
+                    <h5 class="card-title">Pre Convertation updates</h5>
+                    <table class="mb-0 table table-hover">
+                        <thead>
+                            <tr>
+
+                                <th>Tasks</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                                <td>Activate Material ledger</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                </td>
+                                <td class="cs_Status">Started</td>
+                            </tr>
+                            <tr>
+
+                                <td>Material Field length Extenction</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Started</td>
+                            </tr>
+                            <tr>
+                                <td>Price data model changes</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Started</td>
+                            </tr>
+                            <tr>
+                                <td>Run consisten Report code</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Started</td>
+                            </tr>
+                            <tr>
+                                <td>Activate Material ledger</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="100" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Completed</td>
+                            </tr>
+                            <tr>
+                                <td>Inventory Management Data Model</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Started</td>
+                            </tr>
+                            <tr>
+                                <td>Activate Material ledger</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="0" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Not Started</td>
+                            </tr>
+                            <tr>
+                                <td>Inventory Management Data Model</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Started</td>
+                            </tr>
+                            <tr>
+                                <td>Activate Material ledger</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Started</td>
+                            </tr>
+                            <tr>
+                                <td>Activate Material ledger</td>
+                                <td>
+                                    <monkey-bar min="0"
+                                                max="100"
+                                                now="80" class="prograss_Bar"></monkey-bar>@*labeled striped*@
+                                            </td>
+                                <td class="cs_Status">Started</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 ">
+            <div class="col card text-center">
+                <label>Started</label>
+                <canvas id="chart-area"></canvas>
+                <label>Total:238</label>
+            </div>
+            <div class="col card text-center">
+                <label>Yet to Start</label>
+                <canvas id="chart-area1"></canvas>
+                <label>Total:138</label>
+            </div>
+            <div class="col card text-center">
+                <label>Completed</label>
+                <canvas id="chart-area2"></canvas>
+                <label>Total:50</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //var randomScalingFactor = function () {
+    //    return Math.round(Math.random() * 100);
+    //};
+
+    Chart.defaults.global.defaultFontFamily = "Verdana";
+
+    var ctx = document.getElementById("chart-area").getContext("2d");
+    var ctx1 = document.getElementById("chart-area1").getContext("2d");
+    var ctx2 = document.getElementById("chart-area2").getContext("2d");
+
+    window.onload = function () {
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        window.myRadialGauge = new Chart(ctx, config);
+
+        var ctx1 = document.getElementById("chart-area1").getContext("2d");
+        window.myRadialGauge = new Chart(ctx1, config1);
+
+        var ctx2 = document.getElementById("chart-area2").getContext("2d");
+        window.myRadialGauge = new Chart(ctx2, config2);
+    };
+
+
+
+
+
+    var gradientStroke_Started = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientStroke_Started.addColorStop(0, "#FDB777");
+    gradientStroke_Started.addColorStop(1, "#FD9346");
+
+    var gradientStroke_Yet = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientStroke_Yet.addColorStop(0, "#FB291B");
+    gradientStroke_Yet.addColorStop(1, "#CD1B2D");
+
+
+    var gradientStroke_Completed = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientStroke_Completed.addColorStop(0, "#1392D3");
+    gradientStroke_Completed.addColorStop(1, "#027DFF");
+
+    var config = {
+        type: "radialGauge",
+        data: {
+            labels: ["Started"],
+            datasets: [
+                {
+                    data: [60],
+                    backgroundColor: [gradientStroke_Started],
+                    borderWidth: 0,
+                    label: "Score"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {},
+            title: {
+                display: false,
+                text: "Radial gauge chart"
+            },
+            centerPercentage: 60,
+            centerArea: {
+                displayText: true,
+                text: "60%"
+            }
+        }
+    };
+
+    var config1 = {
+        type: "radialGauge",
+        data: {
+            labels: ["Yet to Start"],
+            datasets: [
+                {
+                    data: [30],
+                    backgroundColor: [gradientStroke_Yet],
+                    borderWidth: 0,
+                    label: "Score"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {},
+            title: {
+                display: false,
+                text: "Radial gauge chart"
+            },
+            centerPercentage: 60,
+            centerArea: {
+                displayText: true,
+                text: "30%"
+            }
+        }
+    };
+
+
+    var config2 = {
+        type: "radialGauge",
+        data: {
+            labels: ["Completed"],
+            datasets: [
+                {
+                    data: [10],
+                    backgroundColor: [gradientStroke_Completed],
+                    borderWidth: 0,
+                    label: "Score"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {},
+            title: {
+                display: false,
+                text: "Radial gauge chart"
+            },
+            centerPercentage: 60,
+            centerArea: {
+                displayText: true,
+                text: "10%"
+            }
+
+        }
+    };
+
+</script>
+

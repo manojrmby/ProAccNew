@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProAcc", "ProAcc\ProAcc.csproj", "{14D6A123-84A7-4927-8C60-ADC360CE053E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProACC_DB", "ProACC_DB\ProACC_DB.csproj", "{DA326360-8D56-40A1-88D0-39A8F26AC707}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalProAccDB", "LocalProAccDB\LocalProAccDB.csproj", "{26BAD0F0-7946-4C79-973B-0928AFC92EF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14D6A123-84A7-4927-8C60-ADC360CE053E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14D6A123-84A7-4927-8C60-ADC360CE053E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14D6A123-84A7-4927-8C60-ADC360CE053E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14D6A123-84A7-4927-8C60-ADC360CE053E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA326360-8D56-40A1-88D0-39A8F26AC707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA326360-8D56-40A1-88D0-39A8F26AC707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA326360-8D56-40A1-88D0-39A8F26AC707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA326360-8D56-40A1-88D0-39A8F26AC707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26BAD0F0-7946-4C79-973B-0928AFC92EF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26BAD0F0-7946-4C79-973B-0928AFC92EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26BAD0F0-7946-4C79-973B-0928AFC92EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26BAD0F0-7946-4C79-973B-0928AFC92EF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4322CE0-D1DD-427C-839D-E28009A295D7}
+	EndGlobalSection
+EndGlobal

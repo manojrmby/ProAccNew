@@ -1,0 +1,86 @@
+﻿
+
+@{
+    var teamdetails = ViewBag.Teamdetails;
+}
+
+
+<table class="table" id="tblQ">
+    <thead>
+        <tr>
+            <th>
+                TeamName
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in teamdetails)
+        {
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.TeamName">@item.TeamName</a>
+                </td>
+
+                <td>
+                    <a href="#" id="btnEdit" class="editTeam fa fa-edit"></a><input type="hidden" value="@item.Id" /> |
+                    <a href="#" class="btnTeamDelete fa fa-trash"></a><input type="hidden" value="@item.Id" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(".btnTeamDelete").on("click", function () {
+        var id = $(this).next().val();
+       var retVal = confirm("Do you want to delete ?");
+               if( retVal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","TeamMaster")',
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Team name deleted successfully!");
+                        window.location="/PhaseMaster/Index"
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
+    });
+
+    $(".editTeam").on("click", function () {
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetTeamById","TeamMaster")', //"/ActivityMaster/GetActivityById",
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+                
+                $("#TeamId").val(result.Id);
+                $("#txtTeamName").val(result.TeamName);
+                $("#tcre_on").val(result.Cre_on);
+                $("#tcre_By").val(result.Cre_By);
+                $("#btnTeamUpdate").show();
+                $("#btnTeamCreate").hide();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    });
+</script>

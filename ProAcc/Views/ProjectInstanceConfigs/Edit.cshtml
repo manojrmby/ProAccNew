@@ -1,0 +1,132 @@
+﻿@model ProACC_DB.ProjectInstanceConfig
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@*<h2>Edit</h2>*@
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Update ProjectInstanceConfig</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.InstaceName, "Instace Name", htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.InstaceName, new { htmlAttributes = new { @id = "txtInstName", @class = "form-control", @onchange = "ValidateInstName()" } })
+                @Html.ValidationMessageFor(model => model.InstaceName, "", new { @class = "text-danger" })
+                <span id="lblInstName" style="color:red"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustProjconfigID, "Customer Project config", htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                @Html.DropDownList("CustProjconfigID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CustProjconfigID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.LastUpdated_Dt, "Last Updated Date", htmlAttributes: new { @class = "control-label col-md-5" })*@
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastUpdated_Dt, new { htmlAttributes = new { @id = "ProjInstLast_Dt", @class = "form-control" } })
+            </div>
+        </div>
+
+        @Html.EditorFor(model => model.Cre_on, new { htmlAttributes = new { @id="ProjInstcre_on",@class = "form-control" } })
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.isActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.isActive)
+                    @Html.ValidationMessageFor(model => model.isActive, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cre_on, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Cre_on, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Cre_on, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cre_By, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Cre_By, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Cre_By, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Modified_On, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Modified_On, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Modified_On, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Modified_by, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Modified_by, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Modified_by, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsDeleted)
+                    @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="saveProjInst" value="Save" class="btn btn-secondary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    $('#ProjInstLast_Dt').hide();
+    $('#ProjInstcre_on').hide();
+
+    function ValidateInstName() {
+        debugger;
+        var Instname = document.getElementById("txtInstName").value;
+        var lblInstName = document.getElementById("lblInstName");
+        lblInstName.innerHTML = "";
+        var letters = /^[A-Za-z0-9, ,-]+$/;
+        if (!letters.test(Instname)) {
+            lblInstName.innerHTML = "Please enter valid Instance Name";
+            $("#saveProjInst").prop("disabled", true);
+        }
+        else {
+            $("#saveProjInst").prop("disabled", false);
+        }
+    }
+</script>

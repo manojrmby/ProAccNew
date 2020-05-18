@@ -1,0 +1,101 @@
+﻿
+
+@{
+    var activitydetails = ViewBag.Activitydetails;
+}
+
+
+<table class="table" id="tblQ">
+    <thead>
+        <tr>
+            <th>
+                Activity Name
+            </th>
+            <th>
+                Phase Name
+            </th>
+            <th>
+                Application Area
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in activitydetails)
+        {
+        <tr>
+            <td>
+                <a class="txtG" value="@item.Activity">@item.Activity</a>
+            </td>
+
+            <td>
+                <a class="txtG" value="@item.PhaseMaster.PhaseName">@item.PhaseMaster.PhaseName</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.ApplicationAreaMaster.ApplicationArea">@item.ApplicationAreaMaster.ApplicationArea</a>
+            </td>
+
+            <td>
+                <a href="#" id="btnEdit" class="editActivity fa fa-edit"></a><input type="hidden" value="@item.Id" /> |
+                <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Id" />
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(".btnActivityDelete").on("click", function () {
+        debugger;
+        var id = $(this).next().val();
+       var retal = confirm("Do you want to delete ?");
+               if( retal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","ActivityMaster")',//"/PhaseMaster/Delete",
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Activity deleted successfully!");
+                        //window.location="/PhaseMaster/Index"
+                        location.reload();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
+    });
+
+    $(".editActivity").on("click", function () {
+        var id = $(this).next().val();
+        $.ajax({
+            url:  '@Url.Action("GetActivityById","ActivityMaster")', //"/ActivityMaster/GetActivityById",
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+                
+                $("#ActivityId").val(result.Id);
+                $("#txtActivityName").val(result.Activity);
+                $("#drpPhase").val(result.PhaseID);
+                $("#drpArea").val(result.ApplicationAreaID);
+                $("#btnActivityUpdate").show();
+                $("#btnActivityCreate").hide();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    });
+</script>

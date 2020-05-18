@@ -1,0 +1,738 @@
+﻿
+@{
+    ViewBag.Title = "PreConvertion_Upload";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .cs_Closed {
+        color: lightgreen;
+    }
+
+    .cs_Inprogress {
+        color: cornflowerblue;
+    }
+
+    .file {
+        visibility: hidden;
+        position: absolute;
+    }
+
+    .file {
+        visibility: hidden;
+        position: absolute;
+    }
+</style>
+@*<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+<link href="~/Asset/css/jBox.all.css" rel="stylesheet" />*@
+
+<a class="card-title">PreConvertion Upload</a>
+<div style="padding: 1em;">
+    <div class="row">
+        <div class="card-body col-lg-12 card">
+
+            <hr />
+            <div class="form-row">
+                
+                @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                {
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <label for="exampleEmail" class="">Customer Name <strong style="color:red">*</strong></label>
+                            @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "- SELECT-", new { id = "IDCustomer", @class = "form-control" })
+                        </div>
+                    </div>
+                }
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail" class="">Project Name <strong style="color:red">*</strong></label>
+                        @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "- SELECT-", new { id = "IDProject", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail" class="">Instance Name <strong style="color:red">*</strong></label>
+                        @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
+                  "Select a Project", new { id = "IDInstance", @class = "form-control" })
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="row" style="text-align:left !important;margin:auto !important;">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="mb-0 table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th> SAP PRECONVERTION CHECK FILES</th>
+                                            <th>UPLOAD</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>
+                                            1.
+                                        </td>
+                                        <td>
+                                            PRECONVERTION
+                                        </td>
+                                        <td>
+                                            <input class="mb-2 mr-2 btn btn-info" type="file" name="files" id="FileUpload1" />
+                                        </td>
+                                    </tr>
+                                    @*<tr>
+                                        <td>
+                                            2.
+                                        </td>
+                                        <td>
+                                            BW Extractors
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload2" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            3.
+                                        </td>
+                                        <td>
+                                            Custom Code Analysis
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload3" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            4.
+                                        </td>
+                                        <td>
+                                            HANA Database Tables
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload4" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            5.
+                                        </td>
+                                        <td>
+                                            Recommended Fiori Apps
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload5" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            6.
+                                        </td>
+                                        <td>
+                                            Relevant Simplification Items
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload6" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            7.
+                                        </td>
+                                        <td>
+                                            SAP Readiness Check
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload7" />
+                                        </td>
+                                    </tr>*@
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-12">
+                        <div class="position-relative form-group">
+
+                            <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;padding-left:81px;">
+                                <input type="checkbox" id="chkReadiness" class="custom-control-input">
+                                <label class="custom-control-label " for="chkReadiness">
+                                    I have read the SAP Readiness check Disclaimer and SAP readiness check term of use
+                                </label>
+                            </div>
+                            <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;max-width:930px;padding-left:81px;">
+                                <input type="checkbox" id="chkAcknowldge" class="custom-control-input">
+                                <label class="custom-control-label" for="chkAcknowldge">
+                                    I acknowldge all SAP employees may access and use the SAP Readiness check results for SAP business purposes like support services and marketing
+                                </label>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div id="progressbar-5">
+                                        <div class="progress-label">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button class="btn-wide mb-2 mr-2 btn btn-primary" id="btnUpload">
+                                    Upload PreConvertion
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#btnUpload').click(function () {
+
+            var ProjectID = $("#IDProject").val();
+            var InstanceId = $("#IDInstance").val();
+            var n = $( "input:checked" ).length;
+            //var chkReadiness =$("#chkReadiness").val();
+            //var chkAcknowldge=$("#chkAcknowldge").val();
+            //debugger;
+            if (ProjectID != "" && InstanceId != "" && InstanceId != 0 && n==2) {
+
+                var fileUpload1 = $("#FileUpload1").get(0);
+                //var fileUpload2 = $("#FileUpload2").get(0);
+
+                //var fileUpload3 = $("#FileUpload3").get(0);
+                //var fileUpload4 = $("#FileUpload4").get(0);
+
+                //var fileUpload5 = $("#FileUpload5").get(0);
+                //var fileUpload6 = $("#FileUpload6").get(0);
+
+                //var fileUpload7 = $("#FileUpload7").get(0);
+
+                //var Cust_ID = $("select#IDCustomer").val();
+                var IDProject = $("select#IDProject").val();
+                var InstanceID = $("select#IDInstance").val();
+               // debugger;
+                var files = [
+                    fileUpload1.files
+                ];
+
+                var fileData = new FormData();
+                //fileData.append("Cust_ID", Cust_ID);
+                fileData.append("IDProject", IDProject);
+                fileData.append("InstanceID", InstanceID);
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i][0] != null)
+                        fileData.append(i, files[i][0]);
+                }
+                $.ajax({
+                    //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+                    url: '@Url.Action("Upload", "PreConvertion")',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    //async: false,
+                    success: function (result) {
+                        alert(result);
+                        //location.reload();
+                        //debugger;
+                        //if (result != "") {
+                        //    //$('#FileBrowse').find("*").prop("disabled", true);
+                        //    LoadProgressBar(result); //calling LoadProgressBar function to load the progress bar.
+                        //}
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+
+            }
+            else {
+                alert("Kindly check input values");
+            }
+
+
+        });
+    });
+    jQuery(document).ready(function ($) {
+        var ProjectID = $("#IDProject").val();
+        var IDInstance = $("#IDInstance").val();
+
+        if (ProjectID != "" && IDInstance != "") {
+            $("#btnUpload").prop("disabled", false);
+        } else {
+            $("#btnUpload").prop("disabled", true);
+        }
+        $('#IDInstance').change(function () {
+
+            ProjectID = $("#IDProject").val();
+            IDInstance = $("#IDInstance").val();
+            if (ProjectID != "" && IDInstance != "") {
+                $("#btnUpload").prop("disabled", false);
+            }
+        });
+    });
+</script>
+@*<script type="text/javascript">
+        function LoadProgressBar(result) {
+            debugger;
+            var progressbar = $("#progressbar-5");
+            var progressLabel = $(".progress-label");
+            progressbar.show();
+            $("#progressbar-5").progressbar({
+                //value: false,
+
+                change: function () {
+                    debugger;
+                    progressLabel.text(
+                        progressbar.progressbar("value") + "%");  // Showing the progress increment value in progress bar
+                },
+                complete: function () {
+                    debugger;
+                    progressLabel.text("Loading Completed!");
+                    progressbar.progressbar("value", 0);  //Reinitialize the progress bar value 0
+                    progressLabel.text("");
+                    progressbar.hide(); //Hiding the progress bar
+                    var markup = "<tr><td>" + result + "</td><td><a href='#' onclick='DeleteFile(\"" + result + "\")'><span class='glyphicon glyphicon-remove red'></span></a></td></tr>"; // Binding the file name
+                    $("#ListofFiles tbody").append(markup);
+                    $('#Files').val('');
+                    $('#FileBrowse').find("*").prop("disabled", false);
+                }
+            });
+            function progress() {
+                debugger;
+                var val = progressbar.progressbar("value") || 0;
+                progressbar.progressbar("value", val + 1);
+                if (val < 99) {
+                    setTimeout(progress, 25);
+                }
+            }
+            setTimeout(progress, 100);
+        }
+    </script>*@
+<script>
+    jQuery(document).ready(function ($) {
+        //$("#IDProject").prop("disabled", true);
+        $("#IDInstance").prop("disabled", true);
+        $('#IDProject').change(function () {
+
+            var id = $(this).val();
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "Select a Instance"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstance","PreConvertion")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "Select a Instance"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDInstance").prop("disabled", false);
+                },
+                error: function (a) {
+                    debugger;
+                    alert(a);
+                }
+
+
+            });
+        });
+        $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "Select a Project"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Assessment")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "Select a Project"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#btnUpload').prop("disabled", true);
+                },
+                error: function (a) {
+                    debugger;
+                    alert(a);
+                }
+
+
+            });
+        });
+    });
+</script>
+
+@*<div class="col-lg-6">
+        <div class="row" style="padding:0em 1em 1em 1em;">
+            <div class="col-lg-6 card text-center">
+                <label>In Progress</label>
+                <canvas id="chart-area"></canvas>
+                <label>Total: 238</label>
+            </div>
+            <div class="col-lg-6 card text-center">
+                <label>Closed</label>
+                <canvas id="chart-area1"></canvas>
+                <label>Total: 80</label>
+            </div>
+        </div>
+        <div class="main-card mb-6 card">
+            <div class="card-body">
+                <h5 class="card-title">Recent Updates</h5>
+                <table class="mb-0 table table-hover">
+                    <thead>
+                        <tr>
+
+                            <th>Analysis Name</th>
+                            <th>Customer Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+
+                            <td>Custom Code Analysis</td>
+                            <td>Mathew Anderson</td>
+                            <td class="cs_Inprogress">Inprogress</td>
+                        </tr>
+                        <tr>
+
+                            <td>Pre Check report</td>
+                            <td>Latin Mike</td>
+                            <td class="cs_Inprogress">Inprogress</td>
+                        </tr>
+                        <tr>
+                            <td>Making DB to code</td>
+                            <td>Mathew anderson</td>
+                            <td class="cs_Closed">Closed</td>
+                        </tr>
+                        <tr>
+                            <td>Check server role</td>
+                            <td>Anamika M </td>
+                            <td class="cs_Inprogress">Inprogress</td>
+                        </tr>
+                        <tr>
+                            <td>Auto Start SAP Services</td>
+                            <td>Hayden Leu </td>
+                            <td class="cs_Closed">Closed</td>
+                        </tr>
+                        <tr>
+                            <td>AutoUnlock DDIC</td>
+                            <td>Steve Michael</td>
+                            <td class="cs_Inprogress">Inprogress</td>
+                        </tr>
+                        <tr>
+                            <td>AutoUnlock DDIC</td>
+                            <td>Steve Michael</td>
+                            <td class="cs_Inprogress">Inprogress</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>*@
+
+@*<div style="display: none" id="grabMe">
+
+
+        <div class="col-12">
+            <div class="row">
+                <div class="form-group">
+                    <input type="file" class="file" id="myFile" multiple size="50" onchange="myFunction()">
+
+
+                    <div class="input-group col-xs-12" id="Brow">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                        <input type="text" class="form-control input-lg" disabled placeholder="Upload Image">
+                        <span class="input-group-btn">
+                            <button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
+                            <button class="btn-icon btn-icon-only btn btn-outline-danger"><i class="fa fa-trash btn-icon-wrapper"> </i></button>
+                        </span>
+
+                    </div>
+                    <p id="demo"></p>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <button class="btn-wide mb-2 mr-2 btn btn-primary" id="fi_upload">
+                    Submit
+                </button>
+                <button class="btn btn-outline-danger" id="ClaerFileUpload"><i class="fa fa-trash btn-icon-wrapper"></i></button>
+            </div>
+        </div>
+
+    </div>*@
+
+@*<script src="~/Asset/Scripts/jBox.all.js"></script>*@
+@*<script type="text/javascript">
+
+        //var randomScalingFactor = function () {
+        //    return Math.round(Math.random() * 100);
+        //};
+        //new jBox('Modal', {
+        //    attach: '#Modal-1',
+        //    height: 350,
+        //    width: 600,
+        //    title: 'File\'s Upload',
+        //    content: $('#grabMe')
+        //});
+
+        Chart.defaults.global.defaultFontFamily = "Verdana";
+
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        var ctx1 = document.getElementById("chart-area1").getContext("2d");
+        window.onload = function () {
+            var ctx = document.getElementById("chart-area").getContext("2d");
+            window.myRadialGauge = new Chart(ctx, config);
+
+            var ctx1 = document.getElementById("chart-area1").getContext("2d");
+            window.myRadialGauge = new Chart(ctx1, config1);
+        };
+
+
+
+
+
+        var gradientStroke_Progress = ctx.createLinearGradient(500, 0, 100, 0);
+        gradientStroke_Progress.addColorStop(0, "#FDB777");
+        gradientStroke_Progress.addColorStop(1, "#FD9346");
+
+        var gradientStroke_Closed = ctx.createLinearGradient(500, 0, 100, 0);
+        gradientStroke_Closed.addColorStop(0, "#FB291B");
+        gradientStroke_Closed.addColorStop(1, "#CD1B2D");
+
+        var config = {
+            type: "radialGauge",
+            data: {
+                labels: ["In Progress"],
+                datasets: [
+                    {
+                        data: [60],
+                        backgroundColor: [gradientStroke_Progress],
+                        borderWidth: 0,
+                        label: "Score"
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {},
+                title: {
+                    display: false,
+                    text: "Radial gauge chart"
+                },
+                centerPercentage: 60,
+                centerArea: {
+                    displayText: true,
+                    text: "60%"
+                }
+            }
+        };
+
+        var config1 = {
+            type: "radialGauge",
+            data: {
+                labels: ["Closed"],
+                datasets: [
+                    {
+                        data: [40],
+                        backgroundColor: [gradientStroke_Closed],
+                        borderWidth: 0,
+                        label: "Score"
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {},
+                title: {
+                    display: false,
+                    text: "Radial gauge chart"
+                },
+                centerPercentage: 60,
+                centerArea: {
+                    displayText: true,
+                    text: "40%"
+                }
+            }
+        };
+
+
+        //'<div style="line-height: 30px;">Try to scroll ...it\'s blocked.<br>Press [ESC] or click anywhere to close.</div>'
+
+
+
+    </script>*@
+<script>
+
+
+    //function LoadProgressBar(result) {
+    //    var progressbar = $("#progressbar-5");
+    //    var progressLabel = $(".progress-label");
+    //    progressbar.show();
+    //    $("#progressbar-5").progressbar({
+    //        //value: false,
+    //        change: function () {
+    //            progressLabel.text(
+    //                progressbar.progressbar("value") + "%");  // Showing the progress increment value in progress bar
+    //        },
+    //        complete: function () {
+    //            progressLabel.text("Loading Completed!");
+    //            progressbar.progressbar("value", 0);  //Reinitialize the progress bar value 0
+    //            progressLabel.text("");
+    //            progressbar.hide(); //Hiding the progress bar
+    //            var markup = "<tr><td>" + result + "</td><td><a href='#' onclick='DeleteFile(\"" + result + "\")'><span class='glyphicon glyphicon-remove red'></span></a></td></tr>"; // Binding the file name
+    //            $("#ListofFiles tbody").append(markup);
+    //            $('#Files').val('');
+    //            $('#FileBrowse').find("*").prop("disabled", false);
+    //        }
+    //    });
+    //    function progress() {
+    //        var val = progressbar.progressbar("value") || 0;
+    //        progressbar.progressbar("value", val + 1);
+    //        if (val < 99) {
+    //            setTimeout(progress, 25);
+    //        }
+    //    }
+    //    setTimeout(progress, 100);
+    //}
+</script>
+<script>
+
+
+    $(document).ready(function () {
+        $("#FileUpload1").on('blur', function () {
+
+            if (this.files.length > 0) {
+                $(this).css("background-color", "#3ac47d");
+                $(this).addClass('active')
+            }
+            else {
+                $(this).removeClass('active');
+                $(this).css("background-color", "#0090e2");
+            }
+        });
+        $("#FileUpload2").on('blur', function () {
+            if (this.files.length > 0) {
+                $(this).css("background-color", "#3ac47d");
+                $(this).addClass('active')
+            }
+            else {
+                $(this).removeClass('active');
+                $(this).css("background-color", "#0090e2");
+            }
+        });
+        $("#FileUpload3").on('blur', function () {
+            if (this.files.length > 0) {
+                $(this).css("background-color", "#3ac47d");
+                $(this).addClass('active')
+            }
+            else {
+                $(this).removeClass('active');
+                $(this).css("background-color", "#0090e2");
+            }
+        });
+        $("#FileUpload4").on('blur', function () {
+            if (this.files.length > 0) {
+                $(this).css("background-color", "#3ac47d");
+                $(this).addClass('active')
+            }
+            else {
+                $(this).removeClass('active');
+                $(this).css("background-color", "#0090e2");
+            }
+        });
+        $("#FileUpload5").on('blur', function () {
+            if (this.files.length > 0) {
+                $(this).css("background-color", "#3ac47d");
+                $(this).addClass('active')
+            }
+            else {
+                $(this).removeClass('active');
+                $(this).css("background-color", "#0090e2");
+            }
+        });
+        $("#FileUpload6").on('blur', function () {
+            if (this.files.length > 0) {
+                $(this).css("background-color", "#3ac47d");
+                $(this).addClass('active')
+            }
+            else {
+                $(this).removeClass('active');
+                $(this).css("background-color", "#0090e2");
+            }
+        });
+        $("#FileUpload6").on('blur', function () {
+            if (this.files.length > 0) {
+                $(this).css("background-color", "#3ac47d");
+                $(this).addClass('active')
+            }
+            else {
+                $(this).removeClass('active');
+                $(this).css("background-color", "#0090e2");
+            }
+        });
+        $("#FileUpload7").on('blur', function () {
+            if (this.files.length > 0) {
+                $(this).css("background-color", "#3ac47d");
+                $(this).addClass('active')
+            }
+            else {
+                $(this).removeClass('active');
+                $(this).css("background-color", "#0090e2");
+            }
+        });
+
+    });
+
+   
+</script>
+
+
+
+
+
+

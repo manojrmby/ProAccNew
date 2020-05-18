@@ -1,0 +1,1187 @@
+﻿﻿
+@{
+	ViewBag.Title = "ReadinessReport";
+	Layout = "~/Views/shared/_Layout.cshtml";
+}
+<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>*@
+<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>
+
+<a class="card-title">Readiness Report</a>
+@*<h5><b>Readiness Report</b> </h5>*@
+<div style="padding:1em;">
+
+	<div class="row">
+		<div class="col-12 card">
+			<div class="row">
+				@if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+				{
+					<div class="col-md-4">
+						<div class="position-relative form-group">
+							<label for="exampleEmail" class="">Customer Name</label>
+							@Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "- SELECT-", new { id = "IDCustomer", @class = "form-control" })
+							@*@Html.DropDownList("Project", (IEnumerable<SelectListItem>), "- SELECT-", new { id = "IDProject", @class = "form-control" })*@
+						</div>
+					</div>
+				}
+				<div class="col-md-4">
+					<label class="">Project Name</label>
+					@if (User.IsInRole("Customer"))
+					{
+						@Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
+					}
+					else
+					{
+						@Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
+							   "Select a Customer", new { id = "IDProject", @class = "form-control" })
+					}
+				</div>
+				<div class="col-md-2">
+					<label for="exampleEmail" class="">Instance Name</label>
+					@Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
+			  "-Select-", new { id = "IDInstance", @class = "form-control" })
+				</div>
+				<div class="col-md-2">
+					<label for="exampleEmail" class="">.</label>
+					<button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
+						Select Instance
+					</button>
+				</div>
+			</div>
+
+
+
+			@*<a>Project Name :<b> @ProAcc.BL.Model.Common.Project_Name</b></a>
+			<a class="float-lg-right">Instance Name :<b> @ProAcc.BL.Model.Common.Instance_Name</b></a>*@
+		</div>
+
+		<a class="toast-title">Readiness Report</a>
+		<hr />
+		<div class="col-lg-12 ">
+			<div class="row">
+				<div class="col-lg-6 text-center card ">
+					<canvas id="Chart_Relevant"></canvas>
+				</div>
+				<div class="col-lg-6 text-center card">
+
+					<canvas id="Chart_CustomCode"></canvas>
+				</div>
+
+			</div>
+		</div>
+
+		<a class="toast-title">Activities Related Simplification Items</a>
+		<hr />
+		<div class="col-lg-12 card ">
+
+			<div class="row ">
+
+				<div style="padding-left:175px;" class="col-md-8 ">
+					<canvas id="Chart_Activities_Donut"></canvas>
+				</div>
+				@*<div class="col-lg-4">
+					<label></label>
+
+					<canvas id="Chart_Activities_Bar2"></canvas>
+				</div>*@
+			</div>
+		</div>
+
+		<div class="col-lg-12">
+
+			<div class="row">
+				<div class="col-lg-6 card">
+					<canvas id="Chart_Activities_Bar1"></canvas>
+				</div>
+				<div class="col-lg-6 card">
+					<canvas id="Chart_Activities_Bar2"></canvas>
+				</div>
+			</div>
+		</div>
+
+		<a class="toast-title">Recommended SAP Fiori Apps</a>
+		<hr />
+		<div class="col-lg-12 card">
+			<div class="row">
+				<div style="padding-left:200px;" class="col-md-8 ">
+					<canvas id="Chart_Fiori_Bar1"></canvas>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<div style="visibility:hidden">
+		<div id="dialog-message" title="Info">
+			<p>
+				<span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 50px 0;"></span>
+				<h6>@ViewBag.Message</h6>
+			</p>
+		</div>
+		@if (ViewBag.Message != null)
+		{
+			<script type="text/javascript">
+				$(function () {
+
+					$("#dialog-message").dialog({
+						modal: true,
+						buttons: {
+							Ok: function () {
+								$(this).dialog("close");
+							}
+						}
+					});
+				});
+			</script>
+
+		}
+	</div>
+
+	
+</div>
+<script type="text/javascript">
+
+
+
+	jQuery(document).ready(function ($) {
+
+		Ajax_SimplificationDonut();
+
+		Ajax_Activities_Bar1();
+		Ajax_Activities_Bar2();
+		Ajax_Activities_Donut();
+		Ajax_Fiori_Bar();
+		Ajax_CustomCode_Bar();
+
+
+	});
+	function Ajax_SimplificationDonut() {
+		$.ajax({
+				type: "POST",
+				url: '@Url.Action("GetSimplificationReport")',
+				//data: '{std: ' + JSON.stringify(std) + '}',
+				dataType: "json",
+				contentType: "application/json; charset=utf-8",
+			 success: function (Data) {
+				 data_ = [Data.R, Data.RC, Data.RC_NON, Data.R_NON];
+				 labels = ["Relevant", "Relevance to be Checked", "Relevance to be Checked (Non-strategic)", "Relevant (Non-strategic)"];
+				 renderChart(data_, labels);
+
+				},
+				error: function () {
+					alert("Error while inserting data");
+				}
+			});
+	}
+	function renderChart(data, labels) {
+
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
+		var ctx = document.getElementById("Chart_Relevant").getContext("2d");
+
+
+
+		var config = {
+			type: "doughnut",
+			data: {
+				labels: labels,
+				datasets: [{
+
+					data: data,
+					//backgroundColor: [gradientStroke_, gradientStroke_2],
+					backgroundColor: [
+							'#71c989',//'#FF6384',
+							'#74abe2',
+							'#FFCE56',
+							'#f08956'
+						],
+					borderWidth: 2,
+					label: "Score"
+				}]
+			},
+			options: {
+
+				responsive: true,
+				legend: {
+					display: false
+					//position: 'bottom'
+				},
+				title: {
+					display: true,
+					text: "Simplification"
+				},
+				centerPercentage: 60,
+				centerArea: {
+					displayText: true,
+					text: "100%"
+				},
+				 plugins: {
+					labels: {
+						 render: 'value',
+						position: 'outside'
+					}
+				},
+				//scales: {
+				//	xAxes: [{
+				//		stacked: true
+				//	}],
+				//	yAxes: [{
+				//		stacked: true
+				//	}]
+				//}
+				animation: {
+					duration: 5000
+				}
+//                ,
+				//scales: {
+				//	xAxes: [{
+				//		ticks: {
+				//			display: false //this will remove only the label
+				//		}
+				//	}]
+				//}
+			}
+		};
+
+		window.myRadialGauge = new Chart(ctx, config);
+	}
+
+	function Ajax_Activities_Bar1() {
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetActivities_Bar1")',
+			//data: '{LOB: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			success: function (Data) {
+				var Output = Data._List;
+				var inpName = [];
+				var inpVal = [];
+				var C = 0;
+				for (var i = 0; i < Output.length; i++) {
+
+					var _Name = Output[i].Name;
+
+					if (_Name == 'Custom Code Adaption') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else if (_Name == 'Customizing / Configuration') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else if (_Name == 'User Training') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else {
+						C = C + Output[i]._Value;
+					}
+				}
+				inpName.push("Others");
+				inpVal.push(C);
+				labels = inpName;
+				data_ = inpVal;
+				renderBar1Chart(data_, labels);
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+	}
+	function renderBar1Chart(data, labels) {
+
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
+		var ctx = document.getElementById("Chart_Activities_Bar1").getContext("2d");
+
+
+
+		var config = {
+			//type: "horizontalBar",
+			type: "bar",
+
+			data: {
+				labels: labels,
+				datasets: [{
+
+					data: data,
+					label:"",
+
+					backgroundColor: [
+							'#71c989',
+							'#36A2EB',
+						'#FFCE56',
+							'#f08956'
+						],
+
+				}]
+			},
+
+
+			options: {
+
+				legend: {
+					display: false,
+					position: "bottom",
+					onclick: null
+				},
+				 //tooltips: {
+					//mode: 'label',
+	 //     callbacks: {
+	 //         label: function (tooltipItem, data) {
+
+	 //     	return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+	 //     }
+	 //     }
+	 //    },
+				 title: {
+					display: true,
+					text: "Activities (Move to HANA)"
+				},
+				//hover: {
+				//	animationDuration: 0
+	//            },
+				 plugins: {
+					labels: {
+						 render: 'value'
+
+					}
+				},
+				//animation: {
+				//	duration: 5000,
+				//	onComplete: function () {
+				//		var chartInstance = this.chart,
+				//		ctx = chartInstance.ctx;
+				//		ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+				//		ctx.textAlign = 'center';
+				//		ctx.textBaseline = 'bottom';
+				//		var height = chartInstance.controller.boxes[0].bottom;
+				//		this.data.datasets.forEach(function (dataset, i) {
+				//			var meta = chartInstance.controller.getDatasetMeta(i);
+				//			meta.data.forEach(function (bar, index) {
+				//				var data = dataset.data[index];
+				//				 ctx.fillStyle = '#333';
+				//				ctx.fillText(data, bar._model.x, height - ((height - bar._model.y) / 2) - 10);
+
+				//			});
+				//		}
+				//		);
+				//	}
+				//},
+				scales: {
+					xAxes: [{
+						ticks: {
+							display: false,//this will remove only the label
+							beginAtZero: true
+						},
+						gridLines: {
+							display: false,
+							drawBorder: true,
+
+						}
+					}],
+					yAxes: [{
+						ticks: {
+							display: false,//this will remove only the label
+							beginAtZero: true
+						},
+						gridLines: {
+							display: false,
+							drawBorder: false,
+						}
+					}]
+				}
+
+			}
+
+
+		};
+		window.myRadialGauge = new Chart(ctx, config);
+	}
+
+
+	function Ajax_Activities_Bar2() {
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetActivities_Bar2")',
+			//data: '{LOB: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			success: function (Data) {
+				var Output = Data._List;
+				var inpName = [];
+				var inpVal = [];
+				var C = 0;
+				for (var i = 0; i < Output.length; i++) {
+
+					var _Name = Output[i].Name;
+
+					if (_Name == 'During conversion project') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else if (_Name == 'Before conversion project') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else if (_Name == 'Before or during conversion project') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else {
+						C = C + Output[i]._Value;
+					}
+				}
+				inpName.push("Others");
+				inpVal.push(C);
+				labels = inpName;
+				data_ = inpVal;
+				renderBar2Chart(data_, labels);
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+	}
+	function renderBar2Chart(data, labels) {
+		var maxval = Math.max.apply(Math, data);
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
+		var ctx = document.getElementById("Chart_Activities_Bar2").getContext("2d");
+
+		//var gradientStroke_ = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_.addColorStop(0, "#FDB777");
+		//gradientStroke_.addColorStop(1, "#FD9346");
+
+		//var gradientStroke_2 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_2.addColorStop(0, "#FB291B");
+		//gradientStroke_2.addColorStop(1, "#CD1B2D");
+
+		//var gradientStroke_3 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_3.addColorStop(0, "#FDB777");
+		//gradientStroke_3.addColorStop(1, "#FD9346");
+
+		//var gradientStroke_4 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_4.addColorStop(0, "#FB291B");
+		//gradientStroke_4.addColorStop(1, "#CD1B2D");
+
+		var config = {
+			//type: "horizontalBar",
+			type: "bar",
+
+			data: {
+				labels: labels,
+				datasets: [{
+
+					data: data,
+					//backgroundColor: [gradientStroke_, gradientStroke_2],
+					backgroundColor: [
+							'#71c989',
+							'#36A2EB',
+						'#FFCE56',
+							'#f08956'
+						],
+					//borderWidth: 2,
+					//label: "Score"
+				}]
+			},
+			options: {
+
+				responsive: true,
+				legend: {
+					display: false
+				},
+				title: {
+					display: true,
+					text: "Conversion Phase"
+				},
+				centerPercentage: 60,
+				centerArea: {
+					displayText: true,
+					text: "100%"
+				},
+				 plugins: {
+					labels: {
+						render: 'value'
+					}
+				},
+				//scales: {
+				//	xAxes: [{
+				//		stacked: true
+				//	}],
+				//	yAxes: [{
+				//		stacked: true
+				//	}]
+				//}
+				//animation: {
+				//	duration: 1,
+				//	onComplete() {
+				//		const chartInstance = this.chart;
+				//		const ctx = chartInstance.ctx;
+				//		const dataset = this.data.datasets[0];
+				//		const meta = chartInstance.controller.getDatasetMeta(0);
+
+				//		Chart.helpers.each(meta.data.forEach((bar, index) => {
+
+				//		//    this.data.datasets.forEach(function (dataset, i) {
+				//		//    var meta = chartInstance.controller.getDatasetMeta(i);
+				//		//    meta.data.forEach(function (bar, index) {
+				//		//        var data = dataset.data[index];
+				//		//        ctx.fillText(data, bar._model.x,height - ((height - bar._model.y) / 2) - 10);
+				//		//    });
+				//		//}
+				//			var data = dataset.data[index];
+				//		   // const label = this.data.labels[index] + ":" + data;
+				//			const label = data;
+				//			const labelPositionX = 20;
+				//			const labelWidth = ctx.measureText(label).width + labelPositionX;
+
+				//			ctx.textBaseline = 'middle';
+				//			ctx.textAlign = 'left';
+				//			ctx.fillStyle = '#333';
+				//			ctx.fillText(label, labelPositionX, bar._model.y);
+				//		}));
+				//	}
+				//},
+				 scales: {
+					xAxes: [{
+						ticks: {
+							display: false,//this will remove only the label
+							beginAtZero: true
+						},
+						gridLines: {
+							display: false,
+							drawBorder: true,
+
+						}
+					}],
+					yAxes: [{
+						ticks: {
+							display: false,//this will remove only the label
+							beginAtZero: true
+						},
+						gridLines: {
+							display: false,
+							drawBorder: false,
+						}
+					}]
+				}
+
+				//scales: {
+	//                xAxes: [{
+	//                    display: false,
+				//		ticks: {
+				//			display: false //this will remove only the label
+				//		}
+				//	}],
+	//                yAxes: [{
+	//                    display: false,
+	//                    ticks: {
+	//                        beginAtZero: true,
+				//			steps: 10,
+				//			stepValue: 5,
+				//			max: maxval +5						}
+				//	}]
+				//}
+			}
+		};
+		window.myRadialGauge = new Chart(ctx, config);
+	}
+
+	function Ajax_Activities_Donut() {
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetActivities_Donut")',
+			//data: '{LOB: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			success: function (Data) {
+
+				var Output = Data._List;
+				var inpName = [];
+				var inpVal = [];
+				var C = 0;
+
+				for (var i = 0; i < Output.length; i++) {
+
+					inpName.push(Output[i].Name);
+					inpVal.push(Output[i]._Value);
+
+					//var _Name = Output[i].Name;
+
+					//if (_Name == 'Custom Code Adaption') {
+					//	inpName.push(Output[i].Name);
+					//	inpVal.push(Output[i]._Value);
+					//} else if (_Name == 'Customizing / Configuration') {
+					//	inpName.push(Output[i].Name);
+					//	inpVal.push(Output[i]._Value);
+					//} else if (_Name == 'User Training') {
+					//	inpName.push(Output[i].Name);
+					//	inpVal.push(Output[i]._Value);
+					//} else {
+					//	C = C + Output[i]._Value;
+					//}
+				}
+				//inpName.push("Others");
+				//inpVal.push(C);
+				labels = inpName;
+				data_ = inpVal;
+
+				renderDonutChart(data_, labels);
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+	}
+	function renderDonutChart(data, labels) {
+
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
+		var ctx = document.getElementById("Chart_Activities_Donut").getContext("2d");
+
+		//var gradientStroke_ = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_.addColorStop(0, "#FDB777");
+		//gradientStroke_.addColorStop(1, "#FD9346");
+
+		//var gradientStroke_2 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_2.addColorStop(0, "#FB291B");
+		//gradientStroke_2.addColorStop(1, "#CD1B2D");
+
+		//var gradientStroke_3 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_3.addColorStop(0, "#FDB777");
+		//gradientStroke_3.addColorStop(1, "#FD9346");
+
+		//var gradientStroke_4 = ctx.createLinearGradient(500, 0, 100, 0);
+		//gradientStroke_4.addColorStop(0, "#FB291B");
+		//gradientStroke_4.addColorStop(1, "#CD1B2D");
+
+		var config = {
+			//type: "horizontalBar",
+			type: "doughnut",
+
+			data: {
+				labels: labels,
+				datasets: [{
+
+					data: data,
+					backgroundColor: [
+							'#71c989',
+							'#36A2EB',
+							'#FFCE56'
+						],
+					//backgroundColor: [gradientStroke_, gradientStroke_2],
+					//backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+					//borderWidth: 2,
+					//label: "Score"
+				}]
+			},
+			options: {
+				layout: {
+				padding: {
+				  top: 5
+				}
+			},
+				responsive: true,
+				legend: {
+
+					display: false,
+					position: 'right',
+					maxWidth: 100,
+					onClick: null
+				},
+				title: {
+					display: true,
+					text: "Condition"
+				},
+				centerPercentage: 60,
+				centerArea: {
+					displayText: true,
+					text: "100%"
+				},
+				plugins: {
+					labels: {
+						render: 'value',
+						position: 'outside'
+					}
+				},
+				//title: {
+	//                display: true,
+				//	text: "Condition"
+				//},
+				//scales: {
+				//	xAxes: [{
+				//		stacked: true
+				//	}],
+				//	yAxes: [{
+				//		stacked: true
+				//	}]
+				//}
+				animation: {
+					duration: 5000
+				},
+
+
+			}
+		};
+		window.myRadialGauge = new Chart(ctx, config);
+	}
+
+
+	function Ajax_Fiori_Bar() {
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetFiori_Bar")',
+			//data: '{LOB: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			success: function (Data) {
+
+				var Output = Data._List;
+				var inpName = [];
+				var inpVal = [];
+				var C = 0;
+
+				for (var i = 0; i < Output.length; i++) {
+					//inpName.push(Output[i].Name);
+					//	inpVal.push(Output[i]._Value);
+
+					var _Name = Output[i].Name;
+
+					if (_Name == 'General Ledger Accountant') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else if (_Name == 'Purchaser') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else if (_Name == 'Cash Management Specialist') {
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+					} else {
+						C = C + Output[i]._Value;
+					}
+				}
+				inpName.push("Others");
+				inpVal.push(C);
+				labels = inpName;
+				data_ = inpVal;
+				renderFioriBar1Chart(data_, labels);
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+	}
+	function renderFioriBar1Chart(data, labels) {
+
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
+		var ctx = document.getElementById("Chart_Fiori_Bar1").getContext("2d");
+
+
+
+		var config = {
+			//type: "horizontalBar",
+			type: "bar",
+
+			data: {
+				labels: labels,
+				datasets: [{
+
+					data: data,
+					backgroundColor: [
+							'#71c989',
+							'#36A2EB',
+						'#FFCE56',
+						'#f08956'
+						],
+					////backgroundColor: [gradientStroke_, gradientStroke_2],
+					//backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+					//borderWidth: 2,
+					//label: "Score"
+				}]
+			},
+			options: {
+
+				responsive: true,
+				legend: {
+					display: false
+				},
+				title: {
+					display: true,
+					text: "Role / LOB"
+				},
+				centerPercentage: 60,
+				centerArea: {
+					displayText: true,
+					text: "100%"
+				},
+				 plugins: {
+					labels: {
+						 render: 'value'
+
+					}
+				},
+				//scales: {
+				//	xAxes: [{
+				//		stacked: true
+				//	}],
+				//	yAxes: [{
+				//		stacked: true
+				//	}]
+				//}
+				//animation: {
+				//	duration: 1,
+				//	onComplete() {
+				//		const chartInstance = this.chart;
+				//		const ctx = chartInstance.ctx;
+				//		const dataset = this.data.datasets[0];
+				//		const meta = chartInstance.controller.getDatasetMeta(0);
+
+				//		Chart.helpers.each(meta.data.forEach((bar, index) => {
+
+				//		//    this.data.datasets.forEach(function (dataset, i) {
+				//		//    var meta = chartInstance.controller.getDatasetMeta(i);
+				//		//    meta.data.forEach(function (bar, index) {
+				//		//        var data = dataset.data[index];
+				//		//        ctx.fillText(data, bar._model.x,height - ((height - bar._model.y) / 2) - 10);
+				//		//    });
+				//		//}
+				//			var data = dataset.data[index];
+				//		   // const label = this.data.labels[index] + ":" + data;
+				//			const label = data;
+				//			const labelPositionX = 20;
+				//			const labelWidth = ctx.measureText(label).width + labelPositionX;
+
+				//			ctx.textBaseline = 'middle';
+				//			ctx.textAlign = 'left';
+				//			ctx.fillStyle = '#333';
+				//			ctx.fillText(label, labelPositionX, bar._model.y);
+				//		}));
+				//	}
+				//},
+
+				scales: {
+					xAxes: [{
+						ticks: {
+							display: false,//this will remove only the label
+							beginAtZero: true
+						},
+						gridLines: {
+							display: false,
+							drawBorder: true,
+
+						}
+					}],
+					yAxes: [{
+						ticks: {
+							display: false,//this will remove only the label
+							beginAtZero: true
+						},
+						gridLines: {
+							display: false,
+							drawBorder: false,
+						}
+					}]
+				}
+			}
+		};
+		window.myRadialGauge = new Chart(ctx, config);
+		}
+
+	function Ajax_CustomCode_Bar() {
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetCustomCode_Bar")',
+			//data: '{LOB: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			success: function (Data) {
+				var Output = Data._List;
+				var inpName = [];
+				var inpVal = [];
+				var C = 0;
+				for (var i = 0; i < Output.length; i++) {
+
+						inpName.push(Output[i].Name);
+						inpVal.push(Output[i]._Value);
+
+
+				}
+
+				labels = inpName;
+				data_ = inpVal;
+				renderCustomBarChart(data_, labels);
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+	}
+	function renderCustomBarChart(data, labels) {
+
+		var maxval = Math.max.apply(Math, data);
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
+		var ctx = document.getElementById("Chart_CustomCode").getContext("2d");
+
+
+
+		var config = {
+			//type: "horizontalBar",
+			type: "bar",
+
+			data: {
+				labels: labels,
+				datasets: [{
+
+					data: data,
+					backgroundColor: [
+							'#f08956',
+							'#36A2EB',
+							'#FFCE56'
+						],
+
+				}]
+			},
+
+
+			options: {
+
+				legend: {
+					display: false,
+					position: "bottom"
+				},
+				plugins: {
+					labels: {
+						render: 'value'
+					}
+				},
+				 //tooltips: {
+					//mode: 'label',
+	 //     callbacks: {
+	 //         label: function (tooltipItem, data) {
+
+	 //     	return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+	 //     }
+	 //     }
+	 //    },
+				 title: {
+					display: true,
+					text: "Custom Code Analysis"
+				},
+				hover: {
+					animationDuration: 0
+				},
+				//animation: {
+				//	duration: 5000,
+				//	onComplete: function () {
+				//		var chartInstance = this.chart,
+				//		ctx = chartInstance.ctx;
+				//		ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+				//		ctx.textAlign = 'center';
+				//		ctx.textBaseline = 'bottom';
+				//		var height = chartInstance.controller.boxes[0].bottom;
+				//		this.data.datasets.forEach(function (dataset, i) {
+				//			var meta = chartInstance.controller.getDatasetMeta(i);
+				//			meta.data.forEach(function (bar, index) {
+				//				var data = dataset.data[index];
+				//				 ctx.fillStyle = '#333';
+				//				ctx.fillText(data, bar._model.x, height - ((height - bar._model.y) / 2) - 10);
+
+				//			});
+				//		}
+				//		);
+				//	}
+				//},
+				scales: {
+					xAxes: [{
+						ticks: {
+							display: false,//this will remove only the label
+							beginAtZero: true
+						},
+						gridLines: {
+							display: false,
+							drawBorder: true,
+
+						}
+					}],
+					yAxes: [{
+						ticks: {
+							display: false,//this will remove only the label
+                            beginAtZero: true,
+							max: maxval+2
+						},
+						gridLines: {
+							display: false,
+                            drawBorder: false,
+							
+						}
+					}]
+				}
+
+			}
+
+
+		};
+		window.myRadialGauge = new Chart(ctx, config);
+	}
+
+
+
+	$("#Chart_Activities_Donut").click(
+	function (evt) {
+		window.location.href = "@Url.Action("ActivitieReport","Assessment")";
+	}
+	);
+	$("#Chart_Activities_Bar1").click(
+	function (evt) {
+		window.location.href = "@Url.Action("ActivitieReport","Assessment")";
+	}
+	);
+	$("#Chart_Activities_Bar2").click(
+	function (evt) {
+		window.location.href = "@Url.Action("ActivitieReport","Assessment")";
+	}
+	);
+	$("#Chart_Relevant").click(
+	function (evt) {
+		window.location.href = "@Url.Action("SimplificationReport","Assessment")";
+	}
+	);
+	$("#Chart_Fiori_Bar1").click(
+	function (evt) {
+		window.location.href = "@Url.Action("FioriAppsReport","Assessment")";
+	}
+	);
+	$("#Chart_CustomCode").click(
+	function (evt) {
+		//alert(evt);
+		//debugger;
+		window.location.href = "@Url.Action("CustomReport","Assessment")";
+		//var activePoints = myNewChart.getSegmentsAtEvent(evt);
+		//var url = "http://example.com/?label=" + activePoints[0].label + "&value=" + activePoints[0].value;
+		//alert(url);
+	}
+	);
+
+
+	//$('.doghnut-meter-legend').on('click', 'li', function () {
+ //   myDoughnutChart.data.datasets[0].data[$(this).index()] = cloneData[$(this).index()] !== myDoughnutChart.data.datasets[0].data[$(this).index()] ? cloneData[$(this).index()] : 0;
+ //   myDoughnutChart.update();
+ //   $(this).toggleClass('striked');
+ // });
+</script>
+<script>
+	//This Project & Instance
+		jQuery(document).ready(function ($) {
+			$("#IDInstance").prop("disabled", true);
+            $('#SubmitInstance').prop("disabled", true);
+			 $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                    
+                },
+                error: function (a) {
+                    debugger;
+                    alert(a);
+                }
+
+
+            });
+        });
+			$('#IDProject').change(function () {
+
+			var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+			 var select = $("#IDInstance");
+					select.empty();
+					select.append($('<option/>', {
+						value: 0,
+						text: "-Select-"
+					}));
+			$.ajax({
+				type: "POST",
+				url: '@Url.Action("LoadInstance","Home")',
+				data: { 'ProjectId' : id},
+				success: function (data) {
+					var select = $("#IDInstance");
+					select.empty();
+					select.append($('<option/>', {
+						value: 0,
+						text: "-Select-"
+					}));
+					if (data.length > 0) {
+						$.each(data, function (index, itemData) {
+							select.append($('<option/>', {
+								value: itemData.Value,
+								text: itemData.Text
+							}));
+						});
+						$("#IDInstance").prop("disabled", false);
+					}
+					else {
+						$("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+					}
+				},
+				error: function (a) {
+					alert(a);
+				}
+			});
+			});
+			$('#IDInstance').change(function () {
+				var id = $(this).val();
+				if (id == ""||id =="0") {
+					 $('#SubmitInstance').prop("disabled", true);
+				} else {
+					$('#SubmitInstance').prop("disabled", false);
+				}
+			});
+	});
+	$('#SubmitInstance').click(function () {
+		var IDInstance = $("#IDInstance").val();
+		 $.ajax({
+					//url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+				 url: '@Url.Action("SubmitInstance", "Home")',
+				 type: "POST",
+				 data: { 'IDInstance': IDInstance },
+				 success: function (result) {
+					 alert("New Live Instance updated");
+					 location.reload();
+				 }
+				});
+	});
+
+</script>
