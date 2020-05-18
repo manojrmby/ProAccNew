@@ -24,12 +24,13 @@ namespace ProAcc.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-
-            var customers = db.Customers
-                .Where(a => a.isActive == true)
-                .OrderByDescending(x => x.Cre_on).ToList();
+            //var customers = db.Customers
+            //    .Where(a => a.isActive == true)
+            //    .OrderByDescending(x => x.Cre_on).ToList();
             //.Where(x => x.Name.StartsWith(search) || search == null).ToList(); //.ToPagedList(i ?? 1, 5);
-            return View(customers);
+            //return View(customers);
+            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).ToList();
+            return View();
         }
         // GET: Customers/Details/5
         public ActionResult Details(Guid? id)
@@ -46,72 +47,60 @@ namespace ProAcc.Controllers
             return View(customer);
         }
 
-        public JsonResult CheckCustomersNameAvailability(string namedata)
+        public JsonResult CheckCustomersNameAvailability(string namedata,Guid? id)
         {
-            var SearchDt = db.Customers.Where(x => x.Company_Name == namedata).Where(x => x.isActive == true).FirstOrDefault();
-            if (SearchDt != null)
+            if(id!=null)
             {
-                return Json("error", JsonRequestBehavior.AllowGet);
+                var SearchDt = db.Customers.Where(x => x.Company_Name == namedata).Where(x=>x.Customer_ID!=id).Where(x => x.isActive == true).FirstOrDefault();
+                if (SearchDt != null)
+                {
+                    return Json("error", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("success", JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
-                return Json("success", JsonRequestBehavior.AllowGet);
+                var SearchDt = db.Customers.Where(x => x.Company_Name == namedata).Where(x => x.isActive == true).FirstOrDefault();
+                if (SearchDt != null)
+                {
+                    return Json("error", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("success", JsonRequestBehavior.AllowGet);
+                }
             }
+            
         }
 
         // GET: Customers/Create
         public ActionResult Create()
         {
-            var val = db.User_Type.Where(a=>a.isActive).Where(a => a.UserTypeID ==1 || a.UserTypeID == 2);
-            ViewBag.UserType = new SelectList(val, "UserTypeID", "UserType");
-            var Team = db.RoleMasters.Where(x => x.isActive == true).Where(a => a.RoleId != 1).ToList();
-            ViewBag.Role = new SelectList(Team, "RoleId", "RoleName");
-            //var status = db.leadStatus_Master.Where(a => a.isActive == true);
-            //ViewBag.LeadStatus = new SelectList(status, "Id", "StatusName");
-            //ViewBag.Id = new SelectList(db.Projects, "Id", "Accuracy");
-            CreateViewModel model = new CreateViewModel();
-            model.Customer = new Customer();
-            model.User = new UserMaster();
-            return View(model);
+            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).ToList();
+            return View();
         }
 
         
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(Customer customer)
         {
             try
             {
-                //if (ModelState.IsValid)
-                //{
-                //    if (customer.UserName != null && customer.Password != null)
-                //    {
-                //        customer.Id = Guid.NewGuid();
-                //        customer.Cre_on = DateTime.Now;
-                //        customer.Cre_By = Guid.Parse(Session["loginid"].ToString());
-                //        customer.UserTypeID = 3;
-                //        customer.isActive = true;
-                //        db.Customers.Add(customer);
-                //        db.SaveChanges();
-                //        return RedirectToAction("Index", "Customers");
-                //    }
-                //    else
-                //    {
-                //        ViewBag.UserTypeID = new SelectList(db.User_Master, "Id", "UserType", customer.UserTypeID);
-                //        ViewBag.Id = new SelectList(db.Projects, "Id", "Accuracy", customer.Id);
-                //        ViewBag.LeadStatus = new SelectList(db.leadStatus_Master, "Id", "StatusName", customer.Id);
-                //        ViewBag.Message = true;
-                //        return View();
-                //    }
-                //}
-
-                //ViewBag.UserTypeID = new SelectList(db.User_Master.Where(a => a.isActive == true), "Id", "UserType", customer.UserTypeID);
-                //ViewBag.Id = new SelectList(db.Projects.Where(a => a.isActive == true), "Id", "Accuracy", customer.Id);
-                //ViewBag.LeadStatus = new SelectList(db.leadStatus_Master.Where(a => a.isActive == true), "Id", "StatusName", customer.Id);
-                CreateViewModel model = new CreateViewModel();
-                model.User = new UserMaster();
-                model.Customer = customer;
-                return View(model);
+                var name = db.Customers.Where(p => p.Company_Name == customer.Company_Name).Where(x => x.isActive == true).ToList();
+                if (name.Count==0)
+                {
+                    customer.Customer_ID = Guid.NewGuid();
+                    customer.isActive = true;
+                    customer.Cre_on = DateTime.Now.Date;
+                    customer.Cre_By = Guid.Parse(Session["loginid"].ToString());
+                    db.Customers.Add(customer);
+                    db.SaveChanges();
+                }
+                
+                return Json("success");
             }
             catch (Exception Ex)
             {
@@ -120,6 +109,22 @@ namespace ProAcc.Controllers
                 throw;
             }
             
+        }
+
+
+        public ActionResult GetCustomerById(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Customer customer = db.Customers.Find(id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            var Customer = db.Customers.Find(id);
+            return Json(Customer, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Customers/Edit/5
@@ -135,35 +140,21 @@ namespace ProAcc.Controllers
                 return HttpNotFound();
             }
             var val = db.User_Type.Where(a => a.isActive == true);
-           // ViewBag.UserTypeID = new SelectList(val, "Id", "UserType", customer.Use);
-            //ViewBag.Id = new SelectList(db.Projects, "Id", "Accuracy", customer.Id);
-            //var status = db.leadStatus_Master.Where(a => a.isActive == true);
-            //ViewBag.LeadStatus = new SelectList(status, "Id", "StatusName", customer.Id);
+           
             return View(customer);
         }
 
      
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit(Customer customer)
         {
-            if (ModelState.IsValid)
-            {
-                customer.Modified_On = DateTime.Now;
-                //customer.Cre_on = DateTime.Now;
-                //customer.UserTypeID = 3;
-                customer.Modified_by= Guid.Parse(Session["loginid"].ToString());
-                customer.isActive = true;
-                db.Entry(customer).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-           // ViewBag.UserTypeID = new SelectList(db.User_Master, "Id", "UserType", customer.UserTypeID);
-           // ViewBag.Id = new SelectList(db.Projects, "Id", "Accuracy", customer.Id);
-            //var status = db.leadStatus_Master.Where(a => a.isActive == true);
-           // ViewBag.LeadStatus = new SelectList(status, "Id", "StatusName", customer.Id);
-            return View(customer);
-
+            customer.Modified_On = DateTime.Now;
+            customer.Cre_on = DateTime.Now;
+            customer.Modified_by= Guid.Parse(Session["loginid"].ToString());
+            customer.isActive = true;
+            db.Entry(customer).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json("success");
         }
 
         // GET: Customers/Delete/5
@@ -183,11 +174,9 @@ namespace ProAcc.Controllers
 
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
             Customer customer = db.Customers.Find(id);
-            //db.Customers.Remove(customer);
             if(customer.Customer_ID==id)
             {
                 customer.isActive = false;
@@ -195,7 +184,7 @@ namespace ProAcc.Controllers
                 db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return Json("success");
         }
 
         protected override void Dispose(bool disposing)

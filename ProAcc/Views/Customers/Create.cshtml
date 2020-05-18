@@ -1,26 +1,11 @@
-﻿@model ProAcc.BL.Model.CreateViewModel
-
+﻿
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
-@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>*@
 
 <div class="container">
-    @*<ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav" style="flex-flow: row-reverse;" id="top_menu">
-        <li class="nav-item">
-            <a role="tab" class="nav-link show active" id="Menu_customer" data-toggle="tab" href="#tab-content-0" aria-selected="true">
-                <span>Customer</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a role="tab" class="nav-link show" id="Menu_consultant" data-toggle="tab" href="#tab-content-1" aria-selected="false">
-                <span>SAP Consultant</span>
-            </a>
-        </li>
-    </ul>*@
     <div class="text-center" style="min-height:204px;margin-top:204px;" id="Bottem_Menu">
         <div class="row">
             <div class="col-lg-6">
@@ -36,22 +21,16 @@
                 </div>
             </div>
         </div>
-       
-
     </div>
-    
-   
 </div>
 
 
-
-@*Customer:   @Html.RadioButton("UserType", "Customer")
-Consultant: @Html.RadioButton("UserType", "Consultant")*@
 <div id="customer">
-        @Html.Partial("_Customercreate", Model.Customer)
+        @Html.Partial("_Customercreate")
+        @Html.Partial("_CustomerIndex","Customer")
 </div>
 <div id="consultant">
-    @Html.Partial("_Consultantcreate", Model.User)
+    @*@Html.Partial("_Consultantcreate")*@
 </div>
 
 

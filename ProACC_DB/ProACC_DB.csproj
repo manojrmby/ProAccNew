@@ -111,6 +111,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\edmxResourcesToEmbed\ProAcc_DB_Entity.csdl" />
+    <None Include="obj\Debug\edmxResourcesToEmbed\ProAcc_DB_Entity.msl" />
+    <None Include="obj\Debug\edmxResourcesToEmbed\ProAcc_DB_Entity.ssdl" />
+    <None Include="obj\Debug\ProACC_DB.csproj.CopyComplete" />
     <None Include="packages.config" />
     <EntityDeploy Include="ProAcc_DB_Entity.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -124,6 +129,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\ProACC_DB.dll" />
+    <Content Include="bin\Debug\ProACC_DB.pdb" />
+    <Content Include="obj\Debug\ProACC_DB.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\ProACC_DB.dll" />
+    <Content Include="obj\Debug\ProACC_DB.pdb" />
     <Content Include="ProAccDB.txt" />
     <Content Include="ProAcc_DB_Entity.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -135,6 +145,11 @@
       <DependentUpon>ProAcc_DB_Entity.edmx</DependentUpon>
       <LastGenOutput>ProAcc_DB_Entity.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+    <Folder Include="obj\Debug\TempPE\" />
+    <Folder Include="obj\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
