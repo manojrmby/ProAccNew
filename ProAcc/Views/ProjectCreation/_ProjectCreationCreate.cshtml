@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Title = "Create Project Creation";
+}
+
+
+<a class="card-title">Project Creation</a>
+<div style="padding:1em;">
+    <div class="row">
+        <div class="col-6">
+            <input type="hidden" id="proj_id" />
+            <input type="hidden" id="projcre_on" />
+            <input type="hidden" id="projcre_By" />
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Project Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtProjectName" />
+                    <span id="lblProjectName" style="color:red" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Customer</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="drpCustomer">
+                        <option value="0">Select Customer</option>
+                        @foreach (var item in ViewBag.Customer)
+                        {
+                            <option value="@item.Customer_ID">@item.Company_Name</option>
+                        }
+                    </select>
+                    @*<input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />*@
+                    <span id="lblCustomerName" style="color:red" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="form-group">
+                <label class="control-label col-md-4">Description</label>
+
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtDescription" />
+                    <span id="lblDescription" style="color:red" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-10">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Create" class="btn btn-primary" id="btnProjectCreate" />
+                    <input type="button" value="Update" class="btn btn-info" id="btnProjectUpdate" style="display:none" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#btnProjectCreate").prop('disabled', true);
+
+        var projectName = $("#txtProjectName").val().trim();
+        var Customerid = $("#drpCustomer").val();
+        var Description = $("#txtDescription").val();
+
+        $("#txtProjectName").keypress(function (event) {
+        
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                    event.preventDefault();
+                    $("#lblProjectName").html("Not Allowed").show().fadeOut(3000);
+        }
+        $("#btnProjectCreate").prop('disabled', false);
+        });
+
+        $('#txtProjectName').on('focusout', function () {
+            
+            var ProjName = $("#txtProjectName").val().trim();
+            var id=$("#proj_id").val();
+            if (ProjName == "") {
+                $("#lblProjectName").html("Please Enter valid Project name").show().fadeOut(3000);
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckProjectNameAvailability", "ProjectCreation")',
+                type: "GET",
+                data: { namedata: ProjName, id: id },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblProjectName").html("This project Name is already in use").show();
+                        $("#btnProjectCreate").prop('disabled', true);
+                        $("#btnProjectUpdate").prop('disabled', true);
+                    }
+                    else {
+                        $("#lblProjectName").html("").hide();
+                        $("#btnProjectCreate").prop('disabled', false);
+                        $("#btnProjectUpdate").prop('disabled', false);
+                    }
+                },
+                    error: function (err) {
+                        alert(err);
+                }
+            });
+            }            
+        });
+
+        $('#drpCustomer').change(function () {            debugger;            var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            if (projectName != "" && Customerid != 0) {                $("#btnProjectCreate").prop("disabled", false);            }        });
+
+    });
+
+    $("#btnProjectCreate").on("click", function () {
+       
+        var projectName = $("#txtProjectName").val().trim();
+        var Customerid = $("#drpCustomer").val();
+        var Description = $("#txtDescription").val();
+
+        if (projectName == "") {
+            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
+        }
+        else if (Customerid == 0)
+        {
+            $("#lblCustomerName").html("Please enter the Customer Name").show().fadeOut(3000);
+        }       
+        else {
+            $.ajax({
+                    type: "POST",
+                url: '@Url.Action("Create","ProjectCreation")',
+                data: { project_Name: projectName, Customer_Id: Customerid, Description: Description },
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Project Saved successfully!");
+                            loadProjectCreation();
+                            $("#txtProjectName").val("")
+                            $("#drpCustomer").val(0)
+                            $("#txtDescription").val("")
+                            $("#btnProjectCreate").show();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+            
+
+        }
+    });
+
+    $("#btnProjectUpdate").on("click", function () {
+        
+         var id = $("#proj_id").val();
+        var projectName = $("#txtProjectName").val().trim();
+        var Customerid = $("#drpCustomer").val();
+        var Description = $("#txtDescription").val();
+        var cre_on = $("#projcre_on").val();
+        var cre_By = $("#projcre_By").val();
+
+         var model = {
+             Project_Id: id,
+             Project_Name: projectName,
+             Customer_Id: Customerid,
+             Description: Description,
+             Cre_on: cre_on,
+             Cre_By: cre_By
+         }
+       if (projectName == "") {
+            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
+        }
+        else if (Customerid == 0 || Customerid == undefined)
+        {
+            $("#lblCustomerName").html("Please enter the Customer Name").show().fadeOut(3000);
+        }     
+        else {
+
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit","ProjectCreation")',
+                    data: { model : model},
+                    //dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Customers Edited successfully!");
+                           loadProjectCreation();
+                            $("#txtProjectName").val("")
+                            $("#drpCustomer").val(0)
+                            $("#txtDescription").val("")
+                            $("#btnProjectCreate").show();
+                            $("#btnProjectUpdate").hide();
+                            $("#btnProjectCreate").show();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+        }
+     });
+     
+</script>

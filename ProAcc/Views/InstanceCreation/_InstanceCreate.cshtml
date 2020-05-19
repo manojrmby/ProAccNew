@@ -1,0 +1,198 @@
+﻿
+
+@{
+    ViewBag.Title = "Create Instance";
+}
+
+
+<a class="card-title">Create Customer</a>
+<div style="padding:1em;">
+    <div class="row">
+        <div class="col-6">
+
+            <input type="hidden" id="Instid" />
+            <input type="hidden" id="Instcre_on" />
+            <input type="hidden" id="Instcre_By" />
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Instance Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtInstanceName" maxlength="3" />
+                    <span id="lblInstanceName" style="color:red" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Project</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="drpProject">
+                        <option value="0">Select Project</option>
+                        @foreach (var item in ViewBag.project)
+                        {
+                            <option value="@item.Project_Id">@item.Project_Name</option>
+                        }
+                    </select>
+                    <span id="lblProject" style="color:red" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Create" class="btn btn-primary" id="btnInstanceCreate" />
+                    <input type="button" value="Update" class="btn btn-info" id="btnInstanceUpdate" style="display:none" />
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#btnInstanceCreate").prop('disabled', true);
+
+        $("#txtInstanceName").keypress(function (event) {
+        
+            var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+            var str = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+            if (!regex.test(str)) {
+                event.preventDefault();
+                $("#lblInstanceName").html("Not Allowed").show().fadeOut(3000);
+            }
+            else {
+                $("#btnInstanceCreate").prop('disabled', false);
+            }
+           
+        });
+
+
+        $('#txtInstanceName').on('focusout', function () {
+           
+            var InstName = $("#txtInstanceName").val().trim();
+            var id = $("#Instid").val();
+            if (InstName == "") {
+                $("#lblInstanceName").html("Please Enter valid Instance name").show().fadeOut(2000);
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckInstanceNameAvailability", "InstanceCreation")',
+                type: "GET",
+                data: { namedata: InstName,id:id },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblInstanceName").html("This Instance Name is already in use").show();
+                        $("#btnInstanceCreate").prop('disabled', true);
+                         $("#btnInstanceUpdate").prop('disabled', true);
+                    }
+                    else {
+                        $("#lblInstanceName").html("").hide();
+                        $("#btnInstanceCreate").prop('disabled', false);
+                        $("#btnInstanceUpdate").prop('disabled', false);
+                    }
+
+                },
+                error: function (err) {
+
+                    alert(err);
+                }
+            });
+            }
+
+        });
+
+        $('#drpProject').change(function () {            var InstName = $("#txtInstanceName").val().trim();            var Project = $("#drpProject").val().trim();            if (InstName != null && Project != "") {                $("#btnInstanceCreate").prop('disabled', false);            }        });
+    });
+
+
+    $("#btnInstanceCreate").on("click", function () {
+        
+        var InstanceName = $("#txtInstanceName").val().trim();
+        var Project = $("#drpProject").val().trim();        
+
+        if (InstanceName == "") {
+            $("#lblInstanceName").html("Please enter the Instance Name").show().fadeOut(3000);
+        }
+        else if (Project ==0)
+        {
+            $("#lblProject").html("Please Select the project").show().fadeOut(3000);
+        }
+        else {
+            $.ajax({
+                    type: "POST",
+                url: '@Url.Action("Create","InstanceCreation")',
+                data: { InstaceName: InstanceName, Project_ID: Project },
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Instance Saved successfully!");
+                            loadInstanceTable();
+                            $("#txtInstanceName").val("")
+                            $("#drpProject").val(0)
+                          
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+
+
+        }
+    });
+
+
+     $("#btnInstanceUpdate").on("click", function () {
+         var id = $("#Instid").val();
+        var InstanceName = $("#txtInstanceName").val().trim();
+        var Project = $("#drpProject").val().trim();      
+        var cre_on = $("#Instcre_on").val();
+        var cre_By = $("#Instcre_By").val();
+
+         var model = {
+             Instance_id: id,
+             InstaceName: InstanceName,
+             Project_ID: Project,
+             Cre_on: cre_on,
+             Cre_By: cre_By
+         }
+       if (InstanceName == "") {
+            $("#lblInstanceName").html("Please enter the Instance Name").show().fadeOut(3000);
+        }
+        else if (Project ==0)
+        {
+            $("#lblProject").html("Please Select the project").show().fadeOut(3000);
+        }
+        else {
+
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit","InstanceCreation")',
+                    data: { model : model},
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Instance Edited successfully!");
+                            loadInstanceTable();
+                            $("#txtInstanceName").val("")
+                            $("#drpProject").val(0)
+                            $("#btnInstanceUpdate").hide();
+                            $("#btnInstanceCreate").show();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+        }
+     });
+
+
+</script>

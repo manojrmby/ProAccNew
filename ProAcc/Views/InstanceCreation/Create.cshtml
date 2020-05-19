@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+
+@Html.Partial("_InstanceCreate")
+<div id="divInstanceCreation">
+
+</div>
+
+<script>
+    function loadInstanceTable() {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetInstances", "InstanceCreation")',
+
+            success: function (response) {
+            $("#divInstanceCreation").html(response);
+            },
+            failure: function (response) {
+            alert(response.responseText);
+            },
+            error: function (response) {
+            alert(response.responseText);
+            }
+         });
+    }
+
+    $(document).ready(function () {
+        loadInstanceTable();
+    })
+</script>

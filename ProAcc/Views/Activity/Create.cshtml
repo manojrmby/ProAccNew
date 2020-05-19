@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@Html.Partial("_ActivityCreationCreate")
+<div id="divActivityCreation">
+
+</div>
+
+<script>
+    function loadActivityCreation() {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetActivities", "Activity")',
+
+            success: function (response) {
+            $("#divActivityCreation").html(response);
+            },
+            failure: function (response) {
+            alert(response.responseText);
+            },
+            error: function (response) {
+            alert(response.responseText);
+            }
+         });
+    }
+
+    $(document).ready(function () {
+        loadActivityCreation();
+    })
+</script>

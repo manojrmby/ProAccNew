@@ -82,7 +82,12 @@ namespace ProAcc.Controllers
             ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).ToList();
             return View();
         }
-
+        [HttpGet]
+        public ActionResult GetCustomers()
+        {
+            var list = db.Customers.Where(x => x.isActive == true).ToList();
+            return PartialView("_CustomerIndex", list);
+        }
         
         [HttpPost]
         public ActionResult Create(Customer customer)
@@ -98,9 +103,13 @@ namespace ProAcc.Controllers
                     customer.Cre_By = Guid.Parse(Session["loginid"].ToString());
                     db.Customers.Add(customer);
                     db.SaveChanges();
+                    return Json("success");
                 }
+                else
+                {
+                    return Json("error");
+                }                
                 
-                return Json("success");
             }
             catch (Exception Ex)
             {
@@ -148,13 +157,21 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Edit(Customer customer)
         {
-            customer.Modified_On = DateTime.Now;
-            customer.Cre_on = DateTime.Now;
-            customer.Modified_by= Guid.Parse(Session["loginid"].ToString());
-            customer.isActive = true;
-            db.Entry(customer).State = EntityState.Modified;
-            db.SaveChanges();
-            return Json("success");
+            var name = db.Customers.Where(p => p.Company_Name == customer.Company_Name).Where(x => x.Customer_ID != customer.Customer_ID).Where(x => x.isActive == true).ToList();
+            if (name.Count == 0)
+            {
+                customer.Modified_On = DateTime.Now;
+                customer.Cre_on = DateTime.Now;
+                customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                customer.isActive = true;
+                db.Entry(customer).State = EntityState.Modified;
+                db.SaveChanges();
+                return Json("success");
+            }
+            else
+            {
+                return Json("error");
+            }
         }
 
         // GET: Customers/Delete/5

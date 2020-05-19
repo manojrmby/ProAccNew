@@ -1,0 +1,110 @@
+﻿
+@model IEnumerable<ProACC_DB.ActivityMaster>
+
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+
+<table class="table" id="tblActivityCreation">
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>Phase</th>
+            <th>Role</th>
+            <th>ApplicationArea</th>
+            <th>Sequence</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.Task">@item.Task</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.PhaseID">@item.PhaseMaster.PhaseName</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.RoleID">@item.RoleID</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.ApplicationArea">@item.ApplicationArea</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Sequence_Num">@item.Sequence_Num</a>
+                </td>
+
+                <td>
+                    <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" /> |
+                    <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Activity_ID" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        $("#tblActivityCreation").dataTable();
+    });
+
+    $(".editActivityCreation").on("click", function () {
+
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetActivityCreationById","Activity")',
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+
+                $("#activityrid").val(result.Activity_ID);
+                $("#txtTask").val(result.Task);
+                $("#txtSequence").val(result.Sequence_Num);
+                $("#drpPhase").val(result.PhaseID);
+                $("#drpRole").val(result.RoleID);
+                $("#txtApplicationArea").val(result.ApplicationArea);
+                $("#actcre_on").val(result.Cre_on);
+                $("#actcre_By").val(result.Cre_By);
+                $("#btntivityCreUpdate").show();
+                $("#btnActivityCreCreate").hide();
+
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+    });
+
+    $(".btnActivityDelete").on("click", function () {
+        var id = $(this).next().val();
+       var retVal = confirm("Do you want to delete ?");
+               if( retVal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","Activity")',
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Activity deleted successfully!");
+                        loadActivityCreation();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
+    });
+</script>

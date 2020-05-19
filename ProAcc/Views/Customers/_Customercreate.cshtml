@@ -79,6 +79,7 @@
         $('#txtCompanyName').on('focusout', function () {
             //debugger;
             var CompName = $("#txtCompanyName").val().trim();
+            var id = $("#customerid").val().trim();
             if (CompName == "") {
                 $("#lblCompanyName").html("Please Enter valid Consultant User name").show().fadeOut(2000);
             }
@@ -86,14 +87,18 @@
                 $.ajax({
                 url: '@Url.Action("CheckCustomersNameAvailability", "Customers")',
                 type: "GET",
-                data: { namedata: CompName },
+                data: { namedata: CompName,id:id },
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
                         $("#lblCompanyName").html("This Company Name is already in use").show();
+                        $("#btnCustomerCreate").prop('disabled', true);
+                        $("#btnCustomerUpdate").prop('disabled', true);
                     }
                     else {
                         $("#lblCompanyName").html("").hide();
+                        $("#btnCustomerCreate").prop('disabled', false);
+                        $("#btnCustomerUpdate").prop('disabled', false);
                     }
 
                 },
@@ -178,7 +183,12 @@
                     success: function (response) {
                         if (response == "success") {
                             alert("Customer Saved successfully!");
-                            location.reload();
+                            loadCustomer();
+                            $("#txtCompanyName").val("");
+                            $("#txtIndustrySector").val("");
+                            $("#txtCustomerPhone").val("");
+                            $("#txtCustomerEmail").val("");
+                            $("#btnCustomerCreate").show();
                         }
                     },
                     failure: function (response) {
@@ -239,8 +249,13 @@
                     success: function (response) {
                         if (response == "success") {
                             alert("Customers Edited successfully!");
-                            //Getda();
-                            location.reload();
+                            loadCustomer();
+                            $("#txtCompanyName").val("");
+                            $("#txtIndustrySector").val("");
+                            $("#txtCustomerPhone").val("");
+                            $("#txtCustomerEmail").val("");
+                            $("#btnCustomerUpdate").hide();
+                            $("#btnCustomerCreate").show();
                         }
                     },
                     failure: function (response) {

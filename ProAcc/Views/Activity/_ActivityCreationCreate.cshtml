@@ -1,0 +1,303 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Create Activity";
+}
+
+
+<a class="card-title">Create Activity</a>
+<div style="padding:1em;">
+    <div class="row">
+        <div class="col-6">
+
+            <input type="hidden" id="activityrid" />
+            <input type="hidden" id="actcre_on" />
+            <input type="hidden" id="actcre_By" />
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Task</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtTask" />
+                    <span id="lblTask" style="color:red" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Sequence</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtSequence" />
+                    <span id="lblSequence" style="color:red" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Phase</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="drpPhase">
+                        <option value="0">Select Phase</option>
+                        @foreach (var item in ViewBag.Phase)
+                        {
+                            <option value="@item.Id">@item.PhaseName</option>
+                        }
+                    </select>
+                    @*<input type="text" class="form-control" id="txtPhase" maxlength="10" />*@
+                    <span id="lblPhase" style="color:red" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Role</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="drpRole">
+                        <option value="0">Select Role</option>
+                        @foreach (var item in ViewBag.Role)
+                        {
+                            <option value="@item.RoleId">@item.RoleName</option>
+                        }
+                    </select>
+                    @*<input type="text" class="form-control" id="txtRole" />*@
+                    <span id="lblRole" style="color:red" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Application Area</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtApplicationArea" />
+                    <span id="lblApplicationArea" style="color:red" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Create" class="btn btn-primary" id="btnActivityCreCreate" />
+                <input type="button" value="Update" class="btn btn-info" id="btntivityCreUpdate" style="display:none" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#btnActivityCreCreate").prop('disabled', true);
+
+        $("#txtTask").keypress(function (event) {
+        debugger;
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                    event.preventDefault();
+                    $("#lblTask").html("Not Allowed").show().fadeOut(2000);
+        }
+        $("#btnActivityCreCreate").prop('disabled', false);
+        });
+
+
+        $('#txtTask').on('focusout', function () {
+            debugger;
+            var Task = $("#txtTask").val().trim();
+            var id = $("#activityrid").val();
+            if (Task == "") {
+                $("#lblTask").html("Please Enter Task").show().fadeOut(2000);
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckTaskAvailability", "Activity")',
+                type: "GET",
+                data: { namedata: Task,id:id },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblTask").html("This Task is already in use").show().fadeOut(3000);
+                        $("#btnActivityCreCreate").prop('disabled', true);
+                        $("#btntivityCreUpdate").prop('disabled', true);
+                    }
+                    else {
+                        $("#lblTask").html("").hide();
+                        $("#btnActivityCreCreate").prop('disabled', false);
+                        $("#btntivityCreUpdate").prop('disabled', false);
+                    }
+                },
+                error: function (err) {
+                    alert("Please Enter proper details");
+                     $("#btnActivityCreCreate").prop('disabled', true);
+                     $("#btntivityCreUpdate").prop('disabled', true);
+                }
+            });
+            }
+
+        });
+
+
+         $("#txtSequence").keypress(function (e) {
+             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                 event.preventDefault();
+                 $("#lblSequence").html("Numbers Only").show().fadeOut(2000);
+             }
+             else {
+                 $("#btnActivityCreCreate").prop('disabled', false);
+             }
+         });
+
+        $("#txtApplicationArea").keypress(function (event) {
+        debugger;
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                    event.preventDefault();
+                    $("#lblApplicationArea").html("Not Allowed").show().fadeOut(2000);
+        }
+        $("#btnActivityCreCreate").prop('disabled', false);
+        });
+
+        $('#drpPhase').change(function () {             var Task = $("#txtTask").val();
+            var sequence = $("#txtSequence").val();
+            var ApplicationArea = $("#txtApplicationArea").val();
+            var Role = $('#drpRole').val();            if (Task != "" && sequence != "" && ApplicationArea != "" && Role != 0) {                $("#btnActivityCreCreate").prop("disabled", false);            }        });        $('#drpRole').change(function () {             var Task = $("#txtTask").val();
+            var sequence = $("#txtSequence").val();
+            var ApplicationArea = $("#txtApplicationArea").val();
+            var Phase = $('#drpPhase').val();            if (Task != "" && sequence != "" && ApplicationArea != "" && Phase != 0) {                $("#btnActivityCreCreate").prop("disabled", false);            }        });
+
+    });
+
+
+    $("#btnActivityCreCreate").on("click", function () {
+        debugger;
+        var Task = $("#txtTask").val();
+        var sequence = $("#txtSequence").val();
+        var ApplicationArea = $("#txtApplicationArea").val();
+        var Phase = $('#drpPhase').val();
+        var Role = $('#drpRole').val();
+        var model = {
+            Task: Task,
+            PhaseID: Phase,
+            Sequence_Num: sequence,
+            ApplicationArea: ApplicationArea,
+            RoleID:Role
+        }
+        if (Task == "") {
+            $("#lblTask").html("Please enter the Task").show().fadeOut(3000);
+        }
+        else if (sequence =="")
+        {
+            $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
+        }
+        else if (ApplicationArea=="")
+        {
+            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(3000);
+        }
+        else if (Phase==0)
+        {
+            $("#lblPhase").html("Please select the Phase").show().fadeOut(3000);
+        }
+        else if (Role == 0)
+        {
+            $("#lblRole").html("Please select the Role").show().fadeOut(3000);
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create","Activity")',
+                data: { activityMaster:model },
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("activity Saved successfully!");
+                            loadActivityCreation();
+                            $("#txtTask").val("");
+                            $("#txtSequence").val("");
+                            $("#txtApplicationArea").val("");
+                            $('#drpPhase').val(0);
+                            $('#drpRole').val(0);
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+
+
+        }
+    });
+
+
+     $("#btntivityCreUpdate").on("click", function () {
+         debugger;
+         var id = $("#activityrid").val();
+        var Task = $("#txtTask").val();
+        var sequence = $("#txtSequence").val();
+        var ApplicationArea = $("#txtApplicationArea").val();
+        var Phase = $('#drpPhase').val();
+        var Role = $('#drpRole').val();
+        var cre_on = $("#actcre_on").val();
+        var cre_By = $("#actcre_By").val();
+
+         var model = {
+             Activity_ID:id,
+            Task: Task,
+            PhaseID: Phase,
+            Sequence_Num: sequence,
+            ApplicationArea: ApplicationArea,
+            RoleID:Role,
+            Cre_on: cre_on,
+            Cre_By: cre_By
+         }
+       if (Task == "") {
+            $("#lblTask").html("Please enter the Task").show().fadeOut(3000);
+        }
+        else if (sequence =="")
+        {
+            $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
+        }
+        else if (ApplicationArea=="")
+        {
+            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(3000);
+        }
+        else if (Phase==0)
+        {
+            $("#lblPhase").html("Please select the Phase").show().fadeOut(3000);
+        }
+        else if (Role == 0)
+        {
+            $("#lblRole").html("Please select the Role").show().fadeOut(3000);
+        }
+        else {
+
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit","Activity")',
+                    data: { model : model},
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Activity Edited successfully!");
+                            loadActivityCreation();
+                             $("#txtTask").val("");
+                            $("#txtSequence").val("");
+                            $("#txtApplicationArea").val("");
+                            $('#drpPhase').val(0);
+                            $('#drpRole').val(0);
+                            $("#btnActivityCreCreate").show()
+                            $("#btntivityCreUpdate").hide()
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+        }
+     });
+
+
+</script>
