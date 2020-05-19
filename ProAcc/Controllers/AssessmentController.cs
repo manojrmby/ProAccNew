@@ -147,30 +147,30 @@ namespace ProAcc.Controllers
 
             List<SelectListItem> Project = new List<SelectListItem>();
 
-            if (User.IsInRole("Customer"))
-            {
+            //if (User.IsInRole("Customer"))
+            //{
                 Guid customerId = Guid.Parse(Session["loginid"].ToString());
-                var query = from u in db.CustomerProjectConfigs where (u.CustomerID == customerId && u.isActive == true) select u;
+                var query = from u in db.Projects where (u.Customer_Id == customerId && u.isActive == true) select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)
                     {
-                        Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
                     }
                 }
-            }
-            else
-            {
+            //}
+            //else
+            //{
 
-                var query = from u in db.CustomerProjectConfigs where (u.isActive == true) select u;
-                if (query.Count() > 0)
-                {
-                    foreach (var v in query)
-                    {
-                        Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
-                    }
-                }
-            }
+            //    var query = from u in db.CustomerProjectConfigs where (u.isActive == true) select u;
+            //    if (query.Count() > 0)
+            //    {
+            //        foreach (var v in query)
+            //        {
+            //            Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
+            //        }
+            //    }
+            //}
 
 
             ViewBag.Project = Project;
@@ -439,12 +439,12 @@ namespace ProAcc.Controllers
             if (!string.IsNullOrEmpty(CustomerId))
             {
                 Guid IDCustomer = Guid.Parse(CustomerId);
-                var query = from u in db.CustomerProjectConfigs where (u.CustomerID == IDCustomer && u.isActive == true) select u;
+                var query = from u in db.Projects where (u.Customer_Id == IDCustomer && u.isActive == true) select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)
                     {
-                        Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
                     }
                 }
             }

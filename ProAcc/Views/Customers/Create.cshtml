@@ -1,4 +1,4 @@
-﻿
+﻿@model ProAcc.BL.Model.CreateViewModel
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/shared/_Layout.cshtml";
@@ -16,8 +16,8 @@
             </div>
             <div class="col-lg-6">
                 <div class="mb-3 text-left card card-body">
-                    <h5 class="card-title">SAP Consultant</h5>Click to go consultant Creation Page.
-                    <button class="btn btn-outline-focus" id="Me_consultant"><b>Create New SAP Consultant</b></button>
+                    <h5 class="card-title">User Creation</h5>Click to go User Creation Page.
+                    <button class="btn btn-outline-focus" id="Me_User"><b>Create New User</b></button>
                 </div>
             </div>
         </div>
@@ -26,16 +26,16 @@
 
 
 <div id="customer">
-        @Html.Partial("_Customercreate")
-        @Html.Partial("_CustomerIndex","Customer")
+    @Html.Partial("_Customercreate")
+    @Html.Partial("_CustomerIndex", "Customer")
 </div>
 <div id="consultant">
-    @*@Html.Partial("_Consultantcreate")*@
+    @*@Html.Partial("_UserCreate",Model.User)*@
 </div>
-
+@Html.Hidden("RedirectTo", Url.Action("CreateUsers", "User"));
 
 <script type="text/javascript">
-     
+
 
     $(document).ready(function () {
         $("#customer").hide();
@@ -46,30 +46,35 @@
         $("#customer").hide();
         $("#consultant").show();
         $("#top_menu").show();
-        
+
     }
     );
-     $('#Menu_customer').click(function () {
-         $("#customer").show();
-         $("#consultant").hide();
-          $("#top_menu").show();
+    $('#Menu_customer').click(function () {
+        $("#customer").show();
+        $("#consultant").hide();
+        $("#top_menu").show();
     }
     );
     $('#Me_customer').click(function () {
 
         $("#customer").show();
-         $("#top_menu").show();
+        $("#top_menu").show();
         $("#consultant").hide();
         $("#Bottem_Menu").hide();
-        
-       
-    });
-     $('#Me_consultant').click(function () {
 
-         $("#customer").hide();
-       $("#top_menu").show();
-       $("#consultant").show();
-       $("#Bottem_Menu").hide();
+
+    });
+    $('#Me_consultant').click(function () {
+
+        $("#customer").hide();
+        $("#top_menu").show();
+        $("#consultant").show();
+        $("#Bottem_Menu").hide();
+    });
+    $('#Me_User').click(function ()
+    {
+var url = $("#RedirectTo").val();
+ location.href = url;
     });
     //$('[name="UserType"]').on('change', function () {
     //    var val = $('[name="UserType"]:checked').val()

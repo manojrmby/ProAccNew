@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProAcc", "ProAcc\ProAcc.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProACC_DB", "ProACC_DB\ProACC_DB.csproj", "{DA326360-8D56-40A1-88D0-39A8F26AC707}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalDb", "LocalDb\LocalDb.csproj", "{61A1820F-AEF6-479B-80A4-4703A55767BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DA326360-8D56-40A1-88D0-39A8F26AC707}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA326360-8D56-40A1-88D0-39A8F26AC707}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA326360-8D56-40A1-88D0-39A8F26AC707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A1820F-AEF6-479B-80A4-4703A55767BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A1820F-AEF6-479B-80A4-4703A55767BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A1820F-AEF6-479B-80A4-4703A55767BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A1820F-AEF6-479B-80A4-4703A55767BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

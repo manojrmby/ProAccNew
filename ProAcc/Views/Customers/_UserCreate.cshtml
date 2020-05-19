@@ -1,0 +1,380 @@
+﻿@model ProACC_DB.UserMaster
+@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>*@
+
+<style>
+    .required::after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+</style>
+<a class="card-title">New SAP Consultant</a>
+@using (Html.BeginForm("Create", "Consultants", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    @*<h4><b>New Consultant</b></h4>*@
+    <div style="padding:1em;" class="col-lg-12">
+        @*<p style="color:red;float:right;margin-right:100px;">*  All Fields are mandatory</p>*@
+        <hr />
+        <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-6 ">
+
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "txtName1", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        <span id="lblName1" style="color:red"></span>
+                    </div>
+                </div>
+
+                @*<div class="position-relative form-group">
+                    @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @id = "txtDesc", @class = "form-control", @onchange = "ValidateDesc()" } })
+                        @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                        <span id="lblDesc" style="color:red"></span>
+                    </div>
+                </div>*@
+
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @id = "txtMob", @class = "form-control", @onchange = "ValidateNu()", @maxlength = "10" } })
+                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                        <span id="lblMob1" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.UserTypeID, "User Type", htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("UserTypeID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="position-relative form-group" id="divTeam">
+                    @Html.LabelFor(model => model.RoleMaster, "Team", htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("TeamID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RoleMaster, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                </div>
+                <div class="col-6 ">
+
+                    <div class="position-relative form-group">
+                        @Html.LabelFor(model => model.EMail, "Email", htmlAttributes: new { @class = "control-label col-md-5 required" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @id = "txtEmail1", @class = "form-control", @onchange = "ValidateEmail1()" } })
+                            @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
+                            <span id="lblEmail1" style="color:red"></span>
+                        </div>
+                    </div>
+
+                    <div class="position-relative form-group">
+                        @Html.LabelFor(model => model.LoginId, "User Name", htmlAttributes: new { @class = "control-label col-md-5 required" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LoginId, new { htmlAttributes = new { @id = "ConsultantUserName", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LoginId, "", new { @class = "text-danger" })
+                            <span id="StatusConsultant" style="color:red"></span>
+                        </div>
+                    </div>
+
+                    <div class="position-relative form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @id = "Passwd", @class = "form-control", @type = "password" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="position-relative form-group">
+                        <label class="control-label col-md-5 required">Confirm Password</label>
+                        <div class="col-md-10">
+                            <input type="password" class="form-control required" onchange="validateConsPwd()" id="txtConsCnfmPassword" />
+                            <span id="lblAltConsPwd" style="color:red"></span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="col-md-offset-2 col-md-12">
+                    <input type="submit" id="createconsultant" value="Create" class="btn btn-primary" onclick="SubmitConsultant();" />
+                    <div class="col-lg-3" style="float:right;">
+                        @Html.ActionLink("Back to List", "Index","Consultants")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#txtName1").keypress(function(event){
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+           
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) { 
+                    event.preventDefault(); 
+                    $("#lblName1").html("Not Allowed").show().fadeOut("slow");
+            
+            }
+        });
+
+         $('#txtName1').on('focusout', function () {
+            //debugger;
+            var CnstName = $("#txtName1").val().trim();
+            if (CnstName == "") {
+                $("#lblName1").html("Please Enter valid Consultant name").show().fadeOut(2000);
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckConsultantsNameAvailability", "Consultants")',
+                type: "GET",
+                data: { namedata: CnstName },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblName1").html("This Consultant name is already taken,please select another").show();
+
+                    }
+                    else {
+                        $("#lblName1").html("").hide();
+                    }
+
+                },
+                error: function (err) {
+
+                    alert(err);
+                }
+            });
+            }
+            
+         });
+
+        $('#ConsultantUserName').on('focusout', function () {
+            //debugger;
+            var CnstUserName = $("#ConsultantUserName").val().trim();
+            if (CnstUserName == "") {
+                $("#StatusConsultant").html("Please Enter valid Consultant User name").show().fadeOut(2000);
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckConsultantsUsernameAvailability", "Consultants")',
+                type: "GET",
+                data: { userdata: CnstUserName },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#StatusConsultant").html("This Consultant User name is already taken,please select another").show();
+
+                    }
+                    else {
+                        $("#StatusConsultant").html("").hide();
+                    }
+
+                },
+                error: function (err) {
+
+                    alert(err);
+                }
+            });
+            }
+            
+        });
+
+       
+
+        @*$('#ConsultantUserName').on('change', function () {
+            debugger;
+            $.ajax({
+                type: "POST",
+                url:'@Url.Action("CheckConsultantsUsernameAvailability", "Consultants")',
+                data: '{userdata: "' + $("#ConsultantUserName").val()+ '" }',
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccess,
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+        });*@
+         $("#txtMob").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                $("#lblMob1").html("Numbers Only").show().fadeOut("slow");
+                return false;
+            }
+        });
+    });
+    //function OnSuccess
+    function OnSuccess(response) {
+        //debugger;
+        var msg = $("#StatusConsultant");
+        //debugger;
+        switch (response) {
+            case 1:
+                msg.show();
+                msg.css("color","red");
+                msg.html("User Name already exists.");
+                break;
+            case 0:
+                msg.show();
+                //msg.css("color","green");
+                msg.html("");
+                break;
+        }
+    }
+
+</script>
+
+<script>
+    $("#UserTypeID").change(function () {
+        var Id = $(this).val();
+        //debugger;
+        if (Id == 2) {
+            $("#divTeam").show()
+        } else { $("#divTeam").hide() }
+    });
+
+    var result = "Success";
+    //function ValidateNa() {
+    //    //debugger;
+    //    var name1 = document.getElementById("txtName1").value;
+    //    var lblName1 = document.getElementById("lblName1");
+    //    lblName1.innerHTML = "";
+    //    var letters = /^[A-Za-z, ]+$/;
+    //    if (!letters.test(name1)) {
+    //        lblName1.innerHTML = "Please enter valid Name";
+    //        result = "error";
+    //    }
+    //    else {
+    //        result = "Success";
+    //    }
+    //    validateSave();
+    //}
+
+    function ValidateDesc() {
+        //debugger;
+        var Desc = document.getElementById("txtDesc").value;
+        var lblDesc = document.getElementById("lblDesc");
+        lblDesc.innerHTML = "";
+        var letters = /^[A-Za-z, ]+$/;
+        if (Desc = "" || !letters.test(Desc)) {
+            lblDesc.innerHTML = "Please enter valid Name";
+            result = "error";
+        }
+        else {
+            result = "Success";
+        }
+        validateSave();
+    }
+    function ValidateEmail1() {
+        //debugger;
+        var email1 = document.getElementById("txtEmail1").value;
+        var lblEmail1 = document.getElementById("lblEmail1");
+        lblEmail1.innerHTML = "";
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (email1=""||!expr.test(email1)) {
+            lblEmail1.innerHTML = "Please enter valid email address.";
+            result = "error";
+        }
+        else {
+            result = "Success";
+        }
+        validateSave();
+    }
+
+    function validateConsPwd() {
+        //debugger;
+        var Passwd = document.getElementById("Passwd").value;
+        var txtConsCnfmPassword = document.getElementById("txtConsCnfmPassword").value;
+        var lblAltConsPwd = document.getElementById("lblAltConsPwd");
+        lblAltConsPwd.innerHTML = "";
+        if (Passwd != txtConsCnfmPassword) {
+            lblAltConsPwd.innerHTML = "password does not match";
+            result = "error";
+        }
+        else {
+            result = "Success";
+        }
+        validateSave();
+    }
+
+    //function ValidateNu() {
+    //    var mob = /^[1-9]{1}[0-9]{9}$/;
+    //    var txtMobile = document.getElementById("txtMob").value;
+    //    var lblMob1 = document.getElementById("lblMob1");
+    //    lblMob1.innerHTML = "";
+    //    if (mob.test(txtMobile) == false) {
+    //        lblMob1.innerHTML = "Please enter valid mobile number.";
+    //        result = "error";
+    //    }
+    //    else {
+    //        result = "Success";
+    //    }
+    //    validateSave();
+    //}
+
+    function validateSave() {
+        if (result == "error") {
+            $("#createconsultant").prop("disabled", true);
+        }
+        else {
+            $("#createconsultant").prop("disabled", false);
+        }
+    }
+
+    function SubmitConsultant() {
+            //debugger;
+        //alert("HI");
+        var Name1 = $("#txtName1").val();
+        var Desc = $("#txtDesc").val();
+        var Mob = $("#txtMob").val();
+        var Email1 = $("#txtEmail1").val();
+        var ConsultantUserName = $("#ConsultantUserName").val();
+        var Passwd = $("#Passwd").val();
+        //var txtConsCnfmPassword = $("#txtConsCnfmPassword").val();
+
+        var lblName1 = $("#lblName1").text(); // val();
+        var lblDesc = $("#lblDesc").text();
+        var lblMob1 = $("#lblMob1").text();
+        var lblEmail1 = $("#lblEmail1").text();
+        var Status1 = $("#StatusConsultant").text();
+        var lblAltConsPwd = $("#lblAltConsPwd").text();
+
+        if (Name1.length > 0 && Desc.length > 0 && Mob.length > 0 && Email1.length > 0 && ConsultantUserName.length > 0 && Passwd.length > 0 &&
+            lblName1 == "" && lblDesc == "" && lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
+
+            $("#createconsultant").prop("disabled", false);
+        }
+        else {
+            $("#createconsultant").prop("disabled", true);
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        var msg = '@ViewBag.Message';
+        if (msg == 'True')
+        {
+        alert("Enter the Details");
+        }
+    });
+
+    $(document).ready(function(){
+        $("#divTeam").hide()
+    });
+</script>
+

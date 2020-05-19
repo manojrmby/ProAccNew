@@ -1,0 +1,866 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProACCDEVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ActivityMaster">
+          <Key>
+            <PropertyRef Name="Activity_ID" />
+          </Key>
+          <Property Name="Activity_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Task" Type="varchar(max)" Nullable="false" />
+          <Property Name="BuildingBlock_id" Type="uniqueidentifier" />
+          <Property Name="PhaseID" Type="int" Nullable="false" />
+          <Property Name="Sequence_Num" Type="int" />
+          <Property Name="ApplicationArea" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Customer_Id" />
+          </Key>
+          <Property Name="Customer_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Company_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Industry_Sector" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Instance">
+          <Key>
+            <PropertyRef Name="Instance_id" />
+          </Key>
+          <Property Name="Instance_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="InstaceName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Project_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PhaseMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PhaseName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Project_Id" />
+          </Key>
+          <Property Name="Project_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Project_Name" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Customer_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectMonitor">
+          <Key>
+            <PropertyRef Name="Project_Id" />
+          </Key>
+          <Property Name="Project_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PhaseId" Type="int" Nullable="false" />
+          <Property Name="Activity_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Task_Other_Environment" Type="bit" Nullable="false" />
+          <Property Name="Dependency" Type="bit" Nullable="false" />
+          <Property Name="Pending" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Delay_occurred" Type="bit" Nullable="false" />
+          <Property Name="DelayedReason" Type="nvarchar(max)" />
+          <Property Name="ApplicationArea" Type="nvarchar(max)" />
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="EST_hours" Type="float" Nullable="false" />
+          <Property Name="Actual_St_hours" Type="float" Nullable="false" />
+          <Property Name="Planed__St_Date" Type="datetime" Nullable="false" />
+          <Property Name="Actual_St_Date" Type="datetime" Nullable="false" />
+          <Property Name="Planed__En_Date" Type="datetime" Nullable="false" />
+          <Property Name="Actual_En_Date" Type="datetime" Nullable="false" />
+          <Property Name="Notes" Type="varchar(max)" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoleMaster">
+          <Key>
+            <PropertyRef Name="Role_Id" />
+          </Key>
+          <Property Name="Role_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EMail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LoginId" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="UserTypeID" Type="int" Nullable="false" />
+          <Property Name="Customer_Id" Type="uniqueidentifier" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ActivityMaster_PhaseMaster">
+          <End Role="PhaseMaster" Type="Self.PhaseMaster" Multiplicity="1" />
+          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityMaster">
+              <PropertyRef Name="PhaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityMaster_RoleMaster">
+          <End Role="RoleMaster" Type="Self.RoleMaster" Multiplicity="1" />
+          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="Role_Id" />
+            </Principal>
+            <Dependent Role="ActivityMaster">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Instance_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Instance" Type="Self.Instance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Project_Id" />
+            </Principal>
+            <Dependent Role="Instance">
+              <PropertyRef Name="Project_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Customer_Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMonitor_ActivityMaster">
+          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="1" />
+          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityMaster">
+              <PropertyRef Name="Activity_ID" />
+            </Principal>
+            <Dependent Role="ProjectMonitor">
+              <PropertyRef Name="Activity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMonitor_PhaseMaster">
+          <End Role="PhaseMaster" Type="Self.PhaseMaster" Multiplicity="1" />
+          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectMonitor">
+              <PropertyRef Name="PhaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMonitor_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="ProjectMonitor">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Customer_Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_RoleMaster">
+          <End Role="RoleMaster" Type="Self.RoleMaster" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="Role_Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Type">
+          <End Role="User_Type" Type="Self.User_Type" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProACCDEVModelStoreContainer">
+          <EntitySet Name="ActivityMaster" EntityType="Self.ActivityMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Instance" EntityType="Self.Instance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PhaseMaster" EntityType="Self.PhaseMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectMonitor" EntityType="Self.ProjectMonitor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleMaster" EntityType="Self.RoleMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Type" EntityType="Self.User_Type" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ActivityMaster_PhaseMaster" Association="Self.FK_ActivityMaster_PhaseMaster">
+            <End Role="PhaseMaster" EntitySet="PhaseMaster" />
+            <End Role="ActivityMaster" EntitySet="ActivityMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityMaster_RoleMaster" Association="Self.FK_ActivityMaster_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMaster" />
+            <End Role="ActivityMaster" EntitySet="ActivityMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Instance_Project" Association="Self.FK_Instance_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Instance" EntitySet="Instance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_Customer" Association="Self.FK_Project_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMonitor_ActivityMaster" Association="Self.FK_ProjectMonitor_ActivityMaster">
+            <End Role="ActivityMaster" EntitySet="ActivityMaster" />
+            <End Role="ProjectMonitor" EntitySet="ProjectMonitor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMonitor_PhaseMaster" Association="Self.FK_ProjectMonitor_PhaseMaster">
+            <End Role="PhaseMaster" EntitySet="PhaseMaster" />
+            <End Role="ProjectMonitor" EntitySet="ProjectMonitor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMonitor_User" Association="Self.FK_ProjectMonitor_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ProjectMonitor" EntitySet="ProjectMonitor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Customer" Association="Self.FK_User_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_RoleMaster" Association="Self.FK_User_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMaster" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Type" Association="Self.FK_User_Type">
+            <End Role="User_Type" EntitySet="User_Type" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProACCDEVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ActivityMaster">
+          <Key>
+            <PropertyRef Name="Activity_ID" />
+          </Key>
+          <Property Name="Activity_ID" Type="Guid" Nullable="false" />
+          <Property Name="Task" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BuildingBlock_id" Type="Guid" />
+          <Property Name="PhaseID" Type="Int32" Nullable="false" />
+          <Property Name="Sequence_Num" Type="Int32" />
+          <Property Name="ApplicationArea" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PhaseMaster" Relationship="Self.FK_ActivityMaster_PhaseMaster" FromRole="ActivityMaster" ToRole="PhaseMaster" />
+          <NavigationProperty Name="RoleMaster" Relationship="Self.FK_ActivityMaster_RoleMaster" FromRole="ActivityMaster" ToRole="RoleMaster" />
+          <NavigationProperty Name="ProjectMonitors" Relationship="Self.FK_ProjectMonitor_ActivityMaster" FromRole="ActivityMaster" ToRole="ProjectMonitor" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Customer_Id" />
+          </Key>
+          <Property Name="Customer_Id" Type="Guid" Nullable="false" />
+          <Property Name="Company_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Industry_Sector" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_Project_Customer" FromRole="Customer" ToRole="Project" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_Customer" FromRole="Customer" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Instance">
+          <Key>
+            <PropertyRef Name="Instance_id" />
+          </Key>
+          <Property Name="Instance_id" Type="Guid" Nullable="false" />
+          <Property Name="InstaceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Project_ID" Type="Guid" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_Instance_Project" FromRole="Instance" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="PhaseMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PhaseName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ActivityMasters" Relationship="Self.FK_ActivityMaster_PhaseMaster" FromRole="PhaseMaster" ToRole="ActivityMaster" />
+          <NavigationProperty Name="ProjectMonitors" Relationship="Self.FK_ProjectMonitor_PhaseMaster" FromRole="PhaseMaster" ToRole="ProjectMonitor" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Project_Id" />
+          </Key>
+          <Property Name="Project_Id" Type="Guid" Nullable="false" />
+          <Property Name="Project_Name" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Customer_Id" Type="Guid" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Project_Customer" FromRole="Project" ToRole="Customer" />
+          <NavigationProperty Name="Instances" Relationship="Self.FK_Instance_Project" FromRole="Project" ToRole="Instance" />
+        </EntityType>
+        <EntityType Name="ProjectMonitor">
+          <Key>
+            <PropertyRef Name="Project_Id" />
+          </Key>
+          <Property Name="Project_Id" Type="Guid" Nullable="false" />
+          <Property Name="PhaseId" Type="Int32" Nullable="false" />
+          <Property Name="Activity_Id" Type="Guid" Nullable="false" />
+          <Property Name="Task_Other_Environment" Type="Boolean" Nullable="false" />
+          <Property Name="Dependency" Type="Boolean" Nullable="false" />
+          <Property Name="Pending" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Delay_occurred" Type="Boolean" Nullable="false" />
+          <Property Name="DelayedReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationArea" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="EST_hours" Type="Double" Nullable="false" />
+          <Property Name="Actual_St_hours" Type="Double" Nullable="false" />
+          <Property Name="Planed__St_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Actual_St_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Planed__En_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Actual_En_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ActivityMaster" Relationship="Self.FK_ProjectMonitor_ActivityMaster" FromRole="ProjectMonitor" ToRole="ActivityMaster" />
+          <NavigationProperty Name="PhaseMaster" Relationship="Self.FK_ProjectMonitor_PhaseMaster" FromRole="ProjectMonitor" ToRole="PhaseMaster" />
+          <NavigationProperty Name="User" Relationship="Self.FK_ProjectMonitor_User" FromRole="ProjectMonitor" ToRole="User" />
+        </EntityType>
+        <EntityType Name="RoleMaster">
+          <Key>
+            <PropertyRef Name="Role_Id" />
+          </Key>
+          <Property Name="Role_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ActivityMasters" Relationship="Self.FK_ActivityMaster_RoleMaster" FromRole="RoleMaster" ToRole="ActivityMaster" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_RoleMaster" FromRole="RoleMaster" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LoginId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Customer_Id" Type="Guid" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_User_Customer" FromRole="User" ToRole="Customer" />
+          <NavigationProperty Name="ProjectMonitors" Relationship="Self.FK_ProjectMonitor_User" FromRole="User" ToRole="ProjectMonitor" />
+          <NavigationProperty Name="RoleMaster" Relationship="Self.FK_User_RoleMaster" FromRole="User" ToRole="RoleMaster" />
+          <NavigationProperty Name="User_Type" Relationship="Self.FK_User_Type" FromRole="User" ToRole="User_Type" />
+        </EntityType>
+        <EntityType Name="User_Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_Type" FromRole="User_Type" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_ActivityMaster_PhaseMaster">
+          <End Role="PhaseMaster" Type="Self.PhaseMaster" Multiplicity="1" />
+          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityMaster">
+              <PropertyRef Name="PhaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityMaster_RoleMaster">
+          <End Role="RoleMaster" Type="Self.RoleMaster" Multiplicity="1" />
+          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="Role_Id" />
+            </Principal>
+            <Dependent Role="ActivityMaster">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMonitor_ActivityMaster">
+          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="1" />
+          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityMaster">
+              <PropertyRef Name="Activity_ID" />
+            </Principal>
+            <Dependent Role="ProjectMonitor">
+              <PropertyRef Name="Activity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Customer_Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Customer_Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Instance_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Instance" Type="Self.Instance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Project_Id" />
+            </Principal>
+            <Dependent Role="Instance">
+              <PropertyRef Name="Project_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMonitor_PhaseMaster">
+          <End Role="PhaseMaster" Type="Self.PhaseMaster" Multiplicity="1" />
+          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectMonitor">
+              <PropertyRef Name="PhaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMonitor_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="ProjectMonitor">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_RoleMaster">
+          <End Role="RoleMaster" Type="Self.RoleMaster" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="Role_Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Type">
+          <End Role="User_Type" Type="Self.User_Type" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProACCDEVEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ActivityMasters" EntityType="Self.ActivityMaster" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Instances" EntityType="Self.Instance" />
+          <EntitySet Name="PhaseMasters" EntityType="Self.PhaseMaster" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="ProjectMonitors" EntityType="Self.ProjectMonitor" />
+          <EntitySet Name="RoleMasters" EntityType="Self.RoleMaster" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="User_Type" EntityType="Self.User_Type" />
+          <AssociationSet Name="FK_ActivityMaster_PhaseMaster" Association="Self.FK_ActivityMaster_PhaseMaster">
+            <End Role="PhaseMaster" EntitySet="PhaseMasters" />
+            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityMaster_RoleMaster" Association="Self.FK_ActivityMaster_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMasters" />
+            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMonitor_ActivityMaster" Association="Self.FK_ProjectMonitor_ActivityMaster">
+            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
+            <End Role="ProjectMonitor" EntitySet="ProjectMonitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_Customer" Association="Self.FK_Project_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Customer" Association="Self.FK_User_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Instance_Project" Association="Self.FK_Instance_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Instance" EntitySet="Instances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMonitor_PhaseMaster" Association="Self.FK_ProjectMonitor_PhaseMaster">
+            <End Role="PhaseMaster" EntitySet="PhaseMasters" />
+            <End Role="ProjectMonitor" EntitySet="ProjectMonitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMonitor_User" Association="Self.FK_ProjectMonitor_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ProjectMonitor" EntitySet="ProjectMonitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_RoleMaster" Association="Self.FK_User_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMasters" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Type" Association="Self.FK_User_Type">
+            <End Role="User_Type" EntitySet="User_Type" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProACCDEVModelStoreContainer" CdmEntityContainer="ProACCDEVEntities">
+          <EntitySetMapping Name="ActivityMasters">
+            <EntityTypeMapping TypeName="ProACCDEVModel.ActivityMaster">
+              <MappingFragment StoreEntitySet="ActivityMaster">
+                <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
+                <ScalarProperty Name="Task" ColumnName="Task" />
+                <ScalarProperty Name="BuildingBlock_id" ColumnName="BuildingBlock_id" />
+                <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
+                <ScalarProperty Name="Sequence_Num" ColumnName="Sequence_Num" />
+                <ScalarProperty Name="ApplicationArea" ColumnName="ApplicationArea" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="ProACCDEVModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Industry_Sector" ColumnName="Industry_Sector" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instances">
+            <EntityTypeMapping TypeName="ProACCDEVModel.Instance">
+              <MappingFragment StoreEntitySet="Instance">
+                <ScalarProperty Name="Instance_id" ColumnName="Instance_id" />
+                <ScalarProperty Name="InstaceName" ColumnName="InstaceName" />
+                <ScalarProperty Name="Project_ID" ColumnName="Project_ID" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhaseMasters">
+            <EntityTypeMapping TypeName="ProACCDEVModel.PhaseMaster">
+              <MappingFragment StoreEntitySet="PhaseMaster">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PhaseName" ColumnName="PhaseName" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="ProACCDEVModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
+                <ScalarProperty Name="Project_Name" ColumnName="Project_Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectMonitors">
+            <EntityTypeMapping TypeName="ProACCDEVModel.ProjectMonitor">
+              <MappingFragment StoreEntitySet="ProjectMonitor">
+                <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
+                <ScalarProperty Name="PhaseId" ColumnName="PhaseId" />
+                <ScalarProperty Name="Activity_Id" ColumnName="Activity_Id" />
+                <ScalarProperty Name="Task_Other_Environment" ColumnName="Task_Other_Environment" />
+                <ScalarProperty Name="Dependency" ColumnName="Dependency" />
+                <ScalarProperty Name="Pending" ColumnName="Pending" />
+                <ScalarProperty Name="Delay_occurred" ColumnName="Delay_occurred" />
+                <ScalarProperty Name="DelayedReason" ColumnName="DelayedReason" />
+                <ScalarProperty Name="ApplicationArea" ColumnName="ApplicationArea" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="EST_hours" ColumnName="EST_hours" />
+                <ScalarProperty Name="Actual_St_hours" ColumnName="Actual_St_hours" />
+                <ScalarProperty Name="Planed__St_Date" ColumnName="Planed__St_Date" />
+                <ScalarProperty Name="Actual_St_Date" ColumnName="Actual_St_Date" />
+                <ScalarProperty Name="Planed__En_Date" ColumnName="Planed__En_Date" />
+                <ScalarProperty Name="Actual_En_Date" ColumnName="Actual_En_Date" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleMasters">
+            <EntityTypeMapping TypeName="ProACCDEVModel.RoleMaster">
+              <MappingFragment StoreEntitySet="RoleMaster">
+                <ScalarProperty Name="Role_Id" ColumnName="Role_Id" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ProACCDEVModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Type">
+            <EntityTypeMapping TypeName="ProACCDEVModel.User_Type">
+              <MappingFragment StoreEntitySet="User_Type">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
