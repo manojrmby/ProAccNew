@@ -606,6 +606,8 @@
     <Content Include="Views\Activity\Create.cshtml" />
     <Content Include="Views\Activity\_ActivityCreationCreate.cshtml" />
     <Content Include="Views\Activity\_ActivityCreationIndex.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
