@@ -58,7 +58,7 @@
                 <div class="position-relative form-group">
                     @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @id = "txtMobile" } })
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @id = "txtMobile",@maxlength = "10" } })
                         @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                     </div>
                     <div>
@@ -69,9 +69,9 @@
 
             <div class="col-6 ">
                 <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.LoginId, htmlAttributes: new { @class = "control-label col-md-5", @id = "LoginUserID" })
+                    @Html.LabelFor(model => model.LoginId, htmlAttributes: new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoginId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.LoginId, new { htmlAttributes = new { @class = "form-control",@id = "LoginUserID" } })
                         @Html.ValidationMessageFor(model => model.LoginId, "", new { @class = "text-danger" })
                     </div>
                     <div>
@@ -233,38 +233,48 @@
 
      $("#txtMobile").keypress(function (e) {
             //if the letter is not digit then display error and don't type anything
-            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                //display error message
-                $("#lblMobile").html("Numbers Only").show().fadeOut("slow");
+         if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+             //display error message
+             $("#lblMobile").html("Numbers Only").show();
+             ValidateUser()
+         }
+         else {
+              $("#lblMobile").html("").hide();
+             ValidateUser()
          }
          ValidateUser()
      });
 
     $("#txtUserEmail").on("blur", function (event) {
-            //debugger;
+            debugger;
            var str = $(this).val();
            var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
-            if (!filter.test(str)) {
-                $("#lblUserEmail").html("Email is not valid").show().fadeOut(2000);
+        if (!filter.test(str)) {
+            $("#lblUserEmail").html("Email is not valid").show();
+            ValidateUser();
         }
-        ValidateUser()
+        else {
+            $("#lblUserEmail").html("").hide();
+            ValidateUser();
+        }
+        
     });   
 
     function ValidateUser() {
-
+        debugger;
         var id = $("#UserId").val().trim();
         var userMasterName = $("#userMasterName").val().trim();
         var Mobile = $("#txtMobile").val().trim();
         var Email = $("#txtUserEmail").val().trim();
         var LoginName = $("#LoginUserID").val().trim();
 
-        var lblName = $("#lblName1").val().trim();
-        var lblMobile = $("#lblMobile").val().trim();
-        var lblEmail = $("#lblUserEmail").val().trim();
-        var lblLoginName = $("#lblLoginUserID").val().trim();
+        var lblName = $("#lblName1").text().trim();
+        var lblMobile = $("#lblMobile").text().trim();
+        var lblEmail = $("#lblUserEmail").text().trim();
+        var lblLoginName = $("#lblLoginUserID").text().trim();
 
-        if (userMasterName != "" && Mobile != "" && Email != "" && LoginName != "" && lblName != "" && lblMobile != "" && lblEmail != null && lblLoginName != "") {
+        if (userMasterName != "" && Mobile != "" && Email != "" && LoginName != "" && lblName == "" && lblMobile == "" && lblEmail =="" && lblLoginName == "") {
             $("#saveUser").prop("disabled", false);
         }
         else {
