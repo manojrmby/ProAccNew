@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Phone</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />
+                    <input type="text" class="form-control" id="txtCustomerPhone" minlength="10" maxlength="12" />
                     <span id="lblCustomerPhone" style="color:red" />
                 </div>
             </div>
@@ -72,7 +72,8 @@
                     event.preventDefault();
                     $("#lblCompanyName").html("Not Allowed").show().fadeOut(2000);
         }
-        $("#btnCustomerCreate").prop('disabled', false);
+            $("#btnCustomerCreate").prop('disabled', false);
+            $("#btnCustomerUpdate").prop('disabled', false);
         });
 
         
@@ -81,7 +82,7 @@
             var CompName = $("#txtCompanyName").val().trim();
             var id = $("#customerid").val().trim();
             if (CompName == "") {
-                $("#lblCompanyName").html("Please Enter valid Consultant User name").show().fadeOut(2000);
+                $("#lblCompanyName").html("Please Enter valid Company Name").show().fadeOut(2000);
             }
             else {
                 $.ajax({

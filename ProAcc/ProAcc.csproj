@@ -519,13 +519,16 @@
     <Compile Include="BL\Model\SAPInput_SimplificationReport.cs" />
     <Compile Include="BL\Model\UserModel.cs" />
     <Compile Include="BL\Model\UserRoleProvider.cs" />
+    <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InstanceCreationController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="BL\Base.cs" />
     <Compile Include="BL\DBHelper.cs" />
     <Compile Include="BL\Model\Common.cs" />
+    <Compile Include="Controllers\ProjectCreationController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\asdadUserController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -595,6 +598,15 @@
     <Content Include="Views\Userasdad\_UserCreate.cshtml" />
     <Content Include="Views\User\CreateUsers.cshtml" />
     <Content Include="Views\Customers\_UserCreate.cshtml" />
+    <Content Include="Views\ProjectCreation\Create.cshtml" />
+    <Content Include="Views\ProjectCreation\_ProjectCreationCreate.cshtml" />
+    <Content Include="Views\ProjectCreation\_ProjectCreationIndex.cshtml" />
+    <Content Include="Views\InstanceCreation\Create.cshtml" />
+    <Content Include="Views\InstanceCreation\_InstanceCreate.cshtml" />
+    <Content Include="Views\InstanceCreation\_InstanceIndex.cshtml" />
+    <Content Include="Views\Activity\Create.cshtml" />
+    <Content Include="Views\Activity\_ActivityCreationCreate.cshtml" />
+    <Content Include="Views\Activity\_ActivityCreationIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
