@@ -12,7 +12,7 @@
             <input type="hidden" id="tcre_on" />
             <input type="hidden" id="tcre_By" />
             <div class="form-group">
-                <label class="control-label col-md-4 required">Team Name</label>
+                <label class="control-label col-md-4 required">Role Name</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtTeamName" />
                     <span id="lblTeamName" style="color:red" />
@@ -52,7 +52,7 @@
 
 
     $("#btnTeamCreate").on("click", function () {
-        //debugger;
+        debugger;
         var TeamName = $("#txtTeamName").val().trim();
         if (TeamName == "") {
             $("#lblTeamName").html("Please enter the Team Name").show().fadeOut(2000);
@@ -62,7 +62,7 @@
             $.ajax({
               url: '@Url.Action("CheckTeam","TeamMaster")',
               type: "GET",
-              data: { name: TeamName,id:null },
+              data: { name:TeamName,id:null },
               dataType: "json",
               success: function (data) {
                   if (data != "success") {
@@ -74,7 +74,7 @@
                       $.ajax({
                     type: "POST",
                     url: '@Url.Action("Create","TeamMaster")',
-                    data: { TeamName: TeamName},
+                    data: { RoleName: TeamName},
                     //dataType: "json",
                     success: function (response) {
                         if (response == "success") {

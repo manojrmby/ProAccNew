@@ -23,16 +23,16 @@ namespace ProAcc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(TeamMaster team)
+        public ActionResult Create(RoleMaster Role)
         {
-            var name = db.TeamMasters.Where(p => p.TeamName == team.TeamName).Where(x => x.isActive == true).ToList();
+            var name = db.RoleMasters.Where(p => p.RoleName == Role.RoleName).Where(x => x.isActive == true).ToList();
             if (name.Count == 0)
             {
-                team.Cre_on = DateTime.Now;
-                team.Cre_By = Guid.Parse(Session["loginid"].ToString());
-                team.isActive = true;
+                Role.Cre_on = DateTime.Now;
+                Role.Cre_By = Guid.Parse(Session["loginid"].ToString());
+                Role.isActive = true;
 
-                db.TeamMasters.Add(team);
+                db.RoleMasters.Add(Role);
                 db.SaveChanges();
             }
             return Json("success");
@@ -43,7 +43,7 @@ namespace ProAcc.Controllers
         {
             if(id!=null)
             {
-                var em = db.TeamMasters.Where(p => p.TeamName == name).Where(x => x.Id != id).Where(x => x.isActive == true).ToList();
+                var em = db.RoleMasters.Where(p => p.RoleName == name).Where(x => x.RoleId != id).Where(x => x.isActive == true).ToList();
                 if (em.Count > 0)
                 {
                     return Json("error", JsonRequestBehavior.AllowGet);
@@ -55,7 +55,7 @@ namespace ProAcc.Controllers
             }
             else
             {
-                var em = db.TeamMasters.Where(p => p.TeamName == name).Where(x => x.isActive == true).ToList();
+                var em = db.RoleMasters.Where(p => p.RoleName == name).Where(x => x.isActive == true).ToList();
                 if (em.Count > 0)
                 {
                     return Json("error", JsonRequestBehavior.AllowGet);
@@ -70,17 +70,17 @@ namespace ProAcc.Controllers
         [HttpGet]
         public ActionResult GetTeamById(int id)
         {
-            var team = db.TeamMasters.Find(id);
-            TeamMaster master = new TeamMaster();
-            master.Id = id;
-            master.TeamName = team.TeamName;
+            var team = db.RoleMasters.Find(id);
+            RoleMaster master = new RoleMaster();
+            master.RoleId = id;
+            master.RoleName = team.RoleName;
             master.Cre_on = team.Cre_on;
             master.Cre_By = team.Cre_By;
             return Json(master, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult Edit(TeamMaster model)
+        public ActionResult Edit(RoleMaster model)
         {
             model.Cre_on = DateTime.Now;
             model.Cre_By= Guid.Parse(Session["loginid"].ToString());
@@ -95,7 +95,7 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            TeamMaster tmaster = db.TeamMasters.Find(id);
+            RoleMaster tmaster = db.RoleMasters.Find(id);
             tmaster.isActive = false;
             tmaster.IsDeleted = true;
             db.Entry(tmaster).State = EntityState.Modified;

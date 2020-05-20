@@ -13,6 +13,10 @@
         font-weight: bold;
         color: red;
     }
+    span{
+        color: red;
+    font-size: 10px;
+    }
 </style>
 <a class="card-title">User Creation</a>
 @using (Html.BeginForm("Create", "User", FormMethod.Post, new { }))
@@ -31,7 +35,10 @@
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "txtName1", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                        <span id="lblName1" style="color:red"></span>
+
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span id="lblName1">&nbsp;</span>
                     </div>
                 </div>
 
@@ -44,20 +51,16 @@
             </div>
         </div>*@
 
-                <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-5 required" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @id = "txtMob", @class = "form-control", @onchange = "ValidateNu()", @maxlength = "10" } })
-                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
-                        <span id="lblMob1" style="color:red"></span>
-                    </div>
-                </div>
+               
                 <div class="position-relative form-group">
                     @Html.LabelFor(model => model.LoginId, "Login ID", htmlAttributes: new { @class = "control-label col-md-5 required" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoginId, new { htmlAttributes = new { @id = "ConsultantUserName", @class = "form-control" } })
+                        @Html.EditorFor(model => model.LoginId, new { htmlAttributes = new { @id = "LoginID", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.LoginId, "", new { @class = "text-danger" })
-                        <span id="StatusConsultant" style="color:red"></span>
+
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span id="StatusConsultant">&nbsp;</span>
                     </div>
                 </div>
 
@@ -67,36 +70,56 @@
                         @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @id = "Passwd", @class = "form-control", @type = "password" } })
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;
+                    </div>
                 </div>
 
                 <div class="position-relative form-group">
                     <label class="control-label col-md-5 required">Confirm Password</label>
                     <div class="col-md-10">
                         <input type="password" class="form-control required" onchange="validateConsPwd()" id="txtConsCnfmPassword" />
-                        <span id="lblAltConsPwd" style="color:red"></span>
+                       
                     </div>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp; <span id="lblAltConsPwd">&nbsp;</span>
                 </div>
 
             </div>
             <div class="col-6 ">
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @id = "txtMob", @class = "form-control", @onchange = "ValidateNu()", @maxlength = "10" } })
+                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span id="lblMob1">&nbsp;</span>
+                    </div>
+                </div>
 
                 <div class="position-relative form-group">
                     @Html.LabelFor(model => model.EMail, "Email", htmlAttributes: new { @class = "control-label col-md-5 required" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @id = "txtEmail1", @class = "form-control", @onchange = "ValidateEmail1()" } })
                         @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
-                        <span id="lblEmail1" style="color:red"></span>
+
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span id="lblEmail1">&nbsp;</span>
                     </div>
                 </div>
                 <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.UserTypeID, "User Type", htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    @Html.Label("User Type", htmlAttributes: new { @class = "control-label col-md-5 required" })
                     <div class="col-md-10">
-                        @Html.DropDownList("Type", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("Type",null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="position-relative form-group" id="divRole">
-                    @Html.LabelFor(model => model.RoleMaster, "Role", htmlAttributes: new { @class = "control-label col-md-5" })
+                    @Html.Label("Role", htmlAttributes: new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
                         @Html.DropDownList("Role_Data", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.RoleMaster, "", new { @class = "text-danger" })
@@ -137,7 +160,7 @@
 
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                     event.preventDefault();
-                    $("#lblName1").html("Not Allowed").show().fadeOut("slow");
+                $("#lblName1").html("Not Allowed").show().fadeOut("slow", function () {$("#lblName1").html(" ") });
 
             }
         });
@@ -146,21 +169,21 @@
             //debugger;
             var CnstName = $("#txtName1").val().trim();
             if (CnstName == "") {
-                $("#lblName1").html("Please Enter valid Consultant name").show().fadeOut(2000);
+                $("#lblName1").html("Please Enter valid Name").show();
             }
             else {
                 $.ajax({
-                url: '@Url.Action("CheckConsultantsNameAvailability", "Consultants")',
+                url: '@Url.Action("NameAvailability", "User")',
                 type: "GET",
                 data: { namedata: CnstName },
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblName1").html("This Consultant name is already taken,please select another").show();
+                        $("#lblName1").html("This Name is already taken,please Try another").show();
 
                     }
                     else {
-                        $("#lblName1").html("").hide();
+                        $("#lblName1").html("");
                     }
 
                 },
@@ -173,25 +196,25 @@
 
          });
 
-        $('#ConsultantUserName').on('focusout', function () {
+        $('#LoginID').on('focusout', function () {
             //debugger;
-            var CnstUserName = $("#ConsultantUserName").val().trim();
+            var CnstUserName = $("#LoginID").val().trim();
             if (CnstUserName == "") {
-                $("#StatusConsultant").html("Please Enter valid Consultant User name").show().fadeOut(2000);
+                $("#StatusConsultant").html("Please Enter valid LoginId").show();
             }
             else {
                 $.ajax({
-                url: '@Url.Action("CheckConsultantsUsernameAvailability", "Consultants")',
+                url: '@Url.Action("UsernameAvailability", "User")',
                 type: "GET",
                 data: { userdata: CnstUserName },
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#StatusConsultant").html("This Consultant User name is already taken,please select another").show();
+                        $("#StatusConsultant").html("This LoginId is already taken , please select another").show();
 
                     }
                     else {
-                        $("#StatusConsultant").html("").hide();
+                        $("#StatusConsultant").html("");
                     }
 
                 },
@@ -363,7 +386,7 @@
         var Desc = $("#txtDesc").val();
         var Mob = $("#txtMob").val();
         var Email1 = $("#txtEmail1").val();
-        var ConsultantUserName = $("#ConsultantUserName").val();
+        var LoginID = $("#LoginID").val();
         var Passwd = $("#Passwd").val();
         //var txtConsCnfmPassword = $("#txtConsCnfmPassword").val();
 
@@ -374,7 +397,7 @@
         var Status1 = $("#StatusConsultant").text();
         var lblAltConsPwd = $("#lblAltConsPwd").text();
 
-        if (Name1.length > 0 && Desc.length > 0 && Mob.length > 0 && Email1.length > 0 && ConsultantUserName.length > 0 && Passwd.length > 0 &&
+        if (Name1.length > 0 && Desc.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 &&
             lblName1 == "" && lblDesc == "" && lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
 
             $("#createconsultant").prop("disabled", false);
@@ -394,7 +417,8 @@
         }
     });
 
-    $(document).ready(function(){
+    $(document).ready(function () {
+        $("#createconsultant").prop('disabled', true);
         $("#divRole").hide();
         $("#divCust").hide();
     });

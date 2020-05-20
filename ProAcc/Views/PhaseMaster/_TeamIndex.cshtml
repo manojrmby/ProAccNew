@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    var teamdetails = ViewBag.Teamdetails;
+    var teamdetails = ViewBag.Roledetails;
 }
 
 
@@ -9,7 +9,7 @@
     <thead>
         <tr>
             <th>
-                TeamName
+                Role Names
             </th>
             <th>
                 Actions
@@ -21,12 +21,12 @@
         {
             <tr>
                 <td>
-                    <a class="txtG" value="@item.TeamName">@item.TeamName</a>
+                    <a class="txtG" value="@item.RoleName">@item.RoleName</a>
                 </td>
 
                 <td>
-                    <a href="#" id="btnEdit" class="editTeam fa fa-edit"></a><input type="hidden" value="@item.Id" /> |
-                    <a href="#" class="btnTeamDelete fa fa-trash"></a><input type="hidden" value="@item.Id" />
+                    <a href="#" id="btnEdit" class="editTeam fa fa-edit"></a><input type="hidden" value="@item.RoleId" /> |
+                    <a href="#" class="btnTeamDelete fa fa-trash"></a><input type="hidden" value="@item.RoleId" />
                 </td>
             </tr>
         }

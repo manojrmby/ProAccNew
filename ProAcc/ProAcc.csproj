@@ -530,7 +530,6 @@
     <Compile Include="BL\Model\Common.cs" />
     <Compile Include="Controllers\ProjectCreationController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Controllers\asdadUserController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

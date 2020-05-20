@@ -19,7 +19,7 @@
         <EntityTypeShape EntityType="ProAccModel.Project" Width="1.5" PointX="10" PointY="6.875" />
         <EntityTypeShape EntityType="ProAccModel.RoleMaster" Width="1.5" PointX="7.75" PointY="10.125" />
         <EntityTypeShape EntityType="ProAccModel.User_Type" Width="1.5" PointX="7.75" PointY="6.625" />
-        <EntityTypeShape EntityType="ProAccModel.UserMaster" Width="1.5" PointX="10" PointY="0.75" />
+        <EntityTypeShape EntityType="ProAccModel.UserMaster" Width="1.5" PointX="15.125" PointY="1.125" />
         <AssociationConnector Association="ProAccModel.FK_Project_Customer" />
         <AssociationConnector Association="ProAccModel.FK_UserMaster_Customer" />
         <AssociationConnector Association="ProAccModel.FK_Instance_Project" />

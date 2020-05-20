@@ -46,32 +46,7 @@ namespace ProAcc.Controllers
             return View(consultant);
         }
 
-        public JsonResult CheckConsultantsUsernameAvailability(string userdata)
-        {
-            System.Threading.Thread.Sleep(100);
-            var SearchDt = db.UserMasters.Where(x => x.LoginId == userdata).Where(x => x.isActive == true).FirstOrDefault();
-            if ( SearchDt != null)
-            {
-                return Json("error", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json("success", JsonRequestBehavior.AllowGet);
-            }
-        } 
-        public JsonResult CheckConsultantsNameAvailability(string namedata)
-        {
-            System.Threading.Thread.Sleep(100);
-            var SearchDt = db.UserMasters.Where(x => x.Name == namedata).Where(x => x.isActive == true).FirstOrDefault();
-            if (SearchDt != null)
-            {
-                return Json("error", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json("success", JsonRequestBehavior.AllowGet);
-            }
-        }
+       
 
         // GET: Consultants/Create
         public ActionResult Create()
@@ -85,39 +60,7 @@ namespace ProAcc.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(UserMaster con)
-        {
-            if (ModelState.IsValid)
-            {
-                if (con.Name != null && con.LoginId !=null && con.Password!=null)
-                {
-                    con.UserId = Guid.NewGuid();
-                    con.Cre_By = Guid.Parse(Session["loginid"].ToString());
-                    con.Cre_on = DateTime.Now;
-                    con.isActive = true;
-                    if (con.UserTypeID == 1)
-                    {
-                        con.RoleID = 1;
-                    }
-                    db.UserMasters.Add(con);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    
-                    ViewBag.UserTypeID = new SelectList(db.User_Type, "Id", "UserType", con.UserTypeID);
-                    ViewBag.Message = true;
-                    return View();
-                }
-                
-            }
-
-            ViewBag.UserTypeID = new SelectList(db.User_Type, "Id", "UserType", con.UserTypeID);
-            return View(con);
-        }
+       
 
         // GET: Consultants/Edit/5
         public ActionResult Edit(Guid? id)
