@@ -1,52 +1,202 @@
-﻿@model ProAcc.BL.Model.CreateViewModel
+﻿
+
 @{
-    ViewBag.Title = "Create";
+
+    ViewBag.Title = "Create Customer";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
 
-<div class="container">
-    <div class="text-center" style="min-height:204px;margin-top:204px;" id="Bottem_Menu">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="mb-3 text-left card card-body">
-                    <h5 class="card-title">Customer</h5>Click to go Customer Creation Page.
-                    <button class="btn btn-outline-focus" id="Me_customer"><b>Create New Customer</b> </button>
+<a class="card-title">Create Customer</a>
+<div style="padding:1em;">
+    <div class="row">
+        <div class="col-6">
+
+            <input type="hidden" id="customerid" />
+            <input type="hidden" id="pcre_on" />
+            <input type="hidden" id="pcre_By" />
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Company Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtCompanyName" />
+                    <span id="lblCompanyName" style="color:red" />
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="mb-3 text-left card card-body">
-                    <h5 class="card-title">User Creation</h5>Click to go User Creation Page.
-                    <button class="btn btn-outline-focus" id="Me_User"><b>Create New User</b></button>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Industry Sector</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtIndustrySector" />
+                    <span id="lblIndustrySector" style="color:red" />
                 </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Phone</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtCustomerPhone" minlength="10" maxlength="12" />
+                    <span id="lblCustomerPhone" style="color:red" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Email</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtCustomerEmail" />
+                    <span id="lblCustomerEmail" style="color:red" />
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Create" class="btn btn-primary" id="btnCustomerCreate" />
+                <input type="button" value="Update" class="btn btn-info" id="btnCustomerUpdate" style="display:none" />
             </div>
         </div>
     </div>
 </div>
+@Html.Hidden("RedirectToCustomerList", Url.Action("Index", "Customers"))
+
+<script>
+
+    $(document).ready(function () {
+        $("#btnCustomerCreate").prop('disabled', true);
+
+        $("#txtCompanyName").keypress(function (event) {
+       // debugger;
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                    event.preventDefault();
+                    $("#lblCompanyName").html("Not Allowed").show().fadeOut(2000);
+        }
+            $("#btnCustomerCreate").prop('disabled', false);
+            $("#btnCustomerUpdate").prop('disabled', false);
+        });
 
 
-<div id="customer">
-    @Html.Partial("_Customercreate")
-    @*@Html.Partial("_CustomerIndex", "Customer")*@
-    <div id="divCustomers">
+        $('#txtCompanyName').on('focusout', function () {
+            //debugger;
+            var CompName = $("#txtCompanyName").val().trim();
+            var id = $("#customerid").val().trim();
+            if (CompName == "") {
+                $("#lblCompanyName").html("Please Enter valid Company Name").show().fadeOut(2000);
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckCustomersNameAvailability", "Customers")',
+                type: "GET",
+                data: { namedata: CompName,id:id },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblCompanyName").html("This Company Name is already in use").show();
+                        $("#btnCustomerCreate").prop('disabled', true);
+                        $("#btnCustomerUpdate").prop('disabled', true);
+                    }
+                    else {
+                        $("#lblCompanyName").html("").hide();
+                        $("#btnCustomerCreate").prop('disabled', false);
+                        $("#btnCustomerUpdate").prop('disabled', false);
+                    }
 
-    </div>
-</div>
-<div id="consultant">
-    @*@Html.Partial("_UserCreate",Model.User)*@
-</div>
-@Html.Hidden("RedirectTo", Url.Action("CreateUsers", "User"));
+                },
+                error: function (err) {
 
-<script type="text/javascript">
+                    alert(err);
+                }
+            });
+            }
 
-    function loadCustomer() {
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("GetCustomers","Customers")', 
-            
-                //data: { Company_Name: CompanyName, Industry_Sector: IndustrySector, Phone: custphone, Email: custEmail },
-            success: function (response) {
-                $("#divCustomers").html(response);
+        });
+
+
+        $("#txtIndustrySector").keypress(function (event) {
+       // debugger;
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                    event.preventDefault();
+                    $("#lblIndustrySector").html("Not Allowed").show().fadeOut(2000);
+        }
+        $("#btnCustomerCreate").prop('disabled', false);
+        });
+
+        $("#txtCustomerPhone").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                 event.preventDefault();
+                $("#lblCustomerPhone").html("Numbers Only").show().fadeOut(2000);
+            }
+        });
+
+        $("#txtCustomerPhone").blur(function () {
+            //debugger;
+            phone = $(this).val();
+            phone = phone.replace(/[^0-9]/g,'');
+            if (phone.length != 10)
+            {
+                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
+               // $('#txtCustomerPhone').focus();
+            }
+       });
+
+        $("#txtCustomerEmail").on("blur", function (event) {
+            //debugger;
+           var str = $(this).val();
+           var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+            if (!filter.test(str)) {
+                $("#lblCustomerEmail").html("Email is not valid").show().fadeOut(2000);
+           }
+        });
+    });
+
+
+    $("#btnCustomerCreate").on("click", function () {
+        debugger;
+        var CompanyName = $("#txtCompanyName").val().trim();
+        var IndustrySector = $("#txtIndustrySector").val().trim();
+        var custphone = $("#txtCustomerPhone").val().trim();
+        var custEmail=$("#txtCustomerEmail").val().trim();
+
+        if (CompanyName == "") {
+            $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
+        }
+        else if (IndustrySector =="")
+        {
+            $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
+        }
+        else if (custphone=="")
+        {
+            $("#lblCustomerPhone").html("Please enter the Customer Phone").show().fadeOut(2000);
+        }
+        else if (custEmail=="")
+        {
+            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+        }
+        else {
+            $.ajax({
+                    type: "POST",
+                url: '@Url.Action("Create","Customers")',
+                data: { Company_Name: CompanyName, Industry_Sector: IndustrySector, Phone: custphone, Email: custEmail },
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Customer Saved successfully!");
+                            var url = $("#RedirectToCustomerList").val();
+                            location.href = url;
+                            //loadCustomer();
+                            //$("#txtCompanyName").val("");
+                            //$("#txtIndustrySector").val("");
+                            //$("#txtCustomerPhone").val("");
+                            //$("#txtCustomerEmail").val("");
+                            //$("#btnCustomerCreate").show();
+                        }
                     },
                     failure: function (response) {
                        alert(response.responseText);
@@ -55,59 +205,76 @@
                         alert(response.responseText);
                     }
             });
-    }
 
-    $(document).ready(function () {
-        loadCustomer()
-        $("#customer").hide();
-        $("#consultant").hide();
-        $("#top_menu").hide();
+
+
+        }
     });
-    $('#Menu_consultant').click(function () {
-        $("#customer").hide();
-        $("#consultant").show();
-        $("#top_menu").show();
-
-    }
-    );
-    $('#Menu_customer').click(function () {
-        $("#customer").show();
-        $("#consultant").hide();
-        $("#top_menu").show();
-    }
-    );
-    $('#Me_customer').click(function () {
-
-        $("#customer").show();
-        $("#top_menu").show();
-        $("#consultant").hide();
-        $("#Bottem_Menu").hide();
 
 
-    });
-    $('#Me_consultant').click(function () {
+     $("#btnCustomerUpdate").on("click", function () {
+         debugger;
+         var id = $("#customerid").val();
+        var CompanyName = $("#txtCompanyName").val().trim();
+        var IndustrySector = $("#txtIndustrySector").val().trim();
+        var custphone = $("#txtCustomerPhone").val().trim();
+        var custEmail=$("#txtCustomerEmail").val().trim();
+        var cre_on = $("#pcre_on").val();
+        var cre_By = $("#pcre_By").val();
 
-        $("#customer").hide();
-        $("#top_menu").show();
-        $("#consultant").show();
-        $("#Bottem_Menu").hide();
-    });
-    $('#Me_User').click(function ()
-    {
-var url = $("#RedirectTo").val();
- location.href = url;
-    });
-    //$('[name="UserType"]').on('change', function () {
-    //    var val = $('[name="UserType"]:checked').val()
-    //    if (val == "Customer") {
-    //        $("#customer").show();
-    //        $("#consultant").hide();
-    //    }
-    //    else {
-    //        $("#customer").hide();
-    //        $("#consultant").show();
-    //    }
+         var model = {
+             Customer_Id: id,
+             Company_Name: CompanyName,
+             Industry_Sector: IndustrySector,
+             Phone: custphone,
+             Email: custEmail,
+             Cre_on: cre_on,
+             Cre_By: cre_By
+         }
+       if (CompanyName == "") {
+            $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
+        }
+        else if (IndustrySector =="")
+        {
+            $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
+        }
+        else if (custphone=="")
+        {
+            $("#lblCustomerPhone").html("Please enter the Customer Phone").show().fadeOut(2000);
+        }
+        else if (custEmail=="")
+        {
+            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+        }
+        else {
 
-    //});
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit","Customers")',
+                    data: { customer : model},
+                    //dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                            alert("Customers Edited successfully!");
+                            loadCustomer();
+                            $("#txtCompanyName").val("");
+                            $("#txtIndustrySector").val("");
+                            $("#txtCustomerPhone").val("");
+                            $("#txtCustomerEmail").val("");
+                            $("#btnCustomerUpdate").hide();
+                            $("#btnCustomerCreate").show();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+        }
+     });
+
 
 </script>

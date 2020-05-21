@@ -14,9 +14,9 @@
             <th>
                 Phase Name
             </th>
-            <th>
+            @*<th>
                 Application Area
-            </th>
+            </th>*@
             <th>
                 Actions
             </th>
@@ -26,16 +26,14 @@
         @foreach (var item in activitydetails)
         {
         <tr>
-            <td>
+            @*<td>
                 <a class="txtG" value="@item.Activity">@item.Activity</a>
-            </td>
+            </td>*@
 
             <td>
                 <a class="txtG" value="@item.PhaseMaster.PhaseName">@item.PhaseMaster.PhaseName</a>
             </td>
-            <td>
-                <a class="txtG" value="@item.ApplicationAreaMaster.ApplicationArea">@item.ApplicationAreaMaster.ApplicationArea</a>
-            </td>
+            
 
             <td>
                 <a href="#" id="btnEdit" class="editActivity fa fa-edit"></a><input type="hidden" value="@item.Id" /> |

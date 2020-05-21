@@ -12,17 +12,16 @@ namespace ProACC_DB
     using System;
     using System.Collections.Generic;
     
-    public partial class PhaseMaster
+    public partial class StatusMaster
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PhaseMaster()
+        public StatusMaster()
         {
             this.ProjectMonitors = new HashSet<ProjectMonitor>();
-            this.ActivityMasters = new HashSet<ActivityMaster>();
         }
     
         public int Id { get; set; }
-        public string PhaseName { get; set; }
+        public string StatusName { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }
@@ -32,7 +31,5 @@ namespace ProACC_DB
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectMonitor> ProjectMonitors { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActivityMaster> ActivityMasters { get; set; }
     }
 }

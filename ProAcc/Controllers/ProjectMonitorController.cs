@@ -54,7 +54,7 @@ namespace ProAcc.Controllers
             int inst = 0;
             if (InstanceID != Guid.Empty)
             {
-                var q = from u in db.ProjectInstanceConfigs where (u.Id == InstanceID && u.UploadStatus == true) select u;
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus== true) select u;
                 if (q.Count() > 0)
                 {
                     inst = 1;
@@ -65,30 +65,30 @@ namespace ProAcc.Controllers
             ViewBag.Instance = inst;
             List<SelectListItem> Project = new List<SelectListItem>();
 
-            if (User.IsInRole("Customer"))
+            //if (User.IsInRole("Customer"))
+            //{
+            //    Guid customerId = Guid.Parse(Session["loginid"].ToString());
+            //    var query = from u in db.cus where (u.CustomerID == customerId && u.isActive == true) select u;
+            //    if (query.Count() > 0)
+            //    {
+            //        foreach (var v in query)
+            //        {
+            //            Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
+            //        }
+            //    }
+            //}
+            //else
+            //{
+
+            var query = from u in db.Projects where (u.isActive == true) select u;
+            if (query.Count() > 0)
             {
-                Guid customerId = Guid.Parse(Session["loginid"].ToString());
-                var query = from u in db.CustomerProjectConfigs where (u.CustomerID == customerId && u.isActive == true) select u;
-                if (query.Count() > 0)
+                foreach (var v in query)
                 {
-                    foreach (var v in query)
-                    {
-                        Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
-                    }
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
                 }
             }
-            else
-            {
-
-                //var query = from u in db.CustomerProjectConfigs where(u.isActive==true)  select u;
-                //if (query.Count() > 0)
-                //{
-                //    foreach (var v in query)
-                //    {
-                //        Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
-                //    }
-                //}
-            }
+            // }
 
 
             ViewBag.Project = Project;
@@ -103,7 +103,9 @@ namespace ProAcc.Controllers
 
         public ActionResult SubmitProjectMonitor(ProjectMonitorModel Data)
         {
-
+            string InstanceId = Session["InstanceId"].ToString();
+            Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
+            //bool s=_Base.Sp_AdminAddMonitor(Data, InstanceId);
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #region Masters
@@ -112,20 +114,20 @@ namespace ProAcc.Controllers
             List<PhaseMaster> P = _Base.GetPhaseMasters();
             return Json(P, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult GetPending()
+        //public ActionResult GetPending()
+        //{
+        //    List<PendingMaster> P = _Base.GetPendingMasters();
+        //    return Json(P, JsonRequestBehavior.AllowGet);
+        //}
+        public ActionResult GetRole()
         {
-            List<PendingMaster> P = _Base.GetPendingMasters();
-            return Json(P, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult GetTeam()
-        {
-            List<TeamMaster> P = _Base.GetTeamMasters();
+            List<RoleMaster> P = _Base.GetRoleMasters();
             return Json(P, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetConsultant()
+        public ActionResult GetUser()
         {
-            List<Consultant> P = _Base.GetConsultant();
+            List<UserMaster> P = _Base.GetUser();
             return Json(P, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetStatus()
@@ -139,12 +141,12 @@ namespace ProAcc.Controllers
             List<SelectListItem> Instance = new List<SelectListItem>();
            
                 
-                var query = from u in db.ProjectInstanceConfigs select u;
+                var query = from u in db.Instances select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)
                     {
-                        Instance.Add(new SelectListItem { Text = v.InstaceName, Value = v.Id.ToString() });
+                        Instance.Add(new SelectListItem { Text = v.InstaceName, Value = v.Instance_id.ToString() });
                     }
                 }
             

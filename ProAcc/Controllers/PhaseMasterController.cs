@@ -19,20 +19,20 @@ namespace ProAcc.Controllers
         {
             ViewBag.phasedetails = db.PhaseMasters.Where(x => x.isActive == true).ToList();
            // ViewBag.ApplicationAreadetails = db.ApplicationAreaMasters.Where(x => x.isActive == true).ToList();
-            //ViewBag.Activitydetails = db.ActivityMasters.Where(x => x.isActive == true).ToList();
+            ViewBag.Activitydetails = db.ActivityMasters.Where(x => x.isActive == true).ToList();
             //ViewBag.Pendingdetails= db.PendingMasters.Where(x => x.isActive == true).ToList();
             ViewBag.Roledetails= db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1).ToList();
-            //ViewBag.Statusdetails=db.StatusMasters.Where(x => x.isActive == true).ToList();
+            ViewBag.Statusdetails=db.StatusMasters.Where(x => x.isActive == true).ToList();
             return View();
         }
 
-        //[HttpGet]
-        //public ActionResult PhaseIndex()
-        //{   
-        //    List<PhaseMaster> pm = db.PhaseMasters.Where(x => x.isActive == true).ToList();
-        //    var obj = new { data = pm };
-        //    return Json(obj, JsonRequestBehavior.AllowGet);
-        //}
+        [HttpGet]
+        public ActionResult PhaseIndex()
+        {
+            List<PhaseMaster> pm = db.PhaseMasters.Where(x => x.isActive == true).ToList();
+            var obj = new { data = pm };
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Create()
         {

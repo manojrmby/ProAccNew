@@ -22,6 +22,11 @@ namespace ProAcc.Controllers
         LogHelper _Log = new LogHelper();
 
         // GET: Customers
+
+        public ActionResult LinkPage()
+        {
+            return View();
+        }
         public ActionResult Index()
         {
             //var customers = db.Customers
@@ -29,8 +34,8 @@ namespace ProAcc.Controllers
             //    .OrderByDescending(x => x.Cre_on).ToList();
             //.Where(x => x.Name.StartsWith(search) || search == null).ToList(); //.ToPagedList(i ?? 1, 5);
             //return View(customers);
-            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).ToList();
-            return View();
+            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).OrderBy(x=>x.Cre_on).ToList();
+            return View(ViewBag.customersIndex);
         }
         // GET: Customers/Details/5
         public ActionResult Details(Guid? id)
@@ -99,7 +104,7 @@ namespace ProAcc.Controllers
                 {
                     customer.Customer_ID = Guid.NewGuid();
                     customer.isActive = true;
-                    customer.Cre_on = DateTime.Now.Date;
+                    customer.Cre_on = DateTime.Now;
                     customer.Cre_By = Guid.Parse(Session["loginid"].ToString());
                     db.Customers.Add(customer);
                     db.SaveChanges();
@@ -120,7 +125,7 @@ namespace ProAcc.Controllers
             
         }
 
-
+            
         public ActionResult GetCustomerById(Guid? id)
         {
             if (id == null)
@@ -132,8 +137,17 @@ namespace ProAcc.Controllers
             {
                 return HttpNotFound();
             }
-            var Customer = db.Customers.Find(id);
-            return Json(Customer, JsonRequestBehavior.AllowGet);
+            
+            
+            var Data = db.Customers.Find(id);
+
+            Customer cust = new Customer();
+            cust.Customer_ID = Data.Customer_ID;
+            cust.Company_Name = Data.Company_Name;
+            cust.Phone = Data.Phone;
+            cust.Email = Data.Email;
+
+            return Json(cust, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Customers/Edit/5

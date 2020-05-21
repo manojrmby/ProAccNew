@@ -25,7 +25,7 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual ActivityMaster ActivityMaster { get; set; }
         public virtual Instance Instance { get; set; }
+        public virtual ActivityMaster ActivityMaster { get; set; }
     }
 }

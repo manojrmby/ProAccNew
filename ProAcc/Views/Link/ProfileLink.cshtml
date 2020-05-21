@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "LinkPage";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="text-center" style="min-height:204px;margin-top:204px;" id="Bottem_Menu">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3 text-left card card-body">
+                    <h5 class="card-title">Customer</h5>Click to go Customer Creation Page.
+                    <button class="btn btn-outline-focus" id="Me_customer"><b>Create New Customer</b> </button>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3 text-left card card-body">
+                    <h5 class="card-title">User Creation</h5>Click to go User Creation Page.
+                    <button class="btn btn-outline-focus" id="Me_User"><b>Create New User</b></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Hidden("RedirectTo", Url.Action("CreateUsers", "User"))
+@Html.Hidden("RedirectToCustomer", Url.Action("Create", "Customers"))
+
+<script type="text/javascript">
+
+    @*function loadCustomer() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetCustomers","Customers")',
+
+                //data: { Company_Name: CompanyName, Industry_Sector: IndustrySector, Phone: custphone, Email: custEmail },
+            success: function (response) {
+                $("#divCustomers").html(response);
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+    }
+
+    $(document).ready(function () {
+        loadCustomer()
+        $("#customer").hide();
+        $("#consultant").hide();
+        $("#top_menu").hide();
+    });
+    $('#Menu_consultant').click(function () {
+        $("#customer").hide();
+        $("#consultant").show();
+        $("#top_menu").show();
+
+    }
+    );
+    $('#Menu_customer').click(function () {
+        $("#customer").show();
+        $("#consultant").hide();
+        $("#top_menu").show();
+    }
+    );
+    $('#Me_customer').click(function () {
+
+        $("#customer").show();
+        $("#top_menu").show();
+        $("#consultant").hide();
+        $("#Bottem_Menu").hide();
+
+
+    });
+    $('#Me_consultant').click(function () {
+
+        $("#customer").hide();
+        $("#top_menu").show();
+        $("#consultant").show();
+        $("#Bottem_Menu").hide();
+    });*@
+    $('#Me_User').click(function ()
+    {
+var url = $("#RedirectTo").val();
+ location.href = url;
+    });
+
+    $('#Me_customer').click(function ()
+    {
+var url = $("#RedirectToCustomer").val();
+ location.href = url;
+    });
+    //$('[name="UserType"]').on('change', function () {
+    //    var val = $('[name="UserType"]:checked').val()
+    //    if (val == "Customer") {
+    //        $("#customer").show();
+    //        $("#consultant").hide();
+    //    }
+    //    else {
+    //        $("#customer").hide();
+    //        $("#consultant").show();
+    //    }
+
+    //});
+
+</script>

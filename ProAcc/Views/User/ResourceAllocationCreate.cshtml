@@ -1,0 +1,333 @@
+﻿
+@{
+    ViewBag.Title = "ResourceAllocationCreate";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+
+@*<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css">*@
+
+@*<script type="text/javascript" src="./mock.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./jquery.dropdown.css">
+    <script src="./jquery.dropdown.js"></script>*@
+@*<script src="~/Asset/Scripts/MultiSelect/mock.js"></script>*@
+
+
+@*<link href="~/Asset/Scripts/MultiSelect/jquery.dropdown.css" rel="stylesheet" />*@
+@*<link href="~/Asset/Scripts/MultiSelect/jquery.dropdown.min.css" rel="stylesheet" />
+    <script src="~/Asset/Scripts/MultiSelect/jquery.dropdown.js"></script>*@
+@*<script src="~/Asset/Scripts/MultiSelect/jquery.dropdown.min.js"></script>*@
+
+<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Asset/Scripts/MultiSelect/MUl/jquery.multiselect.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/Asset/Scripts/MultiSelect/MUl/jquery.multiselect.js"></script>
+
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.12/js/bootstrap-multiselect.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.12/js/bootstrap-multiselect.min.js"></script>*@
+
+
+<a class="card-title">Create </a>
+<div class="row">
+    <div class="col-lg-12 card" style="margin-bottom:20px !important;">
+        <div class="row">
+            @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+            {
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail" class="">Customer Name</label>
+                        @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
+                    </div>
+                </div>
+            }
+            <div class="col-md-4">
+                <label class="">Project Name</label>
+                @if (User.IsInRole("Customer"))
+                {
+                    @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
+                }
+                else
+                {
+                    @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
+                           "Select a Customer", new { id = "IDProject", @class = "form-control" })
+                }
+            </div>
+            <div class="col-md-4">
+                <label>User</label>
+                <select name="langOpt[]" multiple="multiple" id="langOpt" class="form-control"></select>
+            </div>
+            @*<div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="select1">Test 1 - Binding to simple arrays</label>
+                        <br />
+                        <select id="select1" multiple="multiple" class="form-control" data-bind="options: availableValues, 
+                                selectedOptions: selectedValues, multiselect: {includeSelectAllOption: true}">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="select2">Test 2 - Binding to objects</label>
+                        <br />
+                        <select id="select2" multiple="multiple" class="form-control" data-bind="options: availableObjects,
+                                optionsText: 'name', optionsValue: 'id', selectedOptions: selectedIds, multiselect: {includeSelectAllOption: true}">
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-12">
+                        <pre id="koDebugData" data-bind="text: ko.toJSON($root, null, 4)"></pre>
+                    </div>
+                </div>
+            </div>*@
+
+            @*<div class="col-sm-4">
+            <div class="text-info">Multi-select+JSON+Token Mode</div><br>
+            <div class="dropdown-mul-1">
+                <select style="display:none" name="" id="" multiple placeholder="Select"> </select>
+            </div>
+        </div>*@
+            @*<div class="col-md-2">
+            <label for="exampleEmail" class="">Instance Name</label>
+            @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
+            "-Select-", new { id = "IDInstance", @class = "form-control" })
+        </div>*@
+            <div class="col-md-2">
+                <label class="">.</label>
+                <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
+                    Select User's
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+     $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                },
+                error: function (a) {
+                    debugger;
+                    alert(a);
+                }
+            });
+        });
+    $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstance","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+            });
+    $('#IDInstance').change(function () {
+                var id = $(this).val();
+                if (id == ""||id =="0") {
+                     $('#SubmitInstance').prop("disabled", true);
+                } else {
+					$('#SubmitInstance').prop("disabled", false);
+                }
+            });
+    $('#SubmitInstance').click(function () {
+        var IDInstance = $("#IDInstance").val();
+         $.ajax({
+                    //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+                 url: '@Url.Action("SubmitInstance", "Home")',
+                 type: "POST",
+                 data: { 'IDInstance': IDInstance },
+                 success: function (result) {
+                     alert("New Live Instance updated");
+                     LoadTable(IDInstance);
+                     //location.reload();
+                 }
+                });
+    });
+</script>
+
+<script>
+
+
+    $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadUser","User")',
+                //data: { 'CustomerId' : id},
+        success: function (data) {
+            //debugger;
+            var Data = data.Item1;
+            for (var i = 0; i < Data.length; i++) {
+                var opt = new Option(Data[i].Name, Data[i].Value,Data[i].linkID);
+                                $('#langOpt').append(opt);
+
+            }
+           // $('select[multiple]').multiselect();
+
+            $('#langOpt').multiselect({
+                columns: 1,
+                placeholder: 'Select User',
+                search: true,
+                enableClickableOptGroups: true
+            });
+
+                },
+                error: function (a) {
+                    debugger;
+                    alert(a);
+                }
+    });
+
+
+    //$('select[multiple].active.3col').multiselect({
+    //        columns: 3,
+    //        placeholder: 'Select States',
+    //        search: true,
+    //        searchOptions: {
+    //            'default': 'Search States'
+    //        },
+    //        selectAll: true
+    //    });
+
+   //var Random = Mock.Random;
+   // var json1 = Mock.mock({
+   //     "data|10-50": [{
+   //         name: function () {
+   //             return Random.name(true)
+   //         },
+   //         "id|+1": 1,
+   //         "disabled|1-2": true,
+   //         groupName: 'Group Name',
+   //         "groupId|1-4": 1,
+   //         "selected": false
+   //     }]
+   // });
+
+   // $('.dropdown-mul-1').dropdown({
+   //     data: json1.data,
+   //     limitCount: 40,
+   //     multipleMode: 'label',
+   //     choice: function () {
+   //         console.log(arguments,this);
+   //     }
+   // });
+
+    //var json2 = Mock.mock({
+    //    "data|10000-10000": [{
+    //        name: function () {
+    //            return Random.name(true)
+    //        },
+    //        "id|+1": 1,
+    //        "disabled": false,
+    //        groupName: 'Group Name',
+    //        "groupId|1-4": 1,
+    //        "selected": false
+    //    }]
+    //});
+
+    //$('.dropdown-mul-2').dropdown({
+    //    limitCount: 5,
+    //    searchable: false
+    //});
+
+    //$('.dropdown-sin-1').dropdown({
+    //    readOnly: true,
+    //    input: '<input type="text" maxLength="20" placeholder="Search">'
+    //});
+
+    //$('.dropdown-sin-2').dropdown({
+    //    data: json2.data,
+    //    input: '<input type="text" maxLength="20" placeholder="Search">'
+    //});
+</script>
+
+<script type="text/javascript">
+
+//    $(function() {
+//	var viewModel = { 
+//  	availableValues: ko.observableArray(["value 1","value 2","value 3","value 4","value 5"]), 
+//    selectedValues: ko.observableArray(["value 2","value 5"]),
+//    availableObjects: ko.observableArray([{id:1,name:"object 1"}, {id:2,name:"object 2"},{id:3,name: "object 3"},{id:4,name:"object 4"},{id:5,name:"object 5"}]),
+//    selectedIds: ko.observableArray([2,5])
+//  };
+  
+//	ko.applyBindings(viewModel);
+    
+//  //Add a selected value after 2 seconds to test dynamically updating the array.
+//  setTimeout(function() {
+//  	viewModel.selectedValues.push('value 4');
+//    viewModel.selectedIds.push(4);
+//  }, 2000);
+//});
+
+    //var _gaq = _gaq || [];
+    //_gaq.push(['_setAccount', 'UA-36251023-1']);
+    //_gaq.push(['_setDomainName', 'jqueryscript.net']);
+    //_gaq.push(['_trackPageview']);
+
+    //(function () {
+    //    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    //})();
+
+</script>

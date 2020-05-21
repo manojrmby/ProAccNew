@@ -61,9 +61,9 @@ namespace ProAcc.Controllers
                             UserType = "Customer";
                         }
                         Session["UserType"] = UserType;
-                        
-                       // return RedirectToAction("Home", "Home")
-                       return RedirectToAction("Create", "Customers");
+
+                        return RedirectToAction("Home", "Home");
+                       //return RedirectToAction("Create", "Customers");
                     }
                     else
                     {

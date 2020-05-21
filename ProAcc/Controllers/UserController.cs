@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using static ProAcc.BL.Model.Common;
 
 namespace ProAcc.Controllers
 {
@@ -14,12 +15,13 @@ namespace ProAcc.Controllers
     [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
+        Base _Base = new Base();
         private ProAccEntities db = new ProAccEntities();
         LogHelper _Log = new LogHelper();
 
         public ActionResult Index()
         {
-            var users = db.UserMasters.Where(x => x.isActive == true);
+            var users = db.UserMasters.Where(x => x.isActive == true).OrderByDescending(x=>x.Cre_on);
             return View(users);
         }
         // GET: User
@@ -208,6 +210,85 @@ namespace ProAcc.Controllers
                 db.SaveChanges();
             }
             return Json("success");
+        }
+
+        public ActionResult ResourceAllocationCreate()
+        {
+            int j = 0;
+            var stat = db.HanaStatus.ToList();
+            for (int i = 0; i < stat.Count(); i++)
+            {
+                if (stat[i].IsActive == true)
+                {
+                    j = j + 1;
+                }
+            }
+            ViewBag.count = j;
+
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
+
+            }
+            ViewBag.Instance = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            var query = from u in db.Projects where (u.isActive == true) select u;
+            if (query.Count() > 0)
+            {
+                foreach (var v in query)
+                {
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                }
+            }
+
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult LoadUser()
+        {
+            var Data = _Base.SP_GetAllUser();
+            List<SelectListItem> User = new List<SelectListItem>();
+
+
+
+            //if (!String.IsNullOrEmpty(ProjectId) && ProjectId != "0")
+            //{
+            //    var ID = Guid.Parse(ProjectId);
+            //    var query = from u in db.UserMasters where u.isActive == true && u.IsDeleted == false select u;
+            //    if (query.Count() > 0)
+            //    {
+            //        foreach (var v in query)
+            //        {
+            //            User.Add(new SelectListItem { Text = v.Name, Value = v.UserId.ToString() });
+            //        }
+            //    }
+            //}
+            return Json(Data, JsonRequestBehavior.AllowGet);
         }
     }
 }

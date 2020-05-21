@@ -1038,6 +1038,35 @@ namespace ProAcc.BL
             }
             return Pic;
         }
+
+
+        public Tuple<List<Lis>> SP_GetAllUser()
+        {
+            List<Lis> list1 = new List<Lis>();
+            DataSet ds = new DataSet();
+            DBHelper dB = new DBHelper("SP_ResorceAllocation", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetAllUser");
+            ds = dB.ExecuteDataSet();
+            if (ds.Tables.Count > 0)
+            {
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    DataTable dt = new DataTable();
+                    dt = ds.Tables[0];
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        list1.Add(new Lis
+                        {
+                            Name = dr["FullName"].ToString(),
+                            Value = dr["UserId"].ToString(),
+                            linkID=dr["RoleName"].ToString()
+                        });
+
+                    }
+                }
+            }
+                return Tuple.Create(list1);
+        }
         #endregion
 
         #region CUD
@@ -1100,11 +1129,11 @@ namespace ProAcc.BL
 
         //    return PM;
         //}
-        public List<RoleMaster> GetTeamMasters()
+        public List<RoleMaster> GetRoleMasters()
         {
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
-            dB.addIn("@Type", "GetTeam");
+            dB.addIn("@Type", "GetRole");
             dt = dB.ExecuteDataTable();
             List<RoleMaster> TM = new List<RoleMaster>();
             if (dt.Rows.Count > 0)
@@ -1113,7 +1142,7 @@ namespace ProAcc.BL
                 foreach (DataRow dr in dt.Rows)
                 {
                     RoleMaster P = new RoleMaster();
-                    P.RoleId = Convert.ToInt32(dr["Role_Id"].ToString());
+                    P.RoleId = Convert.ToInt32(dr["RoleId"].ToString());
                     P.RoleName = dr["RoleName"].ToString();
                     TM.Add(P);
                 }
@@ -1121,11 +1150,11 @@ namespace ProAcc.BL
 
             return TM;
         }
-        public List<UserMaster> GetConsultant()
+        public List<UserMaster> GetUser()
         {
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
-            dB.addIn("@Type", "GetConsultant");
+            dB.addIn("@Type", "GetUser");
             dt = dB.ExecuteDataTable();
             List<UserMaster> L = new List<UserMaster>();
             if (dt.Rows.Count > 0)
@@ -1142,27 +1171,27 @@ namespace ProAcc.BL
 
             return L;
         }
-        //public List<StatusMaster> GetStatus()
-        //{
-        //    DataTable dt = new DataTable();
-        //    DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
-        //    dB.addIn("@Type", "GetStatus");
-        //    dt = dB.ExecuteDataTable();
-        //    List<StatusMaster> L = new List<StatusMaster>();
-        //    if (dt.Rows.Count > 0)
-        //    {
+        public List<StatusMaster> GetStatus()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetStatus");
+            dt = dB.ExecuteDataTable();
+            List<StatusMaster> L = new List<StatusMaster>();
+            if (dt.Rows.Count > 0)
+            {
 
-        //        foreach (DataRow dr in dt.Rows)
-        //        {
-        //            StatusMaster P = new StatusMaster();
-        //            P.Id = Convert.ToInt32(dr["Id"].ToString());
-        //            P.StatusName = dr["StatusName"].ToString();
-        //            L.Add(P);
-        //        }
-        //    }
+                foreach (DataRow dr in dt.Rows)
+                {
+                    StatusMaster P = new StatusMaster();
+                    P.Id = Convert.ToInt32(dr["Id"].ToString());
+                    P.StatusName = dr["StatusName"].ToString();
+                    L.Add(P);
+                }
+            }
 
-        //    return L;
-        //}
+            return L;
+        }
 
         #endregion
 
@@ -1212,12 +1241,12 @@ namespace ProAcc.BL
                     P.LocalID = count++;
                     P.Instance = InstanceId;
                     P.PhaseId= Convert.ToInt32(dr["PhaseId"].ToString());
-                    P.Task = dr["Activity"].ToString();
+                    P.Task = dr["Task"].ToString();
                     P.Task_Other_Environment = false;
                     P.Dependency = false;
-                    P.PendingId = 0;
+                    P.Pending = "";
                     P.Delay_occurred = false;
-                    P.TeamID = 0;
+                    P.RoleID = 1;
                     //P.ConsultantID=
                     P.StatusId = 0;
                     P.EST_hours = 0;
@@ -1239,6 +1268,43 @@ namespace ProAcc.BL
             }
            
             return PM;
+        }
+
+
+        public bool Sp_AdminAddMonitor(ProjectMonitorModel PM,string InstanceID)
+        {
+            bool Status = false;
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@InstunceID", InstanceID);
+            dB.addIn("@Task", PM.Task);
+            dB.addIn("@PhaseId", PM.PhaseId);
+            dB.addIn("@Sequence_Num", PM.SequenceNum);
+            dB.addIn("@ApplicationArea", PM.ApplicationArea);
+
+
+            dB.addIn("@Task_Other_Environment", PM.Task_Other_Environment);
+            dB.addIn("@Dependency", PM.Dependency);
+            dB.addIn("@Pending", PM.Pending);
+            dB.addIn("@Delay_occurred", PM.Delay_occurred);
+
+            dB.addIn("@DelayedReason", PM.Delayed_Reas);
+            dB.addIn("@UserID", PM.UserID);
+            dB.addIn("@StatusId", PM.StatusId);
+            dB.addIn("@EST_hours", PM.EST_hours);
+
+
+            dB.addIn("@Actual_St_hours", PM.Actual_St_hours);
+            dB.addIn("@Planed__St_Date", PM.Planed__St_Date);
+            dB.addIn("@Actual_St_Date", PM.Actual_St_Date);
+            dB.addIn("@Planed__En_Date", PM.Planed__En_Date);
+
+            dB.addIn("@Actual_En_Date", PM.Actual_En_Date);
+            dB.addIn("@Notes", PM.Notes);
+            dB.addIn("@Cre_By", PM.Cre_By);
+
+            dB.ExecuteScalar();
+            return Status;
+
         }
         #endregion
 

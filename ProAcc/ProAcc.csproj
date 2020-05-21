@@ -219,6 +219,8 @@
     <Content Include="Asset\Scripts\JavaScript.js" />
     <Content Include="Asset\Scripts\jquery.min.js" />
     <Content Include="Asset\Scripts\main.js" />
+    <Content Include="Asset\Scripts\MultiSelect\MUl\jquery.multiselect.css" />
+    <Content Include="Asset\Scripts\MultiSelect\MUl\jquery.multiselect.js" />
     <Content Include="Asset\Scripts\Prograssbarjs.js" />
     <Content Include="Asset\Scripts\tilt.jquery.min.js" />
     <Content Include="Asset\Scripts\utils.js" />
@@ -524,11 +526,17 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstanceCreationController.cs" />
+    <Compile Include="Controllers\LinkController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="BL\Base.cs" />
     <Compile Include="BL\DBHelper.cs" />
     <Compile Include="BL\Model\Common.cs" />
+    <Compile Include="Controllers\PhaseMasterController.cs" />
+    <Compile Include="Controllers\PreConvertionController.cs" />
     <Compile Include="Controllers\ProjectCreationController.cs" />
+    <Compile Include="Controllers\ProjectMonitorController.cs" />
+    <Compile Include="Controllers\StatusController.cs" />
+    <Compile Include="Controllers\TeamMasterController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -546,14 +554,6 @@
     <Content Include="Views\Assessment\SimplificationReport.cshtml" />
     <Content Include="Views\Assessment\CustomReport.cshtml" />
     <Content Include="Views\Customers\Create.cshtml" />
-    <Content Include="Views\Customers\Delete.cshtml" />
-    <Content Include="Views\Customers\Details.cshtml" />
-    <Content Include="Views\Customers\Edit.cshtml" />
-    <Content Include="Views\Consultants\Create.cshtml" />
-    <Content Include="Views\Consultants\Delete.cshtml" />
-    <Content Include="Views\Consultants\Details.cshtml" />
-    <Content Include="Views\Consultants\Edit.cshtml" />
-    <Content Include="Views\Consultants\Index.cshtml" />
     <Content Include="Views\CustomerProjectConfigs\Create.cshtml" />
     <Content Include="Views\CustomerProjectConfigs\Delete.cshtml" />
     <Content Include="Views\CustomerProjectConfigs\Details.cshtml" />
@@ -587,8 +587,6 @@
     <Content Include="Views\PhaseMaster\_TeamCreate.cshtml" />
     <Content Include="Views\PhaseMaster\_TeamIndex.cshtml" />
     <Content Include="Views\ProjectMonitor\PMAdminCreate.cshtml" />
-    <Content Include="Views\Customers\_Customercreate.cshtml" />
-    <Content Include="Views\Customers\_CustomerIndex.cshtml" />
     <Content Include="Views\Userasdad\Create.cshtml" />
     <Content Include="Views\Userasdad\Delete.cshtml" />
     <Content Include="Views\Userasdad\Details.cshtml" />
@@ -596,7 +594,6 @@
     <Content Include="Views\Userasdad\Index.cshtml" />
     <Content Include="Views\Userasdad\_UserCreate.cshtml" />
     <Content Include="Views\User\CreateUsers.cshtml" />
-    <Content Include="Views\Customers\_UserCreate.cshtml" />
     <Content Include="Views\ProjectCreation\Create.cshtml" />
     <Content Include="Views\ProjectCreation\_ProjectCreationCreate.cshtml" />
     <Content Include="Views\ProjectCreation\_ProjectCreationIndex.cshtml" />
@@ -608,6 +605,8 @@
     <Content Include="Views\Activity\_ActivityCreationIndex.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Link\ProfileLink.cshtml" />
+    <Content Include="Views\User\ResourceAllocationCreate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

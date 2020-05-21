@@ -10,15 +10,23 @@ namespace ProAcc.BL.Model
 		public int LocalID { get; set; }
 		public Guid Id { get; set; }
 		public Guid Instance { get; set; }
-		public int PhaseId { get; set; }
+		
 		public string Task { get; set; }
-		public int Sequence { get; set; }
+
+		public int BuldingBlockID { get; set; }
+		public int PhaseId { get; set; }
+		public int SequenceNum { get; set; }
+
+		public string ApplicationArea { get; set; }
+
 		public bool Task_Other_Environment { get; set; }
 		public bool Dependency { get; set; }
-		public int PendingId { get; set; }
+		public string Pending { get; set; }
 		public bool Delay_occurred { get; set; }
-		public int TeamID { get; set; }
-		public Guid ConsultantID { get; set; }
+
+		public string Delayed_Reas { get; set; }
+		public int RoleID { get; set; }
+		public Guid UserID { get; set; }
 		public int StatusId { get; set; }
 		public double EST_hours { get; set; }
 		public double Actual_St_hours { get; set; }

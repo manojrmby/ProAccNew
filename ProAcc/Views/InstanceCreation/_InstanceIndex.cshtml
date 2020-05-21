@@ -10,6 +10,7 @@
     <thead>
         <tr>
             <th>Instance Name</th>
+            <th>Cre_on</th>
             <th>Project Name</th>
             <th>Actions</th>
         </tr>
@@ -17,18 +18,22 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a class="txtG" value="@item.InstaceName">@item.InstaceName</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Project_ID">@item.Project.Project_Name</a>
-                </td>              
-                <td>
-                    <a href="#" id="btnInstEdit" class="editInstanceCreation fa fa-edit"></a><input type="hidden" value="@item.Instance_id" /> |
-                    <a href="#" class="btnInstanceDelete fa fa-trash"></a><input type="hidden" value="@item.Instance_id" />
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <a class="txtG" value="@item.InstaceName">@item.InstaceName</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Project_ID">@item.Project.Project_Name</a>
+            </td>
+
+            <td>
+                <a href="#" id="btnInstEdit" class="editInstanceCreation fa fa-edit"></a><input type="hidden" value="@item.Instance_id" /> |
+                <a href="#" class="btnInstanceDelete fa fa-trash"></a><input type="hidden" value="@item.Instance_id" />
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -38,7 +43,15 @@
 
 
     $(document).ready(function () {
-        $("#tblInstanceCreation").dataTable();
+        $("#tblInstanceCreation").dataTable({
+            "order": [[1, 'desc']],
+            "columnDefs": [
+                {
+                    "targets": [1],
+                    "visible": false
+                }
+            ]
+        } );
     });
 
     $(".editInstanceCreation").on("click", function () {

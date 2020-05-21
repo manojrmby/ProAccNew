@@ -47,12 +47,12 @@ namespace ProAcc.Controllers
             ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
 
             List<SelectListItem> Project = new List<SelectListItem>();
-            var query = from u in db.CustomerProjectConfigs where (u.isActive == true) select u;
+            var query = from u in db.Projects where (u.isActive == true) select u;
             if (query.Count() > 0)
             {
                 foreach (var v in query)
                 {
-                    Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
                 }
             }
             ViewBag.Project = Project;

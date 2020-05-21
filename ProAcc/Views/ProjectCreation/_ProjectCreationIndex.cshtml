@@ -11,6 +11,7 @@
     <thead>
         <tr>
             <th>ProjectName</th>
+            <th>Cre_on</th>
             <th>Customer Name</th>
             <th>Description</th>
             <th>Actions</th>
@@ -19,22 +20,25 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a class="txtG" value="@item.Project_Name">@item.Project_Name</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Customer_Id">@item.Customer.Company_Name</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Description">@item.Description</a>
-                </td>
-                
-                <td>
-                    <a href="#" id="btnprjtEdit" class="editProjectCreation fa fa-edit"></a><input type="hidden" value="@item.Project_Id" /> |
-                    <a href="#" class="btnProjCreationDelete fa fa-trash"></a><input type="hidden" value="@item.Project_Id" />
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <a class="txtG" value="@item.Project_Name">@item.Project_Name</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Customer_Id">@item.Customer.Company_Name</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Description">@item.Description</a>
+            </td>
+
+            <td>
+                <a href="#" id="btnprjtEdit" class="editProjectCreation fa fa-edit"></a><input type="hidden" value="@item.Project_Id" /> |
+                <a href="#" class="btnProjCreationDelete fa fa-trash"></a><input type="hidden" value="@item.Project_Id" />
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -44,7 +48,15 @@
 
 
     $(document).ready(function () {
-        $("#tblProjectCreation").dataTable();
+        $("#tblProjectCreation").dataTable({
+            "order": [[1, 'desc']],
+            "columnDefs": [
+                {
+                    "targets": [1],
+                    "visible": false
+                }
+            ]
+        } );
     });
 
     $(".editProjectCreation").on("click", function () {

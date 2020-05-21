@@ -18,6 +18,7 @@ namespace ProACC_DB
         public RoleMaster()
         {
             this.UserMasters = new HashSet<UserMaster>();
+            this.ActivityMasters = new HashSet<ActivityMaster>();
         }
     
         public int RoleId { get; set; }
@@ -31,5 +32,7 @@ namespace ProACC_DB
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserMaster> UserMasters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ActivityMaster> ActivityMasters { get; set; }
     }
 }

@@ -16,31 +16,36 @@
                         <button class="btn btn-outline-focus" id="Me_Phase"><b>Create New Phase</b> </button>
                     </div>
                 </div>
-
                 <div class="col-lg-6">
                     <div class="mb-3 text-left card card-body">
-                        <h5 class="card-title">Application Area</h5>Click to go Application Area Creation Page.
-                        <button class="btn btn-outline-focus" id="Me_Applicationarea"><b>Create New Application Area</b> </button>
+                        <h5 class="card-title">Status</h5>Click to go Status Creation Page.
+                        <button class="btn btn-outline-focus" id="Me_Status"><b>Create New Status</b> </button>
                     </div>
                 </div>
+                @*<div class="col-lg-6">
+            <div class="mb-3 text-left card card-body">
+                <h5 class="card-title">Application Area</h5>Click to go Application Area Creation Page.
+                <button class="btn btn-outline-focus" id="Me_Applicationarea"><b>Create New Application Area</b> </button>
+            </div>
+        </div>*@
             </div>
 
         </div>
         <div class="col-lg-12">
             <div class="row">
-                <div class="col-lg-6">
+                @*<div class="col-lg-6">
                     <div class="mb-3 text-left card card-body">
                         <h5 class="card-title">Activity Master</h5>Click to go Activity Creation Page.
                         <button class="btn btn-outline-focus" id="Me_Activity"><b>Create New Activity</b> </button>
                     </div>
-                </div>
+                </div>*@
 
-                <div class="col-lg-6">
+                @*<div class="col-lg-6">
                     <div class="mb-3 text-left card card-body">
                         <h5 class="card-title">Pending</h5>Click to go Pending Creation Page.
                         <button class="btn btn-outline-focus" id="Me_Pending"><b>Create New Pending</b> </button>
                     </div>
-                </div>
+                </div>*@
             </div>
 
         </div>
@@ -53,12 +58,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="mb-3 text-left card card-body">
-                        <h5 class="card-title">Status</h5>Click to go Status Creation Page.
-                        <button class="btn btn-outline-focus" id="Me_Status"><b>Create New Status</b> </button>
-                    </div>
-                </div>
+               
             </div>
 
         </div>
@@ -73,12 +73,12 @@
 @*<div id="ApplicationA">
         @Html.Partial("_ApplicationAreaCreate", "ApplicationAreaMaster")
         @Html.Partial("_ApplicationAreaIndex", "ApplicationAreaMaster")
-    </div>
-    <div id="ActivityMaster">
+    </div>*@
+    @*<div id="ActivityMaster">
         @Html.Partial("_ActivityCreate", "ActivityMaster")
         @Html.Partial("_ActivityIndex", "ActivityMaster")
-    </div>
-    <div id="PendingMaster">
+    </div>*@
+    @*<div id="PendingMaster">
         @Html.Partial("_PendingCreate", "Pending")
         @Html.Partial("_PendingIndex", "Pending")
     </div>*@
@@ -86,10 +86,10 @@
     @Html.Partial("_TeamCreate", "TeamMaster")
     @Html.Partial("_TeamIndex", "TeamMaster")
 </div>
-@*<div id="StatusMaster">
+<div id="StatusMaster">
         @Html.Partial("_StatusCreate", "Status")
         @Html.Partial("_StatusIndex", "Status")
-    </div>*@
+    </div>
 
 
 

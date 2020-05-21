@@ -9,6 +9,7 @@
     <thead>
         <tr>
             <th>Task</th>
+            <th>Cre_on</th>
             <th>Phase</th>
             <th>Role</th>
             <th>ApplicationArea</th>
@@ -19,28 +20,31 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a class="txtG" value="@item.Task">@item.Task</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.PhaseID">@item.PhaseMaster.PhaseName</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.RoleID">@item.RoleID</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.ApplicationArea">@item.ApplicationArea</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Sequence_Num">@item.Sequence_Num</a>
-                </td>
+        <tr>
+            <td>
+                <a class="txtG" value="@item.Task">@item.Task</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.PhaseID">@item.PhaseMaster.PhaseName</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.RoleID">@item.RoleMaster.RoleName</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.ApplicationArea">@item.ApplicationArea</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Sequence_Num">@item.Sequence_Num</a>
+            </td>
 
-                <td>
-                    <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" /> |
-                    <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Activity_ID" />
-                </td>
-            </tr>
+            <td>
+                <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" /> |
+                <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Activity_ID" />
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -50,7 +54,15 @@
 
 
     $(document).ready(function () {
-        $("#tblActivityCreation").dataTable();
+        $("#tblActivityCreation").dataTable({
+            "order": [[1, 'desc']],
+            "columnDefs": [
+                {
+                    "targets": [1],
+                    "visible": false
+                }
+            ]
+        } );
     });
 
     $(".editActivityCreation").on("click", function () {

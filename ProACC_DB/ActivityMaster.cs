@@ -17,7 +17,6 @@ namespace ProACC_DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ActivityMaster()
         {
-            this.ProjectMonitors = new HashSet<ProjectMonitor>();
             this.ResourceAllocations = new HashSet<ResourceAllocation>();
         }
     
@@ -36,8 +35,7 @@ namespace ProACC_DB
         public bool IsDeleted { get; set; }
     
         public virtual PhaseMaster PhaseMaster { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProjectMonitor> ProjectMonitors { get; set; }
+        public virtual RoleMaster RoleMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ResourceAllocation> ResourceAllocations { get; set; }
     }

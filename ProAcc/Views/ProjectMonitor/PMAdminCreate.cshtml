@@ -181,14 +181,14 @@
             colModel: [
                 { label: 'ID', name: 'LocalID', width: 45, editable: false },
                 {
-                    label: 'Instance', name: 'Instance', width: 100, editable: false, align: 'center', editoptions: {
+                    label: 'Instance', name: 'Instance', width: 100, editable: false,hidden: true, align: 'center', editoptions: {
                         value:
                             GetInstanceName()
                     }
                 },
                 {
-                    label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 100,
-                    sortable: true, align: 'center', editable: true,
+                    label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
+                    sortable: true, align: 'center', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value:
@@ -196,7 +196,7 @@
                     }
                 },
 
-                { label: 'Activity / Task ', name: 'Task', width: 380, sorttype: 'integer', editable: true },
+                { label: 'Activity / Task ', name: 'Task', width: 150, sorttype: 'integer', editable: true },
                 //{
                 //    label: 'Task needed for other environment (Y/N)',
                 //    name: 'Task_Other_Environment', width: 50, editable: true,
@@ -227,7 +227,7 @@
                 // sorttype is used only if the data is loaded locally or loadonce is set to true
                 //	{ label: 'Title', name: 'Title', width: 80, sorttype: 'number', editable: false },
                 {
-                    label: 'Team', name: 'TeamID', index: 'TeamID', width: 70, sortable: true, align: 'center', editable: true,
+                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: true, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     //editoptions: {
                     //    value: "FE:FedEx;TN:TNT;DH:DHL",
@@ -235,12 +235,12 @@
                     //}
                     editoptions: {
                         value:
-                            GetTeamDropDown()
+                            GetRoleDropDown()
                         // getAllSelectOptions()
                     }
                 },
                 {
-                    label: 'Named Owner of Task', name: 'ConsultantID', index: 'ConsultantID', width: 70, sortable: true, align: 'center', editable: true,
+                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     //editoptions: {
                     //    value: "FE:FedEx;TN:TNT;DH:DHL",
@@ -248,7 +248,7 @@
                     //}
                     editoptions: {
                         value:
-                            GetConsultantDropDown()
+                            GetUserDropDown()
                         // getAllSelectOptions()
                     }
                 },
@@ -340,7 +340,7 @@
             altRows: true,
             //rownumbers : true,
             //multiselect : true,
-            width: 1120,
+            width: 900,
             colMenu: true,
             menubar: true,
             viewrecords: false,
@@ -348,7 +348,7 @@
             height: 'auto',
             rowNum: 10,
             caption: 'Project Monitor',
-            sortable: true,
+            sortable: false,
             grouping: false,
             pager: "#jqGridPager",
             loadComplete: function () {
@@ -438,7 +438,7 @@
         });
         return Parameters;
     }
-    function GetPendingDropDown() {
+    @*function GetPendingDropDown() {
 		var Parameters = {};
     $.ajax({
         type: "POST",
@@ -461,12 +461,12 @@
     });
 	return Parameters;
 
-}
-    function GetTeamDropDown() {
+}*@
+    function GetRoleDropDown() {
 		var Parameters = {};
     $.ajax({
         type: "POST",
-        url: '@Url.Action("GetTeam","ProjectMonitor")',
+        url: '@Url.Action("GetRole","ProjectMonitor")',
         //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
         dataType: "json",
 		async: false,
@@ -474,9 +474,9 @@
         success: function (Data) {
 				for (var i = 0; i < Data.length; i++) {
                 var obj = {};
-                    var TeamName = Data[i].TeamName;
-                var key = ""+Data[i].Id;
-                Parameters[key] = TeamName;
+                    var RoleName = Data[i].RoleName;
+                var key = ""+Data[i].RoleId;
+                Parameters[key] = RoleName;
             }
         },
         error: function (data) {
@@ -486,16 +486,17 @@
 	return Parameters;
 
 }
-    function GetConsultantDropDown() {
+    function GetUserDropDown() {
 	var Parameters = {};
     $.ajax({
         type: "POST",
-        url: '@Url.Action("GetConsultant","ProjectMonitor")',
+        url: '@Url.Action("GetUser","ProjectMonitor")',
         //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
         dataType: "json",
 		async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data) {
+            debugger;
 				for (var i = 0; i < Data.length; i++) {
                 var obj = {};
                     var Name = Data[i].Name;

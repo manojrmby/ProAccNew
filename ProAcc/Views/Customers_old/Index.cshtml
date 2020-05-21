@@ -1,0 +1,109 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model  List<ProACC_DB.Customer>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+<a class="card-title">Customer List</a>
+<hr />
+<table id="Index" style="font-size:12px;" class="table-hover table-bordered">
+    <thead>
+        <tr>
+            <th cope="col" style="width:3%;text-align:center;">
+                #
+            </th>
+            <th cope="col">
+                @Html.DisplayNameFor(model => model.First().Name)
+            </th>
+            <th cope="col">
+                Industry Sector
+            </th>
+            <th cope="col" class="nosort">
+                @Html.DisplayNameFor(model => model.First().Phone)
+            </th>
+            <th cope="col" class="nosort">
+                @Html.DisplayNameFor(model => model.First().Email)
+            </th>
+            @*<th cope="col">
+                Estimated Sale
+            </th>*@
+            <th cope="col">
+                Last Contact
+            </th>
+            <th cope="col">
+                Next Action
+            </th>
+            <th cope="col">
+                Lead Status
+            </th>
+            <th cope="col">
+                Lead Source
+            </th>
+            <th cope="col" class="nosort">Actions</th>
+        </tr>
+    </thead>
+
+    @{int j = 1;}
+    @foreach (var item in Model.Select((x, i) => new { Data = x, Index = i })) //.OrderBy(c => c.Id)
+    {
+        <tr>
+            <td>
+                @j
+            </td>
+            @{j++;
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.Work_Function)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.Email)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Data.EstimatedSale)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.LastContact_Dt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.NextAction_Dt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.leadStatus_Master.StatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data.LeadSource)
+            </td>
+            <td>
+                <div class="row">
+                    &nbsp;&nbsp;<a class="fa fa-pencil-alt" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("Edit","Customers", new { id = item.Data.Customer_ID })"></a> &nbsp;&nbsp;
+                    <a class="fa fa-info" data-toggle="tooltip" data-placement="top" title="Details!" href="@Url.Action("Details","Customers", new { id = item.Data.Customer_ID })"></a> &nbsp;&nbsp;
+                    <a class="fa fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Delete!" href="@Url.Action("Delete","Customers", new { id = item.Data.Customer_ID })"></a>
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+
+<script>
+    $(document).ready(function () {
+
+        $('#Index').DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': ['nosort']
+            }]
+        });
+    });
+</script>

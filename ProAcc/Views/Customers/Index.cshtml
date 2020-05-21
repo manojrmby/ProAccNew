@@ -1,109 +1,128 @@
-﻿@using PagedList;
-@using PagedList.Mvc;
-@model  List<ProACC_DB.Customer>
+﻿@model IEnumerable<ProACC_DB.Customer>
 
 @{
-    ViewBag.Title = "Index";
+
+    ViewBag.Title = "Customer List";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
+
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
-<a class="card-title">Customer List</a>
-<hr />
-<table id="Index" style="font-size:12px;" class="table-hover table-bordered">
+
+<table class="table" id="tblCustomer">
     <thead>
         <tr>
-            <th cope="col" style="width:3%;text-align:center;">
-                #
-            </th>
-            <th cope="col">
-                @Html.DisplayNameFor(model => model.First().Name)
-            </th>
-            <th cope="col">
-                Industry Sector
-            </th>
-            <th cope="col" class="nosort">
-                @Html.DisplayNameFor(model => model.First().Phone)
-            </th>
-            <th cope="col" class="nosort">
-                @Html.DisplayNameFor(model => model.First().Email)
-            </th>
-            @*<th cope="col">
-                Estimated Sale
-            </th>*@
-            <th cope="col">
-                Last Contact
-            </th>
-            <th cope="col">
-                Next Action
-            </th>
-            <th cope="col">
-                Lead Status
-            </th>
-            <th cope="col">
-                Lead Source
-            </th>
-            <th cope="col" class="nosort">Actions</th>
+            <th>Company Name</th>
+            <th>Industry Sector</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Created</th>
+            <th>Actions</th>
         </tr>
     </thead>
-
-    @{int j = 1;}
-    @foreach (var item in Model.Select((x, i) => new { Data = x, Index = i })) //.OrderBy(c => c.Id)
-    {
+    <tbody>
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
-                @j
-            </td>
-            @{j++;
-            }
-            <td>
-                @Html.DisplayFor(modelItem => item.Data.Name)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Data.Work_Function)
+                <a class="txtG" value="@item.Company_Name">@item.Company_Name</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Data.Phone)
+                <a class="txtG" value="@item.Industry_Sector">@item.Industry_Sector</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Data.Email)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Data.EstimatedSale)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Data.LastContact_Dt)
+                <a class="txtG" value="@item.Phone">@item.Phone</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Data.NextAction_Dt)
+                <a class="txtG" value="@item.Email">@item.Email</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Data.leadStatus_Master.StatusName)
+                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Data.LeadSource)
-            </td>
-            <td>
-                <div class="row">
-                    &nbsp;&nbsp;<a class="fa fa-pencil-alt" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("Edit","Customers", new { id = item.Data.Id })"></a> &nbsp;&nbsp;
-                    <a class="fa fa-info" data-toggle="tooltip" data-placement="top" title="Details!" href="@Url.Action("Details","Customers", new { id = item.Data.Id })"></a> &nbsp;&nbsp;
-                    <a class="fa fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Delete!" href="@Url.Action("Delete","Customers", new { id = item.Data.Id })"></a>
-                </div>
+                <a href="#" id="btnEdit" class="editCustomer fa fa-edit"></a><input type="hidden" value="@item.Customer_ID" /> |
+                <a href="#" class="btnDelete fa fa-trash"></a><input type="hidden" value="@item.Customer_ID" />
             </td>
         </tr>
-    }
+        }
+    </tbody>
 </table>
 
-<script>
-    $(document).ready(function () {
 
-        $('#Index').DataTable({
-            'aoColumnDefs': [{
-                'bSortable': false,
-                'aTargets': ['nosort']
-            }]
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        $("#tblCustomer").dataTable( {
+            "order": [[4, 'desc']],
+            "columnDefs": [
+            {
+                "targets": [ 4 ],
+                "visible": false
+            }
+        ]
+} );
+    });
+
+    $(".editCustomer").on("click", function () {
+        //debugger;
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetCustomerById","Customers")',
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+                debugger;
+                $("#customerid").val(result.Customer_ID);
+                $("#txtCompanyName").val(result.Company_Name);
+                $("#txtIndustrySector").val(result.Industry_Sector);
+                $("#txtCustomerPhone").val(result.Phone);
+                $("#txtCustomerEmail").val(result.Email);
+                $("#pcre_on").val(result.Cre_on);
+                $("#pcre_By").val(result.Cre_By);
+                $("#btnCustomerUpdate").show();
+                $("#btnCustomerCreate").hide();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
         });
+    });
+
+    $(".btnDelete").on("click", function () {
+        var id = $(this).next().val();
+       var retVal = confirm("Do you want to delete ?");
+               if( retVal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","Customers")',
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Customer deleted successfully!");
+                        //location.reload();
+                        loadCustomer();
+                            $("#txtCompanyName").val("");
+                            $("#txtIndustrySector").val("");
+                            $("#txtCustomerPhone").val("");
+                            $("#txtCustomerEmail").val("");
+                            $("#btnCustomerUpdate").hide();
+                            $("#btnCustomerCreate").show();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
     });
 </script>
