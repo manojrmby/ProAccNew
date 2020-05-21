@@ -30,7 +30,8 @@
             </td>
 
             <td>
-                <a href="#" id="btnInstEdit" class="editInstanceCreation fa fa-edit"></a><input type="hidden" value="@item.Instance_id" /> |
+                @*<a href="#" id="btnInstEdit" class="editInstanceCreation fa fa-edit"></a><input type="hidden" value="@item.Instance_id" /> |*@
+                &nbsp;&nbsp;&nbsp;
                 <a href="#" class="btnInstanceDelete fa fa-trash"></a><input type="hidden" value="@item.Instance_id" />
             </td>
         </tr>
@@ -68,6 +69,7 @@
                 $("#Instcre_on").val(result.Cre_on);
                 $("#Instcre_By").val(result.Cre_By);
                 $("#btnInstanceUpdate").show();
+                $("#btnAddNew").show();
                 $("#btnInstanceCreate").hide();
 
             },
@@ -89,7 +91,8 @@
                 success: function (response) {
                     if (response == "success") {
                         alert("Instance deleted successfully!");
-                        loadInstanceTable();
+                        //loadInstanceTable();
+                        location.reload();
                             $("#txtInstanceName").val("")
                             $("#drpProject").val(0)
                     }

@@ -77,6 +77,7 @@
                 $("#projcre_on").val(result.Cre_on);
                 $("#projcre_By").val(result.Cre_By);
                 $("#btnProjectUpdate").show();
+                $("#btnAddNew").show();
                 $("#btnProjectCreate").hide();
 
             },
@@ -97,8 +98,9 @@
                 dataType: "json",
                 success: function (response) {
                     if (response == "success") {
-                        alert("Customer deleted successfully!");
-                        loadProjectCreation();
+                        alert("Project deleted successfully!");
+                        //loadProjectCreation();
+                        location.reload();
                     }
                 },
                 failure: function (response) {

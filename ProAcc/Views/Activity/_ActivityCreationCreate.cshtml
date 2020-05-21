@@ -5,8 +5,14 @@
     ViewBag.Title = "Create Activity";
 }
 
-
+<style>
+    span{
+        color: red;
+    font-size: 14px;
+    }
+</style>
 <a class="card-title">Create Activity</a>
+<hr/>
 <div style="padding:1em;">
     <div class="row">
         <div class="col-6">
@@ -19,7 +25,10 @@
                 <label class="control-label col-md-4 required">Task</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtTask" />
-                    <span id="lblTask" style="color:red" />
+                    @*<span id="lblTask" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblTask">&nbsp;</span>
                 </div>
             </div>
 
@@ -27,7 +36,10 @@
                 <label class="control-label col-md-4 required">Sequence</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtSequence" />
-                    <span id="lblSequence" style="color:red" />
+                    @*<span id="lblSequence" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblSequence">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -45,7 +57,10 @@
                         }
                     </select>
                     @*<input type="text" class="form-control" id="txtPhase" maxlength="10" />*@
-                    <span id="lblPhase" style="color:red" />
+                    @*<span id="lblPhase" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblPhase">&nbsp;</span>
                 </div>
             </div>
 
@@ -60,7 +75,10 @@
                         }
                     </select>
                     @*<input type="text" class="form-control" id="txtRole" />*@
-                    <span id="lblRole" style="color:red" />
+                    @*<span id="lblRole" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblRole">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -69,25 +87,37 @@
                 <label class="control-label col-md-4 required">Application Area</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtApplicationArea" />
-                    <span id="lblApplicationArea" style="color:red" />
+                    @*<span id="lblApplicationArea" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblApplicationArea">&nbsp;</span>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="button" value="Create" class="btn btn-primary" id="btnActivityCreCreate" />
-                <input type="button" value="Update" class="btn btn-info" id="btntivityCreUpdate" style="display:none" />
+        <div class="col-10">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Create" class="btn btn-primary" id="btnActivityCreCreate" />
+                    <input type="button" value="Update" class="btn btn-info" id="btntivityCreUpdate" style="display:none" />
+                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Add New</a>
+                </div>
             </div>
-        </div>
+        </div>       
     </div>
-</div>
+ </div>
 <script>
 
     $(document).ready(function () {
         $("#btnActivityCreCreate").prop('disabled', true);
 
+        var id = $("#activityrid").val().trim(); 
+        if (id != "") {
+            $("#txtSequence").prop("readonly", true);
+            $("#drpPhase").prop("readonly", true);
+            $("#drpRole").prop("readonly", true);
+        }
         $("#txtTask").keypress(function (event) {
-        debugger;
+       
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
@@ -99,7 +129,7 @@
 
 
         $('#txtTask').on('focusout', function () {
-            debugger;
+           
             var Task = $("#txtTask").val().trim();
             var id = $("#activityrid").val();
             if (Task == "") {
@@ -145,7 +175,7 @@
          });
 
         $("#txtApplicationArea").keypress(function (event) {
-        debugger;
+        
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
@@ -167,7 +197,7 @@
 
 
     $("#btnActivityCreCreate").on("click", function () {
-        debugger;
+        
         var Task = $("#txtTask").val();
         var sequence = $("#txtSequence").val();
         var ApplicationArea = $("#txtApplicationArea").val();
@@ -230,7 +260,7 @@
 
 
      $("#btntivityCreUpdate").on("click", function () {
-         debugger;
+         
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
         var sequence = $("#txtSequence").val();

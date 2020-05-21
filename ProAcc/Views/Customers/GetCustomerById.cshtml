@@ -1,31 +1,27 @@
-﻿
-
+﻿@model ProACC_DB.Customer
 @{
-
-    ViewBag.Title = "Create Customer";
+    ViewBag.Title = "GetCustomerById";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
-
 <style>
     span{
         color: red;
     font-size: 14px;
     }
 </style>
-<a class="card-title">Create Customer</a>
-<hr />
+<a class="card-title">Update Customer</a>
 <div style="padding:1em;">
     <div class="row">
         <div class="col-6">
 
-            @*<input type="hidden" id="customerid" />
-                <input type="hidden" id="pcre_on" />
-                <input type="hidden" id="pcre_By" />*@
+            <input type="hidden" id="customerid" value="@Model.Customer_ID" />
+            <input type="hidden" id="pcre_on" value="@Model.Cre_on" />
+            <input type="hidden" id="pcre_By" value="@Model.Cre_By" />
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">Company Name</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtCompanyName" />
+                    <input type="text" class="form-control" value="@Model.Company_Name" readonly id="txtCompanyName" />
                     @*<span id="lblCompanyName" style="color:red" />*@
                 </div>
                 <div>
@@ -36,7 +32,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Industry Sector</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtIndustrySector" />
+                    <input type="text" class="form-control" value="@Model.Industry_Sector" id="txtIndustrySector" />
                     @*<span id="lblIndustrySector" style="color:red" />*@
                 </div>
                 <div>
@@ -50,7 +46,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Email</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtCustomerEmail" />
+                    <input type="text" class="form-control" value="@Model.Email" id="txtCustomerEmail" />
                     @*<span id="lblCustomerEmail" style="color:red" />*@
                 </div>
                 <div>
@@ -61,7 +57,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Phone</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />
+                    <input type="text" class="form-control" value="@Model.Phone" id="txtCustomerPhone" maxlength="10" />
                     @*<span id="lblCustomerPhone" style="color:red" />*@
                 </div>
                 <div>
@@ -69,18 +65,21 @@
                 </div>
             </div>
         </div>
+
         @*<div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="button" value="Create" class="btn btn-primary" id="btnCustomerCreate" />
-                <input type="button" value="Update" class="btn btn-info" id="btnCustomerUpdate" style="display:none" />
-            </div>
-        </div>*@
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Update" class="btn btn-info" id="btnCustomerUpdate" />
+                    <div class="col-lg-3" style="float:right;">
+                        @Html.ActionLink("Back to List", "Index", "Customer")
+                    </div>
+                </div>
+            </div>*@
     </div>
     <div class="row">
         <div class="col-lg-12">
 
             <div class="col-md-offset-2 col-md-12">
-                <input type="button" value="Create" class="btn btn-primary" id="btnCustomerCreate" />
+                <input type="button" value="Update" class="btn btn-info" id="btnCustomerUpdate" />
                 <div class="col-lg-3" style="float:right;">
                     @Html.ActionLink("Back to List", "Index", "Customers")
                 </div>
@@ -90,75 +89,24 @@
 </div>
 @Html.Hidden("RedirectToCustomerList", Url.Action("Index", "Customers"))
 
+
 <script>
 
     $(document).ready(function () {
-        $("#btnCustomerCreate").prop('disabled', true);
 
-        $("#txtCompanyName").keypress(function (event) {
        
-            var inputValue = event.which;
-            // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-                event.preventDefault();
-                $("#lblCompanyName").html("Not Allowed").show().fadeOut(5000);
-                validatecustomer()
-            }
-            else {
-                $("#lblCompanyName").html("").hide();
-                validatecustomer()
-            }
-           
-        });
-
-
-        $('#txtCompanyName').on('focusout', function () {
-            
-            var CompName = $("#txtCompanyName").val().trim();
-            var id = $("#customerid").val().trim();
-            if (CompName == "") {
-                $("#lblCompanyName").html("Please Enter valid Company Name").show().fadeOut(5000);
-                validatecustomer()
-            }
-            else {
-                $.ajax({
-                url: '@Url.Action("CheckCustomersNameAvailability", "Customers")',
-                type: "GET",
-                data: { namedata: CompName,id:id },
-                dataType: "json",
-                success: function (data) {
-                    if (data != "success") {
-                        $("#lblCompanyName").html("This Company Name is already in use").show();
-                       validatecustomer()
-                    }
-                    else {
-                        $("#lblCompanyName").html("").hide();
-                       validatecustomer()
-                    }
-
-                },
-                error: function (err) {
-
-                    alert(err);
-                }
-            });
-            }
-
-        });
-
-
         $("#txtIndustrySector").keypress(function (event) {
        
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                 event.preventDefault();
-                $("#lblIndustrySector").html("Not Allowed").show().fadeOut(2000);
-                validatecustomer()
+                $("#lblIndustrySector").html("Not Allowed").show().fadeOut(5000);
+                validatecustomer();
             }
             else {
                 $("#lblIndustrySector").html("").hide();
-                validatecustomer()
+                validatecustomer();
             }
         });
 
@@ -166,11 +114,11 @@
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 event.preventDefault();
                 $("#lblCustomerPhone").html("Numbers Only").show().fadeOut(5000);
-                validatecustomer()
+                validatecustomer();
             }
             else {
                 $("#lblCustomerPhone").html("").hide();
-                validatecustomer()
+                validatecustomer();
             }
         });
 
@@ -179,7 +127,7 @@
             phone = $(this).val();
             phone = phone.replace(/[^0-9]/g,'');
             if (phone.length != 10) {
-                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
+                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(5000);
                 validatecustomer();
             }
             else {
@@ -189,14 +137,13 @@
             
        });
 
-
         $("#txtCustomerEmail").on("blur", function (event) {
             
            var str = $(this).val();
            var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
             if (!filter.test(str)) {
-                $("#lblCustomerEmail").html("Email is not valid").show().fadeOut(2000);
+                $("#lblCustomerEmail").html("Email is not valid").show().fadeOut(5000);
                 validatecustomer();
             }
             else {
@@ -221,31 +168,42 @@
             if (CompanyName.length > 0 && IndustrySector.length > 0 && custphone.length > 0 && custEmail.length > 0 &&
                 lblCompanyName == "" && lblIndustrySector == "" && lblcustphone == "" && lblcustEmail == "" ) {
 
-                $("#btnCustomerCreate").prop("disabled", false);
+                $("#btnCustomerUpdate").prop("disabled", false);
             }
             else {
-                $("#btnCustomerCreate").prop("disabled", true);
+                $("#btnCustomerUpdate").prop("disabled", true);
             }
 
         }
     });
 
-
-    $("#btnCustomerCreate").on("click", function () {
-        
+     $("#btnCustomerUpdate").on("click", function () {
+         
+         var id = $("#customerid").val();
         var CompanyName = $("#txtCompanyName").val().trim();
         var IndustrySector = $("#txtIndustrySector").val().trim();
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();
+        var cre_on = $("#pcre_on").val();
+        var cre_By = $("#pcre_By").val();
 
-        if (CompanyName == "") {
+         var model = {
+             Customer_Id: id,
+             Company_Name: CompanyName,
+             Industry_Sector: IndustrySector,
+             Phone: custphone,
+             Email: custEmail,
+             Cre_on: cre_on,
+             Cre_By: cre_By
+         }
+       if (CompanyName == "") {
             $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
         }
         else if (IndustrySector =="")
         {
             $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
         }
-        else if (custphone == "")
+        else if (custphone=="")
         {
             $("#lblCustomerPhone").html("Please enter the Customer Phone").show().fadeOut(2000);
         }
@@ -254,13 +212,15 @@
             $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
         }
         else {
+
             $.ajax({
                     type: "POST",
-                url: '@Url.Action("Create","Customers")',
-                data: { Company_Name: CompanyName, Industry_Sector: IndustrySector, Phone: custphone, Email: custEmail },
+                    url: '@Url.Action("Edit","Customers")',
+                    data: { customer : model},
+                    //dataType: "json",
                     success: function (response) {
                         if (response == "success") {
-                            alert("Customer Saved successfully!");
+                            alert("Customers Edited successfully!");
                             var url = $("#RedirectToCustomerList").val();
                             location.href = url;
                             //loadCustomer();
@@ -268,6 +228,7 @@
                             //$("#txtIndustrySector").val("");
                             //$("#txtCustomerPhone").val("");
                             //$("#txtCustomerEmail").val("");
+                            //$("#btnCustomerUpdate").hide();
                             //$("#btnCustomerCreate").show();
                         }
                     },
@@ -279,12 +240,7 @@
                     }
             });
 
-
-
         }
-    });
-
-
-    
+     });
 
 </script>

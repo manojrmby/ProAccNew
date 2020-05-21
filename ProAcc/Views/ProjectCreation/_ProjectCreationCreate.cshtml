@@ -2,8 +2,14 @@
     ViewBag.Title = "Create Project Creation";
 }
 
-
+<style>
+    span{
+        color: red;
+    font-size: 14px;
+    }
+</style>
 <a class="card-title">Project Creation</a>
+<hr />
 <div style="padding:1em;">
     <div class="row">
         <div class="col-6">
@@ -15,7 +21,10 @@
                 <label class="control-label col-md-4 required">Project Name</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtProjectName" />
-                    <span id="lblProjectName" style="color:red" />
+                    @*<span id="lblProjectName" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblProjectName">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -32,7 +41,10 @@
                         }
                     </select>
                     @*<input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />*@
-                    <span id="lblCustomerName" style="color:red" />
+                    @*<span id="lblCustomerName" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblCustomerName">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -43,7 +55,10 @@
 
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtDescription" />
-                    <span id="lblDescription" style="color:red" />
+                    @*<span id="lblDescription" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblDescription">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -53,6 +68,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" value="Create" class="btn btn-primary" id="btnProjectCreate" />
                     <input type="button" value="Update" class="btn btn-info" id="btnProjectUpdate" style="display:none" />
+                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Add New</a>
                 </div>
             </div>
         </div>
@@ -112,7 +128,7 @@
             }            
         });
 
-        $('#drpCustomer').change(function () {            debugger;            var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            if (projectName != "" && Customerid != 0) {                $("#btnProjectCreate").prop("disabled", false);            }        });
+        $('#drpCustomer').change(function () {                        var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            if (projectName != "" && Customerid != 0) {                $("#btnProjectCreate").prop("disabled", false);            }        });
 
     });
 

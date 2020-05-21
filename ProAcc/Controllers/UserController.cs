@@ -21,7 +21,11 @@ namespace ProAcc.Controllers
 
         public ActionResult Index()
         {
-            var users = db.UserMasters.Where(x => x.isActive == true).OrderByDescending(x=>x.Cre_on);
+            //var users = db.UserMasters.Where(x => x.isActive == true).OrderByDescending(x=>x.Cre_on);
+            var users = (from e in db.UserMasters
+                        join c in db.Customers on e.Customer_Id equals c.Customer_ID where c.isActive==true
+                        select e).ToList();
+
             return View(users);
         }
         // GET: User
@@ -31,7 +35,7 @@ namespace ProAcc.Controllers
             ViewBag.UserTypeID = new SelectList(val, "UserTypeID", "UserType");
 
             var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1).ToList();
-            ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName"); //Role_Data
+            ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName");
 
             var Cust = db.Customers.Where(x => x.isActive == true ).ToList();
             ViewBag.Customer_Id = new SelectList(Cust, "Customer_ID", "Company_Name");
@@ -111,6 +115,11 @@ namespace ProAcc.Controllers
                     if (con.UserTypeID == 1)
                     {
                         con.RoleID = 1;
+                        con.Customer_Id = null;
+                    }
+                    else if(con.UserTypeID == 2)
+                    {
+                        con.Customer_Id = null;
                     }
                     db.UserMasters.Add(con);
                     db.SaveChanges();
@@ -157,7 +166,7 @@ namespace ProAcc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (userMaster.Name != null && userMaster.LoginId != null)
+                if (userMaster.Name != null)
                 {
                     userMaster.Modified_On = DateTime.Now;
                     userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
@@ -165,6 +174,11 @@ namespace ProAcc.Controllers
                     if (userMaster.UserTypeID == 1)
                     {
                         userMaster.RoleID = 1;
+                        userMaster.Customer_Id = null;
+                    }
+                    else if (userMaster.UserTypeID == 2)
+                    {
+                        userMaster.Customer_Id = null;
                     }
                     db.Entry(userMaster).State = EntityState.Modified;
                     db.SaveChanges();

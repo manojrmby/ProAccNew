@@ -4,8 +4,14 @@
     ViewBag.Title = "Create Instance";
 }
 
-
+<style>
+    span{
+        color: red;
+    font-size: 14px;
+    }
+</style>
 <a class="card-title">Create Instance</a>
+<hr />
 <div style="padding:1em;">
     <div class="row">
         <div class="col-6">
@@ -18,7 +24,10 @@
                 <label class="control-label col-md-4 required">Instance Name</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtInstanceName" maxlength="3" />
-                    <span id="lblInstanceName" style="color:red" />
+                    @*<span id="lblInstanceName" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblInstanceName">&nbsp;</span>
                 </div>
             </div>
 
@@ -32,7 +41,10 @@
                             <option value="@item.Project_Id">@item.Project_Name</option>
                         }
                     </select>
-                    <span id="lblProject" style="color:red" />
+                    @*<span id="lblProject" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblProject">&nbsp;</span>
                 </div>
             </div>
 
@@ -40,6 +52,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" value="Create" class="btn btn-primary" id="btnInstanceCreate" />
                     <input type="button" value="Update" class="btn btn-info" id="btnInstanceUpdate" style="display:none" />
+                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Add New</a>
                 </div>
             </div>
         </div>
@@ -58,7 +71,7 @@
             var str = String.fromCharCode(!event.charCode ? event.which : event.charCode);
             if (!regex.test(str)) {
                 event.preventDefault();
-                $("#lblInstanceName").html("Not Allowed").show().fadeOut(3000);
+                $("#lblInstanceName").html("Not Allowed").show().fadeOut(5000);
             }
             else {
                 $("#btnInstanceCreate").prop('disabled', false);
@@ -67,7 +80,7 @@
         });
 
 
-        $('#txtInstanceName').on('focusout', function () {
+        @*$('#txtInstanceName').on('focusout', function () {
            
             var InstName = $("#txtInstanceName").val().trim();
             var id = $("#Instid").val();
@@ -91,18 +104,43 @@
                         $("#btnInstanceCreate").prop('disabled', false);
                         $("#btnInstanceUpdate").prop('disabled', false);
                     }
-
                 },
                 error: function (err) {
-
                     alert(err);
                 }
             });
             }
+        });*@
 
-        });
 
-        $('#drpProject').change(function () {            var InstName = $("#txtInstanceName").val().trim();            var Project = $("#drpProject").val().trim();            if (InstName != null && Project != "") {                $("#btnInstanceCreate").prop('disabled', false);            }        });
+        $('#drpProject').change(function () {
+            
+            var InstName = $("#txtInstanceName").val().trim();
+            var Project = $("#drpProject").val().trim();
+            //if (InstName != null && Project != "") {            
+            //    $("#btnInstanceCreate").prop('disabled', false);            
+            //}            
+            $.ajax({
+                url: '@Url.Action("CheckInstanceProjectAvailability", "InstanceCreation")',
+                type: "GET",
+                data: { namedata: InstName, project: Project},
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblInstanceName").html("This Instance Name is already in use for this project").show().fadeOut(5000);
+                        $("#btnInstanceCreate").prop('disabled', true);
+                        // $("#btnInstanceUpdate").prop('disabled', true);
+                    }
+                    else {
+                        $("#lblInstanceName").html("").hide();
+                        $("#btnInstanceCreate").prop('disabled', false);
+                        //$("#btnInstanceUpdate").prop('disabled', false);
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            })        });
     });
 
 
@@ -112,11 +150,11 @@
         var Project = $("#drpProject").val().trim();        
 
         if (InstanceName == "") {
-            $("#lblInstanceName").html("Please enter the Instance Name").show().fadeOut(3000);
+            $("#lblInstanceName").html("Please enter the Instance Name").show().fadeOut(5000);
         }
         else if (Project ==0)
         {
-            $("#lblProject").html("Please Select the project").show().fadeOut(3000);
+            $("#lblProject").html("Please Select the project").show().fadeOut(5000);
         }
         else {
             $.ajax({
@@ -129,13 +167,16 @@
                             loadInstanceTable();
                             $("#txtInstanceName").val("")
                             $("#drpProject").val(0)
-                          
+                        }
+                        else {
+                            $("#lblInstanceName").html("This Instance Name is already in use for this project").show().fadeOut(5000);
+                            $("#btnInstanceCreate").prop('disabled', true);
                         }
                     },
                     failure: function (response) {
                        alert(response.responseText);
                     },
-                    error: function (response) {
+                error: function (response) {
                         alert(response.responseText);
                     }
             });
@@ -161,11 +202,11 @@
              Cre_By: cre_By
          }
        if (InstanceName == "") {
-            $("#lblInstanceName").html("Please enter the Instance Name").show().fadeOut(3000);
+            $("#lblInstanceName").html("Please enter the Instance Name").show().fadeOut(5000);
         }
         else if (Project ==0)
         {
-            $("#lblProject").html("Please Select the project").show().fadeOut(3000);
+            $("#lblProject").html("Please Select the project").show().fadeOut(5000);
         }
         else {
 

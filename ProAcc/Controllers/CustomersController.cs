@@ -138,7 +138,6 @@ namespace ProAcc.Controllers
                 return HttpNotFound();
             }
             
-            
             var Data = db.Customers.Find(id);
 
             Customer cust = new Customer();
@@ -146,8 +145,8 @@ namespace ProAcc.Controllers
             cust.Company_Name = Data.Company_Name;
             cust.Phone = Data.Phone;
             cust.Email = Data.Email;
-
-            return Json(cust, JsonRequestBehavior.AllowGet);
+            return View(customer);
+            //return Json(cust, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Customers/Edit/5
@@ -175,7 +174,7 @@ namespace ProAcc.Controllers
             if (name.Count == 0)
             {
                 customer.Modified_On = DateTime.Now;
-                customer.Cre_on = DateTime.Now;
+                //customer.Cre_on = DateTime.Now;
                 customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 customer.isActive = true;
                 db.Entry(customer).State = EntityState.Modified;

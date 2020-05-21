@@ -15,17 +15,18 @@
     }
     span{
         color: red;
-    font-size: 10px;
+    font-size: 14px;
     }
 </style>
 <a class="card-title">User Creation</a>
+<hr />
 @using (Html.BeginForm("Create", "User", FormMethod.Post, new { }))
 {
     @Html.AntiForgeryToken()
     @*<h4><b>New Consultant</b></h4>*@
     <div style="padding:1em;" class="col-lg-12">
         @*<p style="color:red;float:right;margin-right:100px;">*  All Fields are mandatory</p>*@
-        <hr />
+        
         <div class="row">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="col-6 ">
@@ -89,18 +90,6 @@
             </div>
             <div class="col-6 ">
                 <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-5 required" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @id = "txtMob", @class = "form-control", @onchange = "ValidateNu()", @maxlength = "10" } })
-                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
-
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span id="lblMob1">&nbsp;</span>
-                    </div>
-                </div>
-
-                <div class="position-relative form-group">
                     @Html.LabelFor(model => model.EMail, "Email", htmlAttributes: new { @class = "control-label col-md-5 required" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @id = "txtEmail1", @class = "form-control", @onchange = "ValidateEmail1()" } })
@@ -111,10 +100,23 @@
                         &nbsp;&nbsp;&nbsp;<span id="lblEmail1">&nbsp;</span>
                     </div>
                 </div>
+
+                <div class="position-relative form-group">
+                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-5 required" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @id = "txtMob", @class = "form-control", @maxlength = "10" } })
+                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span id="lblMob1">&nbsp;</span>
+                    </div>
+                </div>
+
                 <div class="position-relative form-group">
                     @Html.Label("User Type", htmlAttributes: new { @class = "control-label col-md-5 required" })
                     <div class="col-md-10">
-                        @Html.DropDownList("UserTypeID",null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("UserTypeID", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -166,7 +168,7 @@
         });
 
          $('#txtName1').on('focusout', function () {
-            //debugger;
+            
             var CnstName = $("#txtName1").val().trim();
             if (CnstName == "") {
                 $("#lblName1").html("Please Enter valid Name").show();
@@ -197,7 +199,7 @@
          });
 
         $('#LoginID').on('focusout', function () {
-            //debugger;
+           
             var CnstUserName = $("#LoginID").val().trim();
             if (CnstUserName == "") {
                 $("#StatusConsultant").html("Please Enter valid LoginId").show();
@@ -230,7 +232,7 @@
 
 
         @*$('#ConsultantUserName').on('change', function () {
-            debugger;
+            
             $.ajax({
                 type: "POST",
                 url:'@Url.Action("CheckConsultantsUsernameAvailability", "Consultants")',
@@ -245,18 +247,33 @@
         });*@
          $("#txtMob").keypress(function (e) {
             //if the letter is not digit then display error and don't type anything
-            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                //display error message
+             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                 e.preventDefault();
                 $("#lblMob1").html("Numbers Only").show().fadeOut("slow");
-                return false;
+              
             }
-        });
+         });
+
+        $("#txtMob").blur(function () {
+            
+            phone = $(this).val();
+            phone = phone.replace(/[^0-9]/g,'');
+            if (phone.length != 10) {
+                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
+                validateSave();
+            }
+            else {
+                $("#lblMob1").html("").hide();
+                validateSave();
+            }
+            ValidateUser();
+       });
     });
     //function OnSuccess
     function OnSuccess(response) {
-        //debugger;
+        
         var msg = $("#StatusConsultant");
-        //debugger;
+        
         switch (response) {
             case 1:
                 msg.show();
@@ -293,7 +310,7 @@
 
     var result = "Success";
     //function ValidateNa() {
-    //    //debugger;
+   
     //    var name1 = document.getElementById("txtName1").value;
     //    var lblName1 = document.getElementById("lblName1");
     //    lblName1.innerHTML = "";
@@ -309,7 +326,7 @@
     //}
 
     function ValidateDesc() {
-        //debugger;
+        
         var Desc = document.getElementById("txtDesc").value;
         var lblDesc = document.getElementById("lblDesc");
         lblDesc.innerHTML = "";
@@ -324,7 +341,7 @@
         validateSave();
     }
     function ValidateEmail1() {
-        //debugger;
+        
         var email1 = document.getElementById("txtEmail1").value;
         var lblEmail1 = document.getElementById("lblEmail1");
         lblEmail1.innerHTML = "";
@@ -340,7 +357,7 @@
     }
 
     function validateConsPwd() {
-        //debugger;
+       
         var Passwd = document.getElementById("Passwd").value;
         var txtConsCnfmPassword = document.getElementById("txtConsCnfmPassword").value;
         var lblAltConsPwd = document.getElementById("lblAltConsPwd");
@@ -380,7 +397,7 @@
     }
 
     function SubmitConsultant() {
-        debugger;
+        
         //alert("HI");
         var Name1 = $("#txtName1").val();
         var Desc = $("#txtDesc").val();

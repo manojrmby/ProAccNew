@@ -21,7 +21,12 @@ namespace ProAcc.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.project = db.Projects.Where(x => x.isActive == true);
+            //ViewBag.project = db.Projects.Where(x => x.isActive == true);
+            ViewBag.project = (from e in db.Projects
+                               //join c in db.Projects on e.Project_ID equals c.Project_Id
+                               join cu in db.Customers on e.Customer_Id equals cu.Customer_ID
+                               where e.isActive == true && cu.isActive == true
+                               select e).ToList();
             return View();
         }
 
@@ -54,10 +59,28 @@ namespace ProAcc.Controllers
 
         }
 
+        public JsonResult CheckInstanceProjectAvailability(string namedata, Guid? project)
+        {
+            var SearchDt = db.Instances.Where(x => x.InstaceName == namedata && x.Project_ID == project).Where(x => x.isActive == true).FirstOrDefault();
+            if (SearchDt != null)
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpGet]
         public ActionResult GetInstances()
         {
-            var InstanceList = db.Instances.Where(x => x.isActive == true).ToList();
+            //var InstanceList = db.Instances.Where(x => x.isActive == true).ToList();
+            var InstanceList = (from e in db.Instances
+                                join c in db.Projects on e.Project_ID equals c.Project_Id
+                                join cu in db.Customers on c.Customer_Id equals cu.Customer_ID
+                            where c.isActive == true && cu.isActive==true
+                            select e).ToList();
             return PartialView("_InstanceIndex", InstanceList);
         }
 
@@ -66,7 +89,7 @@ namespace ProAcc.Controllers
         {
             try
             {
-                var name = db.Instances.Where(p => p.InstaceName == instance.InstaceName).Where(x => x.isActive == true).ToList();
+                var name = db.Instances.Where(p => p.InstaceName == instance.InstaceName && p.Project_ID == instance.Project_ID).Where(x => x.isActive == true).ToList();
                 if (name.Count == 0)
                 {
                     instance.Instance_id = Guid.NewGuid();
@@ -74,14 +97,6 @@ namespace ProAcc.Controllers
                     instance.Cre_on = DateTime.Now.Date;
                     instance.LastUpdated_Dt = DateTime.Now.Date;
                     instance.Cre_By = Guid.Parse(Session["loginid"].ToString());
-
-                    //var ID = from k in db.Instances where k.InstaceName == instance.InstaceName select k.Instance_id;
-                    //if (ID.Count() > 0)
-                    //{
-                    //    ViewBag.project = db.Projects.Where(x => x.isActive == true);
-                    //    ViewBag.Me = true;
-                    //    return View();
-                    //}
 
                     db.Instances.Add(instance);
                     db.SaveChanges();
