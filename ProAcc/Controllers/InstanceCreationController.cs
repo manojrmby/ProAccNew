@@ -78,7 +78,7 @@ namespace ProAcc.Controllers
             var InstanceList = (from e in db.Instances
                                 join c in db.Projects on e.Project_ID equals c.Project_Id
                                 join cu in db.Customers on c.Customer_Id equals cu.Customer_ID
-                            where c.isActive == true && cu.isActive==true
+                            where e.isActive == true && c.isActive == true && cu.isActive==true
                             select e).ToList();
             return PartialView("_InstanceIndex", InstanceList);
         }

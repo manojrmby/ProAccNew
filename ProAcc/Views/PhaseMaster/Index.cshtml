@@ -87,12 +87,18 @@
     </div>*@
 <div id="TeamMaster">
     @Html.Partial("_TeamCreate", "TeamMaster")
-    @Html.Partial("_TeamIndex", "TeamMaster")
+    @*@Html.Partial("_TeamIndex", "TeamMaster")*@
+    <div id="divRolesList">
+
+    </div>
 </div>
 <div id="StatusMaster">
-        @Html.Partial("_StatusCreate", "Status")
-        @Html.Partial("_StatusIndex", "Status")
+    @Html.Partial("_StatusCreate", "Status")
+    @*@Html.Partial("_StatusIndex", "Status")*@
+    <div id="divStatusList">
+
     </div>
+</div>
 
 
 
@@ -114,9 +120,46 @@
             }
          });
     }
+    function loadStatus() {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetStatusList", "PhaseMaster")',
+
+            success: function (response) {
+            $("#divStatusList").html(response);
+            },
+            failure: function (response) {
+            alert(response.responseText);
+            },
+            error: function (response) {
+            alert(response.responseText);
+            }
+         });
+    }
+
+    function loadRole() {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetRolesList", "PhaseMaster")',
+
+            success: function (response) {
+            $("#divRolesList").html(response);
+            },
+            failure: function (response) {
+            alert(response.responseText);
+            },
+            error: function (response) {
+            alert(response.responseText);
+            }
+         });
+    }
 
     $(document).ready(function () {
         loadPhases();
+        loadStatus();
+        loadRole()
     })
 </script>
 

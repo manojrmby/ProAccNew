@@ -33,7 +33,7 @@ namespace ProAcc.Controllers
             //var Projlist = db.Projects.Where(x => x.isActive == true).ToList();
             var Projlist = (from e in db.Projects
                             join c in db.Customers on e.Customer_Id equals c.Customer_ID
-                         where c.isActive == true
+                         where e.isActive == true && c.isActive==true
                          select e).ToList();
             return PartialView("_ProjectCreationIndex", Projlist);
         }

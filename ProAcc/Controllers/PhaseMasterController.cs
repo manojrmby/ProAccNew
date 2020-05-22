@@ -17,12 +17,12 @@ namespace ProAcc.Controllers
         // GET: PhaseMaster
         public ActionResult Index()
         {
-            ViewBag.phasedetails = db.PhaseMasters.Where(x => x.isActive == true).ToList();
+            //ViewBag.phasedetails = db.PhaseMasters.Where(x => x.isActive == true).ToList();
            // ViewBag.ApplicationAreadetails = db.ApplicationAreaMasters.Where(x => x.isActive == true).ToList();
-            ViewBag.Activitydetails = db.ActivityMasters.Where(x => x.isActive == true).ToList();
+           // ViewBag.Activitydetails = db.ActivityMasters.Where(x => x.isActive == true).ToList();
             //ViewBag.Pendingdetails= db.PendingMasters.Where(x => x.isActive == true).ToList();
-            ViewBag.Roledetails= db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1).ToList();
-            ViewBag.Statusdetails=db.StatusMasters.Where(x => x.isActive == true).ToList();
+            //ViewBag.Roledetails= db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1).ToList();
+            //ViewBag.Statusdetails=db.StatusMasters.Where(x => x.isActive == true).ToList();
             return View();
         }
 
@@ -39,6 +39,20 @@ namespace ProAcc.Controllers
         {
             var PhaseList = db.PhaseMasters.Where(x => x.isActive == true).ToList();
             return PartialView("_PhaseIndex", PhaseList);
+        }
+
+        [HttpGet]
+        public ActionResult GetRolesList()
+        {
+            var RoleList = db.RoleMasters.Where(x => x.isActive == true).ToList();
+            return PartialView("_TeamIndex", RoleList);
+        }
+
+        [HttpGet]
+        public ActionResult GetStatusList()
+        {
+            var StatusList = db.StatusMasters.Where(x => x.isActive == true).ToList();
+            return PartialView("_StatusIndex", StatusList);
         }
         public ActionResult Create()
         {

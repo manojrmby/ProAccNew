@@ -1,8 +1,8 @@
-﻿
+﻿@model IEnumerable<ProACC_DB.RoleMaster>
 
-@{
+@*@{
     var teamdetails = ViewBag.Roledetails;
-}
+}*@
 
 
 <table class="table" id="tblQ">
@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in teamdetails)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -45,8 +45,9 @@
                 dataType: "json",
                 success: function (response) {
                     if (response == "success") {
-                        alert("Team name deleted successfully!");
-                        window.location="/PhaseMaster/Index"
+                        alert("Role deleted successfully!");
+                        resetRole();
+                        loadRole();
                     }
                 },
                 failure: function (response) {
@@ -69,12 +70,13 @@
             type: "GET",
             data: { id: id },
             success: function (result) {
-                
-                $("#TeamId").val(result.Id);
-                $("#txtTeamName").val(result.TeamName);
+
+                $("#TeamId").val(result.RoleId);
+                $("#txtTeamName").val(result.RoleName);
                 $("#tcre_on").val(result.Cre_on);
                 $("#tcre_By").val(result.Cre_By);
                 $("#btnTeamUpdate").show();
+                $("#btnAddRole").show();
                 $("#btnTeamCreate").hide();
 
             },

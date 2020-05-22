@@ -21,6 +21,8 @@ namespace ProAcc.Controllers
             return View();
         }
 
+        
+
         [HttpPost]
         public ActionResult Create(StatusMaster status)
         {

@@ -83,25 +83,27 @@
                 <div class="position-relative form-group">
                     @Html.Label("User Type", htmlAttributes: new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
-                        @Html.DropDownList("UserTypeID", null, htmlAttributes: new { @class = "form-control"})
+                        @Html.DropDownList("UserTypeID", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
                         @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
-                    </div> 
-                    
+                        @Html.HiddenFor(model => model.UserTypeID, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>                     
                 </div>
 
                 <div class="position-relative form-group" id="divRole">
                     @Html.Label("Role", htmlAttributes: new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
-                        @Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
                         @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.RoleID, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
 
                 <div class="position-relative form-group" id="divCust">
                     @Html.Label("Customer", htmlAttributes: new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
-                        @Html.DropDownList("Customer_Id", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("Customer_Id", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
                         @Html.ValidationMessageFor(model => model.Customer_Id, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
 

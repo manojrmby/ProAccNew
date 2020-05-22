@@ -115,7 +115,7 @@
         $('#txtCompanyName').on('focusout', function () {
             
             var CompName = $("#txtCompanyName").val().trim();
-            var id = $("#customerid").val().trim();
+            var id = $("#customerid").val();
             if (CompName == "") {
                 $("#lblCompanyName").html("Please Enter valid Company Name").show().fadeOut(5000);
                 validatecustomer()

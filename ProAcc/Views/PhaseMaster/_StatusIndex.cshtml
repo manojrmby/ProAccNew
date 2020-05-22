@@ -1,9 +1,9 @@
-﻿
+﻿@model IEnumerable<ProACC_DB.StatusMaster>
 
 
-@{
+@*@{
     var statusdetails = ViewBag.Statusdetails;
-}
+}*@
 
 
 <table class="table" id="tblQ">
@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in statusdetails)
+        @foreach (var item in Model)
         {
             <tr>
 
@@ -49,7 +49,10 @@
                     if (response == "success") {
                         alert("Status name deleted successfully!");
                         //window.location="/PhaseMaster/Index"
-                        location.reload();
+                        //location.reload();
+                        resetStatus();
+                        loadStatus();
+                        
                     }
                 },
                 failure: function (response) {
@@ -78,6 +81,7 @@
                 $("#stacre_on").val(result.Cre_on);
                 $("#stacre_By").val(result.Cre_By);
                 $("#btnStatusUpdate").show();
+                $("#btnAddStatus").show();
                 $("#btnStatusCreate").hide();
 
             },
