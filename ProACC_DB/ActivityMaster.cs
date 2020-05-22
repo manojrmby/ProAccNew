@@ -14,12 +14,6 @@ namespace ProACC_DB
     
     public partial class ActivityMaster
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ActivityMaster()
-        {
-            this.ResourceAllocations = new HashSet<ResourceAllocation>();
-        }
-    
         public System.Guid Activity_ID { get; set; }
         public string Task { get; set; }
         public Nullable<System.Guid> BuildingBlock_id { get; set; }
@@ -36,7 +30,5 @@ namespace ProACC_DB
     
         public virtual PhaseMaster PhaseMaster { get; set; }
         public virtual RoleMaster RoleMaster { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ResourceAllocation> ResourceAllocations { get; set; }
     }
 }

@@ -129,9 +129,8 @@
             <PropertyRef Name="ResourceAllocation_Id" />
           </Key>
           <Property Name="ResourceAllocation_Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Instance_Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Activity_ID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="User_ID" Type="nvarchar(max)" />
+          <Property Name="Project_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_IDs" Type="nvarchar(max)" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="Cre_on" Type="datetime" Nullable="false" />
           <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
@@ -282,27 +281,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RESOURCEALLOCATION_ActivityMaster">
-          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="1" />
+        <Association Name="FK_ResourceAllocation_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
           <End Role="ResourceAllocation" Type="Self.ResourceAllocation" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ActivityMaster">
-              <PropertyRef Name="Activity_ID" />
+            <Principal Role="Project">
+              <PropertyRef Name="Project_Id" />
             </Principal>
             <Dependent Role="ResourceAllocation">
-              <PropertyRef Name="Activity_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ResourceAllocation_Instance">
-          <End Role="Instance" Type="Self.Instance" Multiplicity="1" />
-          <End Role="ResourceAllocation" Type="Self.ResourceAllocation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Instance">
-              <PropertyRef Name="Instance_id" />
-            </Principal>
-            <Dependent Role="ResourceAllocation">
-              <PropertyRef Name="Instance_Id" />
+              <PropertyRef Name="Project_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -396,12 +383,8 @@
             <End Role="UserMaster" EntitySet="UserMaster" />
             <End Role="ProjectMonitor" EntitySet="ProjectMonitor" />
           </AssociationSet>
-          <AssociationSet Name="FK_RESOURCEALLOCATION_ActivityMaster" Association="Self.FK_RESOURCEALLOCATION_ActivityMaster">
-            <End Role="ActivityMaster" EntitySet="ActivityMaster" />
-            <End Role="ResourceAllocation" EntitySet="ResourceAllocation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ResourceAllocation_Instance" Association="Self.FK_ResourceAllocation_Instance">
-            <End Role="Instance" EntitySet="Instance" />
+          <AssociationSet Name="FK_ResourceAllocation_Project" Association="Self.FK_ResourceAllocation_Project">
+            <End Role="Project" EntitySet="Project" />
             <End Role="ResourceAllocation" EntitySet="ResourceAllocation" />
           </AssociationSet>
           <AssociationSet Name="FK_UserMaster_Customer" Association="Self.FK_UserMaster_Customer">
@@ -438,6 +421,7 @@
           <FunctionImport Name="SP_CreateAnalysis" ReturnType="Collection(ProAccModel.SP_CreateAnalysis_Result)">
           <Parameter Name="Type" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="ActivityMasters" EntityType="ProAccModel.ActivityMaster" />
           <EntitySet Name="Customers" EntityType="ProAccModel.Customer" />
           <EntitySet Name="HanaStatus" EntityType="ProAccModel.HanaStatu" />
           <EntitySet Name="Instances" EntityType="ProAccModel.Instance" />
@@ -448,30 +432,38 @@
           <EntitySet Name="RoleMasters" EntityType="ProAccModel.RoleMaster" />
           <EntitySet Name="StatusMasters" EntityType="ProAccModel.StatusMaster" />
           <EntitySet Name="User_Type" EntityType="ProAccModel.User_Type" />
+          <EntitySet Name="UserMasters" EntityType="ProAccModel.UserMaster" />
+          <AssociationSet Name="FK_ActivityMaster_PhaseMaster" Association="ProAccModel.FK_ActivityMaster_PhaseMaster">
+            <End Role="PhaseMaster" EntitySet="PhaseMasters" />
+            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityMaster_RoleMaster" Association="ProAccModel.FK_ActivityMaster_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMasters" />
+            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
+          </AssociationSet>
           <AssociationSet Name="FK_Project_Customer" Association="ProAccModel.FK_Project_Customer">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMaster_Customer" Association="ProAccModel.FK_UserMaster_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="UserMaster" EntitySet="UserMasters" />
           </AssociationSet>
           <AssociationSet Name="FK_Instance_Project" Association="ProAccModel.FK_Instance_Project">
             <End Role="Project" EntitySet="Projects" />
             <End Role="Instance" EntitySet="Instances" />
           </AssociationSet>
-          <AssociationSet Name="FK_ResourceAllocation_Instance" Association="ProAccModel.FK_ResourceAllocation_Instance">
-            <End Role="Instance" EntitySet="Instances" />
-            <End Role="ResourceAllocation" EntitySet="ResourceAllocations" />
-          </AssociationSet>
           <AssociationSet Name="FK_ProjectMonitor_PhaseMaster" Association="ProAccModel.FK_ProjectMonitor_PhaseMaster">
             <End Role="PhaseMaster" EntitySet="PhaseMasters" />
             <End Role="ProjectMonitor" EntitySet="ProjectMonitors" />
           </AssociationSet>
+          <AssociationSet Name="FK_ResourceAllocation_Project" Association="ProAccModel.FK_ResourceAllocation_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ResourceAllocation" EntitySet="ResourceAllocations" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProjectMonitor_StatusMaster" Association="ProAccModel.FK_ProjectMonitor_StatusMaster">
             <End Role="StatusMaster" EntitySet="StatusMasters" />
             <End Role="ProjectMonitor" EntitySet="ProjectMonitors" />
-          </AssociationSet>
-          <EntitySet Name="UserMasters" EntityType="ProAccModel.UserMaster" />
-          <AssociationSet Name="FK_UserMaster_Customer" Association="ProAccModel.FK_UserMaster_Customer">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="UserMaster" EntitySet="UserMasters" />
           </AssociationSet>
           <AssociationSet Name="FK_ProjectMonitor_UserMaster" Association="ProAccModel.FK_ProjectMonitor_UserMaster">
             <End Role="UserMaster" EntitySet="UserMasters" />
@@ -484,19 +476,6 @@
           <AssociationSet Name="FK_UserMaster_User_Type" Association="ProAccModel.FK_UserMaster_User_Type">
             <End Role="User_Type" EntitySet="User_Type" />
             <End Role="UserMaster" EntitySet="UserMasters" />
-          </AssociationSet>
-          <EntitySet Name="ActivityMasters" EntityType="ProAccModel.ActivityMaster" />
-          <AssociationSet Name="FK_ActivityMaster_PhaseMaster" Association="ProAccModel.FK_ActivityMaster_PhaseMaster">
-            <End Role="PhaseMaster" EntitySet="PhaseMasters" />
-            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ActivityMaster_RoleMaster" Association="ProAccModel.FK_ActivityMaster_RoleMaster">
-            <End Role="RoleMaster" EntitySet="RoleMasters" />
-            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RESOURCEALLOCATION_ActivityMaster" Association="ProAccModel.FK_RESOURCEALLOCATION_ActivityMaster">
-            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
-            <End Role="ResourceAllocation" EntitySet="ResourceAllocations" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
@@ -514,6 +493,26 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Company" Nullable="false" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="ActivityMaster">
+          <Key>
+            <PropertyRef Name="Activity_ID" />
+          </Key>
+          <Property Name="Activity_ID" Type="Guid" Nullable="false" />
+          <Property Name="Task" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BuildingBlock_id" Type="Guid" />
+          <Property Name="PhaseID" Type="Int32" Nullable="false" />
+          <Property Name="Sequence_Num" Type="Int32" />
+          <Property Name="ApplicationArea" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="ActivityMaster" ToRole="PhaseMaster" />
+          <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_ActivityMaster_RoleMaster" FromRole="ActivityMaster" ToRole="RoleMaster" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Customer_ID" />
@@ -557,7 +556,6 @@
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Project" Relationship="ProAccModel.FK_Instance_Project" FromRole="Instance" ToRole="Project" />
-          <NavigationProperty Name="ResourceAllocations" Relationship="ProAccModel.FK_ResourceAllocation_Instance" FromRole="Instance" ToRole="ResourceAllocation" />
         </EntityType>
         <EntityType Name="PhaseMaster">
           <Key>
@@ -571,8 +569,8 @@
           <Property Name="Modified_On" Type="DateTime" Precision="3" />
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ProjectMonitors" Relationship="ProAccModel.FK_ProjectMonitor_PhaseMaster" FromRole="PhaseMaster" ToRole="ProjectMonitor" />
           <NavigationProperty Name="ActivityMasters" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="PhaseMaster" ToRole="ActivityMaster" />
+          <NavigationProperty Name="ProjectMonitors" Relationship="ProAccModel.FK_ProjectMonitor_PhaseMaster" FromRole="PhaseMaster" ToRole="ProjectMonitor" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -590,6 +588,7 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Customer" Relationship="ProAccModel.FK_Project_Customer" FromRole="Project" ToRole="Customer" />
           <NavigationProperty Name="Instances" Relationship="ProAccModel.FK_Instance_Project" FromRole="Project" ToRole="Instance" />
+          <NavigationProperty Name="ResourceAllocations" Relationship="ProAccModel.FK_ResourceAllocation_Project" FromRole="Project" ToRole="ResourceAllocation" />
         </EntityType>
         <EntityType Name="ProjectMonitor">
           <Key>
@@ -631,17 +630,15 @@
             <PropertyRef Name="ResourceAllocation_Id" />
           </Key>
           <Property Name="ResourceAllocation_Id" Type="Guid" Nullable="false" />
-          <Property Name="Instance_Id" Type="Guid" Nullable="false" />
-          <Property Name="Activity_ID" Type="Guid" Nullable="false" />
-          <Property Name="User_ID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Project_Id" Type="Guid" Nullable="false" />
+          <Property Name="User_IDs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Cre_By" Type="Guid" Nullable="false" />
           <Property Name="Modified_On" Type="DateTime" Precision="3" />
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Instance" Relationship="ProAccModel.FK_ResourceAllocation_Instance" FromRole="ResourceAllocation" ToRole="Instance" />
-          <NavigationProperty Name="ActivityMaster" Relationship="ProAccModel.FK_RESOURCEALLOCATION_ActivityMaster" FromRole="ResourceAllocation" ToRole="ActivityMaster" />
+          <NavigationProperty Name="Project" Relationship="ProAccModel.FK_ResourceAllocation_Project" FromRole="ResourceAllocation" ToRole="Project" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -655,8 +652,8 @@
           <Property Name="Modified_On" Type="DateTime" Precision="3" />
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UserMasters" Relationship="ProAccModel.FK_UserMaster_RoleMaster" FromRole="RoleMaster" ToRole="UserMaster" />
           <NavigationProperty Name="ActivityMasters" Relationship="ProAccModel.FK_ActivityMaster_RoleMaster" FromRole="RoleMaster" ToRole="ActivityMaster" />
+          <NavigationProperty Name="UserMasters" Relationship="ProAccModel.FK_UserMaster_RoleMaster" FromRole="RoleMaster" ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="StatusMaster">
           <Key>
@@ -686,66 +683,6 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UserMasters" Relationship="ProAccModel.FK_UserMaster_User_Type" FromRole="User_Type" ToRole="UserMaster" />
         </EntityType>
-        <Association Name="FK_Project_Customer">
-          <End Type="ProAccModel.Customer" Role="Customer" Multiplicity="1" />
-          <End Type="ProAccModel.Project" Role="Project" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="Customer_ID" />
-            </Principal>
-            <Dependent Role="Project">
-              <PropertyRef Name="Customer_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Instance_Project">
-          <End Type="ProAccModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="ProAccModel.Instance" Role="Instance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="Project_Id" />
-            </Principal>
-            <Dependent Role="Instance">
-              <PropertyRef Name="Project_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ResourceAllocation_Instance">
-          <End Type="ProAccModel.Instance" Role="Instance" Multiplicity="1" />
-          <End Type="ProAccModel.ResourceAllocation" Role="ResourceAllocation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Instance">
-              <PropertyRef Name="Instance_id" />
-            </Principal>
-            <Dependent Role="ResourceAllocation">
-              <PropertyRef Name="Instance_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProjectMonitor_PhaseMaster">
-          <End Type="ProAccModel.PhaseMaster" Role="PhaseMaster" Multiplicity="1" />
-          <End Type="ProAccModel.ProjectMonitor" Role="ProjectMonitor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PhaseMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProjectMonitor">
-              <PropertyRef Name="PhaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProjectMonitor_StatusMaster">
-          <End Type="ProAccModel.StatusMaster" Role="StatusMaster" Multiplicity="1" />
-          <End Type="ProAccModel.ProjectMonitor" Role="ProjectMonitor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StatusMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProjectMonitor">
-              <PropertyRef Name="StatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="UserMaster">
           <Key>
             <PropertyRef Name="UserId" />
@@ -770,6 +707,42 @@
           <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_UserMaster_RoleMaster" FromRole="UserMaster" ToRole="RoleMaster" />
           <NavigationProperty Name="User_Type" Relationship="ProAccModel.FK_UserMaster_User_Type" FromRole="UserMaster" ToRole="User_Type" />
         </EntityType>
+        <Association Name="FK_ActivityMaster_PhaseMaster">
+          <End Type="ProAccModel.PhaseMaster" Role="PhaseMaster" Multiplicity="1" />
+          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityMaster">
+              <PropertyRef Name="PhaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityMaster_RoleMaster">
+          <End Type="ProAccModel.RoleMaster" Role="RoleMaster" Multiplicity="1" />
+          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ActivityMaster">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_Customer">
+          <End Type="ProAccModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="ProAccModel.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Customer_ID" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserMaster_Customer">
           <End Type="ProAccModel.Customer" Role="Customer" Multiplicity="0..1" />
           <End Type="ProAccModel.UserMaster" Role="UserMaster" Multiplicity="*" />
@@ -779,6 +752,54 @@
             </Principal>
             <Dependent Role="UserMaster">
               <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Instance_Project">
+          <End Type="ProAccModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="ProAccModel.Instance" Role="Instance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Project_Id" />
+            </Principal>
+            <Dependent Role="Instance">
+              <PropertyRef Name="Project_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMonitor_PhaseMaster">
+          <End Type="ProAccModel.PhaseMaster" Role="PhaseMaster" Multiplicity="1" />
+          <End Type="ProAccModel.ProjectMonitor" Role="ProjectMonitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectMonitor">
+              <PropertyRef Name="PhaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResourceAllocation_Project">
+          <End Type="ProAccModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="ProAccModel.ResourceAllocation" Role="ResourceAllocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Project_Id" />
+            </Principal>
+            <Dependent Role="ResourceAllocation">
+              <PropertyRef Name="Project_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMonitor_StatusMaster">
+          <End Type="ProAccModel.StatusMaster" Role="StatusMaster" Multiplicity="1" />
+          <End Type="ProAccModel.ProjectMonitor" Role="ProjectMonitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectMonitor">
+              <PropertyRef Name="StatusId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -818,63 +839,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ActivityMaster">
-          <Key>
-            <PropertyRef Name="Activity_ID" />
-          </Key>
-          <Property Name="Activity_ID" Type="Guid" Nullable="false" />
-          <Property Name="Task" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="BuildingBlock_id" Type="Guid" />
-          <Property Name="PhaseID" Type="Int32" Nullable="false" />
-          <Property Name="Sequence_Num" Type="Int32" />
-          <Property Name="ApplicationArea" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="RoleID" Type="Int32" Nullable="false" />
-          <Property Name="isActive" Type="Boolean" Nullable="false" />
-          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Cre_By" Type="Guid" Nullable="false" />
-          <Property Name="Modified_On" Type="DateTime" Precision="3" />
-          <Property Name="Modified_by" Type="Guid" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="ActivityMaster" ToRole="PhaseMaster" />
-          <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_ActivityMaster_RoleMaster" FromRole="ActivityMaster" ToRole="RoleMaster" />
-          <NavigationProperty Name="ResourceAllocations" Relationship="ProAccModel.FK_RESOURCEALLOCATION_ActivityMaster" FromRole="ActivityMaster" ToRole="ResourceAllocation" />
-        </EntityType>
-        <Association Name="FK_ActivityMaster_PhaseMaster">
-          <End Type="ProAccModel.PhaseMaster" Role="PhaseMaster" Multiplicity="1" />
-          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PhaseMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ActivityMaster">
-              <PropertyRef Name="PhaseID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ActivityMaster_RoleMaster">
-          <End Type="ProAccModel.RoleMaster" Role="RoleMaster" Multiplicity="1" />
-          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RoleMaster">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="ActivityMaster">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RESOURCEALLOCATION_ActivityMaster">
-          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="1" />
-          <End Type="ProAccModel.ResourceAllocation" Role="ResourceAllocation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActivityMaster">
-              <PropertyRef Name="Activity_ID" />
-            </Principal>
-            <Dependent Role="ResourceAllocation">
-              <PropertyRef Name="Activity_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -900,6 +864,25 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="ActivityMasters">
+            <EntityTypeMapping TypeName="ProAccModel.ActivityMaster">
+              <MappingFragment StoreEntitySet="ActivityMaster">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ApplicationArea" ColumnName="ApplicationArea" />
+                <ScalarProperty Name="Sequence_Num" ColumnName="Sequence_Num" />
+                <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
+                <ScalarProperty Name="BuildingBlock_id" ColumnName="BuildingBlock_id" />
+                <ScalarProperty Name="Task" ColumnName="Task" />
+                <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="ProAccModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
@@ -1016,9 +999,8 @@
                 <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
                 <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
-                <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
-                <ScalarProperty Name="Instance_Id" ColumnName="Instance_Id" />
+                <ScalarProperty Name="User_IDs" ColumnName="User_IDs" />
+                <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
                 <ScalarProperty Name="ResourceAllocation_Id" ColumnName="ResourceAllocation_Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1083,25 +1065,6 @@
                 <ScalarProperty Name="EMail" ColumnName="EMail" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ActivityMasters">
-            <EntityTypeMapping TypeName="ProAccModel.ActivityMaster">
-              <MappingFragment StoreEntitySet="ActivityMaster">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
-                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
-                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
-                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-                <ScalarProperty Name="ApplicationArea" ColumnName="ApplicationArea" />
-                <ScalarProperty Name="Sequence_Num" ColumnName="Sequence_Num" />
-                <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
-                <ScalarProperty Name="BuildingBlock_id" ColumnName="BuildingBlock_id" />
-                <ScalarProperty Name="Task" ColumnName="Task" />
-                <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

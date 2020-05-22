@@ -514,6 +514,7 @@
     <Compile Include="BL\Model\LogedUser.cs" />
     <Compile Include="BL\Model\PicturetoData.cs" />
     <Compile Include="BL\Model\ProjectMonitorModel.cs" />
+    <Compile Include="BL\Model\ResourceAllocationModel.cs" />
     <Compile Include="BL\Model\SAPFioriAppsModel.cs" />
     <Compile Include="BL\Model\SAPInput_Activities.cs" />
     <Compile Include="BL\Model\SAPInput_CustomCode.cs" />
@@ -607,6 +608,7 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Link\ProfileLink.cshtml" />
     <Content Include="Views\User\ResourceAllocationCreate.cshtml" />
+    <Content Include="Views\Customers\GetCustomerById.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

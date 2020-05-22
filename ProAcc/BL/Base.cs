@@ -1306,11 +1306,58 @@ namespace ProAcc.BL
             return Status;
 
         }
+
+        public Boolean SP_SubmitResource(String IDS,Guid ProjectID,Guid LoginID)
+        {
+            bool Result = false;
+
+            DBHelper dB = new DBHelper("SP_ResorceAllocation", CommandType.StoredProcedure);
+            dB.addIn("@Type", "SubmitResource");
+            dB.addIn("@User_IDs", IDS);
+            dB.addIn("@Project_Id", ProjectID);
+            dB.addIn("@CrBy", LoginID);
+            dB.ExecuteScalar();
+            Result = true;
+            return Result;
+        }
         #endregion
 
 
 
         #region Extra
+        public List<ResourceAllocationModel> SP_GetResourceAllocation(String ProjectID)
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_ResorceAllocation", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetAllData");
+            dB.addIn("@Project_Id", ProjectID);
+            dt = dB.ExecuteDataTable();
+            List<ResourceAllocationModel> RA = new List<ResourceAllocationModel>();
+            if (dt.Rows.Count > 0)
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ResourceAllocationModel L = new ResourceAllocationModel();
+                    L.RA_ID = Guid.Parse(dr["RA_ID"].ToString());
+                    L.ProjectID = dr["Project_Id"].ToString();
+                    L.CustomertID = dr["Customer_Id"].ToString();
+
+                    L.ProjName = dr["Project_Name"].ToString();
+                    L.CustomerName = dr["Company_Name"].ToString();
+
+                    L.UserName = dr["NAME"].ToString();
+                    L.UserId = dr["USERIDS"].ToString();
+
+                    RA.Add(L);
+                }
+            }
+
+
+            return RA;
+        }
+
+
 
         //private string User_ID = HttpContext.Current.Session["UserName"].ToString();
         //private string InstanceId = HttpContext.Current.Session["UserName"].ToString();
@@ -1334,7 +1381,7 @@ namespace ProAcc.BL
         //    return status;
         //}
 
-             //public bool AddInstance(string IDInstance)
+        //public bool AddInstance(string IDInstance)
         //{
         //    bool status = false;
         //    //InstanceId = Guid.Parse(IDInstance);
