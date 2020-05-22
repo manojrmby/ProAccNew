@@ -125,7 +125,6 @@ namespace ProAcc.Controllers
             
         }
 
-            
         public ActionResult GetCustomerById(Guid? id)
         {
             if (id == null)

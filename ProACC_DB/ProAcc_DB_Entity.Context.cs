@@ -27,6 +27,7 @@ namespace ProACC_DB
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<HanaStatu> HanaStatus { get; set; }
         public virtual DbSet<Instance> Instances { get; set; }
@@ -38,7 +39,6 @@ namespace ProACC_DB
         public virtual DbSet<StatusMaster> StatusMasters { get; set; }
         public virtual DbSet<User_Type> User_Type { get; set; }
         public virtual DbSet<UserMaster> UserMasters { get; set; }
-        public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {

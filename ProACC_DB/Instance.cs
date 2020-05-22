@@ -14,12 +14,6 @@ namespace ProACC_DB
     
     public partial class Instance
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Instance()
-        {
-            this.ResourceAllocations = new HashSet<ResourceAllocation>();
-        }
-    
         public System.Guid Instance_id { get; set; }
         public string InstaceName { get; set; }
         public System.Guid Project_ID { get; set; }
@@ -34,7 +28,5 @@ namespace ProACC_DB
         public bool IsDeleted { get; set; }
     
         public virtual Project Project { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ResourceAllocation> ResourceAllocations { get; set; }
     }
 }

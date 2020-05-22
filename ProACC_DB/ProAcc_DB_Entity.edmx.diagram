@@ -5,30 +5,29 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8e2369ce9df44ff58790c5c178865d31" Name="Diagram1" ZoomLevel="59">
-        <EntityTypeShape EntityType="ProAccModel.Customer" Width="1.5" PointX="1.5" PointY="22.75" />
-        <EntityTypeShape EntityType="ProAccModel.HanaStatu" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ProAccModel.Instance" Width="1.5" PointX="3" PointY="17.5" />
-        <EntityTypeShape EntityType="ProAccModel.PhaseMaster" Width="1.5" PointX="0.75" PointY="5.5" />
-        <EntityTypeShape EntityType="ProAccModel.Project" Width="1.5" PointX="0.75" PointY="17.75" />
-        <EntityTypeShape EntityType="ProAccModel.ProjectMonitor" Width="1.5" PointX="3" PointY="3.75" />
-        <EntityTypeShape EntityType="ProAccModel.ResourceAllocation" Width="1.5" PointX="5.25" PointY="12.75" />
-        <EntityTypeShape EntityType="ProAccModel.RoleMaster" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ProAccModel.StatusMaster" Width="1.5" PointX="0.75" PointY="1.625" />
-        <EntityTypeShape EntityType="ProAccModel.User_Type" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="ProAccModel.ActivityMaster" Width="1.5" PointX="3" PointY="5.125" />
+        <EntityTypeShape EntityType="ProAccModel.Customer" Width="1.5" PointX="3.75" PointY="10.125" />
+        <EntityTypeShape EntityType="ProAccModel.HanaStatu" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ProAccModel.Instance" Width="1.5" PointX="8.25" PointY="11.25" />
+        <EntityTypeShape EntityType="ProAccModel.PhaseMaster" Width="1.5" PointX="0.75" PointY="1.625" />
+        <EntityTypeShape EntityType="ProAccModel.Project" Width="1.5" PointX="6" PointY="13.125" />
+        <EntityTypeShape EntityType="ProAccModel.ProjectMonitor" Width="1.5" PointX="8.25" PointY="3.75" />
+        <EntityTypeShape EntityType="ProAccModel.ResourceAllocation" Width="1.5" PointX="8.25" PointY="15.5" />
+        <EntityTypeShape EntityType="ProAccModel.RoleMaster" Width="1.5" PointX="0.75" PointY="5.625" />
+        <EntityTypeShape EntityType="ProAccModel.StatusMaster" Width="1.5" PointX="6" PointY="0.75" />
+        <EntityTypeShape EntityType="ProAccModel.User_Type" Width="1.5" PointX="3.75" PointY="1.625" />
+        <EntityTypeShape EntityType="ProAccModel.UserMaster" Width="1.5" PointX="6" PointY="4.75" />
+        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_PhaseMaster" />
+        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_RoleMaster" />
         <AssociationConnector Association="ProAccModel.FK_Project_Customer" />
-        <AssociationConnector Association="ProAccModel.FK_Instance_Project" />
-        <AssociationConnector Association="ProAccModel.FK_ResourceAllocation_Instance" />
-        <AssociationConnector Association="ProAccModel.FK_ProjectMonitor_PhaseMaster" />
-        <AssociationConnector Association="ProAccModel.FK_ProjectMonitor_StatusMaster" />
-        <EntityTypeShape EntityType="ProAccModel.UserMaster" Width="1.5" PointX="8" PointY="11.125" />
         <AssociationConnector Association="ProAccModel.FK_UserMaster_Customer" />
+        <AssociationConnector Association="ProAccModel.FK_Instance_Project" />
+        <AssociationConnector Association="ProAccModel.FK_ProjectMonitor_PhaseMaster" />
+        <AssociationConnector Association="ProAccModel.FK_ResourceAllocation_Project" />
+        <AssociationConnector Association="ProAccModel.FK_ProjectMonitor_StatusMaster" />
         <AssociationConnector Association="ProAccModel.FK_ProjectMonitor_UserMaster" />
         <AssociationConnector Association="ProAccModel.FK_UserMaster_RoleMaster" />
         <AssociationConnector Association="ProAccModel.FK_UserMaster_User_Type" />
-        <EntityTypeShape EntityType="ProAccModel.ActivityMaster" Width="1.5" PointX="8" PointY="2.5" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_PhaseMaster" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_RoleMaster" />
-        <AssociationConnector Association="ProAccModel.FK_RESOURCEALLOCATION_ActivityMaster" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

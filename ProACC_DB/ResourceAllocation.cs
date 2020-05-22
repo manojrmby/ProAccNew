@@ -15,9 +15,8 @@ namespace ProACC_DB
     public partial class ResourceAllocation
     {
         public System.Guid ResourceAllocation_Id { get; set; }
-        public System.Guid Instance_Id { get; set; }
-        public System.Guid Activity_ID { get; set; }
-        public string User_ID { get; set; }
+        public System.Guid Project_Id { get; set; }
+        public string User_IDs { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }
@@ -25,7 +24,6 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual Instance Instance { get; set; }
-        public virtual ActivityMaster ActivityMaster { get; set; }
+        public virtual Project Project { get; set; }
     }
 }

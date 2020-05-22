@@ -281,6 +281,26 @@ namespace ProAcc.Controllers
             ViewBag.Project = Project;
             return View();
         }
+        public ActionResult GetResourceAllocationData(String ProjectID)
+        {
+            //InstanceId = Guid.Parse(Session["InstanceId"].ToString());
+            //InstanceId = Guid.Parse("d9747ed5-f482-4ac2-9ef9-4a25aa5a6855");
+            var Result = _Base.SP_GetResourceAllocation(ProjectID);
+           // List<ResourceAllocation> CR = db.ResourceAllocations.Where(x => x.isActive == true).ToList();
+
+
+            var obj = new { data = Result };
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SubmitResource(String IDS, String PtojectId)
+        {
+            bool Result = false;
+            Result = _Base.SP_SubmitResource(IDS, Guid.Parse(PtojectId), Guid.Parse(Session["loginid"].ToString()));
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpPost]
         public JsonResult LoadUser()
