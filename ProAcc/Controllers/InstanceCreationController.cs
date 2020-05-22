@@ -22,8 +22,7 @@ namespace ProAcc.Controllers
         public ActionResult Create()
         {
             //ViewBag.project = db.Projects.Where(x => x.isActive == true);
-            ViewBag.project = (from e in db.Projects
-                               //join c in db.Projects on e.Project_ID equals c.Project_Id
+            ViewBag.project = (from e in db.Projects                               
                                join cu in db.Customers on e.Customer_Id equals cu.Customer_ID
                                where e.isActive == true && cu.isActive == true
                                select e).ToList();

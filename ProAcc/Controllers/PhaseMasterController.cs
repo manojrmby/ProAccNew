@@ -34,6 +34,12 @@ namespace ProAcc.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult GetPhaseList()
+        {
+            var PhaseList = db.PhaseMasters.Where(x => x.isActive == true).ToList();
+            return PartialView("_PhaseIndex", PhaseList);
+        }
         public ActionResult Create()
         {
             return View();

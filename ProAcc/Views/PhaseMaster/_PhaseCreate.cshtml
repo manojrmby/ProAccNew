@@ -5,6 +5,7 @@
 
    
     <a class="card-title">Create Phase</a>
+<hr />
     <div style="padding:1em;">
         <div class="row">
             <div class="col-6">
@@ -23,10 +24,10 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="button" value="Create" class="btn btn-primary" id="btnPhaseCreate" />
-                        <input type="button" value="Update" class="btn btn-info" id="btnPhaseUpdate" style="display:none" />                        
+                        <input type="button" value="Update" class="btn btn-info" id="btnPhaseUpdate" style="display:none" />       
+                        <a class="btn btn-success" id="btnAddPhase" onclick="resetPhase();" style="display:none"><i class="fa fa-plus" onclick="resetPhase();"></i>Add New</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -35,11 +36,21 @@
     $(document).ready(function () {
         $("#btnPhaseCreate").prop('disabled', true);
 
-        $("#txtPhaseName").bind('copy paste cut', function (e) {
-            e.preventDefault();
-         });
+        //$("#txtPhaseName").bind('copy paste cut', function (e) {
+        //    e.preventDefault();
+        //});
+
     });
 
+    function resetPhase() {
+             $("#PhaseId").val("");
+            $("#txtPhaseName").val("");
+            $("#pcre_on").val("");
+            $("#pcre_By").val("");
+            $("#btnPhaseCreate").show();
+            $("#btnPhaseUpdate").hide();
+            $("#btnAddPhase").hide();
+        }
    
     $("#txtPhaseName").keypress(function (event) {
         debugger;
@@ -83,7 +94,9 @@
                         if (response == "success") {
                             $("#txtPhaseName").val("");
                             alert("Phase Saved successfully!");
-                            location.reload();
+                            loadPhases();
+                            resetPhase();
+                            //location.reload();
                         }
                     },
                     failure: function (response) {
@@ -130,10 +143,8 @@
               dataType: "json",
               success: function (data) {
                   if (data != "success") {
-                      $("#lblPhaseName").html("this Phase name is already taken,please select another").show().fadeOut(2000);
-                      //alert("This Phase name is already taken,please select another.");
-                      //$("#txtPhaseName").val("");
-                      //location.reload();
+                      $("#lblPhaseName").html("This Phase name is already in use").show().fadeOut(5000);
+                      
                   }
                   else {
                       $.ajax({
@@ -144,8 +155,9 @@
                     success: function (response) {
                         if (response == "success") {
                             alert("Phase Edited successfully!");
-                            //Getda();
-                            location.reload();
+                            loadPhases();
+                            resetPhase();
+                            //location.reload();
                         }
                     },
                     failure: function (response) {
@@ -165,16 +177,5 @@
         }
      });
 
-    $("#btnPhaseCancel").on("click", function () {
-        debugger;
-        var cre_on = $("#pcre_on").val();
-
-         $("#PhaseId").val("");
-         $("#txtPhaseName").val("");
-         $("#pcre_on").val("");
-        $("#pcre_By").val("");
-        $("#btnPhaseUpdate").hide();
-        $("#btnPhaseCancel").hide();
-        $("#btnPhaseCreate").show();
-    })
+    
 </script>

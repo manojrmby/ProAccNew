@@ -1,10 +1,5 @@
 ﻿
-@{
-    var pdetails = ViewBag.phasedetails;
-}
-@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>*@
+@model IEnumerable<ProACC_DB.PhaseMaster>
 
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
@@ -14,7 +9,7 @@
     <thead>
         <tr>
             <th>
-                PhaseName
+                Phase Name
             </th>
             <th>
                 Actions
@@ -22,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in pdetails)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -54,54 +49,27 @@
     </script>*@
 
 <script type="text/javascript">
-     //$(document).ready(function () {
-
-     //   $('#tblPhase').DataTable({
-     //       'aoColumnDefs': [{
-     //           'bSortable': false,
-     //           'aTargets': ['nosort']
-     //       }]
-     //   });
-     //});
-
+    
     $(document).ready(function () {
-        $("#tblPhase").dataTable();
-        //funct();
-        //Getda();
-
+        $("#tblPhase").dataTable();     
     });
 
-    function Getda() {
-        //debugger;
-        window.location.href='@Url.Action("Index","PhaseMaster")'
-        //debugger;
-        @*$.ajax({
-            url: '@Url.Action("Index","PhaseMaster")',
-            success: function () {
-          //      alert("Success");
-            }
-        });*@
-
-    }
-
-    function funct() {
-            $("#tblPhase").dataTable();
-     }
-
+   
     $(".btnDelete").on("click", function () {
         var id = $(this).next().val();
        var retVal = confirm("Do you want to delete ?");
                if( retVal == true ) {
                 $.ajax({
                 type: "POST",
-                url: '@Url.Action("Delete","PhaseMaster")',//"/PhaseMaster/Delete",
+                url: '@Url.Action("Delete","PhaseMaster")',
                 data: { id:id },
                 dataType: "json",
                 success: function (response) {
                     if (response == "success") {
                         alert("Phase name deleted successfully!");
-                        //window.location="/PhaseMaster/Index"
-                        location.reload();
+                        loadPhases();
+                        resetPhase();
+                        //location.reload();
                     }
                 },
                 failure: function (response) {
@@ -130,6 +98,7 @@
                 $("#txtPhaseName").val(result.PhaseName);
                 $("#pcre_on").val(result.Cre_on);
                 $("#pcre_By").val(result.Cre_By);
+                $("#btnAddPhase").show();
                 $("#btnPhaseUpdate").show();
                 $("#btnPhaseCreate").hide();
 
