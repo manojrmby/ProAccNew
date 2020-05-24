@@ -14,7 +14,7 @@ namespace ProACC_DB
     
     public partial class ActivityMaster
     {
-        public System.Guid Activity_ID { get; set; }
+        public int Activity_ID { get; set; }
         public string Task { get; set; }
         public Nullable<System.Guid> BuildingBlock_id { get; set; }
         public int PhaseID { get; set; }

@@ -41,6 +41,7 @@ namespace ProACC_DB
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
+        public Nullable<int> ActivityID { get; set; }
     
         public virtual PhaseMaster PhaseMaster { get; set; }
         public virtual StatusMaster StatusMaster { get; set; }

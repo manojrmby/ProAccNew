@@ -173,84 +173,76 @@
             }
         };
 
-
+       
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","ProjectMonitor")",
             datatype: "json",
             editurl: "@Url.Action("SubmitProjectMonitor","ProjectMonitor")",
             colModel: [
-                { label: 'ID', name: 'LocalID', width: 45, editable: false },
+                //{ label: 'ID', name: 'LocalID', width: 45,hidden: true, editable: false },
                 {
-                    label: 'Instance', name: 'Instance', width: 100, editable: false,hidden: true, align: 'center', editoptions: {
-                        value:
-                            GetInstanceName()
-                    }
+                    label: 'ActivityID', name: 'ActivityID', width: 100, editable: true, hidden: true, align: 'center', editoptions: { 'disabled': 'disabled' }
+                },
+                {
+                    label: 'Instance', name: 'Instance', width: 100, editable: false, hidden: true, align: 'center',
+                    //editoptions: {
+                    //    value:
+                    //        GetInstanceName()
+                    //}
                 },
                 {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                    sortable: true, align: 'center', editable: false,
+                    sortable: true, align: 'center', editable: true,stype: "select",
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value:
                             GetPhaseDropDown()
                     }
+                    @*editoptions: {
+                        dataUrl:'@Url.Action("GetPhase","ProjectMonitor")',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: "application/x-javascript; charset=utf-8",
+                        async: "true",
+                        buildSelect: function (data) {
+                            debugger;
+                            var s = '<select>', codes, i, l, code, prop;
+                            if (data && data.codes) {
+                                codes = data.codes;
+                                for (i = 0, l = codes.length; i < l; i++) {
+                                    code = codes[i];
+                                    // enumerate properties of code object
+                                    for (prop in code) {
+                                        if (code.hasOwnProperty(prop)) {
+                                            s += '<option value="' + prop + '">' + code[prop] + '</option>';
+                                            break; // we need only the first property
+                                        }
+                                    }
+                                }
+                            }
+                            return s + "</select>";
+                        }
+                    }*@
+
                 },
 
                 { label: 'Activity / Task ', name: 'Task', width: 150, sorttype: 'integer', editable: true },
-                //{
-                //    label: 'Task needed for other environment (Y/N)',
-                //    name: 'Task_Other_Environment', width: 50, editable: true,
-                //    edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
-
-                //},
-                //{
-                //    label: 'Dependency (Y/N)',
-                //    name: 'Dependency', width: 80, sorttype: 'integer', editable: true,
-                //    edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
-                //},
-                //{ label: 'PendingId', name: 'Task', width: 80, sorttype: 'integer', editable: false },
-
-                //{
-                //    label: 'Pending With', name: 'PendingId', index: 'PendingId', width: 70,
-                //    sortable: true, align: 'center', editable: true,
-                //    cellEdit: true, edittype: 'select', formatter: 'select',
-                //    editoptions: {
-                //        value:
-                //            GetPendingDropDown()
-                //    }
-                //},
-                //{ label: 'PendingId', name: 'Task', width: 80, sorttype: 'integer', editable: false },
-                //{
-                //    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80, sorttype: 'integer', editable: true,
-                //    edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
-                //},
-                // sorttype is used only if the data is loaded locally or loadonce is set to true
-                //	{ label: 'Title', name: 'Title', width: 80, sorttype: 'number', editable: false },
+               
                 {
                     label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: true, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
+                   
                     //editoptions: {
-                    //    value: "FE:FedEx;TN:TNT;DH:DHL",
-                    //    defaultValue: "DH"
+                    //    value: GetRoleDropDown()
                     //}
-                    editoptions: {
-                        value:
-                            GetRoleDropDown()
-                        // getAllSelectOptions()
-                    }
                 },
                 {
                     label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
+                    
                     //editoptions: {
-                    //    value: "FE:FedEx;TN:TNT;DH:DHL",
-                    //    defaultValue: "DH"
+                    //    value: GetUserDropDown()
                     //}
-                    editoptions: {
-                        value:
-                            GetUserDropDown()
-                        // getAllSelectOptions()
-                    }
                 },
                 //{
                 //    label: 'Status', name: 'StatusID', index: 'ConsultantID', width: 70, sortable: true, align: 'center', editable: true,
@@ -347,10 +339,11 @@
             hoverrows: true,
             height: 'auto',
             rowNum: 10,
-            caption: 'Project Monitor',
+            caption: 'Resource Allocation',
             sortable: false,
             grouping: false,
             pager: "#jqGridPager",
+            rownumbers: true,
             loadComplete: function () {
             }
             // set table stripped class in table style in bootsrap
@@ -366,6 +359,7 @@
                 checkOnUpdate: true,
                 checkOnSubmit: true,
                 closeAfterEdit: true,
+                afterShowForm: populateUser,
                 errorTextFormat: function (data) {
                     alert("in" + data.responseText);
                     return 'Error: ' + data.responseText
@@ -392,8 +386,36 @@
             } 
         );
     }
+    function populateUser() {
+        UpdateUserByRole($("#RoleID").val())
+        $("#RoleID").bind("change", function (e) {
+                    UpdateUserByRole($("#RoleID").val());
+                });
+    }
+    function UpdateUserByRole(RoleID) {
+         $("#UserID")
+                     //.html("<option value=''>Loading User...</option>")
+            .attr("disabled", "disabled");
+        $.ajax({
+            url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
+           // data: '{RoleID: ' + JSON.stringify(RoleID)+'}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                $("#UserID")
+                    .removeAttr("disabled");
+                $.each(res, function (data, value) {
+
+                    $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
+                })
+            }  
+                    //.html(citiesHtml);
+            
+        });
+
+    }
     function GetInstanceName() {
-        var Parameters = {};
+       // var Parameters = {};
         $.ajax({
             type: "POST",
             url: '@Url.Action("LoadAllInstance","ProjectMonitor")',
@@ -401,35 +423,70 @@
             dataType: "json",
             async: false,
             contentType: "application/json; charset=utf-8",
-            success: function (Data) {
-                
-                for (var i = 0; i < Data.length; i++) {
-                    var Text = Data[i].Text;
-                    var key = "" + Data[i].Value;
-                    Parameters[key] = Text;
-                }
+            success: function (res) {
+                $.each(res, function (data, value) {
+
+                    $("#Instance").append($("<option></option>").val(value.UserId).html(value.Name));
+                })
+                //for (var i = 0; i < Data.length; i++) {
+                //    var Text = Data[i].Text;
+                //    var key = "" + Data[i].Value;
+                //    Parameters[key] = Text;
+                //}
             },
             error: function (data) {
                 alert("fail");
             }
         });
-        return Parameters;
+        //return Parameters;
     }
     function GetPhaseDropDown() {
         var Parameters = {};
         $.ajax({
             type: "POST",
             url: '@Url.Action("GetPhase","ProjectMonitor")',
+            data: '{RoleID: ' + JSON.stringify(0)+ '}',
             //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
             dataType: "json",
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (Data) {
+                debugger;
+                $.each(Data, function (data1, value) {
+
+                    $("#PhaseId").append($("<option></option>").val(value.Id).html(value.PhaseName));
+                });
+                //for (var i = 0; i < Data.length; i++) {
+                //    var obj = {};
+                //    var PhaseName = Data[i].PhaseName;
+                //    var key = "" + Data[i].PhaseId;
+                //    Parameters[key] = PhaseName;
+                //}
+            },
+            error: function (res) {
+                alert("fail");
+            }
+        });
+        return Parameters;
+    }
+
+
+     function GetRoleDropDown() {
+        var Parameters = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetRole","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+                debugger;
                 for (var i = 0; i < Data.length; i++) {
                     var obj = {};
-                    var PhaseName = Data[i].PhaseName;
-                    var key = "" + Data[i].Id;
-                    Parameters[key] = PhaseName;
+                    var RoleName = Data[i].RoleName;
+                    var key = "" + Data[i].RoleId;
+                    Parameters[key] = RoleName;
                 }
             },
             error: function (data) {
@@ -437,7 +494,8 @@
             }
         });
         return Parameters;
-    }
+
+    } 
     @*function GetPendingDropDown() {
 		var Parameters = {};
     $.ajax({
@@ -462,31 +520,63 @@
 	return Parameters;
 
 }*@
-    function GetRoleDropDown() {
-		var Parameters = {};
-    $.ajax({
-        type: "POST",
-        url: '@Url.Action("GetRole","ProjectMonitor")',
-        //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
-        dataType: "json",
-		async: false,
-        contentType: "application/json; charset=utf-8",
-        success: function (Data) {
-				for (var i = 0; i < Data.length; i++) {
-                var obj = {};
+    @*function GetRoleDropDown() {
+        var Parameters = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetRole","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+                for (var i = 0; i < Data.length; i++) {
+                    var obj = {};
                     var RoleName = Data[i].RoleName;
-                var key = ""+Data[i].RoleId;
-                Parameters[key] = RoleName;
+                    var key = "" + Data[i].RoleId;
+                    Parameters[key] = RoleName;
+                }
+            },
+            error: function (data) {
+                alert("fail");
             }
-        },
-        error: function (data) {
-            alert("fail");
-        }
-    });
-	return Parameters;
+        });
+        return Parameters;
 
-}
-    function GetUserDropDown() {
+    }*@
+    @*function fillUser(element, RoleID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetUser","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                var s = '';
+                if ($.isPlainObject(data)) {
+                    var selected;
+                    for (var key in data) {
+                        selected = '';
+                        // check if the value of city match the selected one
+                        // and if yes set the value to selected.
+                        if (key === rowdata.City) {
+                            selected = ' selected="selected"';
+                        }
+                        s += '<option value="' + key + '"' + selected + ' >' + data[key] + '</option>';
+                    }
+                }
+                $(element).html(s);
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+    };*@
+
+
+    @*function GetUserDropDown() {
 	var Parameters = {};
     $.ajax({
         type: "POST",
@@ -509,7 +599,7 @@
         }
     });
 	return Parameters;
-}
+}*@
     function GetStatusDropDown() {
     var Parameters = {};
     $.ajax({

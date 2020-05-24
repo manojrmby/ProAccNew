@@ -16,6 +16,7 @@
         <tr>
             <th>Company Name</th>
             <th>Industry Sector</th>
+            <th>Contact</th>
             <th>Phone</th>
             <th>Email</th>
             <th>Created</th>
@@ -25,28 +26,31 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a class="txtG" value="@item.Company_Name">@item.Company_Name</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Industry_Sector">@item.Industry_Sector</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Phone">@item.Phone</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Email">@item.Email</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
-                </td>
-                <td>
-                    <a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetCustomerById","Customers", new { id = item.Customer_ID })"></a> &nbsp;&nbsp;
-                    @*<a href="#" id="btnEdit" class="editCustomer fa fa-edit"></a><input type="hidden" value="@item.Customer_ID" /> |*@
-                    <a href="#" class="btnDelete fa fa-trash"></a><input type="hidden" value="@item.Customer_ID" />
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <a class="txtG" value="@item.Company_Name">@item.Company_Name</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Industry_Sector">@item.Industry_Sector</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Contact">@item.Contact</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Phone">@item.Phone</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Email">@item.Email</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+            </td>
+            <td>
+                <a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetCustomerById","Customers", new { id = item.Customer_ID })"></a> &nbsp;&nbsp;
+                @*<a href="#" id="btnEdit" class="editCustomer fa fa-edit"></a><input type="hidden" value="@item.Customer_ID" /> |*@
+                <a href="#" class="btnDelete fa fa-trash"></a><input type="hidden" value="@item.Customer_ID" />
+            </td>
+        </tr>
         }
     </tbody>
 </table>

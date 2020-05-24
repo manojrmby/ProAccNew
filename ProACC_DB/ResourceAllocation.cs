@@ -14,7 +14,7 @@ namespace ProACC_DB
     
     public partial class ResourceAllocation
     {
-        public System.Guid ResourceAllocation_Id { get; set; }
+        public int ResourceAllocation_Id { get; set; }
         public System.Guid Project_Id { get; set; }
         public string User_IDs { get; set; }
         public bool isActive { get; set; }

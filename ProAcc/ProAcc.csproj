@@ -536,6 +536,7 @@
     <Compile Include="Controllers\PreConvertionController.cs" />
     <Compile Include="Controllers\ProjectCreationController.cs" />
     <Compile Include="Controllers\ProjectMonitorController.cs" />
+    <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\TeamMasterController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -609,6 +610,7 @@
     <Content Include="Views\Link\ProfileLink.cshtml" />
     <Content Include="Views\User\ResourceAllocationCreate.cshtml" />
     <Content Include="Views\Customers\GetCustomerById.cshtml" />
+    <Content Include="Views\Resource\ResourceAssessment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

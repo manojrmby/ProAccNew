@@ -24,16 +24,7 @@ namespace ProAcc.Controllers
         }
         public ActionResult PMAdminCreate()
         {
-            int j = 0;
-            var stat = db.HanaStatus.ToList();
-            for (int i = 0; i < stat.Count(); i++)
-            {
-                if (stat[i].IsActive == true)
-                {
-                    j = j + 1;
-                }
-            }
-            ViewBag.count = j;
+            
 
             int userType = 0;
             if (User.IsInRole("Admin"))
@@ -96,16 +87,29 @@ namespace ProAcc.Controllers
         }
         public ActionResult GetData()
         {
+            int PhaseId = 5;
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID);
-            return Json(PM, JsonRequestBehavior.AllowGet);
+            string LoginID = Session["loginid"].ToString();
+            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID);
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            for (int i = 0; i < PM.Count; i++)
+            {
+                if (PM[i].PhaseId == PhaseId)
+                {
+                    ProjectMonitorModel projM = new ProjectMonitorModel();
+                    projM = PM[i];
+                    Result.Add(projM);
+                }
+            }
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SubmitProjectMonitor(ProjectMonitorModel Data)
         {
-            string InstanceId = Session["InstanceId"].ToString();
+            Data.Instance = Guid.Parse(Session["InstanceId"].ToString());
             Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
-            //bool s=_Base.Sp_AdminAddMonitor(Data, InstanceId);
+           // bool s=_Base.Sp_AdminAddMonitor(Data);
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #region Masters
@@ -125,10 +129,22 @@ namespace ProAcc.Controllers
             return Json(P, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetUser()
+        public ActionResult GetUser(string RoleID)
         {
             List<UserMaster> P = _Base.GetUser();
-            return Json(P, JsonRequestBehavior.AllowGet);
+            List<UserMaster> Res = new List<UserMaster>();
+            foreach (var item in P)
+            {
+                
+                if (item.RoleID==Convert.ToInt32(RoleID))
+                {
+                    UserMaster UM = new UserMaster();
+                    UM = item;
+                    Res.Add(UM);
+                }
+                
+            }
+            return Json(Res, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetStatus()
         {

@@ -7,8 +7,8 @@ namespace ProAcc.BL.Model
 {
 	public class ProjectMonitorModel
 	{
-		public int LocalID { get; set; }
 		public Guid Id { get; set; }
+		public int ActivityID { get; set; }
 		public Guid Instance { get; set; }
 		
 		public string Task { get; set; }

@@ -32,7 +32,7 @@ namespace ProAcc.Controllers
             return PartialView("_ActivityCreationIndex", Activitylist);
         }
 
-        public JsonResult CheckTaskAvailability(string namedata, Guid? id)
+        public JsonResult CheckTaskAvailability(string namedata, int? id)
         {
             if (id != null)
             {
@@ -68,9 +68,9 @@ namespace ProAcc.Controllers
                 var name = db.ActivityMasters.Where(p => p.Task == activityMaster.Task).Where(x => x.isActive == true).ToList();
                 if (name.Count == 0)
                 {
-                    activityMaster.Activity_ID = Guid.NewGuid();
+                    //activityMaster.Activity_ID = Guid.NewGuid();
                     activityMaster.isActive = true;
-                    activityMaster.Cre_on = DateTime.Now.Date;
+                    activityMaster.Cre_on = DateTime.UtcNow.Date;
                     activityMaster.Cre_By = Guid.Parse(Session["loginid"].ToString());
                     db.ActivityMasters.Add(activityMaster);
                     db.SaveChanges();
@@ -133,7 +133,7 @@ namespace ProAcc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(Guid id)
+        public ActionResult Delete(int id)
         {
             ActivityMaster activity = db.ActivityMasters.Find(id);
             if (activity.Activity_ID == id)

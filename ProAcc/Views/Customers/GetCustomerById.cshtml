@@ -39,6 +39,16 @@
                     &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
                 </div>
             </div>
+            <div class="form-group">
+            <label class="control-label col-md-4 required">Contact</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" value="@Model.Contact" id="txtContact" />
+                @*<span id="lblIndustrySector" style="color:red" />*@
+            </div>
+            <div>
+                &nbsp;&nbsp;&nbsp;<span id="lblContact">&nbsp;</span>
+            </div>
+        </div>
         </div>
 
         <div class="col-6">
@@ -185,14 +195,15 @@
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();
         var cre_on = $("#pcre_on").val();
-        var cre_By = $("#pcre_By").val();
-
+         var cre_By = $("#pcre_By").val();
+         var Contact = $('#txtContact').val();
          var model = {
              Customer_Id: id,
              Company_Name: CompanyName,
              Industry_Sector: IndustrySector,
              Phone: custphone,
              Email: custEmail,
+             Contact:Contact,
              Cre_on: cre_on,
              Cre_By: cre_By
          }

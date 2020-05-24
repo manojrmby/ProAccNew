@@ -32,10 +32,10 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Instance> Instances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ResourceAllocation> ResourceAllocations { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

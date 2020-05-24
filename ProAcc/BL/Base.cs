@@ -1165,6 +1165,7 @@ namespace ProAcc.BL
                     UserMaster P = new UserMaster();
                     P.UserId = Guid.Parse(dr["UserId"].ToString());
                     P.Name = dr["Name"].ToString();
+                    P.RoleID = Convert.ToInt32(dr["RoleId"].ToString()); 
                     L.Add(P);
                 }
             }
@@ -1222,35 +1223,39 @@ namespace ProAcc.BL
         }
 
 
-        public List<ProjectMonitorModel> Sp_GetProjectMonitor(Guid InstanceId)
+        public List<ProjectMonitorModel> Sp_GetProjectMonitor(Guid InstanceId,string LoginID)
         {
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
-            dB.addIn("@Type", "GetData");
-            //dB.addIn("@InstanceId", InstanceId);
+            dB.addIn("@Type", "CheckResource_ASS");
+            dB.addIn("@InstunceID", InstanceId);
+            dB.addIn("@PhaseId", 5);
+            dB.addIn("@Cre_By", LoginID);
             dt = dB.ExecuteDataTable();
             List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
             if (dt.Rows.Count > 0)
             {
-                int count = 1;
-                var myLocalDateTime = DateTime.Now;
+                //int count = 1;
+                var myLocalDateTime = DateTime.UtcNow;
                 foreach (DataRow dr in dt.Rows)
                 {
                     
                     ProjectMonitorModel P = new ProjectMonitorModel();
-                    P.LocalID = count++;
-                    P.Instance = InstanceId;
+                    P.Id = Guid.Parse(dr["id"].ToString());
+                    P.UserID = Guid.Parse(dr["UserID"].ToString());
+                    //P.Instance = InstanceId;
                     P.PhaseId= Convert.ToInt32(dr["PhaseId"].ToString());
                     P.Task = dr["Task"].ToString();
-                    P.Task_Other_Environment = false;
-                    P.Dependency = false;
-                    P.Pending = "";
-                    P.Delay_occurred = false;
-                    P.RoleID = 1;
+                    P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
+                    //P.Task_Other_Environment = false;
+                    //P.Dependency = false;
+                    //P.Pending = "";
+                    //P.Delay_occurred = false;
+                    P.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
                     //P.ConsultantID=
-                    P.StatusId = 0;
-                    P.EST_hours = 0;
-                    P.Actual_St_hours = 0;
+                    //P.StatusId = 0;
+                    //P.EST_hours = 0;
+                    //P.Actual_St_hours = 0;
                     //P.Planed__St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
                     //P.Actual_St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
                     //P.Planed__En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
@@ -1269,13 +1274,45 @@ namespace ProAcc.BL
            
             return PM;
         }
-
-
-        public bool Sp_AdminAddMonitor(ProjectMonitorModel PM,string InstanceID)
+        public bool Sp_UpdateResourceTask(ProjectMonitorModel PM)
         {
             bool Status = false;
             DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
-            dB.addIn("@InstunceID", InstanceID);
+            dB.addIn("@Type", "UpdateResourceTask");
+            dB.addIn("@Id", PM.Id);
+            dB.addIn("@InstunceID", PM.Instance);
+            dB.addIn("@UserID", PM.UserID);
+            dB.addIn("@Cre_By", PM.Modified_by);
+            dB.addIn("@on", PM.Modified_On);
+
+            dB.ExecuteScalar();
+            Status = true;
+            return Status;
+
+        }
+        public bool Sp_DeleteResourceTask(ProjectMonitorModel PM)
+        {
+            bool Status = false;
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@Type", "DeleteResourceTask");
+            dB.addIn("@Id", PM.Id);
+            //dB.addIn("@InstunceID", PM.Instance);
+            //dB.addIn("@UserID", PM.UserID);
+            dB.addIn("@Cre_By", PM.Modified_by);
+            dB.addIn("@on", PM.Modified_On);
+
+            dB.ExecuteScalar();
+            Status = true;
+            return Status;
+
+        }
+
+        public bool Sp_AdminAddMonitor(ProjectMonitorModel PM)
+        {
+            bool Status = false;
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@InstunceID", PM.Id);
+            dB.addIn("@ActivityId", PM.ActivityID);
             dB.addIn("@Task", PM.Task);
             dB.addIn("@PhaseId", PM.PhaseId);
             dB.addIn("@Sequence_Num", PM.SequenceNum);
@@ -1319,6 +1356,13 @@ namespace ProAcc.BL
             dB.ExecuteScalar();
             Result = true;
             return Result;
+        }
+
+        public bool Sp_ResourceCheck_Assement(string InstanceID)
+        {
+            bool Res = true;
+
+            return Res;
         }
         #endregion
 

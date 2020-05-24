@@ -19,8 +19,8 @@
         <div class="col-6">
 
             @*<input type="hidden" id="customerid" />
-                <input type="hidden" id="pcre_on" />
-                <input type="hidden" id="pcre_By" />*@
+        <input type="hidden" id="pcre_on" />
+        <input type="hidden" id="pcre_By" />*@
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">Company Name</label>
@@ -43,12 +43,23 @@
                     &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Contact Person Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtContact" />
+                    @*<span id="lblCustomerEmail" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblContact">&nbsp;</span>
+                </div>
+            </div>
+
         </div>
 
         <div class="col-6">
-
+            
             <div class="form-group">
-                <label class="control-label col-md-4 required">Email</label>
+                <label class="control-label col-md-4 required">Contact Person Email</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtCustomerEmail" />
                     @*<span id="lblCustomerEmail" style="color:red" />*@
@@ -59,7 +70,7 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-md-4 required">Phone</label>
+                <label class="control-label col-md-4 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />
                     @*<span id="lblCustomerPhone" style="color:red" />*@
@@ -235,6 +246,7 @@
         
         var CompanyName = $("#txtCompanyName").val().trim();
         var IndustrySector = $("#txtIndustrySector").val().trim();
+         var Contact=$("#txtContact").val().trim();
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();
 
@@ -242,6 +254,10 @@
             $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
         }
         else if (IndustrySector =="")
+        {
+            $("#lblContact").html("Please enter the Contact Person").show().fadeOut(2000);
+        }
+            else if (IndustrySector =="")
         {
             $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
         }
@@ -257,7 +273,7 @@
             $.ajax({
                     type: "POST",
                 url: '@Url.Action("Create","Customers")',
-                data: { Company_Name: CompanyName, Industry_Sector: IndustrySector, Phone: custphone, Email: custEmail },
+                data: { Company_Name: CompanyName, Industry_Sector: IndustrySector, Phone: custphone, Email: custEmail ,Contact:Contact},
                     success: function (response) {
                         if (response == "success") {
                             alert("Customer Saved successfully!");

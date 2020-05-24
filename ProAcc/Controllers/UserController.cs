@@ -21,10 +21,10 @@ namespace ProAcc.Controllers
 
         public ActionResult Index()
         {
-            //var users = db.UserMasters.Where(x => x.isActive == true).OrderByDescending(x=>x.Cre_on);
-            var users = (from e in db.UserMasters
-                        join c in db.Customers on e.Customer_Id equals c.Customer_ID where e.isActive==true && c.isActive == true
-                         select e).ToList();
+            var users = db.UserMasters.Where(x => x.isActive == true && x.LoginId!= "Admin").OrderByDescending(x=>x.Cre_on);
+            //var users = (from e in db.UserMasters
+            //            join c in db.Customers on e.Customer_Id equals c.Customer_ID where e.isActive==true && c.isActive == true
+            //             select e).ToList();
 
             return View(users);
         }

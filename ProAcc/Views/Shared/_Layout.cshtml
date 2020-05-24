@@ -280,9 +280,16 @@
                                                 Assessment Monitor
                                             </a>
                                         </li>
+                                        <li>
+                                            @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                            <a href="@Url.Action("ResourceAssessment", "Resource")">
+                                                <i class="metismenu-icon pe-7s-diamond"></i>
+                                                Resource Allocation
+                                            </a>
+                                        </li>
                                     }
 
-                                    </ul>
+                                </ul>
                             </li>
                             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
                             {
@@ -317,7 +324,7 @@
                                     </ul>
                                 </li>
                             }
-                                <li>
+                                @*<li>
                                     @if (User.IsInRole("Admin"))
                                     {
                                     <a href="#">
@@ -335,7 +342,7 @@
                                         </li>
                                     </ul>
                                     }
-                                </li>
+                                </li>*@
                                 
                             
                             <li>
@@ -415,12 +422,7 @@
                                                 Activity Creation
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="@Url.Action("ResourceAllocationCreate", "User")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Resource Allocation
-                                            </a>
-                                        </li>
+                                       
                                         @*<li>
             <a href="@Url.Action("Create", "CustomerProjectConfigs")">
                 <i class="metismenu-icon pe-7s-diamond"></i>
@@ -445,12 +447,12 @@
                 View Instance List
             </a>
         </li>*@
-                                        <li>
+                                        @*<li>
                                             <a href="@Url.Action("Index", "PhaseMaster")">
                                                 <i class="metismenu-icon pe-7s-diamond"></i>
                                                 Master
                                             </a>
-                                        </li>
+                                        </li>*@
                                     </ul>
                                 </li>
 
@@ -540,7 +542,9 @@
                 $(this).parent().addClass('mm-active');
             }
         });
-       
+       $("#btnAddNew").on("click", function () {
+        location.reload();
+        });
     </script>
 </body>
 </html>

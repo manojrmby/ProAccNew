@@ -24,6 +24,7 @@ namespace ProACC_DB
         public System.Guid Customer_ID { get; set; }
         public string Company_Name { get; set; }
         public string Industry_Sector { get; set; }
+        public string Contact { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public bool isActive { get; set; }
