@@ -134,6 +134,7 @@
   <ItemGroup>
     <Content Include="bin\Debug\ProACC_DB.dll" />
     <Content Include="bin\Debug\ProACC_DB.pdb" />
+    <Content Include="DB_24_5.txt" />
     <Content Include="obj\Debug\ProACC_DB.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\ProACC_DB.dll" />
     <Content Include="obj\Debug\ProACC_DB.pdb" />
