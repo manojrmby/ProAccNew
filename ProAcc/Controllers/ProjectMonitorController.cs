@@ -89,8 +89,9 @@ namespace ProAcc.Controllers
         {
             int PhaseId = 5;
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            InstanceID = Guid.Parse("52b6d7fa-18e2-4101-8040-1f8fcfd3bdaa");
             string LoginID = Session["loginid"].ToString();
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID);
+            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitorEdit(InstanceID, LoginID);
             List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
             for (int i = 0; i < PM.Count; i++)
             {
@@ -109,8 +110,20 @@ namespace ProAcc.Controllers
         {
             Data.Instance = Guid.Parse(Session["InstanceId"].ToString());
             Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
-           // bool s=_Base.Sp_AdminAddMonitor(Data);
-            return Json("", JsonRequestBehavior.AllowGet);
+            bool Result=false;
+            if (Data.Id==Guid.Empty)
+            {
+                if (Data.Instance!=Guid.Empty)
+                {
+                    Result = _Base.Sp_AddNewTask(Data);
+                }
+               
+            }
+            else
+            {
+                Result = _Base.Sp_UpdateMonitor(Data);
+            }
+            return Json(Result, JsonRequestBehavior.AllowGet);
         }
         #region Masters
         public ActionResult GetPhase()
@@ -146,6 +159,23 @@ namespace ProAcc.Controllers
             }
             return Json(Res, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult GetAllUser()
+        {
+            List<UserMaster> P = _Base.GetUser();
+            //List<UserMaster> Res = new List<UserMaster>();
+            //foreach (var item in P)
+            //{
+
+
+            //        UserMaster UM = new UserMaster();
+            //        UM = item;
+            //        Res.Add(UM);
+            //    }
+
+            //}
+            return Json(P, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult GetStatus()
         {
             List<StatusMaster> P = _Base.GetStatus();
@@ -168,8 +198,53 @@ namespace ProAcc.Controllers
             
             return Json(Instance, JsonRequestBehavior.AllowGet);
         }
+
         #endregion
 
+        #region NewTaskSubmit
+        public ActionResult AssusmentMonitor()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
 
+            }
+            ViewBag.Instance = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            var query = from u in db.Projects where (u.isActive == true) select u;
+            if (query.Count() > 0)
+            {
+                foreach (var v in query)
+                {
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                }
+            }
+            ViewBag.Project = Project;
+            return View();
+        }
+        #endregion
     }
 }

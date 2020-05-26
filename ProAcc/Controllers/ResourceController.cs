@@ -10,6 +10,8 @@ using static ProAcc.BL.Model.Common;
 
 namespace ProAcc.Controllers
 {
+    [CheckSessionTimeOut]
+    [Authorize(Roles = "Admin,Consultant")]
     public class ResourceController : Controller
     {
         Base _Base = new Base();
@@ -102,21 +104,6 @@ namespace ProAcc.Controllers
 
             return Json(s, JsonRequestBehavior.AllowGet);
         }
-            public ActionResult GetAllUser()
-        {
-            List<UserMaster> P = _Base.GetUser();
-            //List<UserMaster> Res = new List<UserMaster>();
-            //foreach (var item in P)
-            //{
-
-               
-            //        UserMaster UM = new UserMaster();
-            //        UM = item;
-            //        Res.Add(UM);
-            //    }
-
-            //}
-            return Json(P, JsonRequestBehavior.AllowGet);
-        }
+           
     }
 }

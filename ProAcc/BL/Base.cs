@@ -1223,7 +1223,75 @@ namespace ProAcc.BL
         }
 
 
-        public List<ProjectMonitorModel> Sp_GetProjectMonitor(Guid InstanceId,string LoginID)
+        public List<ProjectMonitorModel> Sp_GetProjectMonitorEdit(Guid InstanceId,string LoginID)
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@Type", "PullData");
+            dB.addIn("@InstunceID", InstanceId);
+            dB.addIn("@PhaseId", 5);
+            dB.addIn("@Cre_By", LoginID);
+            dt = dB.ExecuteDataTable();
+            List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
+            if (dt.Rows.Count > 0)
+            {
+                //int count = 1;
+                var myLocalDateTime = DateTime.UtcNow;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    
+                    ProjectMonitorModel P = new ProjectMonitorModel();
+                    P.Id = Guid.Parse(dr["id"].ToString());
+                    P.ActivityID = Convert.ToInt32(dr["ActivityID"].ToString());
+                    P.Instance = Guid.Parse(dr["InstanceID"].ToString());
+                    P.Task = dr["Task"].ToString();
+                    P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
+                    P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
+                    P.ApplicationArea= dr["ApplicationArea"].ToString();
+                    P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
+                    P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
+                    P.Pending = dr["Pending"].ToString();
+                    P.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
+                    P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
+                    P.UserID = Guid.Parse(dr["UserID"].ToString());
+                    P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
+
+                    P.EST_hours = float.Parse(dr["EST_hours"].ToString());
+                    P.Actual_St_hours = float.Parse(dr["Actual_St_hours"].ToString());
+
+                    P.Planed__St_Date=Convert.ToDateTime(dr["Planed__St_Date"].ToString());
+                    P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
+                    P.Planed__En_Date = Convert.ToDateTime(dr["Planed__En_Date"].ToString());
+                    P.Actual_En_Date = Convert.ToDateTime(dr["Actual_En_Date"].ToString());
+                    P.Notes = dr["Notes"].ToString();
+
+                    //P.Task_Other_Environment = false;
+                    //P.Dependency = false;
+                    //P.Pending = "";
+                    //P.Delay_occurred = false;
+                    //P.ConsultantID=
+                    //P.StatusId = 0;
+                    //P.EST_hours = 0;
+                    //P.Actual_St_hours = 0;
+                    //P.Planed__St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    //P.Actual_St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    //P.Planed__En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    //P.Actual_En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    //P.Notes = "";
+
+
+
+
+                    //P.ID = Convert.ToInt32(dr["Id"].ToString());
+                    //P.PictureName = dr["PictureName"].ToString();
+                    //P.GivenName = dr["GivenName"].ToString();
+                    PM.Add(P);
+                }
+            }
+           
+            return PM;
+        }
+        public List<ProjectMonitorModel> Sp_GetProjectMonitor(Guid InstanceId, string LoginID)
         {
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
@@ -1239,12 +1307,12 @@ namespace ProAcc.BL
                 var myLocalDateTime = DateTime.UtcNow;
                 foreach (DataRow dr in dt.Rows)
                 {
-                    
+
                     ProjectMonitorModel P = new ProjectMonitorModel();
                     P.Id = Guid.Parse(dr["id"].ToString());
                     P.UserID = Guid.Parse(dr["UserID"].ToString());
                     //P.Instance = InstanceId;
-                    P.PhaseId= Convert.ToInt32(dr["PhaseId"].ToString());
+                    P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                     P.Task = dr["Task"].ToString();
                     P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
                     //P.Task_Other_Environment = false;
@@ -1271,7 +1339,7 @@ namespace ProAcc.BL
                     PM.Add(P);
                 }
             }
-           
+
             return PM;
         }
         public bool Sp_UpdateResourceTask(ProjectMonitorModel PM)
@@ -1281,6 +1349,7 @@ namespace ProAcc.BL
             dB.addIn("@Type", "UpdateResourceTask");
             dB.addIn("@Id", PM.Id);
             dB.addIn("@InstunceID", PM.Instance);
+            dB.addIn("@RoleId", PM.RoleID);
             dB.addIn("@UserID", PM.UserID);
             dB.addIn("@Cre_By", PM.Modified_by);
             dB.addIn("@on", PM.Modified_On);
@@ -1307,39 +1376,33 @@ namespace ProAcc.BL
 
         }
 
-        public bool Sp_AdminAddMonitor(ProjectMonitorModel PM)
+        public bool Sp_UpdateMonitor(ProjectMonitorModel PM)
         {
             bool Status = false;
             DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
-            dB.addIn("@InstunceID", PM.Id);
-            dB.addIn("@ActivityId", PM.ActivityID);
-            dB.addIn("@Task", PM.Task);
-            dB.addIn("@PhaseId", PM.PhaseId);
-            dB.addIn("@Sequence_Num", PM.SequenceNum);
+            dB.addIn("@Type", "UpdateTask");
             dB.addIn("@ApplicationArea", PM.ApplicationArea);
-
-
             dB.addIn("@Task_Other_Environment", PM.Task_Other_Environment);
             dB.addIn("@Dependency", PM.Dependency);
             dB.addIn("@Pending", PM.Pending);
             dB.addIn("@Delay_occurred", PM.Delay_occurred);
 
-            dB.addIn("@DelayedReason", PM.Delayed_Reas);
-            dB.addIn("@UserID", PM.UserID);
+            //dB.addIn("@DelayedReason", PM.Delayed_Reas);
+            //dB.addIn("@UserID", PM.UserID);
             dB.addIn("@StatusId", PM.StatusId);
             dB.addIn("@EST_hours", PM.EST_hours);
-
-
             dB.addIn("@Actual_St_hours", PM.Actual_St_hours);
+            
             dB.addIn("@Planed__St_Date", PM.Planed__St_Date);
             dB.addIn("@Actual_St_Date", PM.Actual_St_Date);
             dB.addIn("@Planed__En_Date", PM.Planed__En_Date);
-
             dB.addIn("@Actual_En_Date", PM.Actual_En_Date);
+
             dB.addIn("@Notes", PM.Notes);
             dB.addIn("@Cre_By", PM.Cre_By);
+            dB.addIn("@Id", PM.Id);
 
-            dB.ExecuteScalar();
+           dB.ExecuteScalar();
             return Status;
 
         }
@@ -1356,6 +1419,21 @@ namespace ProAcc.BL
             dB.ExecuteScalar();
             Result = true;
             return Result;
+        }
+
+        public Boolean Sp_AddNewTask(ProjectMonitorModel PM)
+        {
+            Boolean Res = false;
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@Type", "AddNewTask");
+            dB.addIn("@InstunceID", PM.Instance);
+            dB.addIn("@Task", PM.Task);
+            dB.addIn("@PhaseId", PM.PhaseId);
+            dB.addIn("@Sequence_Num", PM.SequenceNum);
+            dB.addIn("@Cre_By", PM.Cre_By);
+            dB.ExecuteScalar();
+            Res = true;
+            return Res;
         }
 
         public bool Sp_ResourceCheck_Assement(string InstanceID)

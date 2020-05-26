@@ -319,9 +319,9 @@
             //rownumbers : true,
             //multiselect : true,
             width: 900,
-            colMenu: true,
-            menubar: true,
-            viewrecords: false,
+            colMenu: false,
+            menubar: false,
+            viewrecords: true,
             hoverrows: true,
             // height: 'auto',
             height: 400,
@@ -345,7 +345,7 @@
 
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
-            { edit: true, add: false, del: true, search: true, refresh: true, view: false, position: "left", cloneToTop: false },
+            { edit: true, add: false, del: true, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
                 editCaption: "The Edit Dialog",
@@ -359,7 +359,7 @@
                     $("#tr_SequenceNum").hide();
 
                     $("#Task").attr("disabled", "disabled");
-                    $("#RoleID").attr("disabled", "disabled");
+                    //$("#RoleID").attr("disabled", "disabled");
                     UpdateUserByRole($("#RoleID").val());
                     //debugger;
                     //needDisable=true;
@@ -425,18 +425,6 @@
             } 
         );
     }
-
-    function myelem(value, options) {
-        debugger;
-   return $('<input type="text" value="'+value+'" disabled="disabled"/>');
-}
-
-    function myval(elem) {
-        debugger;
-    return elem.val();
-}
-
-
     function GetPhaseDropDown() {
         var Parameters = {};
         $.ajax({
@@ -490,7 +478,7 @@
         return Parameters;
 
     } 
-     function UpdateUserByRole(RoleID) {
+    function UpdateUserByRole(RoleID) {
          $("#UserID")
                      //.html("<option value=''>Loading User...</option>")
             .attr("disabled", "disabled");
@@ -512,11 +500,11 @@
         });
 
     }
-     function GetUserDropDown() {
+    function GetUserDropDown() {
 	var Parameters = {};
     $.ajax({
         type: "POST",
-        url: '@Url.Action("GetAllUser","Resource")',
+        url: '@Url.Action("GetAllUser","ProjectMonitor")',
         //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
         dataType: "json",
 		async: false,
@@ -536,7 +524,6 @@
     });
 	return Parameters;
     }
-
     function DeletePost() {
         alert("IN");
 		//Here you need to define ajax call for insert records to server
