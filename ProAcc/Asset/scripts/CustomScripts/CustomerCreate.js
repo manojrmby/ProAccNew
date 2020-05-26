@@ -1,4 +1,4 @@
-﻿function validatephasename() {
+﻿function validatename() {
     var inputValue = event.which;
 
     if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {

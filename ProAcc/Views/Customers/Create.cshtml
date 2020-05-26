@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-md-4 required">Contact Person Name</label>
+                <label class="control-label col-md-5 required">Contact Person Name</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtContact" />
                     @*<span id="lblCustomerEmail" style="color:red" />*@
@@ -59,7 +59,7 @@
         <div class="col-6">
             
             <div class="form-group">
-                <label class="control-label col-md-4 required">Contact Person Email</label>
+                <label class="control-label col-md-5 required">Contact Person Email</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtCustomerEmail" />
                     @*<span id="lblCustomerEmail" style="color:red" />*@
@@ -70,7 +70,7 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-md-4 required">Contact Person Phone</label>
+                <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />
                     @*<span id="lblCustomerPhone" style="color:red" />*@
@@ -118,8 +118,7 @@
             else {
                 $("#lblCompanyName").html("").hide();
                 validatecustomer()
-            }
-           
+            }           
         });
 
 
@@ -173,6 +172,34 @@
             }
         });
 
+        $("#txtContact").keypress(function (event) {
+       
+            var inputValue = event.which;
+            // allow letters and whitespaces only.
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                event.preventDefault();
+                $("#lblContact").html("Not Allowed").show().fadeOut(5000);
+                validatecustomer()
+            }
+            else {
+                $("#lblContact").html("").hide();
+                validatecustomer()
+            }           
+        });
+
+        $('#txtContact').on('focusout', function () {
+            
+            var ContactName = $("#txtContact").val().trim();
+            if (ContactName == "") {
+                $("#lblContact").html("Please Enter valid Contact Person Name").show().fadeOut(5000);
+                validatecustomer()
+            }
+            else {
+               
+            }
+
+        });
+
         $("#txtCustomerPhone").keypress(function (e) {
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 event.preventDefault();
@@ -220,6 +247,7 @@
             
            var CompanyName = $("#txtCompanyName").val().trim();
             var IndustrySector = $("#txtIndustrySector").val().trim();
+            var Contact=$("#txtContact").val().trim();
             var custphone = $("#txtCustomerPhone").val().trim();
             var custEmail = $("#txtCustomerEmail").val().trim();
 
@@ -229,7 +257,7 @@
             var lblcustEmail = $("#lblCustomerEmail").text().trim();
         
 
-            if (CompanyName.length > 0 && IndustrySector.length > 0 && custphone.length > 0 && custEmail.length > 0 &&
+            if (CompanyName.length > 0 && IndustrySector.length > 0 && Contact.length > 0 && custphone.length > 0 && custEmail.length > 0 &&
                 lblCompanyName == "" && lblIndustrySector == "" && lblcustphone == "" && lblcustEmail == "" ) {
 
                 $("#btnCustomerCreate").prop("disabled", false);
@@ -241,6 +269,12 @@
         }
     });
 
+    //function ValidateName(data) {
+    //         var letters = /^[A-Za-z, ]+$/;
+    //        if (!letters.test(data)) {
+    //            return false;
+    //        }
+    //}
 
     $("#btnCustomerCreate").on("click", function () {
         
@@ -250,16 +284,16 @@
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();
 
-        if (CompanyName == "") {
+        if (CompanyName == "" || ValidateName(CompanyName) == false) {
             $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
         }
-        else if (IndustrySector =="")
-        {
-            $("#lblContact").html("Please enter the Contact Person").show().fadeOut(2000);
-        }
-            else if (IndustrySector =="")
+        else if (IndustrySector ==""|| ValidateName(IndustrySector) == false)
         {
             $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
+        }
+         else if (Contact ==""|| ValidateName(Contact) == false)
+        {
+            $("#lblContact").html("Please enter the Contact Person").show().fadeOut(2000);
         }
         else if (custphone == "")
         {

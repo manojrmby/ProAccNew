@@ -4,8 +4,6 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
-@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>*@
 
 <style>
     .required::after {
@@ -43,16 +41,6 @@
                     </div>
                 </div>
 
-                @*<div class="position-relative form-group">
-            @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-5 required" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @id = "txtDesc", @class = "form-control", @onchange = "ValidateDesc()" } })
-                @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
-                <span id="lblDesc" style="color:red"></span>
-            </div>
-        </div>*@
-
-               
                 <div class="position-relative form-group">
                     @Html.LabelFor(model => model.LoginId, "Login ID", htmlAttributes: new { @class = "control-label col-md-5 required" })
                     <div class="col-md-10">
@@ -161,9 +149,12 @@
             // allow letters and whitespaces only.
 
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-                    event.preventDefault();
-                $("#lblName1").html("Not Allowed").show().fadeOut("slow", function () {$("#lblName1").html(" ") });
-
+                event.preventDefault();
+                $("#lblName1").html("Not Allowed").show().fadeOut("slow", function () { $("#lblName1").html(" ") });
+                SubmitConsultant();
+            }
+            else {
+                SubmitConsultant();
             }
         });
 
@@ -172,6 +163,7 @@
             var CnstName = $("#txtName1").val().trim();
             if (CnstName == "") {
                 $("#lblName1").html("Please Enter valid Name").show();
+                SubmitConsultant();
             }
             else {
                 $.ajax({
@@ -182,10 +174,11 @@
                 success: function (data) {
                     if (data != "success") {
                         $("#lblName1").html("This Name is already taken,please Try another").show();
-
+                        SubmitConsultant();
                     }
                     else {
                         $("#lblName1").html("");
+                        SubmitConsultant();
                     }
 
                 },
@@ -203,6 +196,7 @@
             var CnstUserName = $("#LoginID").val().trim();
             if (CnstUserName == "") {
                 $("#StatusConsultant").html("Please Enter valid LoginId").show();
+                SubmitConsultant()
             }
             else {
                 $.ajax({
@@ -213,10 +207,11 @@
                 success: function (data) {
                     if (data != "success") {
                         $("#StatusConsultant").html("This LoginId is already taken , please select another").show();
-
+                        SubmitConsultant()
                     }
                     else {
                         $("#StatusConsultant").html("");
+                        SubmitConsultant()
                     }
 
                 },
@@ -229,22 +224,6 @@
 
         });
 
-
-
-        @*$('#ConsultantUserName').on('change', function () {
-            
-            $.ajax({
-                type: "POST",
-                url:'@Url.Action("CheckConsultantsUsernameAvailability", "Consultants")',
-                data: '{userdata: "' + $("#ConsultantUserName").val()+ '" }',
-                //contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: OnSuccess,
-                failure: function (response) {
-                    alert(response);
-                }
-            });
-        });*@
          $("#txtMob").keypress(function (e) {
             //if the letter is not digit then display error and don't type anything
              if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -260,33 +239,15 @@
             phone = phone.replace(/[^0-9]/g,'');
             if (phone.length != 10) {
                 $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
-                validateSave();
+                SubmitConsultant();
             }
             else {
                 $("#lblMob1").html("").hide();
-                validateSave();
+                SubmitConsultant();
             }
-            ValidateUser();
        });
     });
-    //function OnSuccess
-    function OnSuccess(response) {
-        
-        var msg = $("#StatusConsultant");
-        
-        switch (response) {
-            case 1:
-                msg.show();
-                msg.css("color","red");
-                msg.html("User Name already exists.");
-                break;
-            case 0:
-                msg.show();
-                //msg.css("color","green");
-                msg.html("");
-                break;
-        }
-    }
+ 
 
 </script>
 
@@ -309,37 +270,7 @@
     });
 
     var result = "Success";
-    //function ValidateNa() {
    
-    //    var name1 = document.getElementById("txtName1").value;
-    //    var lblName1 = document.getElementById("lblName1");
-    //    lblName1.innerHTML = "";
-    //    var letters = /^[A-Za-z, ]+$/;
-    //    if (!letters.test(name1)) {
-    //        lblName1.innerHTML = "Please enter valid Name";
-    //        result = "error";
-    //    }
-    //    else {
-    //        result = "Success";
-    //    }
-    //    validateSave();
-    //}
-
-    function ValidateDesc() {
-        
-        var Desc = document.getElementById("txtDesc").value;
-        var lblDesc = document.getElementById("lblDesc");
-        lblDesc.innerHTML = "";
-        var letters = /^[A-Za-z, ]+$/;
-        if (Desc = "" || !letters.test(Desc)) {
-            lblDesc.innerHTML = "Please enter valid Name";
-            result = "error";
-        }
-        else {
-            result = "Success";
-        }
-        validateSave();
-    }
     function ValidateEmail1() {
         
         var email1 = document.getElementById("txtEmail1").value;
@@ -353,7 +284,7 @@
         else {
             result = "Success";
         }
-        validateSave();
+        SubmitConsultant()
     }
 
     function validateConsPwd() {
@@ -369,38 +300,17 @@
         else {
             result = "Success";
         }
-        validateSave();
+        SubmitConsultant()
     }
 
-    //function ValidateNu() {
-    //    var mob = /^[1-9]{1}[0-9]{9}$/;
-    //    var txtMobile = document.getElementById("txtMob").value;
-    //    var lblMob1 = document.getElementById("lblMob1");
-    //    lblMob1.innerHTML = "";
-    //    if (mob.test(txtMobile) == false) {
-    //        lblMob1.innerHTML = "Please enter valid mobile number.";
-    //        result = "error";
-    //    }
-    //    else {
-    //        result = "Success";
-    //    }
-    //    validateSave();
-    //}
 
-    function validateSave() {
-        if (result == "error") {
-            $("#createconsultant").prop("disabled", true);
-        }
-        else {
-            $("#createconsultant").prop("disabled", false);
-        }
-    }
+    
 
     function SubmitConsultant() {
         
         //alert("HI");
         var Name1 = $("#txtName1").val();
-        var Desc = $("#txtDesc").val();
+        //var Desc = $("#txtDesc").val();
         var Mob = $("#txtMob").val();
         var Email1 = $("#txtEmail1").val();
         var LoginID = $("#LoginID").val();
@@ -412,14 +322,14 @@
         //var txtConsCnfmPassword = $("#txtConsCnfmPassword").val();
 
         var lblName1 = $("#lblName1").text(); // val();
-        var lblDesc = $("#lblDesc").text();
+        //var lblDesc = $("#lblDesc").text();
         var lblMob1 = $("#lblMob1").text();
         var lblEmail1 = $("#lblEmail1").text();
         var Status1 = $("#StatusConsultant").text();
         var lblAltConsPwd = $("#lblAltConsPwd").text();
 
-        if (Name1.length > 0 && Desc.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 &&
-            lblName1 == "" && lblDesc == "" && lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
+        if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 &&
+            lblName1 == "" &&  lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
 
             $("#createconsultant").prop("disabled", false);
         }

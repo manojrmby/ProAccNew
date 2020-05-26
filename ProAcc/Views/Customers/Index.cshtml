@@ -16,9 +16,9 @@
         <tr>
             <th>Company Name</th>
             <th>Industry Sector</th>
-            <th>Contact</th>
-            <th>Phone</th>
-            <th>Email</th>
+            <th>Contact Person</th>
+            <th>Contact Person Phone</th>
+            <th>Contact Person Email</th>
             <th>Created</th>
             <th>Actions</th>
         </tr>
@@ -61,10 +61,10 @@
 
     $(document).ready(function () {
         $("#tblCustomer").dataTable( {
-            "order": [[4, 'desc']],
+            "order": [[5, 'desc']],
             "columnDefs": [
             {
-                "targets": [ 4 ],
+                "targets": [ 5 ],
                 "visible": false
             }
         ]

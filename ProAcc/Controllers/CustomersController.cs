@@ -34,7 +34,7 @@ namespace ProAcc.Controllers
             //    .OrderByDescending(x => x.Cre_on).ToList();
             //.Where(x => x.Name.StartsWith(search) || search == null).ToList(); //.ToPagedList(i ?? 1, 5);
             //return View(customers);
-            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).OrderBy(x=>x.Cre_on).ToList();
+            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).ToList();
             return View(ViewBag.customersIndex);
         }
         // GET: Customers/Details/5
@@ -142,6 +142,7 @@ namespace ProAcc.Controllers
             Customer cust = new Customer();
             cust.Customer_ID = Data.Customer_ID;
             cust.Company_Name = Data.Company_Name;
+            cust.Contact = Data.Contact;
             cust.Phone = Data.Phone;
             cust.Email = Data.Email;
             return View(customer);
@@ -149,21 +150,21 @@ namespace ProAcc.Controllers
         }
 
         // GET: Customers/Edit/5
-        public ActionResult Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
-            {
-                return HttpNotFound();
-            }
-            var val = db.User_Type.Where(a => a.isActive == true);
+        //public ActionResult Edit(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Customer customer = db.Customers.Find(id);
+        //    if (customer == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    var val = db.User_Type.Where(a => a.isActive == true);
            
-            return View(customer);
-        }
+        //    return View(customer);
+        //}
 
      
         [HttpPost]
