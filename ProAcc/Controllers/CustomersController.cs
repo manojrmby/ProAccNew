@@ -84,6 +84,7 @@ namespace ProAcc.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
+            ViewBag.IndustrySector = db.IndustrySectors.Where(x => x.IsActive == true);
             ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).ToList();
             return View();
         }
@@ -138,7 +139,7 @@ namespace ProAcc.Controllers
             }
             
             var Data = db.Customers.Find(id);
-
+            ViewBag.IndustrySector = db.IndustrySectors.Where(x => x.IsActive == true);
             Customer cust = new Customer();
             cust.Customer_ID = Data.Customer_ID;
             cust.Company_Name = Data.Company_Name;

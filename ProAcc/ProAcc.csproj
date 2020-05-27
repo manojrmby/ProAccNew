@@ -612,6 +612,7 @@
     <Content Include="Views\Customers\GetCustomerById.cshtml" />
     <Content Include="Views\Resource\ResourceAssessment.cshtml" />
     <Content Include="Views\ProjectMonitor\AssusmentMonitor.cshtml" />
+    <Content Include="Views\Activity\Testing.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

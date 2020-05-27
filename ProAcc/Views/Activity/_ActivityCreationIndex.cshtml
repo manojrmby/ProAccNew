@@ -9,7 +9,7 @@
     <thead>
         <tr>
             <th>Task</th>
-            <th>Cre_on</th>
+            @*<th>Cre_on</th>*@
             <th>Phase</th>
             <th>Role</th>
             <th>ApplicationArea</th>
@@ -24,9 +24,9 @@
             <td>
                 <a class="txtG" value="@item.Task">@item.Task</a>
             </td>
-            <td>
+            @*<td>
                 <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
-            </td>
+            </td>*@
             <td>
                 <a class="txtG" value="@item.PhaseID">@item.PhaseMaster.PhaseName</a>
             </td>
@@ -55,36 +55,51 @@
 
     $(document).ready(function () {
         $("#tblActivityCreation").dataTable({
-            "order": [[1, 'desc']],
+            "order": [[4, 'asc']],
             "columnDefs": [
                 {
-                    "targets": [1],
-                    "visible": false
+                   // "targets": [4],
+                    //"visible": false
                 }
             ]
         } );
     });
 
     $(".editActivityCreation").on("click", function () {
-
+        debugger;
         var id = $(this).next().val();
         $.ajax({
             url: '@Url.Action("GetActivityCreationById","Activity")',
             type: "GET",
             data: { id: id },
             success: function (result) {
+                debugger;
+                  $("#activityrid").val(result.Activity_ID);
+                    $("#txtTask").val(result.Task);
+                    $("#txtSequence").val(result.Sequence_Num);
+                    $("#drpPhase").val(result.PhaseID);
+                    $("#drpRole").val(result.RoleID);
+                    $("#txtApplicationArea").val(result.ApplicationArea);
+                    $("#actcre_on").val(result.Cre_on);
+                    $("#actcre_By").val(result.Cre_By);
+                    $("#btntivityCreUpdate").show();
+                    $("#btnAddNew").show();
+                    $("#btnActivityCreCreate").hide();
 
-                $("#activityrid").val(result.Activity_ID);
-                $("#txtTask").val(result.Task);
-                $("#txtSequence").val(result.Sequence_Num);
-                $("#drpPhase").val(result.PhaseID);
-                $("#drpRole").val(result.RoleID);
-                $("#txtApplicationArea").val(result.ApplicationArea);
-                $("#actcre_on").val(result.Cre_on);
-                $("#actcre_By").val(result.Cre_By);
-                $("#btntivityCreUpdate").show();
-                $("#btnAddNew").show();
-                $("#btnActivityCreCreate").hide();
+                 //$.each(result, function (index, item) {
+                 //    $("#activityrid").val(item.Activity_ID);
+                 //   $("#txtTask").val(item.Task);
+                 //   $("#txtSequence").val(item.Sequence_Num);
+                 //   $("#drpPhase").val(item.PhaseID);
+                 //   $("#drpRole").val(item.RoleID);
+                 //   $("#txtApplicationArea").val(item.ApplicationArea);
+                 //   $("#actcre_on").val(item.Cre_on);
+                 //   $("#actcre_By").val(item.Cre_By);
+                 //   $("#btntivityCreUpdate").show();
+                 //   $("#btnAddNew").show();
+                 //   $("#btnActivityCreCreate").hide();
+                 //});
+               
 
             },
             error: function (err) {

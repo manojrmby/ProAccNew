@@ -106,15 +106,17 @@ namespace ProAcc.Controllers
             {
                 return HttpNotFound();
             }
-            var Project = db.Projects.Find(id);
+            //var Project = db.Projects.Find(id);
+            var Project = db.Projects.Where(x => x.isActive == true && x.Project_Id == id).Select(p => new { p.Project_Id, p.Project_Name, p.Description, p.Customer_Id, p.Cre_on, p.Cre_By}).FirstOrDefault();
+            
+            return Json(Project, JsonRequestBehavior.AllowGet);
+            //var list = JsonConvert.SerializeObject(Project, Formatting.None,
+            //new JsonSerializerSettings()
+            //{
+            //    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            //});
 
-            var list = JsonConvert.SerializeObject(Project, Formatting.None,
-            new JsonSerializerSettings()
-            {
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            });
-
-            return Content(list, "application/json");   
+            //return Content(list, "application/json");   
         }
 
         [HttpPost]

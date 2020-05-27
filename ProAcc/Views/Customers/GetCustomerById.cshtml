@@ -33,23 +33,38 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Industry Sector</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" value="@Model.Industry_Sector" id="txtIndustrySector" />
-                    @*<span id="lblIndustrySector" style="color:red" />*@
+                    <select class="form-control" id="drpIndustrySector">
+                        <option value="0">Select Industry</option>
+                        @foreach (var item in ViewBag.IndustrySector)
+                        {
+                            <option value="@item.IndustrySector_ID" selected>@item.Industry_Sector</option>
+                        }
+                    </select>
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
                 </div>
             </div>
+
+            @*<div class="form-group">
+                <label class="control-label col-md-4 required">Industry Sector</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" value="@Model.IndustrySector_ID" id="txtIndustrySector" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
+                </div>
+            </div>*@
             <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Name</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" value="@Model.Contact" id="txtContact" />
-                @*<span id="lblIndustrySector" style="color:red" />*@
+                <div class="col-md-10">
+                    <input type="text" class="form-control" value="@Model.Contact" id="txtContact" />
+                    @*<span id="lblIndustrySector" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblContact">&nbsp;</span>
+                </div>
             </div>
-            <div>
-                &nbsp;&nbsp;&nbsp;<span id="lblContact">&nbsp;</span>
-            </div>
-        </div>
         </div>
 
         <div class="col-6">
@@ -183,7 +198,7 @@
         function validatecustomer() {
             
            var CompanyName = $("#txtCompanyName").val().trim();
-            var IndustrySector = $("#txtIndustrySector").val().trim();
+            var IndustrySector = $("#drpIndustrySector").val()
             var Contact = $("#txtContact").val().trim();
             var custphone = $("#txtCustomerPhone").val().trim();
             var custEmail = $("#txtCustomerEmail").val().trim();
@@ -217,7 +232,7 @@
          
          var id = $("#customerid").val();
         var CompanyName = $("#txtCompanyName").val().trim();
-         var IndustrySector = $("#txtIndustrySector").val().trim();
+         var IndustrySector = $("#drpIndustrySector").val();
          var Contact = $('#txtContact').val().trim();
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();
@@ -227,7 +242,7 @@
          var model = {
              Customer_Id: id,
              Company_Name: CompanyName,
-             Industry_Sector: IndustrySector,
+             IndustrySector_ID: IndustrySector,
              Phone: custphone,
              Email: custEmail,
              Contact:Contact,
@@ -237,7 +252,7 @@
          if (CompanyName == "" || ValidateName(CompanyName) == false) {
             $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
         }
-        else if (IndustrySector ==""|| ValidateName(IndustrySector) == false)
+        else if (IndustrySector ==0)
         {
             $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
         }

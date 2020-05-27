@@ -21,19 +21,19 @@ namespace ProACC_DB
         public int PhaseId { get; set; }
         public Nullable<int> Sequence_Num { get; set; }
         public string ApplicationArea { get; set; }
-        public bool Task_Other_Environment { get; set; }
-        public bool Dependency { get; set; }
+        public Nullable<bool> Task_Other_Environment { get; set; }
+        public Nullable<bool> Dependency { get; set; }
         public string Pending { get; set; }
-        public bool Delay_occurred { get; set; }
+        public Nullable<bool> Delay_occurred { get; set; }
         public string DelayedReason { get; set; }
         public System.Guid UserID { get; set; }
         public int StatusId { get; set; }
-        public double EST_hours { get; set; }
-        public double Actual_St_hours { get; set; }
-        public System.DateTime Planed__St_Date { get; set; }
-        public System.DateTime Actual_St_Date { get; set; }
-        public System.DateTime Planed__En_Date { get; set; }
-        public System.DateTime Actual_En_Date { get; set; }
+        public Nullable<double> EST_hours { get; set; }
+        public Nullable<double> Actual_St_hours { get; set; }
+        public Nullable<System.DateTime> Planed__St_Date { get; set; }
+        public Nullable<System.DateTime> Actual_St_Date { get; set; }
+        public Nullable<System.DateTime> Planed__En_Date { get; set; }
+        public Nullable<System.DateTime> Actual_En_Date { get; set; }
         public string Notes { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
@@ -42,6 +42,7 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
         public Nullable<int> ActivityID { get; set; }
+        public Nullable<int> RoleId { get; set; }
     
         public virtual PhaseMaster PhaseMaster { get; set; }
         public virtual StatusMaster StatusMaster { get; set; }

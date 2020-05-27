@@ -28,6 +28,8 @@
         <EntityTypeShape EntityType="ProAccModel.Customer" Width="1.5" PointX="0.75" PointY="7.5" />
         <AssociationConnector Association="ProAccModel.FK_Project_Customer" />
         <AssociationConnector Association="ProAccModel.FK_UserMaster_Customer" />
+        <EntityTypeShape EntityType="ProAccModel.IndustrySector" Width="1.5" PointX="0.75" PointY="16.125" />
+        <AssociationConnector Association="ProAccModel.FK_Customer_IndustrySector" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

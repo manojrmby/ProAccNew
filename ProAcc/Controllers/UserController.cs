@@ -21,12 +21,27 @@ namespace ProAcc.Controllers
 
         public ActionResult Index()
         {
-            var users = db.UserMasters.Where(x => x.isActive == true && x.LoginId!= "Admin").OrderByDescending(x=>x.Cre_on);
-            //var users = (from e in db.UserMasters
-            //            join c in db.Customers on e.Customer_Id equals c.Customer_ID where e.isActive==true && c.isActive == true
-            //             select e).ToList();
-
-            return View(users);
+            List<UserMaster> u = new List<UserMaster>();
+            var users = db.UserMasters.Where(x => x.isActive == true && x.LoginId!= "Admin").OrderByDescending(x=>x.Cre_on).ToList();
+            users.ForEach(p => {
+                if (p.UserTypeID == 3 )
+                {
+                    if (p.Customer_Id != null)
+                    {
+                        p.Customer = db.Customers.Where(pp => pp.Customer_ID == p.Customer_Id).FirstOrDefault();
+                        if (p.Customer.IsDeleted == false)
+                        {
+                            u.Add(p);
+                        }
+                    }
+                }
+                else
+                {
+                    u.Add(p);
+                }
+            });
+           
+            return View(u);
         }
         // GET: User
         public ActionResult CreateUsers()

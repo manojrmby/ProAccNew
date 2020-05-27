@@ -29,7 +29,7 @@
           </Key>
           <Property Name="Customer_ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Company_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Industry_Sector" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IndustrySector_ID" Type="int" Nullable="false" />
           <Property Name="Contact" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="20" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
@@ -47,6 +47,19 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HanaStatus" Type="varchar" MaxLength="50" />
           <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="IndustrySector">
+          <Key>
+            <PropertyRef Name="IndustrySector_ID" />
+          </Key>
+          <Property Name="IndustrySector_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Industry_Sector" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="Instance">
           <Key>
@@ -105,20 +118,21 @@
           <Property Name="PhaseId" Type="int" Nullable="false" />
           <Property Name="Sequence_Num" Type="int" />
           <Property Name="ApplicationArea" Type="nvarchar(max)" />
-          <Property Name="Task_Other_Environment" Type="bit" Nullable="false" />
-          <Property Name="Dependency" Type="bit" Nullable="false" />
-          <Property Name="Pending" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Delay_occurred" Type="bit" Nullable="false" />
+          <Property Name="Task_Other_Environment" Type="bit" />
+          <Property Name="Dependency" Type="bit" />
+          <Property Name="Pending" Type="nvarchar(max)" />
+          <Property Name="Delay_occurred" Type="bit" />
           <Property Name="DelayedReason" Type="nvarchar(max)" />
+          <Property Name="RoleId" Type="int" />
           <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StatusId" Type="int" Nullable="false" />
-          <Property Name="EST_hours" Type="float" Nullable="false" />
-          <Property Name="Actual_St_hours" Type="float" Nullable="false" />
-          <Property Name="Planed__St_Date" Type="datetime" Nullable="false" />
-          <Property Name="Actual_St_Date" Type="datetime" Nullable="false" />
-          <Property Name="Planed__En_Date" Type="datetime" Nullable="false" />
-          <Property Name="Actual_En_Date" Type="datetime" Nullable="false" />
-          <Property Name="Notes" Type="varchar(max)" Nullable="false" />
+          <Property Name="EST_hours" Type="float" />
+          <Property Name="Actual_St_hours" Type="float" />
+          <Property Name="Planed__St_Date" Type="datetime" />
+          <Property Name="Actual_St_Date" Type="datetime" />
+          <Property Name="Planed__En_Date" Type="datetime" />
+          <Property Name="Actual_En_Date" Type="datetime" />
+          <Property Name="Notes" Type="varchar(max)" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="Cre_on" Type="datetime" Nullable="false" />
           <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
@@ -223,6 +237,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Customer_IndustrySector">
+          <End Role="IndustrySector" Type="Self.IndustrySector" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IndustrySector">
+              <PropertyRef Name="IndustrySector_ID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="IndustrySector_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Instance_Project">
           <End Role="Project" Type="Self.Project" Multiplicity="1" />
           <End Role="Instance" Type="Self.Instance" Multiplicity="*" />
@@ -244,42 +270,6 @@
             </Principal>
             <Dependent Role="Project">
               <PropertyRef Name="Customer_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProjectMonitor_PhaseMaster">
-          <End Role="PhaseMaster" Type="Self.PhaseMaster" Multiplicity="1" />
-          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PhaseMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProjectMonitor">
-              <PropertyRef Name="PhaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProjectMonitor_StatusMaster">
-          <End Role="StatusMaster" Type="Self.StatusMaster" Multiplicity="1" />
-          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StatusMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProjectMonitor">
-              <PropertyRef Name="StatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProjectMonitor_UserMaster">
-          <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="1" />
-          <End Role="ProjectMonitor" Type="Self.ProjectMonitor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserMaster">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="ProjectMonitor">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -348,6 +338,7 @@
           <EntitySet Name="ActivityMaster" EntityType="Self.ActivityMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HanaStatus" EntityType="Self.HanaStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IndustrySector" EntityType="Self.IndustrySector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Instance" EntityType="Self.Instance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhaseMaster" EntityType="Self.PhaseMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
@@ -365,6 +356,10 @@
             <End Role="RoleMaster" EntitySet="RoleMaster" />
             <End Role="ActivityMaster" EntitySet="ActivityMaster" />
           </AssociationSet>
+          <AssociationSet Name="FK_Customer_IndustrySector" Association="Self.FK_Customer_IndustrySector">
+            <End Role="IndustrySector" EntitySet="IndustrySector" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
           <AssociationSet Name="FK_Instance_Project" Association="Self.FK_Instance_Project">
             <End Role="Project" EntitySet="Project" />
             <End Role="Instance" EntitySet="Instance" />
@@ -372,18 +367,6 @@
           <AssociationSet Name="FK_Project_Customer" Association="Self.FK_Project_Customer">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="Project" EntitySet="Project" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProjectMonitor_PhaseMaster" Association="Self.FK_ProjectMonitor_PhaseMaster">
-            <End Role="PhaseMaster" EntitySet="PhaseMaster" />
-            <End Role="ProjectMonitor" EntitySet="ProjectMonitor" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProjectMonitor_StatusMaster" Association="Self.FK_ProjectMonitor_StatusMaster">
-            <End Role="StatusMaster" EntitySet="StatusMaster" />
-            <End Role="ProjectMonitor" EntitySet="ProjectMonitor" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProjectMonitor_UserMaster" Association="Self.FK_ProjectMonitor_UserMaster">
-            <End Role="UserMaster" EntitySet="UserMaster" />
-            <End Role="ProjectMonitor" EntitySet="ProjectMonitor" />
           </AssociationSet>
           <AssociationSet Name="FK_ResourceAllocation_Project" Association="Self.FK_ResourceAllocation_Project">
             <End Role="Project" EntitySet="Project" />
@@ -478,6 +461,11 @@
           <AssociationSet Name="FK_UserMaster_Customer" Association="ProAccModel.FK_UserMaster_Customer">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="UserMaster" EntitySet="UserMasters" />
+          </AssociationSet>
+          <EntitySet Name="IndustrySectors" EntityType="ProAccModel.IndustrySector" />
+          <AssociationSet Name="FK_Customer_IndustrySector" Association="ProAccModel.FK_Customer_IndustrySector">
+            <End Role="IndustrySector" EntitySet="IndustrySectors" />
+            <End Role="Customer" EntitySet="Customers" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
@@ -585,20 +573,20 @@
           <Property Name="PhaseId" Type="Int32" Nullable="false" />
           <Property Name="Sequence_Num" Type="Int32" />
           <Property Name="ApplicationArea" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Task_Other_Environment" Type="Boolean" Nullable="false" />
-          <Property Name="Dependency" Type="Boolean" Nullable="false" />
-          <Property Name="Pending" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Delay_occurred" Type="Boolean" Nullable="false" />
+          <Property Name="Task_Other_Environment" Type="Boolean" />
+          <Property Name="Dependency" Type="Boolean" />
+          <Property Name="Pending" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Delay_occurred" Type="Boolean" />
           <Property Name="DelayedReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UserID" Type="Guid" Nullable="false" />
           <Property Name="StatusId" Type="Int32" Nullable="false" />
-          <Property Name="EST_hours" Type="Double" Nullable="false" />
-          <Property Name="Actual_St_hours" Type="Double" Nullable="false" />
-          <Property Name="Planed__St_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Actual_St_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Planed__En_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Actual_En_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Notes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="EST_hours" Type="Double" />
+          <Property Name="Actual_St_hours" Type="Double" />
+          <Property Name="Planed__St_Date" Type="DateTime" Precision="3" />
+          <Property Name="Actual_St_Date" Type="DateTime" Precision="3" />
+          <Property Name="Planed__En_Date" Type="DateTime" Precision="3" />
+          <Property Name="Actual_En_Date" Type="DateTime" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Cre_By" Type="Guid" Nullable="false" />
@@ -609,6 +597,7 @@
           <NavigationProperty Name="StatusMaster" Relationship="ProAccModel.FK_ProjectMonitor_StatusMaster" FromRole="ProjectMonitor" ToRole="StatusMaster" />
           <NavigationProperty Name="UserMaster" Relationship="ProAccModel.FK_ProjectMonitor_UserMaster" FromRole="ProjectMonitor" ToRole="UserMaster" />
           <Property Name="ActivityID" Type="Int32" />
+          <Property Name="RoleId" Type="Int32" />
         </EntityType>
         <EntityType Name="ResourceAllocation">
           <Key>
@@ -806,7 +795,6 @@
           </Key>
           <Property Name="Customer_ID" Type="Guid" Nullable="false" />
           <Property Name="Company_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Industry_Sector" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -818,6 +806,8 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Projects" Relationship="ProAccModel.FK_Project_Customer" FromRole="Customer" ToRole="Project" />
           <NavigationProperty Name="UserMasters" Relationship="ProAccModel.FK_UserMaster_Customer" FromRole="Customer" ToRole="UserMaster" />
+          <Property Name="IndustrySector_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="IndustrySector" Relationship="ProAccModel.FK_Customer_IndustrySector" FromRole="Customer" ToRole="IndustrySector" />
         </EntityType>
         <Association Name="FK_Project_Customer">
           <End Type="ProAccModel.Customer" Role="Customer" Multiplicity="1" />
@@ -840,6 +830,32 @@
             </Principal>
             <Dependent Role="UserMaster">
               <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="IndustrySector">
+          <Key>
+            <PropertyRef Name="IndustrySector_ID" />
+          </Key>
+          <Property Name="IndustrySector_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Industry_Sector" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Customers" Relationship="ProAccModel.FK_Customer_IndustrySector" FromRole="IndustrySector" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK_Customer_IndustrySector">
+          <End Type="ProAccModel.IndustrySector" Role="IndustrySector" Multiplicity="1" />
+          <End Type="ProAccModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IndustrySector">
+              <PropertyRef Name="IndustrySector_ID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="IndustrySector_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -947,6 +963,7 @@
           <EntitySetMapping Name="ProjectMonitors">
             <EntityTypeMapping TypeName="ProAccModel.ProjectMonitor">
               <MappingFragment StoreEntitySet="ProjectMonitor">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
@@ -1059,6 +1076,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="ProAccModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="IndustrySector_ID" ColumnName="IndustrySector_ID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
                 <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
@@ -1068,9 +1086,22 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Contact" ColumnName="Contact" />
-                <ScalarProperty Name="Industry_Sector" ColumnName="Industry_Sector" />
                 <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
                 <ScalarProperty Name="Customer_ID" ColumnName="Customer_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IndustrySectors">
+            <EntityTypeMapping TypeName="ProAccModel.IndustrySector">
+              <MappingFragment StoreEntitySet="IndustrySector">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Industry_Sector" ColumnName="Industry_Sector" />
+                <ScalarProperty Name="IndustrySector_ID" ColumnName="IndustrySector_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
