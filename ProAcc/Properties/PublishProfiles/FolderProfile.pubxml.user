@@ -244,7 +244,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/20/2020 17:18:07</publishTime>
     </File>
     <File Include="Asset/Scripts/CustomScripts/CustomerCreate.js">
-      <publishTime>05/22/2020 14:30:05</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css">
       <publishTime>05/14/2020 16:04:04</publishTime>
@@ -343,22 +343,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>05/24/2020 09:31:58</publishTime>
+      <publishTime>05/26/2020 14:25:34</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
       <publishTime>05/17/2020 19:54:10</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>05/24/2020 09:31:58</publishTime>
+      <publishTime>05/26/2020 14:25:34</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
-      <publishTime>05/24/2020 09:31:56</publishTime>
+      <publishTime>05/26/2020 14:25:34</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll.config">
       <publishTime>05/18/2020 05:47:15</publishTime>
     </File>
     <File Include="bin/ProACC_DB.pdb">
-      <publishTime>05/24/2020 09:31:56</publishTime>
+      <publishTime>05/26/2020 14:25:34</publishTime>
     </File>
     <File Include="bin/Release/Publish/Asset/css/main_Login.css">
       <publishTime>04/18/2020 18:23:04</publishTime>
@@ -1504,7 +1504,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/16/2020 10:47:44</publishTime>
     </File>
     <File Include="Views/Assessment/CreateAnalysis.cshtml">
-      <publishTime>05/14/2020 11:04:31</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/Assessment/CustomReport.cshtml">
       <publishTime>05/16/2020 10:47:44</publishTime>
@@ -1516,7 +1516,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/16/2020 10:47:44</publishTime>
     </File>
     <File Include="Views/Assessment/ReadinessReport.cshtml">
-      <publishTime>05/14/2020 16:48:13</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/Assessment/SimplificationReport - Copy.cshtml">
       <publishTime>05/14/2020 17:37:07</publishTime>
@@ -1558,7 +1558,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2020 13:22:16</publishTime>
     </File>
     <File Include="Views/Customers/Create.cshtml">
-      <publishTime>05/24/2020 03:22:45</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/Customers/Delete.cshtml">
       <publishTime>05/06/2020 16:38:47</publishTime>
@@ -1570,10 +1570,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2020 10:47:10</publishTime>
     </File>
     <File Include="Views/Customers/GetCustomerById.cshtml">
-      <publishTime>05/24/2020 03:30:44</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/Customers/Index.cshtml">
-      <publishTime>05/24/2020 03:27:59</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/Customers/_Consultantcreate.cshtml">
       <publishTime>05/15/2020 12:02:18</publishTime>
@@ -1588,7 +1588,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/18/2020 16:38:20</publishTime>
     </File>
     <File Include="Views/Home/Home.cshtml">
-      <publishTime>05/14/2020 12:29:41</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/InstanceCreation/Create.cshtml">
       <publishTime>05/21/2020 16:46:23</publishTime>
@@ -1660,13 +1660,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/10/2020 17:31:28</publishTime>
     </File>
     <File Include="Views/PreConvertion/PreConvertion_Upload.cshtml">
-      <publishTime>05/08/2020 18:10:36</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/ProjectCreation/Create.cshtml">
-      <publishTime>05/19/2020 18:15:19</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_ProjectCreationCreate.cshtml">
-      <publishTime>05/21/2020 16:46:23</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_ProjectCreationIndex.cshtml">
       <publishTime>05/21/2020 16:46:23</publishTime>
@@ -1686,20 +1686,26 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/ProjectInstanceConfigs/Index.cshtml">
       <publishTime>05/15/2020 13:22:47</publishTime>
     </File>
+    <File Include="Views/ProjectMonitor/AssusmentMonitor.cshtml">
+      <publishTime>05/26/2020 14:23:24</publishTime>
+    </File>
     <File Include="Views/ProjectMonitor/Create.cshtml">
-      <publishTime>05/20/2020 18:58:42</publishTime>
+      <publishTime>05/25/2020 16:10:10</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/PMAdminCreate.cshtml">
-      <publishTime>05/24/2020 09:28:45</publishTime>
+      <publishTime>05/26/2020 14:14:53</publishTime>
+    </File>
+    <File Include="Views/Resource/ResourceAssessment.cshtml">
+      <publishTime>05/26/2020 14:24:06</publishTime>
     </File>
     <File Include="Views/shared/_Layout.cshtml">
-      <publishTime>05/23/2020 23:30:06</publishTime>
+      <publishTime>05/26/2020 13:28:41</publishTime>
     </File>
     <File Include="Views/Test/CommingSoon.cshtml">
       <publishTime>04/30/2020 17:32:55</publishTime>
     </File>
     <File Include="Views/User/CreateUsers.cshtml">
-      <publishTime>05/22/2020 12:49:18</publishTime>
+      <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/User/Edit.cshtml">
       <publishTime>05/22/2020 14:30:05</publishTime>

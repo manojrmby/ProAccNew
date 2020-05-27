@@ -43,8 +43,8 @@
             {
                 <div class="col-md-4">
                     <div class="position-relative form-group">
-                        <label for="exampleEmail" class="">Company Name</label>
-                        @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
+                        <label for="exampleEmail" class="">Customer Name</label>
+                        @Html.DropDownList("Company ", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
                         @*@Html.DropDownList("Project", (IEnumerable<SelectListItem>), "- SELECT-", new { id = "IDProject", @class = "form-control" })*@
                     </div>
                 </div>
@@ -303,8 +303,16 @@
                     label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: true, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
-                        value: GetRoleDropDown()
-                    }
+                        value: GetRoleDropDown(),
+                        dataEvents: [
+                    {
+                        type: 'change',
+                        fn: function (e) {
+                           UpdateUserByRole($("#RoleID").val());
+                        }
+                    }]
+                    },
+                    
                 },
                 {
                     label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: true,
@@ -345,7 +353,7 @@
 
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
-            { edit: true, add: false, del: true, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
+            { edit: true, add: true, del: true, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
                 editCaption: "The Edit Dialog",
@@ -479,8 +487,9 @@
 
     } 
     function UpdateUserByRole(RoleID) {
+         //$("#RoleID").attr("disabled", "disabled");
          $("#UserID")
-                     //.html("<option value=''>Loading User...</option>")
+            .html("<option value=''>Loading User...</option>")
             .attr("disabled", "disabled");
         $.ajax({
             url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
@@ -490,8 +499,9 @@
             success: function (res) {
                 $("#UserID")
                     .removeAttr("disabled");
+                 $('#UserID').empty()
                 $.each(res, function (data, value) {
-
+                   
                     $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
                 })
             }  
@@ -500,6 +510,11 @@
         });
 
     }
+    $("#RoleID").change(function () {
+        debugger;
+        var RoleID = $("#RoleID").val();
+        UpdateUserByRole(RoleID)
+    });
     function GetUserDropDown() {
 	var Parameters = {};
     $.ajax({
