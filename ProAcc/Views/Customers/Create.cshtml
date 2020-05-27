@@ -284,7 +284,7 @@
 
         }
     });
-<<<<<<< HEAD
+
 
     function ValidateName(data) {
              var letters = /^[A-Za-z, ]+$/;
@@ -292,23 +292,7 @@
                 return false;
             }
     }
-=======
-    
-}
-    //function ValidateName(data) {
-    //         var letters = /^[A-Za-z, ]+$/;
-    //        if (!letters.test(data)) {
-    //            return false;
-    //        }
-    //}
-    function validatename() {
-    var inputValue = event.which;
->>>>>>> 4972ca06c9769079bf47fe652501b0d21358fe3d
 
-    if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-        //$("#lblPhaseName").html("Not Allowed").show().fadeOut(2000);
-        return false;
-    }
     $("#btnCustomerCreate").on("click", function () {
         debugger;
         var CompanyName = $("#txtCompanyName").val().trim();
