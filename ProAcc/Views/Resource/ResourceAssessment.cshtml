@@ -285,22 +285,22 @@
             colModel: [
                 {
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
-                    sortable: true, align: 'center', editable: true, hidden: true
+                    sortable: false, align: 'center', editable: true, hidden: true
 
                 },
                 {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                    sortable: true, align: 'center', editable: true, edittype: 'custom',
+                    sortable: false, align: 'center', editable: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetPhaseDropDown()
 
                     }
                 },
-                { label: 'Activity / Task ', name: 'Task', width: 150, sorttype: 'integer', editable: true },
-                { label: 'Sequence ', name: 'SequenceNum', width: 50, sorttype: 'integer', editable: true },
+                { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true },
+                { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true },
                 {
-                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: true, align: 'center', editable: true,
+                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetRoleDropDown(),
@@ -314,13 +314,24 @@
                     },
                     
                 },
+                //{
+                //    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: true,
+                //    cellEdit: true, edittype: 'select', formatter: 'select',
+                //    editoptions: {
+                //        value: GetUserDropDown()
+                //    }
+                //},
+
+
+                //Add Only
                 {
-                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: true,
+                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'center', editable: true, hidden: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
-                        value: GetUserDropDown()
+                        value: GetMasterAddAssessment()
                     }
                 },
+
             ],
             loadonce: false,
             altRows: true,
@@ -340,6 +351,8 @@
             pager: "#jqGridPager",
             rownumbers: true,
             reload: true,
+            sortname: 'SequenceNum',
+            sortorder: 'desc',
             afterSubmit: function () {
                 //debugger;
                 //location.reload(true);
@@ -380,8 +393,18 @@
             },
             // options for the Add Dialog
             {
+                url: "@Url.Action("AddResource","Resource")",
                 closeAfterAdd: true,
                 recreateForm: true,
+                beforeShowForm: function (form) {
+                    $("#tr_PhaseId").hide();
+                    $("#tr_SequenceNum").hide();
+                    $("#tr_Task").hide();
+                    $("#tr_RoleID").hide();
+                    //debugger;
+                    //alert("In");
+                    $("#tr_ActivityID").show();
+                },
                 errorTextFormat: function (data) {
                     return 'Error: ' + data.responseText
                 }
@@ -539,6 +562,31 @@
     });
 	return Parameters;
     }
+    function GetMasterAddAssessment() {
+	var Parameters = {};
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("MasterAddAssessment","Resource")',
+        //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+        dataType: "json",
+		async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (Data) {
+            //debugger;
+				for (var i = 0; i < Data.length; i++) {
+                var obj = {};
+                    var Name = Data[i].Task;
+                var key = ""+Data[i].ActivityID;
+                Parameters[key] = Name;
+            }
+        },
+        error: function (data) {
+            alert("fail");
+        }
+    });
+	return Parameters;
+    }
+
     function DeletePost() {
         alert("IN");
 		//Here you need to define ajax call for insert records to server

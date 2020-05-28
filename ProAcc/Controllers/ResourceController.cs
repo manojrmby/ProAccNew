@@ -67,7 +67,7 @@ namespace ProAcc.Controllers
             int PhaseId = 5;
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             string LoginID = Session["loginid"].ToString();
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID);
+            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
             List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
             for (int i = 0; i < PM.Count; i++)
             {
@@ -104,6 +104,25 @@ namespace ProAcc.Controllers
 
             return Json(s, JsonRequestBehavior.AllowGet);
         }
-           
+
+        public ActionResult MasterAddAssessment()
+        {
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
+             Result = _Base.Sp_GetMasterAdd(Instance,5);
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AddResource(ProjectMonitorModel Data)
+        {
+            Boolean Result = false;
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            Result = _Base.Sp_AddResource(Instance,Data.ActivityID, Session["loginid"].ToString());
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

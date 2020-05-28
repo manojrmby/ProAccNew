@@ -1223,13 +1223,13 @@ namespace ProAcc.BL
         }
 
 
-        public List<ProjectMonitorModel> Sp_GetProjectMonitorEdit(Guid InstanceId,string LoginID)
+        public List<ProjectMonitorModel> Sp_GetProjectMonitorEdit(Guid InstanceId,string LoginID,int PhaseId)
         {
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
             dB.addIn("@Type", "PullData");
             dB.addIn("@InstunceID", InstanceId);
-            dB.addIn("@PhaseId", 5);
+            dB.addIn("@PhaseId", PhaseId);
             dB.addIn("@Cre_By", LoginID);
             dt = dB.ExecuteDataTable();
             List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
@@ -1291,13 +1291,13 @@ namespace ProAcc.BL
            
             return PM;
         }
-        public List<ProjectMonitorModel> Sp_GetProjectMonitor(Guid InstanceId, string LoginID)
+        public List<ProjectMonitorModel> Sp_GetProjectMonitor(Guid InstanceId, string LoginID,int PhaseId)
         {
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
-            dB.addIn("@Type", "CheckResource_ASS");
+            dB.addIn("@Type", "CheckResource");
             dB.addIn("@InstunceID", InstanceId);
-            dB.addIn("@PhaseId", 5);
+            dB.addIn("@PhaseId", PhaseId);
             dB.addIn("@Cre_By", LoginID);
             dt = dB.ExecuteDataTable();
             List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
@@ -1516,8 +1516,74 @@ namespace ProAcc.BL
         //}
         #endregion
 
+        public List<ProjectMonitorModel> Sp_GetMasterAdd(Guid InstanceId, int PhaseId)
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetMasterAdd");
+            dB.addIn("@InstunceID", InstanceId);
+            dB.addIn("@PhaseId", PhaseId);
+
+           // dB.addIn("@Cre_By", LoginID);
+            dt = dB.ExecuteDataTable();
+            List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
+            if (dt.Rows.Count > 0)
+            {
+                //int count = 1;
+                var myLocalDateTime = DateTime.UtcNow;
+                foreach (DataRow dr in dt.Rows)
+                {
+
+                    ProjectMonitorModel P = new ProjectMonitorModel();
+                    P.ActivityID = Convert.ToInt32(dr["Activity_ID"].ToString());
+                    //Guid.Parse(dr["id"].ToString());
+                    //P.UserID = Guid.Parse(dr["UserID"].ToString());
+                    //P.Instance = InstanceId;
+                    
+                    P.Task = dr["Task"].ToString();
+                    P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
+                    P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
+                    //P.Task_Other_Environment = false;
+                    //P.Dependency = false;
+                    //P.Pending = "";
+                    //P.Delay_occurred = false;
+                    P.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
+                    //P.ConsultantID=
+                    //P.StatusId = 0;
+                    //P.EST_hours = 0;
+                    //P.Actual_St_hours = 0;
+                    //P.Planed__St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    //P.Actual_St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    //P.Planed__En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    //P.Actual_En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    //P.Notes = "";
 
 
+
+
+                    //P.ID = Convert.ToInt32(dr["Id"].ToString());
+                    //P.PictureName = dr["PictureName"].ToString();
+                    //P.GivenName = dr["GivenName"].ToString();
+                    PM.Add(P);
+                }
+            }
+
+            return PM;
+        }
+
+        public Boolean Sp_AddResource(Guid InstanceId, int Activity_ID,string LoginID)
+        {
+            Boolean Result = false;
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@Type", "AddResource");
+            dB.addIn("@InstunceID", InstanceId);
+            dB.addIn("@ActivityId", Activity_ID);
+            dB.addIn("@Cre_By", LoginID);
+            dB.ExecuteScalar();
+            Result = true;
+            return Result;
+        }
         //private string Empty = "";
         //private string Error = "Picture@5C\\QInconsistency at level error@";
         //private string Warning = "Picture@5D\\QInconsistency at level warning@";
