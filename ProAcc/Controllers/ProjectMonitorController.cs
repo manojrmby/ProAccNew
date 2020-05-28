@@ -89,9 +89,9 @@ namespace ProAcc.Controllers
         {
             int PhaseId = 5;
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            InstanceID = Guid.Parse("52b6d7fa-18e2-4101-8040-1f8fcfd3bdaa");
+           // InstanceID = Guid.Parse("52b6d7fa-18e2-4101-8040-1f8fcfd3bdaa");
             string LoginID = Session["loginid"].ToString();
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitorEdit(InstanceID, LoginID);
+            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitorEdit(InstanceID, LoginID, PhaseId);
             List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
             for (int i = 0; i < PM.Count; i++)
             {

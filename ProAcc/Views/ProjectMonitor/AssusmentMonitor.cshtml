@@ -187,9 +187,9 @@
     //$(document).ready(function () {
         
     //});
-   // function LoadTable(Instance) {
+    function LoadTable(Instance) {
 
-    $(document).ready(function () {
+        // $(document).ready(function () {
         var lastSelection;
         var editParameters = {
             keys: true,
@@ -245,7 +245,7 @@
             return -1;
         }
         var DateInput = function (element, options) {
-            
+
             //var ID = options.id;
             //var Cell_Date = $("#" + ID).val();
             //if (Cell_Date == "17/10/1904") {
@@ -261,17 +261,17 @@
             $(element).datepicker({
                 duration: "slow",
                 defaultDate: +1,
-              altFormat: "dd-mm-yy",
+                altFormat: "dd-mm-yy",
                 dateFormat: "mm/dd/yy",
                 autoSize: true,
                 changeYear: true,
                 changeMonth: true,
                 showButtonPanel: false,
                 showWeek: false
-            }).datepicker("setDate",new Date());
+            }).datepicker("setDate", new Date());
         };
         //var DateInput1 = function (element, options) {
-            
+
         //    //var ID = options.id;
         //    //var Cell_Date = $("#" + ID).val();
         //    //if (Cell_Date == "17/10/1904") {
@@ -287,7 +287,7 @@
         //    $(element).datepicker({
         //        duration: "slow",
         //        defaultDate: +1,
-                
+
         //        dateFormat: "mm/dd/yy",
         //        autoSize: true,
         //        changeYear: true,
@@ -324,7 +324,7 @@
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","ProjectMonitor")",
             datatype: "json",
-            editurl:"@Url.Action("SubmitProjectMonitor","ProjectMonitor")",
+            editurl: "@Url.Action("SubmitProjectMonitor","ProjectMonitor")",
             colModel: [
                 {
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
@@ -334,31 +334,31 @@
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
                     sortable: true, align: 'center', editable: true, hidden: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
-                     editrules:{
-                         required:true, 
-                         edithidden:true
-                      },
+                    editrules: {
+                        required: true,
+                        edithidden: true
+                    },
                     editoptions: {
                         value: GetPhaseDropDown()
                     }
                 },
                 {
                     label: 'Activity / Task ', name: 'Task', width: 150, sorttype: 'integer', editable: true, hidden: true,
-                     editrules:{
-                         required:true, 
-                         edithidden:true
-                      }
-                   
+                    editrules: {
+                        required: true,
+                        edithidden: true
+                    }
+
                 },
                 {
                     label: 'Activity / Task ', name: 'Task', width: 150, sorttype: 'integer', editable: false
-                     
-                   
+
+
                 },
                 {
                     label: 'ApplicationArea', name: 'ApplicationArea', width: 150, sorttype: 'integer', editable: true
-                     
-                   
+
+
                 },
                 {
                     label: 'Sequence ', name: 'SequenceNum', width: 50, sorttype: 'integer', editable: true, hidden: true,
@@ -376,7 +376,7 @@
                             });
                         }
                     }
-                    
+
                 },
                 {
                     label: 'Task needed for other environment (Y/N)',
@@ -402,7 +402,7 @@
                     }
                 },
                 {
-                    label: 'Status', name: 'StatusID', index: 'ConsultantID', width: 70, sortable: true, align: 'center', editable: true,
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70, sortable: true, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value:
@@ -445,26 +445,26 @@
                 },
                 {
                     label: 'Planned Start Date', name: 'Planed__St_Date',
-                    width: 120, align: "center", sorttype: "date", formatter: "date",formatoptions: { altFormat: "dd-mm-yy",newformat: "d/m/Y" },  editable: true,
-                    editoptions: { dataInit: DateInput,classes: 'DateClass' }
+                    width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    editoptions: { dataInit: DateInput, classes: 'DateClass' }
                 },
                 {
                     label: 'Actual Start Date/Time (UTC)', name: 'Actual_St_Date',
-                        width: 120, align: "center", sorttype: "date",formatter: "date",formatoptions: { altFormat: "dd-mm-yy",newformat: "d/m/Y" }, editable: true,
-                    editoptions: { dataInit: DateInput } 
-                        
+                    width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    editoptions: { dataInit: DateInput }
+
                 },
-                 {
-                     label: 'Planned End Date', name: 'Planed__En_Date',
-                     width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
-                     ,
-                    editoptions: { dataInit: DateInput } 
-                 },
+                {
+                    label: 'Planned End Date', name: 'Planed__En_Date',
+                    width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    ,
+                    editoptions: { dataInit: DateInput }
+                },
                 {
                     label: 'Actual End Date/Time (UTC)', name: 'Actual_En_Date',
                     width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
-                        editoptions: { dataInit: DateInput } 
+                    editoptions: { dataInit: DateInput }
                 },
                 {
                     label: 'Notes/Remarks', name: 'Notes', edittype: "textarea",
@@ -514,6 +514,10 @@
             rownumbers: true,
             reload: true,
             pager: "#jqGridPager",
+            onSelectRow: function (row_id) {
+                debugger;
+                Show_HideEdit();
+            },
             //onSelectRow: function (id) {
             //    debugger;
             //        if (id && id !== lastSel) {
@@ -526,9 +530,10 @@
             //        }
             //    },
             loadComplete: function () {
-
+               // alert("mm");
             },
             gridComplete: function () {
+               // alert("tdyt");
                 var recs = $('#jqGrid').jqGrid('getGridParam', 'reccount');
 
                 if (isNaN(recs) || recs == 0) {
@@ -537,6 +542,10 @@
                 else {
                     $("#jqGrid").jqGrid('setGridState', 'visible');
                 }
+                Show_HideEdit();
+                
+
+
             }
             // set table stripped class in table style in bootsrap
         });
@@ -551,6 +560,11 @@
                 checkOnUpdate: true,
                 checkOnSubmit: true,
                 closeAfterEdit: true,
+                reloadAfterSubmit:true,
+                afterSubmit: function (form) {
+                    alert("in");
+                    Show_HideEdit();
+                },
                 beforeShowForm: function (form) {
                 },
                 errorTextFormat: function (data) {
@@ -566,8 +580,8 @@
 
                     //var nameColumnField = $('#tr_Task', form).show();
                     //$('#tr_Task', form).show();
-                   
-                            //$('<tr class="FormData" id="tr_AddInfo"><td class="CaptionTD ui-widget-content"><b>Additional Information:</b></td></tr>').insertAfter (nameColumnField);
+
+                    //$('<tr class="FormData" id="tr_AddInfo"><td class="CaptionTD ui-widget-content"><b>Additional Information:</b></td></tr>').insertAfter (nameColumnField);
                     // debugger;
                     $('#PhaseId')
                         .val(5)//AssumentID
@@ -584,11 +598,12 @@
                     $("#tr_Planed__En_Date").hide();
                     $("#tr_Actual_En_Date").hide();
                     $("#tr_Notes").hide();
-                   // $grid.jqGrid('showCol', 'Id');
-                   //$grid.jqGrid(‘hideCol’, 'Task_Other_Environment');
-                   // debugger;
+                    // $grid.jqGrid('showCol', 'Id');
+                    //$grid.jqGrid(‘hideCol’, 'Task_Other_Environment');
+                    // debugger;
                     //alert("Mano");
                 },
+
                 errorTextFormat: function (data) {
                     return 'Error: ' + data.responseText
                 }
@@ -605,7 +620,22 @@
             } // search options - define multiple search
         );
         //document.body.style.zoom = "67%";
-    });
+    }
+    function Show_HideEdit() {
+        var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                for (var i = 0; i < ids.length; i++) {
+                    //debugger
+                    $('#jEditButton_' + ids[i + 1]).hide();
+                }
+                for (var i = 0; i < ids.length; i++) {
+
+                    var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+                    if (Status_Id == 1) {
+                        $('#jEditButton_' + ids[i]).hide();
+                        $('#jEditButton_' + ids[i + 1]).show();
+                    }
+                }
+    }
     function GetPhaseDropDown() {
 				 var Parameters = {};
                 $.ajax({
@@ -710,9 +740,9 @@
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data) {
-            // debugger;
+             //debugger;
             for (var i = 0; i < Data.length; i++) {
-                var obj = {};
+                //var obj = {};
                 var StatusName = Data[i].StatusName;
                 var key = "" + Data[i].Id;
                 Parameters[key] = StatusName;
