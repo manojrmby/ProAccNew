@@ -61,7 +61,6 @@ namespace ProAcc.Controllers
             return View();
         }
 
-
         public ActionResult GetData()
         {
             int PhaseId = 5;
@@ -123,6 +122,259 @@ namespace ProAcc.Controllers
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ResourcePreConversion()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
 
+            }
+            ViewBag.Instance = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            var query = from u in db.Projects where (u.isActive == true) select u;
+            if (query.Count() > 0)
+            {
+                foreach (var v in query)
+                {
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                }
+            }
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        public ActionResult GetDataPreConversion()
+        {
+            int PhaseId = 2;
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            string LoginID = Session["loginid"].ToString();
+            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            for (int i = 0; i < PM.Count; i++)
+            {
+                if (PM[i].PhaseId == PhaseId)
+                {
+                    ProjectMonitorModel projM = new ProjectMonitorModel();
+                    projM = PM[i];
+                    Result.Add(projM);
+                }
+            }
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ResourceMigration()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
+
+            }
+            ViewBag.Instance = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            var query = from u in db.Projects where (u.isActive == true) select u;
+            if (query.Count() > 0)
+            {
+                foreach (var v in query)
+                {
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                }
+            }
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        public ActionResult GetDataMigration()
+        {
+            int PhaseId = 4;
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            string LoginID = Session["loginid"].ToString();
+            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            for (int i = 0; i < PM.Count; i++)
+            {
+                if (PM[i].PhaseId == PhaseId)
+                {
+                    ProjectMonitorModel projM = new ProjectMonitorModel();
+                    projM = PM[i];
+                    Result.Add(projM);
+                }
+            }
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ResourcePostConversion()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
+
+            }
+            ViewBag.Instance = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            var query = from u in db.Projects where (u.isActive == true) select u;
+            if (query.Count() > 0)
+            {
+                foreach (var v in query)
+                {
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                }
+            }
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        public ActionResult GetDataPostConversion()
+        {
+            int PhaseId = 3;
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            string LoginID = Session["loginid"].ToString();
+            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            for (int i = 0; i < PM.Count; i++)
+            {
+                if (PM[i].PhaseId == PhaseId)
+                {
+                    ProjectMonitorModel projM = new ProjectMonitorModel();
+                    projM = PM[i];
+                    Result.Add(projM);
+                }
+            }
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ResourceValidation()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
+
+            }
+            ViewBag.Instance = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            var query = from u in db.Projects where (u.isActive == true) select u;
+            if (query.Count() > 0)
+            {
+                foreach (var v in query)
+                {
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                }
+            }
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        public ActionResult GetDataValidation()
+        {
+            int PhaseId = 4;
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            string LoginID = Session["loginid"].ToString();
+            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            for (int i = 0; i < PM.Count; i++)
+            {
+                if (PM[i].PhaseId == PhaseId)
+                {
+                    ProjectMonitorModel projM = new ProjectMonitorModel();
+                    projM = PM[i];
+                    Result.Add(projM);
+                }
+            }
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

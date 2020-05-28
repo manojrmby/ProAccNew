@@ -306,7 +306,7 @@
                                         {
                                             <li>
                                                 @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
-                                                <a href="@Url.Action("CommingSoon", "Test")">
+                                                <a href="@Url.Action("ResourcePreConversion", "Resource")">
                                                     <i class="metismenu-icon pe-7s-diamond"></i>
                                                     Resource Allocation
                                                 </a>
@@ -362,7 +362,7 @@
             </ul>
             }
         </li>*@
-                            @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                            @*@if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
                             {
                                 <li>
                                     <a href="#">
@@ -374,8 +374,7 @@
                                         @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
                                         {
                                             <li>
-                                                @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
-                                                <a href="@Url.Action("CommingSoon", "Test")">
+                                                <a href="@Url.Action("ResourceMigration", "Resource")">
                                                     <i class="metismenu-icon pe-7s-diamond"></i>
                                                     Resource Allocation
                                                 </a>
@@ -391,7 +390,7 @@
 
                                     </ul>
                                 </li>
-                            }
+                            }*@
 
                             @*<li>
             <a href="#">
@@ -437,7 +436,7 @@
                                         {
                                             <li>
                                                 @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
-                                                <a href="@Url.Action("CommingSoon", "Test")">
+                                                <a href="@Url.Action("ResourcePostConversion", "Resource")">
                                                     <i class="metismenu-icon pe-7s-diamond"></i>
                                                     Resource Allocation
                                                 </a>
@@ -458,7 +457,28 @@
                                 <a href="@Url.Action("CommingSoon", "Test")">
                                     <i class="metismenu-icon fa fa-gavel"></i>
                                     Validation
+                                    <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                 </a>
+                                <ul>
+                                        @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                                        {
+                                            <li>
+                                                @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                                <a href="@Url.Action("ResourceValidation", "Resource")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Resource Allocation
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("CommingSoon", "Test")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Validation Monitor
+                                                </a>
+                                            </li>
+
+                                        }
+
+                                    </ul>
                             </li>
 
                             @if (User.IsInRole("Admin"))
