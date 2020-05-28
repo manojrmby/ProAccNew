@@ -132,13 +132,19 @@
 
     });
 
+     function ValidateName(data) {
+             var letters = /^[A-Za-z, ]+$/;
+            if (!letters.test(data)) {
+                return false;
+            }
+         }
     $("#btnProjectCreate").on("click", function () {
        
         var projectName = $("#txtProjectName").val().trim();
         var Customerid = $("#drpCustomer").val();
         var Description = $("#txtDescription").val();
 
-        if (projectName == "") {
+        if (projectName == ""|| ValidateName(projectName) == false) {
             $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
         }
         else if (Customerid == 0)
@@ -190,7 +196,7 @@
              Cre_on: cre_on,
              Cre_By: cre_By
          }
-       if (projectName == "") {
+       if (projectName == ""|| ValidateName(projectName) == false) {
             $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
         }
         else if (Customerid == 0 || Customerid == undefined)

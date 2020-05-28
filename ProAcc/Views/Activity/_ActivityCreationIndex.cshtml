@@ -78,7 +78,11 @@
                     $("#txtTask").val(result.Task);
                     $("#txtSequence").val(result.Sequence_Num);
                     $("#drpPhase").val(result.PhaseID);
+                    $('#drpPhase').attr("disabled", true); 
+                    $("#drphiddenPhase").val(result.PhaseID);
                     $("#drpRole").val(result.RoleID);
+                    $('#drpRole').attr("disabled", true); 
+                    $("#drphiddenRole").val(result.RoleID);
                     $("#txtApplicationArea").val(result.ApplicationArea);
                     $("#actcre_on").val(result.Cre_on);
                     $("#actcre_By").val(result.Cre_By);

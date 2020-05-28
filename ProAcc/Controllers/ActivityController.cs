@@ -34,7 +34,13 @@ namespace ProAcc.Controllers
         [HttpGet]
         public ActionResult GetAllTask(int id)
         {
-            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id).Select(p=> new{ p.Activity_ID,p.Task}).ToList();
+            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id&&x.Sequence_Num!=null).Select(p=> new{ p.Activity_ID,p.Task}).ToList();
+            return Json(Activitylist, JsonRequestBehavior.AllowGet);           
+        }
+        [HttpGet]
+        public ActionResult LastTask(int id)
+        {
+            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id&&x.Sequence_Num!=null).Select(p=> new{ p.Activity_ID,p.Task,p.Sequence_Num}).ToList();
             return Json(Activitylist, JsonRequestBehavior.AllowGet);           
         }
 
@@ -166,11 +172,13 @@ namespace ProAcc.Controllers
             if (name.Count == 0)
             {
                 model.Modified_On = DateTime.Now;
+                model.Cre_on = DateTime.Now;
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
                 db.Entry(model).State = EntityState.Modified;
                 db.SaveChanges();
-                return Json("success");
+                return Json(model.Activity_ID, JsonRequestBehavior.AllowGet);
+                //return Json("success");
             }
             else
             {

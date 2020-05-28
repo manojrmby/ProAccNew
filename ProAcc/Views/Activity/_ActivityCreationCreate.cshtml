@@ -60,6 +60,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Phase</label>
                 <div class="col-md-10">
+                    <input id="drphiddenPhase" type="hidden"/>
                     <select class="form-control" id="drpPhase">
                         <option value="0">Select Phase</option>
                         @foreach (var item in ViewBag.Phase)
@@ -78,6 +79,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Role</label>
                 <div class="col-md-10">
+                    <input id="drphiddenRole" type="hidden"/>
                     <select class="form-control" id="drpRole">
                         <option value="0">Select Role</option>
                         @foreach (var item in ViewBag.Role)
@@ -129,8 +131,7 @@
                 <select class="form-control" id="drpTsk">
 
                 </select>
-               @*<label>Sequence Number : </label>
-                <input type="number" id="txtSeqNumber" min="0" value="0" class="form-control"/>*@
+               
                 <button type="button" id="btnSeq" class="btn btn-primary">Set Sequence</button>
             </div>
         </div>
@@ -146,8 +147,9 @@
 
         var id = $("#activityrid").val().trim();
         if (id != "") {
-            $("#txtSequence").prop("readonly", true);
-            $("#drpPhase").prop("readonly", true);
+            //$("#txtSequence").prop("readonly", true);
+            //$('#drpPhase').attr("disabled", true); 
+            //$("#drpPhase").prop("readonly", true);
             $("#drpRole").prop("readonly", true);
         }
         $("#txtTask").keypress(function (event) {
@@ -243,26 +245,26 @@
 
 
     $("#btnActivityCreCreate").on("click", function () {
-        debugger;
+        
         var Task = $("#txtTask").val();
-        var sequence = $("#txtSequence").val();
+       // var sequence = $("#txtSequence").val();
         var ApplicationArea = $("#txtApplicationArea").val();
         var Phase = $('#drpPhase').val();
         var Role = $('#drpRole').val();
         var model = {
             Task: Task,
             PhaseID: Phase,
-            Sequence_Num: sequence,
+            //Sequence_Num: sequence,
             ApplicationArea: ApplicationArea,
             RoleID:Role
         }
         if (Task == "") {
             $("#lblTask").html("Please enter the Task").show().fadeOut(3000);
         }
-        else if (sequence =="")
-        {
-            $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
-        }
+        //else if (sequence =="")
+        //{
+        //    $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
+        //}
         else if (ApplicationArea=="")
         {
             $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(3000);
@@ -282,7 +284,6 @@
                 url: '@Url.Action("Create","Activity")',
                 data: { activityMaster:model },
                 success: function (response) {
-                    debugger;
                         if (response > 0) {
                             $("#hiddenActivityId").val(response);
                             $("#drpTsk").empty();
@@ -290,13 +291,13 @@
                             if (id > 0) {
                                 $.ajax({
                                     type: "GET",
-                                    url: '@Url.Action("GetAllTask","Activity")', //"/Activity/GetAllTask",
-                                    data: { id: id, },
+                                    url: '@Url.Action("GetAllTask","Activity")',
+                                    data: { id: id },
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (response) {
                                         if (response != null) {
-                                            $('#drpTsk').append($("<option value='0'>Please Select Last Task</option>"));
+                                            $('#drpTsk').append($("<option value='0'>Please Select Previous Task</option>"));
                                             $.each(response, function (index, item) {
                                                 var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
                                                 $('#drpTsk').append(option);
@@ -327,6 +328,7 @@
 
         }
     });
+
     $("#btnSeq").on("click", function () {
         debugger;
         var LatestTaskId = $("#hiddenActivityId").val();
@@ -334,7 +336,7 @@
         var type = $("#drpPhase").val();
         $.ajax({
             type: "POST",
-            url: '@Url.Action("SaveAccordingToSequence","Activity")', //"/Activity/SaveAccordingToSequence",
+            url: '@Url.Action("SaveAccordingToSequence","Activity")', 
             data: { LatestTaskId: LatestTaskId, LastTaskId: LastTaskId,type:type },
             success: function (response) {
                 if (response == "success") {
@@ -342,10 +344,15 @@
                     document.getElementById('id01').style.display = 'none';
                     loadActivityCreation();
                     $("#txtTask").val("");
-                    $("#txtSequence").val("");
+                    //$("#txtSequence").val("");
                     $("#txtApplicationArea").val("");
                     $('#drpPhase').val(0);
                     $('#drpRole').val(0);
+                    $("#btnActivityCreCreate").show()
+                    $("#btntivityCreUpdate").hide()
+                    $("#btnAddNew").hide()
+                    $('#drpPhase').attr("disabled", false);
+                    $('#drpRole').attr("disabled", false); 
                 }
                 else {
                     alert("something went wrong");
@@ -357,14 +364,14 @@
         });
     });
 
-     $("#btntivityCreUpdate").on("click", function () {
-
+    $("#btntivityCreUpdate").on("click", function () {
+        debugger;
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
-        var sequence = $("#txtSequence").val();
+        //var sequence = $("#txtSequence").val();
         var ApplicationArea = $("#txtApplicationArea").val();
-        var Phase = $('#drpPhase').val();
-        var Role = $('#drpRole').val();
+        var Phase = $('#drphiddenPhase').val();
+        var Role = $('#drphiddenRole').val();
         var cre_on = $("#actcre_on").val();
         var cre_By = $("#actcre_By").val();
 
@@ -372,7 +379,7 @@
              Activity_ID:id,
             Task: Task,
             PhaseID: Phase,
-            Sequence_Num: sequence,
+            //Sequence_Num: sequence,
             ApplicationArea: ApplicationArea,
             RoleID:Role,
             Cre_on: cre_on,
@@ -381,10 +388,10 @@
        if (Task == "") {
             $("#lblTask").html("Please enter the Task").show().fadeOut(3000);
         }
-        else if (sequence =="")
-        {
-            $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
-        }
+        //else if (sequence =="")
+        //{
+        //    $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
+        //}
         else if (ApplicationArea=="")
         {
             $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(3000);
@@ -403,22 +410,56 @@
                     type: "POST",
                     url: '@Url.Action("Edit","Activity")',
                     data: { model : model},
-                    success: function (response) {
-                        if (response == "success") {
-                            alert("Activity Edited successfully!");
-                            loadActivityCreation();
-                             $("#txtTask").val("");
-                            $("#activityrid").val("");
-                            $("#actcre_on").val("");
-                            $("#actcre_By").val("");
-                            $("#txtSequence").val("");
-                            $("#txtApplicationArea").val("");
-                            $('#drpPhase').val(0);
-                            $('#drpRole').val(0);
-                            $("#btnActivityCreCreate").show()
-                            $("#btntivityCreUpdate").hide()
-                            $("#btnAddNew").hide()
+                success: function (response) {
+                    debugger;
+                         if (response > 0) {
+                            $("#hiddenActivityId").val(response);
+                            $("#drpTsk").empty();
+                            var id = $("#drpPhase").val()
+                            if (id > 0) {
+                                $.ajax({
+                                    type: "GET",
+                                    url: '@Url.Action("GetAllTask","Activity")',
+                                    data: { id: id},
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        debugger;
+                                        if (response != null) {
+                                            $('#drpTsk').append($("<option value='0'>Please Select Last Task</option>"));
+                                            $.each(response, function (index, item) {
+                                                var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
+                                                $('#drpTsk').append(option);
+                                            });
+                                        }
+                                    },
+                                    failure: function (response) {
+                                        alert(response.responseText);
+                                    },
+                                    error: function (response) {
+                                        alert(response.responseText);
+                                    }
+                                });
+                            }
+                                     document.getElementById('id01').style.display = 'block';
+                            
                         }
+
+                        //if (response == "success") {
+                        //    alert("Activity Edited successfully!");
+                        //    loadActivityCreation();
+                        //     $("#txtTask").val("");
+                        //    $("#activityrid").val("");
+                        //    $("#actcre_on").val("");
+                        //    $("#actcre_By").val("");
+                        //    $("#txtSequence").val("");
+                        //    $("#txtApplicationArea").val("");
+                        //    $('#drpPhase').val(0);
+                        //    $('#drpRole').val(0);
+                        //    $("#btnActivityCreCreate").show()
+                        //    $("#btntivityCreUpdate").hide()
+                        //    $("#btnAddNew").hide()
+                        //}
                     },
                     failure: function (response) {
                        alert(response.responseText);
