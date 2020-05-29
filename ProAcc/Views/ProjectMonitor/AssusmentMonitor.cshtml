@@ -31,6 +31,16 @@
     #jqGridPager_center {
     visibility: hidden;
 }
+    .fixed-sidebar .app-sidebar {
+        height:100%!important;
+    }
+    .app-main {
+    flex: 1;
+    display: flex;
+    z-index: 8;
+    position: relative;
+    min-width:100% !important;
+}
 </style>
 
 <div class="row">
@@ -130,7 +140,7 @@
                     }));
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("LoadInstance","Home")',
+                url: '@Url.Action("LoadInstanceforResource","Home")',
                 data: { 'ProjectId' : id},
                 success: function (data) {
                     var select = $("#IDInstance");
@@ -183,7 +193,7 @@
 </script>
 
 <script>
-    //document.body.style.zoom = "67%";
+    document.body.style.zoom = "67%";
     //$(document).ready(function () {
         
     //});
@@ -244,6 +254,17 @@
             }
             return -1;
         }
+
+        var myEditOptions = {
+        keys: true,
+        oneditfunc: function (rowid) {
+            alert("row with rowid=" + rowid + " is editing.");
+        },
+        aftersavefunc: function (rowid, response, options) {
+            alert("row with rowid=" + rowid + " is successfuly modified.");
+        }
+    };
+
         var DateInput = function (element, options) {
 
             //var ID = options.id;
@@ -328,11 +349,11 @@
             colModel: [
                 {
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
-                    sortable: true, align: 'center', editable: true, hidden: true,
+                     align: 'center', editable: true, hidden: true,
                 },
                 {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                    sortable: true, align: 'center', editable: true, hidden: true, edittype: 'custom',
+                     align: 'center', editable: true, hidden: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editrules: {
                         required: true,
@@ -343,7 +364,7 @@
                     }
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150, sorttype: 'integer', editable: true, hidden: true,
+                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,
                     editrules: {
                         required: true,
                         edithidden: true
@@ -351,17 +372,17 @@
 
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150, sorttype: 'integer', editable: false
+                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false
 
 
                 },
                 {
-                    label: 'ApplicationArea', name: 'ApplicationArea', width: 150, sorttype: 'integer', editable: true
+                    label: 'ApplicationArea', name: 'ApplicationArea', width: 150,  editable: true
 
 
                 },
                 {
-                    label: 'Sequence ', name: 'SequenceNum', width: 50, sorttype: 'integer', editable: true, hidden: true,
+                    label: 'Sequence ', name: 'SequenceNum', width: 50,  editable: true, hidden: true,
                     editrules: {
                         required: true,
                         edithidden: true
@@ -386,23 +407,23 @@
                 },
                 {
                     label: 'Dependency (Y/N)',
-                    name: 'Dependency', width: 80, sorttype: 'integer', editable: true,
+                    name: 'Dependency', width: 80,editable: true,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
                 },
-                { label: 'Pending With ', name: 'Pending', width: 80, sorttype: 'integer', editable: true },
+                { label: 'Pending With ', name: 'Pending', width: 80,  editable: true },
                 {
-                    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80, sorttype: 'integer', editable: true,
+                    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80,  editable: true,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
                 },
                 {
-                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: false,
+                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, align: 'center', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
                     }
                 },
                 {
-                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70, sortable: true, align: 'center', editable: true,
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value:
@@ -445,24 +466,24 @@
                 },
                 {
                     label: 'Planned Start Date', name: 'Planed__St_Date',
-                    width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
                     editoptions: { dataInit: DateInput, classes: 'DateClass' }
                 },
                 {
                     label: 'Actual Start Date/Time (UTC)', name: 'Actual_St_Date',
-                    width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
                     editoptions: { dataInit: DateInput }
 
                 },
                 {
                     label: 'Planned End Date', name: 'Planed__En_Date',
-                    width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
                     editoptions: { dataInit: DateInput }
                 },
                 {
                     label: 'Actual End Date/Time (UTC)', name: 'Actual_En_Date',
-                    width: 120, align: "center", sorttype: "date", formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
                     editoptions: { dataInit: DateInput }
                 },
@@ -491,6 +512,19 @@
                         editformbutton: false,//Determines if popup should open or not
                         afterSave: function (rowid, response, postdata, options) {
                             alert("success");
+                            //debugger;
+                            Show_HideEdit();
+    $('#jqGrid').trigger( 'reloadGrid' );
+                           // debugger;
+                            //var Status_Id = $('#jqGrid').jqGrid('getCell', rowid, 'StatusId')
+                            //if (Status_Id == 1) {
+                            //    $('#jEditButton_' + rowid).hide();
+                            //    $('#jSaveButton_' + rowid).hide();
+                            //    $('#jCancelButton_' + rowid).hide();
+                            //    //jSaveButton_12
+                            //    //jCancelButton_12
+                            //}
+                           
                         }
                     }
 
@@ -514,23 +548,38 @@
             rownumbers: true,
             reload: true,
             pager: "#jqGridPager",
-            onSelectRow: function (row_id) {
-                debugger;
-                Show_HideEdit();
-            },
-            //onSelectRow: function (id) {
-            //    debugger;
-            //        if (id && id !== lastSel) {
-            //            jqId.jqGrid('restoreRow',lastSel);
-            //            var cm = jqId.jqGrid('getColProp','Name');
-            //            cm.editable = false;
-            //            jqId.jqGrid('editRow', id, true, null, null, 'clientArray');
-            //            cm.editable = true;
-            //            lastSel = id;
-            //        }
-            //    },
+            sortname: 'SequenceNum',
+            sortorder: 'asc',
+           
+            //onSelectRow: function (row_id) {
+            //    //debugger;
+            //    //Show_HideEdit();
+            //    // $('#jEditButton_' + row_id).hide();
+            //    // var Status_Id = $('#jqGrid').jqGrid('getCell', row_id, 'StatusId')
+            //    //if (Status_Id == 1) {
+            //    //    $('#jEditButton_' + row_id).hide();
+            //    //    $('#jEditButton_' + row_id + 1).show();
+            //    //}
+            //    //else {
+            //    //    $('#jEditButton_' + row_id).show();
+            //    //}
+                
+                
+
+            //},
+            ////onSelectRow: function (id) {
+            ////    debugger;
+            ////        if (id && id !== lastSel) {
+            ////            jqId.jqGrid('restoreRow',lastSel);
+            ////            var cm = jqId.jqGrid('getColProp','Name');
+            ////            cm.editable = false;
+            ////            jqId.jqGrid('editRow', id, true, null, null, 'clientArray');
+            ////            cm.editable = true;
+            ////            lastSel = id;
+            ////        }
+            ////    },
             loadComplete: function () {
-               // alert("mm");
+                //alert("mm");
             },
             gridComplete: function () {
                // alert("tdyt");
@@ -552,7 +601,7 @@
 
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
-            { edit: false, add: false, del: false, search: false, refresh: false, view: false, position: "left", cloneToTop: false },
+            { edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
                 editCaption: "The Edit Dialog",
@@ -561,10 +610,7 @@
                 checkOnSubmit: true,
                 closeAfterEdit: true,
                 reloadAfterSubmit:true,
-                afterSubmit: function (form) {
-                    alert("in");
-                    Show_HideEdit();
-                },
+                  //editParams: myEditOptions,
                 beforeShowForm: function (form) {
                 },
                 errorTextFormat: function (data) {
@@ -623,18 +669,41 @@
     }
     function Show_HideEdit() {
         var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
-                for (var i = 0; i < ids.length; i++) {
-                    //debugger
-                    $('#jEditButton_' + ids[i + 1]).hide();
-                }
-                for (var i = 0; i < ids.length; i++) {
+        var User = '@Session["UserType"]';
+        var loginid = '@Session["loginid"]';
+        var j = 0;
+        for (var i = 0; i < ids.length; i++) {
+            var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+            if (Status_Id == 1 ) {
+                j = i;
+            }
+            $('#jEditButton_' + ids[i]).hide();
+        }
+        var EditFlag = false;
+        debugger;
+        for (var k = j; k < ids.length; k++) {
+            var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
+            
+            if ((Status_Id == 5 || Status_Id == 2|| Status_Id == 4) && !EditFlag ) {
+                $('#jEditButton_' + ids[k]).show();
+                EditFlag = true;
+            }
+            //else {
+            //    $('#jEditButton_' + ids[k]).hide();
+            //}
+        }
 
-                    var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
-                    if (Status_Id == 1) {
-                        $('#jEditButton_' + ids[i]).hide();
-                        $('#jEditButton_' + ids[i + 1]).show();
-                    }
+        if (User == 'Consultant' || User == 'Customer' ) {
+            for (var i = 0; i < ids.length; i++) {
+                var User_ID = $('#jqGrid').jqGrid('getCell', ids[i], 'UserID')
+                if (User_ID!=loginid) {
+                    $('#jEditButton_' + ids[i]).hide();
                 }
+            }
+        }
+        
+        
+       
     }
     function GetPhaseDropDown() {
 				 var Parameters = {};

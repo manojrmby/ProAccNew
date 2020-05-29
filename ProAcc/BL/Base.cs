@@ -1165,7 +1165,12 @@ namespace ProAcc.BL
                     UserMaster P = new UserMaster();
                     P.UserId = Guid.Parse(dr["UserId"].ToString());
                     P.Name = dr["Name"].ToString();
-                    P.RoleID = Convert.ToInt32(dr["RoleId"].ToString()); 
+                    P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
+                    if (dr["Customer_Id"].ToString()!="")
+                    {
+                        P.Customer_Id = Guid.Parse(dr["Customer_Id"].ToString());
+                    }
+                    
                     L.Add(P);
                 }
             }

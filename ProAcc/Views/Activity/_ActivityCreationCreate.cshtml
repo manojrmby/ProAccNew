@@ -123,16 +123,23 @@
     @*<h2>W3.CSS Modal</h2>*@
    @* <button onclick="document.getElementById('id01').style.display='block'">Open Modal</button>*@
 
-    <div id="id01" class="w3-modal" style="margin-left:180px !important;margin-top:200px !important;height:500px !important">
-        <div class="w3-modal-content">
-            <div class="w3-container">
-                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <label>Select Task</label>
-                <select class="form-control" id="drpTsk">
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:20%;">
+            <div class="w3-container" style="margin:0 auto !important;">
 
-                </select>
-               
-                <button type="button" id="btnSeq" class="btn btn-primary">Set Sequence</button>
+                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                @*<label style="margin-bottom:10px !important;">Select Task</label>*@
+                <div class="row" style="margin-top:3%;">
+                    <div class="col-10" >
+                        <select class="form-control" id="drpTsk">
+                        </select>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" id="btnSeq" class="btn btn-primary" style="margin-bottom:50px !important;">Save</button>
+                    </div>
+                </div>
+                
+
             </div>
         </div>
     </div>
@@ -330,7 +337,7 @@
     });
 
     $("#btnSeq").on("click", function () {
-        debugger;
+        //debugger;
         var LatestTaskId = $("#hiddenActivityId").val();
         var LastTaskId = $("#drpTsk").val();
         var type = $("#drpPhase").val();
@@ -365,7 +372,7 @@
     });
 
     $("#btntivityCreUpdate").on("click", function () {
-        debugger;
+        //debugger;
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
         //var sequence = $("#txtSequence").val();
@@ -411,7 +418,7 @@
                     url: '@Url.Action("Edit","Activity")',
                     data: { model : model},
                 success: function (response) {
-                    debugger;
+                   // debugger;
                          if (response > 0) {
                             $("#hiddenActivityId").val(response);
                             $("#drpTsk").empty();
@@ -424,7 +431,7 @@
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (response) {
-                                        debugger;
+                                        //debugger;
                                         if (response != null) {
                                             $('#drpTsk').append($("<option value='0'>Please Select Last Task</option>"));
                                             $.each(response, function (index, item) {

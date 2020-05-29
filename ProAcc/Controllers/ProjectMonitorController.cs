@@ -145,6 +145,14 @@ namespace ProAcc.Controllers
         public ActionResult GetUser(string RoleID)
         {
             List<UserMaster> P = _Base.GetUser();
+            Guid InstanceId=  Guid.Parse(Session["InstanceId"].ToString());
+            //  var projectId = db.Projects.Where(x => x.Instances.In == InstanceId);
+
+            var d = (from a in db.Instances 
+                      join b in db.Projects
+                     on a.Project_ID equals b.Project_Id  where a.Instance_id== InstanceId
+                                 select new { b.Customer_Id }).FirstOrDefault();
+
             List<UserMaster> Res = new List<UserMaster>();
             foreach (var item in P)
             {
@@ -152,7 +160,19 @@ namespace ProAcc.Controllers
                 if (item.RoleID==Convert.ToInt32(RoleID))
                 {
                     UserMaster UM = new UserMaster();
-                    UM = item;
+                    if(item.Customer_Id!=null)
+                    {
+                        Guid CustId = d.Customer_Id;
+                        if (item.Customer_Id == CustId)
+                        {
+                            UM = item;
+                        }
+                    }
+                    else
+                    {
+                        UM = item;
+                    }
+                    
                     Res.Add(UM);
                 }
                 

@@ -173,6 +173,48 @@ namespace ProAcc.Controllers
             
             return Json(Project, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult LoadInstanceforResource(string ProjectId)
+        {
+            //GeneralList Instance = _Base.GetInstanceDropdown(ProjectId);
+            List<SelectListItem> Instance = new List<SelectListItem>();
+            if (!String.IsNullOrEmpty(ProjectId) && ProjectId != "0")
+            {
+                var ID = Guid.Parse(ProjectId);
+                var query = from u in db.Instances where u.Project_ID == ID  select u;
+                if (query.Count() > 0)
+                {
+                    foreach (var v in query)
+                    {
+                        Instance.Add(new SelectListItem { Text = v.InstaceName, Value = v.Instance_id.ToString() });
+                    }
+                }
+            }
+            return Json(Instance, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //[HttpPost]
+        //public JsonResult LoadInstanceforResource(string ProjectId, int PhaseID)
+        //{
+        //    //GeneralList Instance = _Base.GetInstanceDropdown(ProjectId);
+        //    List<SelectListItem> Instance = new List<SelectListItem>();
+
+
+        //    if (!String.IsNullOrEmpty(ProjectId) && ProjectId != "0")
+        //    {
+        //        var ID = Guid.Parse(ProjectId);
+        //        var query = from u in db.Instances where u.Project_ID == ID select u;
+        //        if (query.Count() > 0)
+        //        {
+        //            foreach (var v in query)
+        //            {
+        //                Instance.Add(new SelectListItem { Text = v.InstaceName, Value = v.Instance_id.ToString() });
+        //            }
+        //        }
+        //    }
+        //    return Json(Instance, JsonRequestBehavior.AllowGet);
+        //}
 
     }
 }

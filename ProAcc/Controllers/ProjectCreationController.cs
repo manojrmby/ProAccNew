@@ -77,7 +77,7 @@ namespace ProAcc.Controllers
                 {
                     project.Project_Id = Guid.NewGuid();
                     project.isActive = true;
-                    project.Cre_on = DateTime.Now.Date;
+                    project.Cre_on = DateTime.UtcNow;
                     project.Cre_By = Guid.Parse(Session["loginid"].ToString());
                     db.Projects.Add(project);
                     db.SaveChanges();

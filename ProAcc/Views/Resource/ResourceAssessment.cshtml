@@ -133,7 +133,7 @@
                     }));
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("LoadInstance","Home")',
+                url: '@Url.Action("LoadInstanceforResource","Home")',
                 data: { 'ProjectId' : id},
                 success: function (data) {
                     var select = $("#IDInstance");
@@ -188,7 +188,7 @@
 <script>
     function LoadTable(Instance) {
         // altrows are set with table striped class for Boostrap
-        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered table-striped";
+        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
         var lastSelection;
         var editParameters = {
             keys: true,
@@ -290,7 +290,7 @@
                 },
                 {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                    sortable: false, align: 'center', editable: true, edittype: 'custom',
+                    sortable: false, align: 'Left', editable: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetPhaseDropDown()
@@ -298,9 +298,9 @@
                     }
                 },
                 { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true },
-                { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true },
+                { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true ,hidden: true},
                 {
-                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'center', editable: true,
+                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'left', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetRoleDropDown(),
@@ -314,13 +314,13 @@
                     },
                     
                 },
-                //{
-                //    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: true,
-                //    cellEdit: true, edittype: 'select', formatter: 'select',
-                //    editoptions: {
-                //        value: GetUserDropDown()
-                //    }
-                //},
+                {
+                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetUserDropDown()
+                    }
+                },
 
 
                 //Add Only
@@ -351,8 +351,8 @@
             pager: "#jqGridPager",
             rownumbers: true,
             reload: true,
-            sortname: 'SequenceNum',
-            sortorder: 'desc',
+            //sortname: 'SequenceNum',
+            //sortorder: 'desc',
             afterSubmit: function () {
                 //debugger;
                 //location.reload(true);
@@ -514,18 +514,23 @@
          $("#UserID")
             .html("<option value=''>Loading User...</option>")
             .attr("disabled", "disabled");
+        
         $.ajax({
             url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
            // data: '{RoleID: ' + JSON.stringify(RoleID)+'}',
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
             success: function (res) {
+                debugger;
                 $("#UserID")
                     .removeAttr("disabled");
                  $('#UserID').empty()
                 $.each(res, function (data, value) {
+                    var d = "00000000-0000-0000-0000-000000000000"
+                    if (value.UserId!=d) {
+                         $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
+                    }
                    
-                    $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
                 })
             }  
                     //.html(citiesHtml);

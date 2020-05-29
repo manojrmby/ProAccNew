@@ -8,6 +8,9 @@
 <table class="table" id="tblActivityCreation">
     <thead>
         <tr>
+            @*<th cope="col" style="width:3%;text-align:center;">
+                #
+            </th>*@
             <th>Task</th>
             @*<th>Cre_on</th>*@
             <th>Phase</th>
@@ -18,15 +21,22 @@
         </tr>
     </thead>
     <tbody>
+        @*@{int j = 1;}*@
         @foreach (var item in Model)
         {
         <tr>
+            @*<td>
+                @j
+            </td>
+            @{j++;
+            }*@
             <td>
                 <a class="txtG" value="@item.Task">@item.Task</a>
             </td>
             @*<td>
-                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
-            </td>*@
+            <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+        </td>*@
+
             <td>
                 <a class="txtG" value="@item.PhaseID">@item.PhaseMaster.PhaseName</a>
             </td>
@@ -54,12 +64,15 @@
 
 
     $(document).ready(function () {
-        $("#tblActivityCreation").dataTable({
-            "order": [[4, 'asc']],
+         $("#tblActivityCreation").dataTable({
+             "order": [
+                 [1, 'asc'],
+                 [4, 'asc']
+             ],
             "columnDefs": [
                 {
-                   // "targets": [4],
-                    //"visible": false
+                    "targets": [4],
+                    "visible": false
                 }
             ]
         } );

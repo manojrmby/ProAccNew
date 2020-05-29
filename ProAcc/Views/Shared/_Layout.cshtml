@@ -228,7 +228,7 @@
                                 </a>
 
                                 <ul>
-                                    @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                                    @if ( User.IsInRole("Admin"))
                                     {
                                         <li>
                                             @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
@@ -237,61 +237,64 @@
                                                 Resource Allocation
                                             </a>
                                         </li>
+                                    }
+                                        @*@if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                                        {*@
+                                            <li>
+                                                <a href="@Url.Action("AssusmentMonitor", "ProjectMonitor")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Assessment Monitor
+                                                </a>
+                                            </li>
+
+                                        
+                                        @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                                        {
+                                            <li>
+                                                <a href="@Url.Action("CreateAnalysis", "Assessment")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Create Analysis
+                                                </a>
+                                            </li>
+                                        }
                                         <li>
-                                            <a href="@Url.Action("AssusmentMonitor", "ProjectMonitor")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Assessment Monitor
+                                            <a href="#">
+                                                <i class="metismenu-icon pe-7s-car"></i>
+                                                Assessment Reports
+                                                <!-- <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i> -->
+                                                <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                             </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="@Url.Action("ReadinessReport", "Assessment")">
+                                                        <i class="metismenu-icon"> </i> Readiness Report
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="@Url.Action("SimplificationReport", "Assessment")">
+                                                        <i class="metismenu-icon"> </i>Simplification Report
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="@Url.Action("ActivitieReport", "Assessment")">
+                                                        <i class="metismenu-icon"> </i>Activities Report
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="@Url.Action("CustomReport", "Assessment")">
+                                                        <i class="metismenu-icon"> </i>Custom code Analysis
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="@Url.Action("FioriAppsReport", "Assessment")">
+                                                        <i class="metismenu-icon"> </i>FioriApps Report
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
 
-                                    }
-                                    @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                                    {
-                                        <li>
-                                            <a href="@Url.Action("CreateAnalysis", "Assessment")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Create Analysis
-                                            </a>
-                                        </li>
-                                    }
-                                    <li>
-                                        <a href="#">
-                                            <i class="metismenu-icon pe-7s-car"></i>
-                                            Assessment Reports
-                                            <!-- <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i> -->
-                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="@Url.Action("ReadinessReport", "Assessment")">
-                                                    <i class="metismenu-icon"> </i> Readiness Report
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("SimplificationReport", "Assessment")">
-                                                    <i class="metismenu-icon"> </i>Simplification Report
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("ActivitieReport", "Assessment")">
-                                                    <i class="metismenu-icon"> </i>Activities Report
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("CustomReport", "Assessment")">
-                                                    <i class="metismenu-icon"> </i>Custom code Analysis
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("FioriAppsReport", "Assessment")">
-                                                    <i class="metismenu-icon"> </i>FioriApps Report
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
 
-
-                                </ul>
+                                    </ul>
                             </li>
                             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
                             {
@@ -453,33 +456,35 @@
                                     </ul>
                                 </li>
                             }
-                            <li>
+                        <li>
+                            @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                            {
                                 <a href="@Url.Action("CommingSoon", "Test")">
                                     <i class="metismenu-icon fa fa-gavel"></i>
                                     Validation
                                     <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                 </a>
                                 <ul>
-                                        @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                                        {
-                                            <li>
-                                                @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
-                                                <a href="@Url.Action("ResourceValidation", "Resource")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Resource Allocation
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("CommingSoon", "Test")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Validation Monitor
-                                                </a>
-                                            </li>
 
-                                        }
+                                    <li>
+                                        @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                        <a href="@Url.Action("ResourceValidation", "Resource")">
+                                            <i class="metismenu-icon pe-7s-diamond"></i>
+                                            Resource Allocation
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("CommingSoon", "Test")">
+                                            <i class="metismenu-icon pe-7s-diamond"></i>
+                                            Validation Monitor
+                                        </a>
+                                    </li>
 
-                                    </ul>
+                                    
+                                </ul>
+                            }
                             </li>
+                            
 
                             @if (User.IsInRole("Admin"))
                             {

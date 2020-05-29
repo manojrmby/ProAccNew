@@ -613,6 +613,10 @@
     <Content Include="Views\Resource\ResourceAssessment.cshtml" />
     <Content Include="Views\ProjectMonitor\AssusmentMonitor.cshtml" />
     <Content Include="Views\Activity\Testing.cshtml" />
+    <Content Include="Views\Resource\ResourceMigration.cshtml" />
+    <Content Include="Views\Resource\ResourcePostConversion.cshtml" />
+    <Content Include="Views\Resource\ResourcePreConversion.cshtml" />
+    <Content Include="Views\Resource\ResourceValidation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
