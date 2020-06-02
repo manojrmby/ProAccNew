@@ -17,7 +17,7 @@ namespace ProACC_DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserMaster()
         {
-            this.ProjectMonitors = new HashSet<ProjectMonitor>();
+            this.Projects = new HashSet<Project>();
         }
     
         public System.Guid UserId { get; set; }
@@ -36,10 +36,10 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
+        public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProjectMonitor> ProjectMonitors { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
         public virtual RoleMaster RoleMaster { get; set; }
         public virtual User_Type User_Type { get; set; }
-        public virtual Customer Customer { get; set; }
     }
 }

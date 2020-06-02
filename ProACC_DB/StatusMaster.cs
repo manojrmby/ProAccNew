@@ -14,12 +14,6 @@ namespace ProACC_DB
     
     public partial class StatusMaster
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public StatusMaster()
-        {
-            this.ProjectMonitors = new HashSet<ProjectMonitor>();
-        }
-    
         public int Id { get; set; }
         public string StatusName { get; set; }
         public bool isActive { get; set; }
@@ -28,8 +22,5 @@ namespace ProACC_DB
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProjectMonitor> ProjectMonitors { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace ProAcc.BL
     public class Base:Common
     {
         private ProAccEntities db = new ProAccEntities();
+        //private LogHelper _Log = new LogHelper();
 
         #region Login
         public LogedUser UserValidation(LogedUser user)
@@ -1384,30 +1385,41 @@ namespace ProAcc.BL
         public bool Sp_UpdateMonitor(ProjectMonitorModel PM)
         {
             bool Status = false;
-            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
-            dB.addIn("@Type", "UpdateTask");
-            dB.addIn("@ApplicationArea", PM.ApplicationArea);
-            dB.addIn("@Task_Other_Environment", PM.Task_Other_Environment);
-            dB.addIn("@Dependency", PM.Dependency);
-            dB.addIn("@Pending", PM.Pending);
-            dB.addIn("@Delay_occurred", PM.Delay_occurred);
+            LogHelper _log = new LogHelper();
+            try
+            {
+                _log.createLog((PM.Planed__St_Date).ToString());
+                DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+                dB.addIn("@Type", "UpdateTask");
+                dB.addIn("@ApplicationArea", PM.ApplicationArea);
+                dB.addIn("@Task_Other_Environment", PM.Task_Other_Environment);
+                dB.addIn("@Dependency", PM.Dependency);
+                dB.addIn("@Pending", PM.Pending);
+                dB.addIn("@Delay_occurred", PM.Delay_occurred);
 
-            //dB.addIn("@DelayedReason", PM.Delayed_Reas);
-            //dB.addIn("@UserID", PM.UserID);
-            dB.addIn("@StatusId", PM.StatusId);
-            dB.addIn("@EST_hours", PM.EST_hours);
-            dB.addIn("@Actual_St_hours", PM.Actual_St_hours);
+                //dB.addIn("@DelayedReason", PM.Delayed_Reas);
+                //dB.addIn("@UserID", PM.UserID);
+                dB.addIn("@StatusId", PM.StatusId);
+                dB.addIn("@EST_hours", PM.EST_hours);
+                dB.addIn("@Actual_St_hours", PM.Actual_St_hours);
+
+                dB.addIn("@Planed__St_Date", PM.Planed__St_Date, SqlDbType.DateTime);
+                dB.addIn("@Actual_St_Date", PM.Actual_St_Date, SqlDbType.DateTime);
+                dB.addIn("@Planed__En_Date", PM.Planed__En_Date, SqlDbType.DateTime);
+                dB.addIn("@Actual_En_Date", PM.Actual_En_Date, SqlDbType.DateTime);
+
+                dB.addIn("@Notes", PM.Notes);
+                dB.addIn("@Cre_By", PM.Cre_By);
+                dB.addIn("@Id", PM.Id);
+
+                dB.ExecuteScalar();
+            }
+            catch (Exception ex )
+            {
+
+                _log.createLog(ex,"");
+            }
             
-            dB.addIn("@Planed__St_Date", PM.Planed__St_Date);
-            dB.addIn("@Actual_St_Date", PM.Actual_St_Date);
-            dB.addIn("@Planed__En_Date", PM.Planed__En_Date);
-            dB.addIn("@Actual_En_Date", PM.Actual_En_Date);
-
-            dB.addIn("@Notes", PM.Notes);
-            dB.addIn("@Cre_By", PM.Cre_By);
-            dB.addIn("@Id", PM.Id);
-
-           dB.ExecuteScalar();
             return Status;
 
         }

@@ -12,7 +12,7 @@ using static ProAcc.BL.Model.Common;
 namespace ProAcc.Controllers
 {
     [CheckSessionTimeOut]
-    [Authorize(Roles = "Admin,Consultant,Customer")]
+    [Authorize(Roles = "Admin,Consultant,Customer,Project Manager")]
     public class HomeController : Controller
     {
         Base _Base = new Base();
@@ -60,35 +60,26 @@ namespace ProAcc.Controllers
             }
             ViewBag.Instance = inst;
             List<SelectListItem> Project = new List<SelectListItem>();
-            
-            //if (User.IsInRole("Customer"))
-            //{
-            //    Guid customerId = Guid.Parse(Session["loginid"].ToString());
 
+            if (User.IsInRole("Customer"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId 
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count()>0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
 
-            //    var query = from u in db.Instances where (u.CustomerID== customerId && u.isActive == true) select u;
-            //    if (query.Count() > 0)
-            //    {
-            //        foreach (var v in query)
-            //        {
-            //            Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
-            //        }
-            //    }
-            //}
-            //else
-            //{
-                
-            //    //var query = from u in db.CustomerProjectConfigs where(u.isActive==true)  select u;
-            //    //if (query.Count() > 0)
-            //    //{
-            //    //    foreach (var v in query)
-            //    //    {
-            //    //        Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
-            //    //    }
-            //    //}
-            //}
+                }
+            }
            
-            
+
+
             ViewBag.Project = Project;
             return View();
         }
@@ -120,7 +111,7 @@ namespace ProAcc.Controllers
             if (!String.IsNullOrEmpty(ProjectId)&& ProjectId !="0")
             {
                 var ID = Guid.Parse(ProjectId);
-                var query = from u in db.Instances where u.Project_ID == ID && u.AssessmentUploadStatus==true select u;
+                var query = from u in db.Instances where u.Project_ID == ID  select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)

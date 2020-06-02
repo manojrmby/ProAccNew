@@ -15,17 +15,15 @@ namespace ProACC_DB
     public partial class ProjectMonitor
     {
         public System.Guid Id { get; set; }
+        public Nullable<int> ActivityID { get; set; }
         public System.Guid InstanceID { get; set; }
-        public string Task { get; set; }
-        public Nullable<int> BuildingBlock_id { get; set; }
         public int PhaseId { get; set; }
-        public Nullable<int> Sequence_Num { get; set; }
-        public string ApplicationArea { get; set; }
         public Nullable<bool> Task_Other_Environment { get; set; }
         public Nullable<bool> Dependency { get; set; }
         public string Pending { get; set; }
         public Nullable<bool> Delay_occurred { get; set; }
         public string DelayedReason { get; set; }
+        public Nullable<int> RoleId { get; set; }
         public System.Guid UserID { get; set; }
         public int StatusId { get; set; }
         public Nullable<double> EST_hours { get; set; }
@@ -41,11 +39,5 @@ namespace ProACC_DB
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
-        public Nullable<int> ActivityID { get; set; }
-        public Nullable<int> RoleId { get; set; }
-    
-        public virtual PhaseMaster PhaseMaster { get; set; }
-        public virtual StatusMaster StatusMaster { get; set; }
-        public virtual UserMaster UserMaster { get; set; }
     }
 }

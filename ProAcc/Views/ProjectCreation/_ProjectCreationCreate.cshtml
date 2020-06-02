@@ -12,6 +12,7 @@
 <hr />
 <div style="padding:1em;">
     <div class="row">
+
         <div class="col-6">
             <input type="hidden" id="proj_id" />
             <input type="hidden" id="projcre_on" />
@@ -49,7 +50,7 @@
             </div>
         </div>
 
-        <div class="col-12">
+        <div class="col-6">
             <div class="form-group">
                 <label class="control-label col-md-4">Description</label>
 
@@ -62,8 +63,28 @@
                 </div>
             </div>
         </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Project Manager</label>
 
-        <div class="col-10">
+                <div class="col-md-10">
+                    <select class="form-control" id="drpProjectManager">
+                        <option value="0">Select Project Manager</option>
+                        @foreach (var item in ViewBag.ProjectManager)
+                        {
+                            <option value="@item.UserId">@item.Name</option>
+                        }
+                    </select>
+                    @*<input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />*@
+                    @*<span id="lblCustomerName" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblProjectManager">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" value="Create" class="btn btn-primary" id="btnProjectCreate" />
@@ -86,14 +107,14 @@
         var Description = $("#txtDescription").val();
 
         $("#txtProjectName").keypress(function (event) {
-        
+
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-                    event.preventDefault();
-                    $("#lblProjectName").html("Not Allowed").show().fadeOut(3000);
-        }
-        $("#btnProjectCreate").prop('disabled', false);
+                event.preventDefault();
+                $("#lblProjectName").html("Not Allowed").show().fadeOut(3000);
+            }
+            $("#btnProjectCreate").prop('disabled', false);
         });
 
         $('#txtProjectName').on('focusout', function () {
@@ -143,19 +164,24 @@
         var projectName = $("#txtProjectName").val().trim();
         var Customerid = $("#drpCustomer").val();
         var Description = $("#txtDescription").val();
+        var PMID=$("#drpProjectManager").val();
 
         if (projectName == ""|| ValidateName(projectName) == false) {
             $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
         }
         else if (Customerid == 0)
         {
-            $("#lblCustomerName").html("Please enter the Customer Name").show().fadeOut(3000);
-        }       
+            $("#lblCustomerName").html("Please Select the Customer Name").show().fadeOut(3000);
+        }    
+        else if (PMID == 0)
+        {
+            $("#lblProjectManager").html("Please Select the Customer Name").show().fadeOut(3000);
+        }    
         else {
             $.ajax({
                     type: "POST",
                 url: '@Url.Action("Create","ProjectCreation")',
-                data: { project_Name: projectName, Customer_Id: Customerid, Description: Description },
+                data: { project_Name: projectName, Customer_Id: Customerid, Description: Description,ProjectManager_Id: PMID },
                     success: function (response) {
                         if (response == "success") {
                             alert("Project Saved successfully!");
@@ -184,6 +210,7 @@
          var id = $("#proj_id").val();
         var projectName = $("#txtProjectName").val().trim();
         var Customerid = $("#drpCustomer").val();
+        var PMID=$("#drpProjectManager").val();
         var Description = $("#txtDescription").val();
         var cre_on = $("#projcre_on").val();
         var cre_By = $("#projcre_By").val();
@@ -202,7 +229,11 @@
         else if (Customerid == 0 || Customerid == undefined)
         {
             $("#lblCustomerName").html("Please enter the Customer Name").show().fadeOut(3000);
-        }     
+       }
+            else if (PMID == 0)
+        {
+            $("#lblProjectManager").html("Please Select the Customer Name").show().fadeOut(3000);
+        }    
         else {
 
             $.ajax({

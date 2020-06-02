@@ -254,7 +254,8 @@
 <script>
     $("#UserTypeID").change(function () {
         var Id = $(this).val();
-        if (Id == 1) {
+        if (Id == 1 || Id == 4)
+        {
             $("#divRole").hide();
             $("#divCust").hide();
         }

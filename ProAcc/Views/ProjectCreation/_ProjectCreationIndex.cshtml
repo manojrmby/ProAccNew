@@ -13,6 +13,7 @@
             <th>ProjectName</th>
             <th>Cre_on</th>
             <th>Customer Name</th>
+            <th>Project Manager</th>
             <th>Description</th>
             <th>Actions</th>
         </tr>
@@ -29,6 +30,9 @@
             </td>
             <td>
                 <a class="txtG" value="@item.Customer_Id">@item.Customer.Company_Name</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.ProjectManager_Id">@item.UserMaster.Name</a>
             </td>
             <td>
                 <a class="txtG" value="@item.Description">@item.Description</a>
@@ -73,6 +77,7 @@
                 $("#proj_id").val(result.Project_Id);
                 $("#txtProjectName").val(result.Project_Name);
                 $("#drpCustomer").val(result.Customer_Id);
+                $("#drpProjectManager").val(result.ProjectManager_Id);
                 $("#txtDescription").val(result.Description);
                 $("#projcre_on").val(result.Cre_on);
                 $("#projcre_By").val(result.Cre_By);

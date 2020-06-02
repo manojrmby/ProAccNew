@@ -179,6 +179,7 @@
                  success: function (result) {
                      alert("New Live Instance updated");
                      LoadTable(IDInstance);
+                     $('#jqGrid').trigger( 'reloadGrid' );
                      //location.reload();
                  }
                 });
@@ -314,6 +315,15 @@
                     },
                     
                 },
+                
+                {
+                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'center', editable: true, hidden: true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',//Add Only
+                    editoptions: {
+                        value: GetMasterAddAssessment()
+                    }
+                },
+
                 {
                     label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
@@ -323,14 +333,7 @@
                 },
 
 
-                //Add Only
-                {
-                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'center', editable: true, hidden: true,
-                    cellEdit: true, edittype: 'select', formatter: 'select',
-                    editoptions: {
-                        value: GetMasterAddAssessment()
-                    }
-                },
+                
 
             ],
             loadonce: false,
@@ -366,7 +369,7 @@
 
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
-            { edit: true, add: true, del: true, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
+            { edit: true, add: true, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
                 editCaption: "The Edit Dialog",
@@ -380,6 +383,7 @@
                     $("#tr_SequenceNum").hide();
 
                     $("#Task").attr("disabled", "disabled");
+                     $("#RoleID").attr("disabled", "disabled");
                     //$("#RoleID").attr("disabled", "disabled");
                     UpdateUserByRole($("#RoleID").val());
                     //debugger;
@@ -401,6 +405,7 @@
                     $("#tr_SequenceNum").hide();
                     $("#tr_Task").hide();
                     $("#tr_RoleID").hide();
+                     $("#tr_UserID").hide();
                     //debugger;
                     //alert("In");
                     $("#tr_ActivityID").show();
@@ -521,7 +526,7 @@
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
             success: function (res) {
-                debugger;
+                //debugger;
                 $("#UserID")
                     .removeAttr("disabled");
                  $('#UserID').empty()
@@ -539,7 +544,7 @@
 
     }
     $("#RoleID").change(function () {
-        debugger;
+       // debugger;
         var RoleID = $("#RoleID").val();
         UpdateUserByRole(RoleID)
     });

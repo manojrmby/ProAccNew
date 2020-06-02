@@ -47,6 +47,7 @@ namespace ProAcc.Controllers
                         Session["loginid"] = logedUser.ID.ToString();
                         Session["UserName"] = logedUser.Name.ToString();
                         Session["InstanceId"] = Guid.Empty;
+                        //Session["UserTypeID"] = logedUser.Type;
                         string UserType = "";
                         if (logedUser.Type == 1)
                         {
@@ -60,10 +61,13 @@ namespace ProAcc.Controllers
                         {
                             UserType = "Customer";
                         }
+                        else if (logedUser.Type == 4)
+                        {
+                            UserType = "Project Manager";
+                        }
                         Session["UserType"] = UserType;
 
                         return RedirectToAction("Home", "Home");
-                       //return RedirectToAction("Create", "Customers");
                     }
                     else
                     {

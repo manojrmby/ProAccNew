@@ -23,6 +23,7 @@ namespace ProACC_DB
     
         public System.Guid Customer_ID { get; set; }
         public string Company_Name { get; set; }
+        public int IndustrySector_ID { get; set; }
         public string Contact { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
@@ -32,12 +33,11 @@ namespace ProACC_DB
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
-        public int IndustrySector_ID { get; set; }
     
+        public virtual IndustrySector IndustrySector { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserMaster> UserMasters { get; set; }
-        public virtual IndustrySector IndustrySector { get; set; }
     }
 }

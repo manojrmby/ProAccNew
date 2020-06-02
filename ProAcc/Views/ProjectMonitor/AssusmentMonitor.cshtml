@@ -41,6 +41,16 @@
     position: relative;
     min-width:100% !important;
 }
+    .app-theme-white.app-container
+    {
+        background:#ffffff;
+    }
+    .app-container
+    {
+        min-height:100%;
+    }
+
+    
 </style>
 
 <div class="row">
@@ -50,7 +60,7 @@
             {
                 <div class="col-md-4">
                     <div class="position-relative form-group">
-                        <label for="exampleEmail" class="">Company Name</label>
+                        <label for="exampleEmail" class="">Customer Name</label>
                         @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
                         @*@Html.DropDownList("Project", (IEnumerable<SelectListItem>), "- SELECT-", new { id = "IDProject", @class = "form-control" })*@
                     </div>
@@ -58,7 +68,7 @@
             }
             <div class="col-md-4">
                 <label class="">Project Name</label>
-                @if (User.IsInRole("Customer"))
+                @if (User.IsInRole("Customer")||User.IsInRole("Project Manager"))
                 {
                     @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
                 }
@@ -186,6 +196,7 @@
                  success: function (result) {
                      alert("New Live Instance updated");
                      LoadTable(IDInstance);
+                     $('#jqGrid').trigger( 'reloadGrid' );
                      //location.reload();
                  }
                 });
@@ -200,6 +211,7 @@
     function LoadTable(Instance) {
 
         // $(document).ready(function () {
+        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
         var lastSelection;
         var editParameters = {
             keys: true,
@@ -282,7 +294,7 @@
             $(element).datepicker({
                 duration: "slow",
                 defaultDate: +1,
-                altFormat: "dd-mm-yy",
+                altFormat: "mm/dd/yy",
                 dateFormat: "mm/dd/yy",
                 autoSize: true,
                 changeYear: true,
@@ -413,7 +425,10 @@
                 { label: 'Pending With ', name: 'Pending', width: 80,  editable: true },
                 {
                     label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80,  editable: true,
-                    edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
+                    edittype: 'checkbox',
+                    editoptions: { value: "True:False" }
+                    //editrules:{custom:true, custom_func:myValidationFunction}
+                    , formatter: "checkbox",
                 },
                 {
                     label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, align: 'center', editable: false,
@@ -514,7 +529,7 @@
                             alert("success");
                             //debugger;
                             Show_HideEdit();
-    $('#jqGrid').trigger( 'reloadGrid' );
+                            $('#jqGrid').trigger( 'reloadGrid' );
                            // debugger;
                             //var Status_Id = $('#jqGrid').jqGrid('getCell', rowid, 'StatusId')
                             //if (Status_Id == 1) {
@@ -612,6 +627,11 @@
                 reloadAfterSubmit:true,
                   //editParams: myEditOptions,
                 beforeShowForm: function (form) {
+                    debugger;
+                    $("#StatusId option[value='3']").attr("disabled", "disabled");
+                    $("#StatusId option[value='4']").attr("disabled", "disabled");
+                    $("#StatusId option[value='5']").attr("disabled","disabled");
+                   
                 },
                 errorTextFormat: function (data) {
                     alert("in" + data.responseText);
@@ -665,6 +685,8 @@
                 showQuery: false
             } // search options - define multiple search
         );
+        //jQuery("#jqGrid").removeClass('.table-striped');
+        
         //document.body.style.zoom = "67%";
     }
     function Show_HideEdit() {
@@ -680,7 +702,7 @@
             $('#jEditButton_' + ids[i]).hide();
         }
         var EditFlag = false;
-        debugger;
+        //  debugger;
         for (var k = j; k < ids.length; k++) {
             var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
             
@@ -830,7 +852,11 @@
 
 	return Status;
 
-}
+    }
+    function myValidationFunction(Data) {
+        var d = Data;
+        return "";
+    }
     function GetUserDropDown() {
 	var Parameters = {};
     $.ajax({

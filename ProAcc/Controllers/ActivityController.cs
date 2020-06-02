@@ -25,10 +25,16 @@ namespace ProAcc.Controllers
             return View();
         }
 
+        //[HttpGet]
+        //public ActionResult GetActivities()
+        //{
+        //    var Activitylist = db.ActivityMasters.Where(x => x.isActive == true).OrderBy(a=>a.Sequence_Num).ToList();
+        //    return PartialView("_ActivityCreationIndex", Activitylist);
+        //}
         [HttpGet]
         public ActionResult GetActivities()
         {
-            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true).OrderBy(a=>a.Sequence_Num).ToList();
+            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.Sequence_Num != null).OrderBy(a => a.Sequence_Num).ToList();
             return PartialView("_ActivityCreationIndex", Activitylist);
         }
         [HttpGet]
@@ -43,12 +49,16 @@ namespace ProAcc.Controllers
             var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id&&x.Sequence_Num!=null).Select(p=> new{ p.Activity_ID,p.Task,p.Sequence_Num}).ToList();
             return Json(Activitylist, JsonRequestBehavior.AllowGet);           
         }
-
         [HttpPost]
-        public ActionResult SaveAccordingToSequence(int LatestTaskId,int LastTaskId,int type)
-        {           
-            var lastTask = db.ActivityMasters.Where(p=>p.Activity_ID==LastTaskId).FirstOrDefault();
-            int? seqNumber = Convert.ToInt32(lastTask.Sequence_Num);
+        public ActionResult SaveAccordingToSequence(int LatestTaskId, int LastTaskId, int type)
+        {
+            int? seqNumber = 0;
+            if (LastTaskId != 0)
+            {
+                var lastTask = db.ActivityMasters.Where(p => p.Activity_ID == LastTaskId).FirstOrDefault();
+                seqNumber = Convert.ToInt32(lastTask.Sequence_Num);
+            }
+
             int? nextSeqNumber = null;
             if (seqNumber == 0)
             {
@@ -69,18 +79,55 @@ namespace ProAcc.Controllers
             latestTask.Sequence_Num = nextSeqNumber;
             db.Entry(latestTask).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-            List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID==type).Select(p => p.Activity_ID).ToList();
+            List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type).Select(p => p.Activity_ID).ToList();
             int? tid = nextSeqNumber;
-            foreach(var id in ids)
+            foreach (var id in ids)
             {
                 var task = db.ActivityMasters.Where(p => p.Activity_ID == id).FirstOrDefault();
-                task.Sequence_Num = tid+1;
+                task.Sequence_Num = tid + 1;
                 tid = Convert.ToInt32(task.Sequence_Num);
                 db.Entry(task).State = EntityState.Modified;
                 db.SaveChanges();
             }
             return Json("success");
         }
+        //[HttpPost]
+        //public ActionResult SaveAccordingToSequence(int LatestTaskId,int LastTaskId,int type)
+        //{           
+        //    var lastTask = db.ActivityMasters.Where(p=>p.Activity_ID==LastTaskId).FirstOrDefault();
+        //    int? seqNumber = Convert.ToInt32(lastTask.Sequence_Num);
+        //    int? nextSeqNumber = null;
+        //    if (seqNumber == 0)
+        //    {
+        //        if (type == 5)
+        //            nextSeqNumber = 1;
+        //        else if (type == 2)
+        //            nextSeqNumber = 1001;
+        //        else if (type == 3)
+        //            nextSeqNumber = 2001;
+        //        else if (type == 4)
+        //            nextSeqNumber = 3001;
+        //    }
+        //    else
+        //    {
+        //        nextSeqNumber = seqNumber + 1;
+        //    }
+        //    var latestTask = db.ActivityMasters.Where(p => p.Activity_ID == LatestTaskId).FirstOrDefault();
+        //    latestTask.Sequence_Num = nextSeqNumber;
+        //    db.Entry(latestTask).State = System.Data.Entity.EntityState.Modified;
+        //    db.SaveChanges();
+        //    List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID==type).Select(p => p.Activity_ID).ToList();
+        //    int? tid = nextSeqNumber;
+        //    foreach(var id in ids)
+        //    {
+        //        var task = db.ActivityMasters.Where(p => p.Activity_ID == id).FirstOrDefault();
+        //        task.Sequence_Num = tid+1;
+        //        tid = Convert.ToInt32(task.Sequence_Num);
+        //        db.Entry(task).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //    }
+        //    return Json("success");
+        //}
         public JsonResult CheckTaskAvailability(string namedata, int? id)
         {
             if (id != null)

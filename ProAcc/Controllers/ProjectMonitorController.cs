@@ -11,7 +11,7 @@ using static ProAcc.BL.Model.Common;
 namespace ProAcc.Controllers
 {
     [CheckSessionTimeOut]
-    [Authorize(Roles = "Admin,Consultant")]
+    [Authorize(Roles = "Admin,Consultant,Customer,Project Manager")]
 
     public class ProjectMonitorController : Controller
     {
@@ -54,32 +54,10 @@ namespace ProAcc.Controllers
 
             }
             ViewBag.Instance = inst;
+
             List<SelectListItem> Project = new List<SelectListItem>();
 
-            //if (User.IsInRole("Customer"))
-            //{
-            //    Guid customerId = Guid.Parse(Session["loginid"].ToString());
-            //    var query = from u in db.cus where (u.CustomerID == customerId && u.isActive == true) select u;
-            //    if (query.Count() > 0)
-            //    {
-            //        foreach (var v in query)
-            //        {
-            //            Project.Add(new SelectListItem { Text = v.ProjectName, Value = v.Id.ToString() });
-            //        }
-            //    }
-            //}
-            //else
-            //{
-
-            var query = from u in db.Projects where (u.isActive == true) select u;
-            if (query.Count() > 0)
-            {
-                foreach (var v in query)
-                {
-                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                }
-            }
-            // }
+           
 
 
             ViewBag.Project = Project;
@@ -199,6 +177,31 @@ namespace ProAcc.Controllers
         public ActionResult GetStatus()
         {
             List<StatusMaster> P = _Base.GetStatus();
+            //var list = new List<int> { 1, 3, 2 };
+            //string UserType = Session["UserType"].ToString();
+
+            //if (UserType == "Admin")
+            //{
+            //    P.RemoveAt(2);
+            //    P.RemoveAt(2);
+            //    P.RemoveAt(2);
+            //    //P.RemoveAt(2);
+            //    //P.RemoveAt(3);
+            //}
+            //else if (UserType == "Consultant")
+            //{
+            //    P.RemoveAt(2);
+            //    P.RemoveAt(3);
+            //    P.RemoveAt(4);
+            //}
+            //else if (UserType == "Customer")
+            //{
+
+            //}
+            //else if (UserType == "Project Manager")
+            //{
+
+            //}
             return Json(P, JsonRequestBehavior.AllowGet);
         }
         public JsonResult LoadAllInstance()
@@ -254,12 +257,36 @@ namespace ProAcc.Controllers
             ViewBag.Instance = inst;
             List<SelectListItem> Project = new List<SelectListItem>();
 
-            var query = from u in db.Projects where (u.isActive == true) select u;
-            if (query.Count() > 0)
+            if (User.IsInRole("Customer"))
             {
-                foreach (var v in query)
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
                 {
-                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
                 }
             }
             ViewBag.Project = Project;
