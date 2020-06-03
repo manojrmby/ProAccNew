@@ -441,9 +441,26 @@
                     label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
-                        value:
-                            GetStatusDropDown()
-                    }
+                        value: GetStatusDropDown()
+                    },
+                    @*editoptions: {
+                        dataUrl: '@Url.Action("GetStatus","ProjectMonitor")',
+                        buildSelect: function (data) {
+
+                            debugger;
+                            alert('in');
+                            var field_id = this.id; // "myDropDown"
+                            setTimeout(function () {
+                                if (needDisable) {
+                                    $('#tr_' + field_id).attr('disabled', 'disabled');
+                                } else {
+                                    $('#tr_' + field_id).removeAttr('disabled');
+                                }
+                            }, 100);
+                            return data;
+                        }
+                    },*@    
+
                 },
                 {
                     label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 80, editable: true,
@@ -524,6 +541,10 @@
                     formatoptions: {
                         keys: true,
                         delbutton: false,
+                        beforeShowForm: function (form) {
+                            alert("in");
+                            //$("#tr_pid").find("input,button,textarea,select").attr("disabled", true);
+                        },
                         editformbutton: false,//Determines if popup should open or not
                         afterSave: function (rowid, response, postdata, options) {
                             alert("success");
@@ -565,7 +586,7 @@
             pager: "#jqGridPager",
             sortname: 'SequenceNum',
             sortorder: 'asc',
-           
+           onSelectRow: editRow,
             //onSelectRow: function (row_id) {
             //    //debugger;
             //    //Show_HideEdit();
@@ -613,7 +634,28 @@
             }
             // set table stripped class in table style in bootsrap
         });
+        function editRow(id) {
+            // var Status_Id = $('#jqGrid').jqGrid('getCell', id, 'StatusId')
+            //debugger;
+            var UserType ="@Session["UserType"].ToString()"
+            if (UserType == 'Customer'|| UserType == 'Consultant' )
+            {
+                $("#" + id + "_StatusId option[value='3']").prop('disabled', 'disabled');
+                $("#" + id + "_StatusId option[value='4']").prop('disabled', 'disabled');
+                $("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
+            }
+            else  if (UserType == 'Project Manager')
+            {
+                $("#" + id + "_StatusId option[value='1']").prop('disabled', 'disabled');
+                $("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
+            }
+            
 
+            
+            //alert(id);
+            
+
+        }
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
             { edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
@@ -627,10 +669,11 @@
                 reloadAfterSubmit:true,
                   //editParams: myEditOptions,
                 beforeShowForm: function (form) {
-                    debugger;
-                    $("#StatusId option[value='3']").attr("disabled", "disabled");
-                    $("#StatusId option[value='4']").attr("disabled", "disabled");
-                    $("#StatusId option[value='5']").attr("disabled","disabled");
+                    //debugger;
+                    //alert('in');
+                    //$("#StatusId option[value='3']").attr("disabled", "disabled");
+                    //$("#StatusId option[value='4']").attr("disabled", "disabled");
+                    //$("#StatusId option[value='5']").attr("disabled","disabled");
                    
                 },
                 errorTextFormat: function (data) {
@@ -694,38 +737,65 @@
         var User = '@Session["UserType"]';
         var loginid = '@Session["loginid"]';
         var j = 0;
-        for (var i = 0; i < ids.length; i++) {
-            var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
-            if (Status_Id == 1 ) {
-                j = i;
+       
+         var UserType ="@Session["UserType"].ToString()"
+        if (UserType == 'Project Manager')
+        {
+             
+             for (var i = 0; i < ids.length; i++) {
+                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+                
+                 if (Status_Id == 1) {
+                     $('#jEditButton_' + ids[i]).hide();
+                 }
+                 else {
+                      $('#jEditButton_' + ids[i]).show();
+                 }
+               
             }
-            $('#jEditButton_' + ids[i]).hide();
+           
         }
-        var EditFlag = false;
-        //  debugger;
-        for (var k = j; k < ids.length; k++) {
-            var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
-            
-            if ((Status_Id == 5 || Status_Id == 2|| Status_Id == 4) && !EditFlag ) {
-                $('#jEditButton_' + ids[k]).show();
-                EditFlag = true;
+        else {
+             for (var i = 0; i < ids.length; i++) {
+                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+                if (Status_Id == 1|| Status_Id == 2) {
+                    j = i;
+                    //break;
+                }
+                $('#jEditButton_' + ids[i]).hide();
             }
-            //else {
-            //    $('#jEditButton_' + ids[k]).hide();
-            //}
-        }
+           
+            var EditFlag = false;
+            //  debugger;
+            for (var k = j; k < ids.length; k++) {
+                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
+                if ((Status_Id == 5 || Status_Id == 2 ) && !EditFlag) {
+                    $('#jEditButton_' + ids[k]).show();
+                    EditFlag = true;
+                }
+                //else {
+                //    $('#jEditButton_' + ids[k]).hide();
+                //}
+            }
 
-        if (User == 'Consultant' || User == 'Customer' ) {
-            for (var i = 0; i < ids.length; i++) {
-                var User_ID = $('#jqGrid').jqGrid('getCell', ids[i], 'UserID')
-                if (User_ID!=loginid) {
-                    $('#jEditButton_' + ids[i]).hide();
+            if (User == 'Consultant' || User == 'Customer') {
+                for (var i = 0; i < ids.length; i++) {
+                    var User_ID = $('#jqGrid').jqGrid('getCell', ids[i], 'UserID')
+                    //var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
+                    if (User_ID != loginid) {
+                        $('#jEditButton_' + ids[i]).hide();
+                    }
                 }
             }
         }
-        
-        
-       
+
+       for (var i = 0; i < ids.length; i++) {
+                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+           if (Status_Id == 2) {
+               $('#jEditButton_' + ids[i]).show();
+                }
+                
+            }
     }
     function GetPhaseDropDown() {
 				 var Parameters = {};

@@ -1,0 +1,78 @@
+============6/2/2020 12:00:00 AM At 6/2/2020 1:23:00 PM============
+
+============6/2/2020 12:00:00 AM At 6/2/2020 1:23:26 PM============
+
+============6/2/2020 12:00:00 AM At 6/2/2020 1:31:32 PM============
+
+============6/2/2020 12:00:00 AM At 6/2/2020 1:39:57 PM============
+
+============6/2/2020 12:00:00 AM At 6/2/2020 1:41:35 PM============
+
+============6/2/2020 12:00:00 AM At 6/2/2020 2:35:01 PM============
+
+============6/2/2020 12:00:00 AM At 6/2/2020 8:17:55 PM============
+
+============6/2/2020 12:00:00 AM At 6/2/2020 8:28:40 PM============
+
+============6/2/2020 12:00:00 AM At 6/2/2020 8:46:15 PM============
+
+=====Exception Log Start DateTime:6/2/2020 9:09:35 PM=======
+
+NameSpace : ProAcc.Controllers
+ClassName : AssessmentController
+MethodName : Upload
+MethodArguments : No Arguments
+SOURCE    : .Net SqlClient Data Provider
+Type      : System.Data.SqlClient.SqlException
+MESSAGE   : Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+TARGETSITE: Void OnError(System.Data.SqlClient.SqlException, Boolean, System.Action`1[System.Action])
+STACKTRACE:    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteScalar()
+   at ProAcc.BL.DBHelper.ExecuteScalar() in D:\Office\Projects\ProACC\ProAccNew\ProAcc\BL\DBHelper.cs:line 348
+   at ProAcc.BL.Base.Upload_FioriApps(DataTable CustomTable, String fileName, Guid Instance_ID, Guid User_ID) in D:\Office\Projects\ProACC\ProAccNew\ProAcc\BL\Base.cs:line 634
+   at ProAcc.BL.FileUpload.Process_FioriApps(String FilePath, String fileName, Guid Instance_ID, Guid User_Id) in D:\Office\Projects\ProACC\ProAccNew\ProAcc\BL\FileUpload.cs:line 237
+   at ProAcc.Controllers.AssessmentController.Upload() in D:\Office\Projects\ProACC\ProAccNew\ProAcc\Controllers\AssessmentController.cs:line 358
+InnerException: System.ComponentModel.Win32Exception (0x80004005): The wait operation timed out
+
+=====Exception Log End=======
+
+
+=====Exception Log Start DateTime:6/2/2020 9:10:21 PM=======
+
+NameSpace : ProAcc.Controllers
+ClassName : AssessmentController
+MethodName : Upload
+MethodArguments : No Arguments
+SOURCE    : .Net SqlClient Data Provider
+Type      : System.Data.SqlClient.SqlException
+MESSAGE   : Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+TARGETSITE: Void OnError(System.Data.SqlClient.SqlException, Boolean, System.Action`1[System.Action])
+STACKTRACE:    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteScalar()
+   at ProAcc.BL.DBHelper.ExecuteScalar() in D:\Office\Projects\ProACC\ProAccNew\ProAcc\BL\DBHelper.cs:line 348
+   at ProAcc.BL.Base.Upload_FioriApps(DataTable CustomTable, String fileName, Guid Instance_ID, Guid User_ID) in D:\Office\Projects\ProACC\ProAccNew\ProAcc\BL\Base.cs:line 634
+   at ProAcc.BL.FileUpload.Process_FioriApps(String FilePath, String fileName, Guid Instance_ID, Guid User_Id) in D:\Office\Projects\ProACC\ProAccNew\ProAcc\BL\FileUpload.cs:line 237
+   at ProAcc.Controllers.AssessmentController.Upload() in D:\Office\Projects\ProACC\ProAccNew\ProAcc\Controllers\AssessmentController.cs:line 358
+InnerException: System.ComponentModel.Win32Exception (0x80004005): The wait operation timed out
+
+=====Exception Log End=======
+
+
