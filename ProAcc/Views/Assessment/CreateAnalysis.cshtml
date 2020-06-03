@@ -23,9 +23,10 @@
         position: absolute;
     }
 </style>
-<script src="~/Asset/Scripts/Chart.js"></script>
-<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
-<link href="~/Asset/css/jBox.all.css" rel="stylesheet" />
+@*@Scripts.Render("~/bundles/Scripts/ChartJS")*@
+@*<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>*@
+@*<link href="~/Asset/css/jBox.all.css" rel="stylesheet" />*@
 
 <a class="card-title">Create Analysis</a>
 <div style="padding: 1em;">
@@ -53,9 +54,9 @@
             <hr />
             <div class="form-row">
                 @*<div class="position-relative form-group">
-            <label for="exampleEmail" class="">Customer Name</label>
-            @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "- SELECT-", new { id = "IDCustomer", @class = "form-control" })
-        </div>*@
+                        <label for="exampleEmail" class="">Customer Name</label>
+                        @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "- SELECT-", new { id = "IDCustomer", @class = "form-control" })
+                    </div>*@
                 @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
                 {
                     <div class="col-md-4">
@@ -88,194 +89,194 @@
                 <br />
                 <br />
             </div>
-                @*<div class="row">
-                        <div class="col-6">
+            @*<div class="row">
+                    <div class="col-6">
 
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">Activities</div>
-                                <div>
-                                    <input type="file" name="files" id="FileUpload1" />
-                                </div>
-
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">Activities</div>
+                            <div>
+                                <input type="file" name="files" id="FileUpload1" />
                             </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">Bwextractors</div>
-                                <div>
-                                    <input type="file" name="files" id="FileUpload2" />
-                                </div>
 
-                            </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">CustomCode</div>
-                                <div>
-                                    <input type="file" name="files" id="FileUpload3" />
-                                </div>
-
-                            </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">HanaDatabaseTables</div>
-                                <div>
-                                    <input type="file" name="files" id="FileUpload4" />
-                                </div>
-
-                            </div>
                         </div>
-                        <div class="col-6">
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">RecommendedFioriApps</div><br />
-                                <input type="file" name="files" id="FileUpload5" />
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">Bwextractors</div>
+                            <div>
+                                <input type="file" name="files" id="FileUpload2" />
                             </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">RelevantSimplificationItems</div><br />
-                                <input type="file" name="files" id="FileUpload6" />
-                            </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">SAP Readiness Check</div><br />
-                                <input type="file" name="files" id="FileUpload7" />
-                            </div>
+
                         </div>
-
-
-                    </div>*@
-                <div class="row" style="text-align:left !important;margin:auto !important;">
-                    <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="mb-0 table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th> SAP READINESS CHECK FILES</th>
-                                            <th>UPLOAD</th>
-                                        </tr>
-                                    </thead>
-                                    <tr>
-                                        <td>
-                                            1.
-                                        </td>
-                                        <td>
-                                            Activities
-                                        </td>
-                                        <td>
-                                            <input class="mb-2 mr-2 btn btn-info" type="file" name="files" id="FileUpload1" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            2.
-                                        </td>
-                                        <td>
-                                            BW Extractors
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload2" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            3.
-                                        </td>
-                                        <td>
-                                            Custom Code Analysis
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload3" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            4.
-                                        </td>
-                                        <td>
-                                            HANA Database Tables
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload4" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            5.
-                                        </td>
-                                        <td>
-                                            Recommended Fiori Apps
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload5" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            6.
-                                        </td>
-                                        <td>
-                                            Relevant Simplification Items
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload6" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            7.
-                                        </td>
-                                        <td>
-                                            SAP Readiness Check
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload7" />
-                                        </td>
-                                    </tr>
-                                </table>
-
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">CustomCode</div>
+                            <div>
+                                <input type="file" name="files" id="FileUpload3" />
                             </div>
+
+                        </div>
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">HanaDatabaseTables</div>
+                            <div>
+                                <input type="file" name="files" id="FileUpload4" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">RecommendedFioriApps</div><br />
+                            <input type="file" name="files" id="FileUpload5" />
+                        </div>
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">RelevantSimplificationItems</div><br />
+                            <input type="file" name="files" id="FileUpload6" />
+                        </div>
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">SAP Readiness Check</div><br />
+                            <input type="file" name="files" id="FileUpload7" />
+                        </div>
+                    </div>
+
+
+                </div>*@
+            <div class="row" style="text-align:left !important;margin:auto !important;">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="mb-0 table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th> SAP READINESS CHECK FILES</th>
+                                        <th>UPLOAD</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>
+                                        1.
+                                    </td>
+                                    <td>
+                                        Activities
+                                    </td>
+                                    <td>
+                                        <input class="mb-2 mr-2 btn btn-info" type="file" name="files" id="FileUpload1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        2.
+                                    </td>
+                                    <td>
+                                        BW Extractors
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload2" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        3.
+                                    </td>
+                                    <td>
+                                        Custom Code Analysis
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload3" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        4.
+                                    </td>
+                                    <td>
+                                        HANA Database Tables
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload4" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        5.
+                                    </td>
+                                    <td>
+                                        Recommended Fiori Apps
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload5" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        6.
+                                    </td>
+                                    <td>
+                                        Relevant Simplification Items
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload6" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        7.
+                                    </td>
+                                    <td>
+                                        SAP Readiness Check
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload7" />
+                                    </td>
+                                </tr>
+                            </table>
+
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <br />
-                <div class="row">
-                    <div class="col-12">
-                        <div class="position-relative form-group">
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <div class="position-relative form-group">
 
-                            <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;padding-left:81px;">
-                                <input type="checkbox" id="chkReadiness" class="custom-control-input">
-                                <label class="custom-control-label " for="chkReadiness">
-                                    I have read the SAP Readiness check Disclaimer and SAP readiness check term of use
-                                </label>
-                            </div>
-                            <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;max-width:930px;padding-left:81px;">
-                                <input type="checkbox" id="chkAcknowldge" class="custom-control-input">
-                                <label class="custom-control-label" for="chkAcknowldge">
-                                    I acknowldge all SAP employees may access and use the SAP Readiness check results for SAP business purposes like support services and marketing
-                                </label>
-                            </div>
-                            <br />
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div id="progressbar-5">
-                                        <div class="progress-label">
-                                        </div>
+                        <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;padding-left:81px;">
+                            <input type="checkbox" id="chkReadiness" class="custom-control-input">
+                            <label class="custom-control-label " for="chkReadiness">
+                                I have read the SAP Readiness check Disclaimer and SAP readiness check term of use
+                            </label>
+                        </div>
+                        <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;max-width:930px;padding-left:81px;">
+                            <input type="checkbox" id="chkAcknowldge" class="custom-control-input">
+                            <label class="custom-control-label" for="chkAcknowldge">
+                                I acknowldge all SAP employees may access and use the SAP Readiness check results for SAP business purposes like support services and marketing
+                            </label>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div id="progressbar-5">
+                                    <div class="progress-label">
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-center">
-                                <button class="btn-wide mb-2 mr-2 btn btn-primary" id="btnUpload">
-                                    Start Analysis
-                                </button>
-                            </div>
-                            
                         </div>
+                        <div class="text-center">
+                            <button class="btn-wide mb-2 mr-2 btn btn-primary" id="btnUpload">
+                                Start Analysis
+                            </button>
+                        </div>
+
                     </div>
                 </div>
+            </div>
 
-            
+
         </div>
     </div>
 </div>
 @Html.Hidden("RedirectTo", Url.Action("ReadinessReport", "Assessment"))
 <script>
-  
+
     $(document).ready(function () {
         $('#btnUpload').click(function () {
     var RedirectTo = $("#RedirectTo").val();

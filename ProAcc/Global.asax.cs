@@ -13,7 +13,7 @@ namespace ProAcc
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-            //BundleConfig.RegisterBundles(BundleTable.Bundles);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             GlobalFilters.Filters.Add(new AuthorizeAttribute());
         }

@@ -27,18 +27,15 @@ namespace ProAcc.Controllers
             return RedirectToAction("Login");
         }
         [HttpPost]
-        public ActionResult Validate(UserModel user, string returnUrl)
+        public ActionResult Validate(UserModel user, string ReturnUrl)
         {
             try
             {
              LogedUser logedUser = new LogedUser();
             logedUser.Username = user.Username;
             logedUser.Password = user.Password;
-            string decodedUrl = "";
-            if (!string.IsNullOrEmpty(returnUrl))
-                decodedUrl = Server.UrlDecode(returnUrl);
-           
-                if (!String.IsNullOrEmpty(user.Username)&& (!String.IsNullOrEmpty(user.Password)))
+                
+               if (!String.IsNullOrEmpty(user.Username)&& (!String.IsNullOrEmpty(user.Password)))
                 {
                     logedUser = _Base.UserValidation(logedUser);
                     if (logedUser.ID != Guid.Empty)
@@ -66,8 +63,17 @@ namespace ProAcc.Controllers
                             UserType = "Project Manager";
                         }
                         Session["UserType"] = UserType;
+                        if (!string.IsNullOrEmpty(Request.Form["ReturnUrl"]))
+                        {
+                            String Controller = Request.Form["ReturnUrl"].Split('/')[1].ToString();
+                            String Action = Request.Form["ReturnUrl"].Split('/')[2].ToString();
 
-                        return RedirectToAction("Home", "Home");
+                            return RedirectToAction(Action,Controller);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Home", "Home");
+                        }
                     }
                     else
                     {
@@ -89,33 +95,6 @@ namespace ProAcc.Controllers
             }
             return RedirectToAction("Login", "Login");
         }
-
-
-        //public JsonResult ValidateUser(LogedUser user)
-        //{
-
-        //    string IsValidate = string.Empty;
-        //    user = _Base.UserValidation(user);
-        //    if (user.ID != Guid.Empty)
-        //    {
-        //        IsValidate = "Login Successfully.";
-        //    }
-
-        //    //switch (userId)
-        //    //{
-        //    //    case -1:
-        //    //        IsValidate = "Username and/or password is incorrect.";
-        //    //        break;
-        //    //    case -2:
-        //    //        IsValidate = "Account has not been activated.";
-        //    //        break;
-        //    //    case -3:
-        //    //        IsValidate = "Login Successfully.";
-        //    //        break;
-        //    //}
-        //    return Json(IsValidate, JsonRequestBehavior.AllowGet);
-        //}
-
     }
 
 }
