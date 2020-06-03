@@ -8,7 +8,8 @@
     font-size: 14px;
     }
 </style>
-<a class="card-title">Project Creation</a>
+<a class="card-title" id="prjtCreate">Project Creation</a>
+<a class="card-title" id="prjtUpdate" style="display:none">Project Updation</a>
 <hr />
 <div style="padding:1em;">
     <div class="row">
@@ -89,7 +90,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" value="Create" class="btn btn-primary" id="btnProjectCreate" />
                     <input type="button" value="Update" class="btn btn-info" id="btnProjectUpdate" style="display:none" />
-                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Add New</a>
+                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>New Project</a>
                 </div>
             </div>
         </div>
@@ -149,7 +150,7 @@
             }            
         });
 
-        $('#drpCustomer').change(function () {                        var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            if (projectName != "" && Customerid != 0) {                $("#btnProjectCreate").prop("disabled", false);            }        });
+        $('#drpCustomer,#drpProjectManager').change(function () {                        var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            var PMID=$("#drpProjectManager").val();            if (projectName != "" && Customerid != 0&&PMID!=0) {                $("#btnProjectCreate").prop("disabled", false);            }        });
 
     });
 
@@ -219,6 +220,7 @@
              Project_Id: id,
              Project_Name: projectName,
              Customer_Id: Customerid,
+             ProjectManager_Id: PMID,
              Description: Description,
              Cre_on: cre_on,
              Cre_By: cre_By
@@ -232,7 +234,7 @@
        }
             else if (PMID == 0)
         {
-            $("#lblProjectManager").html("Please Select the Customer Name").show().fadeOut(3000);
+            $("#lblProjectManager").html("Please Select the Project Manager").show().fadeOut(3000);
         }    
         else {
 
@@ -247,10 +249,13 @@
                            loadProjectCreation();
                             $("#txtProjectName").val("")
                             $("#drpCustomer").val(0)
+                            $("#drpProjectManager").val(0);
                             $("#txtDescription").val("")
                             $("#btnAddNew").hide();
                             $("#btnProjectUpdate").hide();
                             $("#btnProjectCreate").show();
+                            $("#prjtCreate").show();
+                            $("#prjtUpdate").hide();
                         }
                     },
                     failure: function (response) {

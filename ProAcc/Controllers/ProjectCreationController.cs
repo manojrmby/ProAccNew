@@ -34,7 +34,7 @@ namespace ProAcc.Controllers
             var Projlist = (from e in db.Projects
                             join c in db.Customers on e.Customer_Id equals c.Customer_ID
                          where e.isActive == true && c.isActive==true
-                         select e).ToList();
+                         select e).OrderByDescending(x => x.Cre_on).ToList();
             return PartialView("_ProjectCreationIndex", Projlist);
         }
 
