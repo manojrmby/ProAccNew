@@ -120,6 +120,7 @@
 
             <div class="col-md-offset-2 col-md-12">
                 <input type="submit" value="Save" id="saveUser" class="btn btn-primary" />
+                <a class="btn btn-success" id="btnAdduser"><i class="fa fa-plus"></i>Add New User</a>
                 <div class="col-lg-3" style="float:right;">
                     @Html.ActionLink("Back to List", "Index")
                 </div>
@@ -135,7 +136,7 @@
 <script>
     $(document).ready(function () {
         var Id = $("#UserTypeID").val();
-         if (Id == 1) {
+         if (Id == 1||Id == 4) {
             $("#divRole").hide();
             $("#divCust").hide();
         }
@@ -153,7 +154,10 @@
         $('#UserTypeID').attr("readonly", true); 
         $('#RoleID').attr("readonly", true); 
         $('#Customer_Id').attr("readonly", true); 
-       
+
+        $("#btnAdduser").click(function () {
+            window.location.href = "@Url.Action("CreateUsers", "User")";
+        });
 
     $("#UserTypeID").change(function () {
         var Id = $(this).val();

@@ -34,7 +34,7 @@ namespace ProAcc.Controllers
             //    .OrderByDescending(x => x.Cre_on).ToList();
             //.Where(x => x.Name.StartsWith(search) || search == null).ToList(); //.ToPagedList(i ?? 1, 5);
             //return View(customers);
-            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).ToList();
+            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).OrderByDescending(x => x.Cre_on).ToList();
             return View(ViewBag.customersIndex);
         }
         // GET: Customers/Details/5
@@ -105,7 +105,7 @@ namespace ProAcc.Controllers
                 {
                     customer.Customer_ID = Guid.NewGuid();
                     customer.isActive = true;
-                    customer.Cre_on = DateTime.Now;
+                    customer.Cre_on = DateTime.UtcNow;
                     customer.Cre_By = Guid.Parse(Session["loginid"].ToString());
                     db.Customers.Add(customer);
                     db.SaveChanges();
@@ -174,7 +174,7 @@ namespace ProAcc.Controllers
             var name = db.Customers.Where(p => p.Company_Name == customer.Company_Name).Where(x => x.Customer_ID != customer.Customer_ID).Where(x => x.isActive == true).ToList();
             if (name.Count == 0)
             {
-                customer.Modified_On = DateTime.Now;
+                customer.Modified_On = DateTime.UtcNow;
                 //customer.Cre_on = DateTime.Now;
                 customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 customer.isActive = true;

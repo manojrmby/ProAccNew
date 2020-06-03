@@ -20,7 +20,7 @@ namespace ProAcc.Controllers
         }
         public ActionResult Create()
         {
-            ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true);
+            ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true).OrderBy(x=>x.PhaseName);
             ViewBag.Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1);
             return View();
         }

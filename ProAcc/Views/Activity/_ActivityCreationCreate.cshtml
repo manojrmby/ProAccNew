@@ -12,7 +12,8 @@
         font-size: 14px;
     }
 </style>
-<a class="card-title">Create Activity</a>
+<a class="card-title" id="activityCreation">Activity Creation</a>
+<a class="card-title" style="display:none" id="activityUpdation">Activity Updation</a>
 <hr />
 <div style="padding:1em;">
     <div class="row">
@@ -112,7 +113,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" value="Create" class="btn btn-primary" id="btnActivityCreCreate" />
                     <input type="button" value="Update" class="btn btn-info" id="btntivityCreUpdate" style="display:none" />
-                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Add New</a>
+                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Create Activity</a>
                 </div>
             </div>
         </div>
@@ -155,20 +156,20 @@
         var id = $("#activityrid").val().trim();
         if (id != "") {
             //$("#txtSequence").prop("readonly", true);
-            //$('#drpPhase').attr("disabled", true); 
+            //$('#drpPhase').attr("disabled", true);
             //$("#drpPhase").prop("readonly", true);
             $("#drpRole").prop("readonly", true);
         }
-        $("#txtTask").keypress(function (event) {
 
-            var inputValue = event.which;
-            // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-                    event.preventDefault();
-                    $("#lblTask").html("Not Allowed").show().fadeOut(2000);
-        }
-        $("#btnActivityCreCreate").prop('disabled', false);
-        });
+        //$("#txtTask").keypress(function (event) {
+        //    var inputValue = event.which;
+        //    // allow letters and whitespaces only.
+        //    if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+        //            event.preventDefault();
+        //            $("#lblTask").html("Not Allowed").show().fadeOut(2000);
+        //}
+        //$("#btnActivityCreCreate").prop('disabled', false);
+        //});
 
 
         $('#txtTask').on('focusout', function () {
@@ -176,19 +177,21 @@
             var Task = $("#txtTask").val().trim();
             var id = $("#activityrid").val();
             if (Task == "") {
-                $("#lblTask").html("Please Enter Task").show().fadeOut(2000);
+                $("#lblTask").html("Please Enter Task").show().fadeOut(5000);
             }
             else {
-                $.ajax({
+
+             $.ajax({
                 url: '@Url.Action("CheckTaskAvailability", "Activity")',
                 type: "GET",
                 data: { namedata: Task,id:id },
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblTask").html("This Task is already in use").show().fadeOut(3000);
+                        $("#lblTask").html("This Task is already in use").show().fadeOut(5000);
                         $("#btnActivityCreCreate").prop('disabled', true);
                         $("#btntivityCreUpdate").prop('disabled', true);
+
                     }
                     else {
                         $("#lblTask").html("").hide();
@@ -201,16 +204,17 @@
                      $("#btnActivityCreCreate").prop('disabled', true);
                      $("#btntivityCreUpdate").prop('disabled', true);
                 }
-            });
+             });
             }
 
         });
 
 
+
          $("#txtSequence").keypress(function (e) {
              if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                  event.preventDefault();
-                 $("#lblSequence").html("Numbers Only").show().fadeOut(2000);
+                 $("#lblSequence").html("Numbers Only").show().fadeOut(5000);
              }
              else {
                  $("#btnActivityCreCreate").prop('disabled', false);
@@ -221,9 +225,9 @@
 
             var inputValue = event.which;
             // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            if (!(inputValue >= 65 && inputValue <= 122 ||inputValue <= 45) && (inputValue != 32 && inputValue != 0) ) {
                     event.preventDefault();
-                    $("#lblApplicationArea").html("Not Allowed").show().fadeOut(2000);
+                    $("#lblApplicationArea").html("Not Allowed").show().fadeOut(5000);
         }
         $("#btnActivityCreCreate").prop('disabled', false);
         });
@@ -252,7 +256,7 @@
 
 
     $("#btnActivityCreCreate").on("click", function () {
-        
+
         var Task = $("#txtTask").val();
        // var sequence = $("#txtSequence").val();
         var ApplicationArea = $("#txtApplicationArea").val();
@@ -266,7 +270,7 @@
             RoleID:Role
         }
         if (Task == "") {
-            $("#lblTask").html("Please enter the Task").show().fadeOut(3000);
+            $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
         }
         //else if (sequence =="")
         //{
@@ -274,18 +278,18 @@
         //}
         else if (ApplicationArea=="")
         {
-            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(3000);
+            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(5000);
         }
         else if (Phase==0)
         {
-            $("#lblPhase").html("Please select the Phase").show().fadeOut(3000);
+            $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
         }
         else if (Role == 0)
         {
-            $("#lblRole").html("Please select the Role").show().fadeOut(3000);
+            $("#lblRole").html("Please select the Role").show().fadeOut(5000);
         }
 
-        else {       
+        else {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Create","Activity")',
@@ -320,7 +324,7 @@
                                 });
                             }
                                      document.getElementById('id01').style.display = 'block';
-                            
+
                         }
                     },
                     failure: function (response) {
@@ -337,13 +341,13 @@
     });
 
     $("#btnSeq").on("click", function () {
-        //debugger;
+        
         var LatestTaskId = $("#hiddenActivityId").val();
         var LastTaskId = $("#drpTsk").val();
         var type = $("#drpPhase").val();
         $.ajax({
             type: "POST",
-            url: '@Url.Action("SaveAccordingToSequence","Activity")', 
+            url: '@Url.Action("SaveAccordingToSequence","Activity")',
             data: { LatestTaskId: LatestTaskId, LastTaskId: LastTaskId,type:type },
             success: function (response) {
                 if (response == "success") {
@@ -359,7 +363,7 @@
                     $("#btntivityCreUpdate").hide()
                     $("#btnAddNew").hide()
                     $('#drpPhase').attr("disabled", false);
-                    $('#drpRole').attr("disabled", false); 
+                    $('#drpRole').attr("disabled", false);
                 }
                 else {
                     alert("something went wrong");
@@ -372,7 +376,7 @@
     });
 
     $("#btntivityCreUpdate").on("click", function () {
-        //debugger;
+       
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
         //var sequence = $("#txtSequence").val();
@@ -393,7 +397,7 @@
             Cre_By: cre_By
          }
        if (Task == "") {
-            $("#lblTask").html("Please enter the Task").show().fadeOut(3000);
+            $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
         }
         //else if (sequence =="")
         //{
@@ -401,15 +405,15 @@
         //}
         else if (ApplicationArea=="")
         {
-            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(3000);
+            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(5000);
         }
         else if (Phase==0)
         {
-            $("#lblPhase").html("Please select the Phase").show().fadeOut(3000);
+            $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
         }
         else if (Role == 0)
         {
-            $("#lblRole").html("Please select the Role").show().fadeOut(3000);
+            $("#lblRole").html("Please select the Role").show().fadeOut(5000);
         }
         else {
 
@@ -418,7 +422,7 @@
                     url: '@Url.Action("Edit","Activity")',
                     data: { model : model},
                 success: function (response) {
-                   // debugger;
+                  
                          if (response > 0) {
                             $("#hiddenActivityId").val(response);
                             $("#drpTsk").empty();
@@ -431,12 +435,14 @@
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (response) {
-                                        //debugger;
+                                       
                                         if (response != null) {
                                             $('#drpTsk').append($("<option value='0'>Please Select Last Task</option>"));
                                             $.each(response, function (index, item) {
                                                 var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
                                                 $('#drpTsk').append(option);
+                                                $("#activityCreation").show();
+                                                $("#activityUpdation").hide();
                                             });
                                         }
                                     },
@@ -449,7 +455,7 @@
                                 });
                             }
                                      document.getElementById('id01').style.display = 'block';
-                            
+
                         }
 
                         //if (response == "success") {

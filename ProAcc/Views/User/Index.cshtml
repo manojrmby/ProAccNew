@@ -24,8 +24,7 @@
                 @Html.DisplayNameFor(model => model.Cre_on)
             </th>
             <th>
-                Email
-                @*@Html.DisplayNameFor(model => model.EMail)*@
+                Email               
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Phone)
@@ -33,20 +32,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.LoginId)
             </th>
-            @*<th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>*@
             <th>
                 Role
-                @*@Html.DisplayNameFor(model => model.RoleID)*@
             </th>
             <th>
                 User Type
-                @*@Html.DisplayNameFor(model => model.UserTypeID)*@
             </th>
             <th>
                 Customer Name
-                @*@Html.DisplayNameFor(model => model.Customer.Company_Name)*@
             </th>
 
             <th>Actions</th>
@@ -56,7 +49,6 @@
         @foreach (var item in Model)
         {
         <tr>
-            @Html.HiddenFor(modelItem => item.UserId)
             @*<td>
             @Html.HiddenFor(modelItem => item.UserId)
         </td>*@
@@ -66,6 +58,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Cre_on)
             </td>
+            @Html.HiddenFor(modelItem => item.UserId)
             <td>
                 @Html.DisplayFor(modelItem => item.EMail)
             </td>
@@ -105,17 +98,18 @@
 
 <script>
     $(document).ready(function () {
-        $("#tblUserTable").dataTable( {
-            "order": [[1, 'desc']],
+        $("#tblUserTable").dataTable({
+            "order": [[2, 'desc']],
             "columnDefs": [
-            {
-                "targets": [ 1 ],
-                "visible": false
-            }
-        ]
-} );
+                {
+                    "targets": [1],
+                    "visible": false
+                }
+            ]
+        });
     });
 
+   
     $(".userDelete").on("click", function () {
         
         var id = $(this).next().val();

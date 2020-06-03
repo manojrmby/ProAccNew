@@ -125,7 +125,7 @@ namespace ProAcc.Controllers
                 {
                     con.UserId = Guid.NewGuid();
                     con.Cre_By = Guid.Parse(Session["loginid"].ToString());
-                    con.Cre_on = DateTime.Now;
+                    con.Cre_on = DateTime.UtcNow;
                     con.isActive = true;
                     if (con.UserTypeID == 1)
                     {
@@ -134,6 +134,11 @@ namespace ProAcc.Controllers
                     }
                     else if(con.UserTypeID == 2)
                     {
+                        con.Customer_Id = null;
+                    }
+                    else if (con.UserTypeID == 4)
+                    {
+                        con.RoleID = 10;
                         con.Customer_Id = null;
                     }
                     db.UserMasters.Add(con);
@@ -183,7 +188,7 @@ namespace ProAcc.Controllers
             {
                 if (userMaster.Name != null)
                 {
-                    userMaster.Modified_On = DateTime.Now;
+                    userMaster.Modified_On = DateTime.UtcNow;
                     userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
                     userMaster.isActive = true;
                     if (userMaster.UserTypeID == 1)
@@ -195,7 +200,12 @@ namespace ProAcc.Controllers
                     {
                         userMaster.Customer_Id = null;
                     }
-                    db.Entry(userMaster).State = EntityState.Modified;
+                    else if (userMaster.UserTypeID == 4)
+                    {
+                        userMaster.RoleID = 10;
+                        userMaster.Customer_Id = null;
+                    }
+                     db.Entry(userMaster).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }

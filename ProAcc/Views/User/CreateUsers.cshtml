@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="position-relative form-group" id="divCust">
-                    @Html.LabelFor(model => model.Customer, "Company", htmlAttributes: new { @class = "control-label col-md-5" })
+                    @Html.LabelFor(model => model.Customer, "Customer", htmlAttributes: new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
                         @Html.DropDownList("Customer_Id", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Customer, "", new { @class = "text-danger" })
@@ -131,7 +131,7 @@
             <div class="col-lg-12">
 
                 <div class="col-md-offset-2 col-md-12">
-                    <input type="submit" id="createconsultant" value="Create" class="btn btn-primary" onclick="SubmitConsultant();" />
+                    <input type="submit" id="createconsultant" value="Create" class="btn btn-primary"/> 
                     <div class="col-lg-3" style="float:right;">
                         @Html.ActionLink("Back to List", "Index", "User")
                     </div>
@@ -144,6 +144,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        $("#createconsultant").click(function () {
+            debugger;
+            $("#createconsultant").prop("disabled", true);
+            SubmitConsultant();
+        });
+        
         $("#txtName1").keypress(function(event){
             var inputValue = event.which;
             // allow letters and whitespaces only.
@@ -245,7 +251,11 @@
                 $("#lblMob1").html("").hide();
                 SubmitConsultant();
             }
-       });
+        });
+
+        $("#Passwd,#txtConsCnfmPassword").bind('copy paste cut', function (e) {
+            e.preventDefault();
+         });
     });
  
 

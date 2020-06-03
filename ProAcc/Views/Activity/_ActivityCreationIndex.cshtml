@@ -79,14 +79,14 @@
     });
 
     $(".editActivityCreation").on("click", function () {
-        debugger;
+        
         var id = $(this).next().val();
         $.ajax({
             url: '@Url.Action("GetActivityCreationById","Activity")',
             type: "GET",
             data: { id: id },
             success: function (result) {
-                debugger;
+                
                   $("#activityrid").val(result.Activity_ID);
                     $("#txtTask").val(result.Task);
                     $("#txtSequence").val(result.Sequence_Num);
@@ -102,6 +102,8 @@
                     $("#btntivityCreUpdate").show();
                     $("#btnAddNew").show();
                     $("#btnActivityCreCreate").hide();
+                    $("#activityCreation").hide();
+                    $("#activityUpdation").show();
 
                  //$.each(result, function (index, item) {
                  //    $("#activityrid").val(item.Activity_ID);
@@ -138,6 +140,7 @@
                     if (response == "success") {
                         alert("Activity deleted successfully!");
                         loadActivityCreation();
+                        location.reload();
                     }
                 },
                 failure: function (response) {

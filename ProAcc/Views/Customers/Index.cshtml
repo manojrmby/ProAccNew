@@ -14,7 +14,7 @@
 <table class="table" id="tblCustomer">
     <thead>
         <tr>
-            <th>Company Name</th>
+            <th>Customer Name</th>
             <th>Industry Sector</th>
             <th>Contact Person</th>
             <th>Contact Person Phone</th>
@@ -60,17 +60,17 @@
 
 
     $(document).ready(function () {
-        $("#tblCustomer").dataTable( {
-            "order": [[5, 'desc']],
+        $("#tblCustomer").dataTable({
+            "order": [[6, 'desc']],
             "columnDefs": [
-            {
-                "targets": [ 5 ],
-                "visible": false
-            }
-        ]
-} );
+                {
+                    "targets": [5],
+                    "visible": false
+                }
+            ]
+        });
     });
-
+   
     $(".editCustomer").on("click", function () {
         
         var id = $(this).next().val();

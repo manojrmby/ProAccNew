@@ -125,8 +125,8 @@ namespace ProAcc.Controllers
             var name = db.Projects.Where(p => p.Project_Name == model.Project_Name).Where(x => x.Project_Id != model.Project_Id).Where(x => x.isActive == true).ToList();
             if (name.Count == 0)
             {
-                model.Modified_On = DateTime.Now;
-                model.Cre_on = DateTime.Now;
+                model.Modified_On = DateTime.UtcNow;
+                model.Cre_on = DateTime.UtcNow;
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
                 db.Entry(model).State = EntityState.Modified;
