@@ -1,0 +1,94 @@
+﻿@model IEnumerable<ProACC_DB.RoleMaster>
+
+@*@{
+        var teamdetails = ViewBag.Roledetails;
+    }*@
+
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+
+<table class="table" id="tblRoleCreation">
+    <thead>
+        <tr>
+            <th>Role Names</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.RoleName">@item.RoleName</a>
+                </td>
+
+                <td>
+                    <a href="#" id="btnEdit" class="editRole fa fa-edit"></a><input type="hidden" value="@item.RoleId" /> |
+                    <a href="#" class="btnRoleDelete fa fa-trash"></a><input type="hidden" value="@item.RoleId" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+     $(document).ready(function () {
+          $("#tblRoleCreation").dataTable()
+     })
+    $(".btnRoleDelete").on("click", function () {
+        var id = $(this).next().val();
+       var retVal = confirm("Do you want to delete ?");
+               if( retVal == true ) {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","Role")',
+                data: { id:id },
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                        alert("Role deleted successfully!");
+                        resetRole();
+                        loadRole();
+                         $("#RoleCreation").show();
+                         $("#RoleUpdation").hide();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+                  return true;
+               } else {
+                  return false;
+               }
+    });
+
+    $(".editRole").on("click", function () {
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetRoleById","Role")',
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+
+                $("#RoleId").val(result.RoleId);
+                $("#txtRoleName").val(result.RoleName);
+                $("#Rcre_on").val(result.Cre_on);
+                $("#Rcre_By").val(result.Cre_By);
+                $("#btnRoleUpdate").show();
+                $("#btnAddRole").show();
+                $("#btnRoleCreate").hide();
+                $("#RoleCreation").hide();
+                $("#RoleUpdation").show();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    });
+</script>

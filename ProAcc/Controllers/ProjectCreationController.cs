@@ -108,7 +108,7 @@ namespace ProAcc.Controllers
             }
             //var Project = db.Projects.Find(id);
             var Project = db.Projects.Where(x => x.isActive == true && x.Project_Id == id).Select(p => new { p.Project_Id, p.Project_Name, p.Description, p.Customer_Id,p.ProjectManager_Id, p.Cre_on, p.Cre_By}).FirstOrDefault();
-            
+            //TempData["Cre_On"] = project.Cre_on;
             return Json(Project, JsonRequestBehavior.AllowGet);
             //var list = JsonConvert.SerializeObject(Project, Formatting.None,
             //new JsonSerializerSettings()
@@ -126,7 +126,7 @@ namespace ProAcc.Controllers
             if (name.Count == 0)
             {
                 model.Modified_On = DateTime.UtcNow;
-                model.Cre_on = DateTime.UtcNow;
+                model.Cre_on = DateTime.UtcNow; 
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
                 db.Entry(model).State = EntityState.Modified;

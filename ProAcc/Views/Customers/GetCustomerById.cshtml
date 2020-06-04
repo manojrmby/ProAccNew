@@ -106,6 +106,7 @@
 
             <div class="col-md-offset-2 col-md-12">
                 <input type="button" value="Update" class="btn btn-info" id="btnCustomerUpdate" />
+                <a class="btn btn-success" id="btnAddCustomer"><i class="fa fa-plus"></i>Add New Customer</a>
                 <div class="col-lg-3" style="float:right;">
                     @Html.ActionLink("Back to List", "Index", "Customers")
                 </div>
@@ -134,6 +135,10 @@
                 $("#lblIndustrySector").html("").hide();
                 validatecustomer();
             }
+        });
+
+        $("#btnAddCustomer").click(function () {
+            window.location.href = "@Url.Action("Create", "Customers")";
         });
 
         $("#txtContact").keypress(function (event) {

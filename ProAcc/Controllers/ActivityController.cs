@@ -77,6 +77,7 @@ namespace ProAcc.Controllers
             }
             var latestTask = db.ActivityMasters.Where(p => p.Activity_ID == LatestTaskId).FirstOrDefault();
             latestTask.Sequence_Num = nextSeqNumber;
+            latestTask.isActive = true;
             db.Entry(latestTask).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type).Select(p => p.Activity_ID).ToList();
@@ -165,8 +166,8 @@ namespace ProAcc.Controllers
                 if (name.Count == 0)
                 {
                     //activityMaster.Activity_ID = Guid.NewGuid();
-                    activityMaster.isActive = true;
-                    activityMaster.Cre_on = DateTime.UtcNow.Date;
+                    activityMaster.isActive = false;
+                    activityMaster.Cre_on = DateTime.UtcNow;
                     activityMaster.Cre_By = Guid.Parse(Session["loginid"].ToString());
                     db.ActivityMasters.Add(activityMaster);
                     db.SaveChanges();
@@ -200,6 +201,7 @@ namespace ProAcc.Controllers
             }
             //var Activity = db.ActivityMasters.Find(id);
             var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task, p.ApplicationArea, p.PhaseID, p.RoleID,p.Cre_on,p.Cre_By,p.Sequence_Num }).FirstOrDefault();
+            //TempData["Cre_On"] = activity.Cre_on;
             //var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task,p.ApplicationArea,p.PhaseID,p.RoleID });
 
             return Json(Activity, JsonRequestBehavior.AllowGet);
@@ -218,8 +220,8 @@ namespace ProAcc.Controllers
             var name = db.ActivityMasters.Where(p => p.Task == model.Task).Where(x => x.Activity_ID != model.Activity_ID).Where(x => x.isActive == true).ToList();
             if (name.Count == 0)
             {
-                model.Modified_On = DateTime.Now;
-                model.Cre_on = DateTime.Now;
+                model.Modified_On = DateTime.UtcNow;
+                model.Cre_on = DateTime.UtcNow;
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
                 db.Entry(model).State = EntityState.Modified;

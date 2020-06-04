@@ -1,6 +1,5 @@
 ﻿
 
-
 @{
     ViewBag.Title = "Create Activity";
 }
@@ -178,6 +177,7 @@
             var id = $("#activityrid").val();
             if (Task == "") {
                 $("#lblTask").html("Please Enter Task").show().fadeOut(5000);
+                ValidateActivity();
             }
             else {
 
@@ -189,20 +189,17 @@
                 success: function (data) {
                     if (data != "success") {
                         $("#lblTask").html("This Task is already in use").show().fadeOut(5000);
-                        $("#btnActivityCreCreate").prop('disabled', true);
-                        $("#btntivityCreUpdate").prop('disabled', true);
+                        ValidateActivity();
 
                     }
                     else {
                         $("#lblTask").html("").hide();
-                        $("#btnActivityCreCreate").prop('disabled', false);
-                        $("#btntivityCreUpdate").prop('disabled', false);
+                        ValidateActivity();
                     }
                 },
                 error: function (err) {
                     alert("Please Enter proper details");
-                     $("#btnActivityCreCreate").prop('disabled', true);
-                     $("#btntivityCreUpdate").prop('disabled', true);
+                     ValidateActivity();
                 }
              });
             }
@@ -211,49 +208,80 @@
 
 
 
-         $("#txtSequence").keypress(function (e) {
-             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                 event.preventDefault();
-                 $("#lblSequence").html("Numbers Only").show().fadeOut(5000);
-             }
-             else {
-                 $("#btnActivityCreCreate").prop('disabled', false);
-             }
-         });
+         //$("#txtSequence").keypress(function (e) {
+         //    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+         //        event.preventDefault();
+         //        $("#lblSequence").html("Numbers Only").show().fadeOut(5000);
+         //        ValidateActivity();
+         //    }
+         //    else {
+         //        ValidateActivity();
+         //    }
+         //});
 
         $("#txtApplicationArea").keypress(function (event) {
 
             var inputValue = event.which;
             // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122 ||inputValue <= 45) && (inputValue != 32 && inputValue != 0) ) {
-                    event.preventDefault();
-                    $("#lblApplicationArea").html("Not Allowed").show().fadeOut(5000);
-        }
-        $("#btnActivityCreCreate").prop('disabled', false);
-        });
-
-        $('#drpPhase').change(function () {
-             var Task = $("#txtTask").val();
-            var sequence = $("#txtSequence").val();
-            var ApplicationArea = $("#txtApplicationArea").val();
-            var Role = $('#drpRole').val();
-            if (Task != "" && sequence != "" && ApplicationArea != "" && Role != 0) {
-                $("#btnActivityCreCreate").prop("disabled", false);
+            if (!(inputValue >= 65 && inputValue <= 122 || inputValue <= 45) && (inputValue != 32 && inputValue != 0)) {
+                event.preventDefault();
+                $("#lblApplicationArea").html("Not Allowed").show().fadeOut(5000);
+                ValidateActivity();
+            }
+            else {
+                $("#lblApplicationArea").html("")
+                ValidateActivity();
             }
         });
 
-        $('#drpRole').change(function () {
+        //$('#drpPhase').change(function () {
+        //     var Task = $("#txtTask").val();
+        //    var sequence = $("#txtSequence").val();
+        //    var ApplicationArea = $("#txtApplicationArea").val();
+        //    var Role = $('#drpRole').val();
+        //    if (Task != "" && sequence != "" && ApplicationArea != "" && Role != 0) {
+        //        $("#btnActivityCreCreate").prop("disabled", false);
+        //    }
+        //});
+
+        $('#drpPhase,#drpRole').change(function () {
              var Task = $("#txtTask").val();
             var sequence = $("#txtSequence").val();
             var ApplicationArea = $("#txtApplicationArea").val();
             var Phase = $('#drpPhase').val();
             if (Task != "" && sequence != "" && ApplicationArea != "" && Phase != 0) {
-                $("#btnActivityCreCreate").prop("disabled", false);
+                ValidateActivity();
+            }
+            else {
+                ValidateActivity();
             }
         });
 
     });
 
+    function ValidateActivity() {
+        debugger;
+        var Task = $("#txtTask").val();
+        var ApplicationArea = $("#txtApplicationArea").val();
+        var Phase = $('#drpPhase').val();
+        var Role = $('#drpRole').val();
+
+        var lblTask = $("#lblTask").text().trim();
+        var lblApplicationArea = $("#lblApplicationArea").text().trim();
+        var lblPhase = $('#lblPhase').text().trim();
+        var lblRole = $('#lblRole').text().trim();
+
+        if (Task.length > 0 && ApplicationArea.length > 0 && Phase != 0 && Role != 0 &&
+            lblTask == "" && lblApplicationArea=="" &&  lblPhase == "" && lblRole == "") {
+
+             $("#btnActivityCreCreate").prop("disabled", false);
+             $("#btntivityCreUpdate").prop("disabled", false);
+        }
+         else {
+             $("#btnActivityCreCreate").prop("disabled", true);
+             $("#btntivityCreUpdate").prop("disabled", true);
+        }
+    }
 
     $("#btnActivityCreCreate").on("click", function () {
 
@@ -271,6 +299,7 @@
         }
         if (Task == "") {
             $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
+            ValidateActivity();
         }
         //else if (sequence =="")
         //{
@@ -279,14 +308,17 @@
         else if (ApplicationArea=="")
         {
             $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(5000);
+            ValidateActivity();
         }
         else if (Phase==0)
         {
             $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
+            ValidateActivity();
         }
         else if (Role == 0)
         {
             $("#lblRole").html("Please select the Role").show().fadeOut(5000);
+            ValidateActivity();
         }
 
         else {
@@ -397,7 +429,8 @@
             Cre_By: cre_By
          }
        if (Task == "") {
-            $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
+           $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
+           ValidateActivity();
         }
         //else if (sequence =="")
         //{
@@ -405,15 +438,18 @@
         //}
         else if (ApplicationArea=="")
         {
-            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(5000);
+           $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(5000);
+           ValidateActivity();
         }
         else if (Phase==0)
         {
-            $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
+           $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
+           ValidateActivity();
         }
         else if (Role == 0)
         {
-            $("#lblRole").html("Please select the Role").show().fadeOut(5000);
+           $("#lblRole").html("Please select the Role").show().fadeOut(5000);
+           ValidateActivity();
         }
         else {
 

@@ -108,14 +108,18 @@
         var Description = $("#txtDescription").val();
 
         $("#txtProjectName").keypress(function (event) {
-
+            
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                 event.preventDefault();
                 $("#lblProjectName").html("Not Allowed").show().fadeOut(3000);
+                ValidateProject();
             }
-            $("#btnProjectCreate").prop('disabled', false);
+            else {
+                ValidateProject();
+            }
+            
         });
 
         $('#txtProjectName').on('focusout', function () {
@@ -123,7 +127,8 @@
             var ProjName = $("#txtProjectName").val().trim();
             var id=$("#proj_id").val();
             if (ProjName == "") {
-                $("#lblProjectName").html("Please Enter valid Project name").show().fadeOut(3000);
+                $("#lblProjectName").html("Please Enter valid Project name").show().fadeOut(5000);
+                ValidateProject();
             }
             else {
                 $.ajax({
@@ -134,13 +139,11 @@
                 success: function (data) {
                     if (data != "success") {
                         $("#lblProjectName").html("This project Name is already in use").show();
-                        $("#btnProjectCreate").prop('disabled', true);
-                        $("#btnProjectUpdate").prop('disabled', true);
+                       ValidateProject();
                     }
                     else {
                         $("#lblProjectName").html("").hide();
-                        $("#btnProjectCreate").prop('disabled', false);
-                        $("#btnProjectUpdate").prop('disabled', false);
+                        ValidateProject();
                     }
                 },
                     error: function (err) {
@@ -150,7 +153,8 @@
             }            
         });
 
-        $('#drpCustomer,#drpProjectManager').change(function () {                        var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            var PMID=$("#drpProjectManager").val();            if (projectName != "" && Customerid != 0&&PMID!=0) {                $("#btnProjectCreate").prop("disabled", false);            }        });
+        $('#drpCustomer,#drpProjectManager').change(function () {             var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            var PMID=$("#drpProjectManager").val();            if (projectName != "" && Customerid != 0 && PMID != 0) {                $("#lblCustomerName").html("");                $("#lblProjectManager").html("");                ValidateProject();            }            else {                 ValidateProject();
+            }        });
 
     });
 
@@ -159,7 +163,30 @@
             if (!letters.test(data)) {
                 return false;
             }
-         }
+    }
+
+    function ValidateProject() {
+       
+         var projectName = $("#txtProjectName").val().trim();
+        var Customerid = $("#drpCustomer").val();
+        var PMID = $("#drpProjectManager").val();
+
+        var lblprojectName = $("#lblProjectName").text().trim();
+        var lblCustomerid = $("#lblCustomerName").text().trim();
+        var lblPMID = $("#lblProjectManager").text().trim();
+
+         if (projectName.length > 0 && Customerid != 0 && PMID != 0 &&
+            lblprojectName == "" &&  lblCustomerid == "" && lblPMID == "") {
+
+             $("#btnProjectCreate").prop("disabled", false);
+             $("#btnProjectUpdate").prop("disabled", false);
+        }
+         else {
+             $("#btnProjectCreate").prop("disabled", true);
+             $("#btnProjectUpdate").prop("disabled", true);
+        }
+
+    }
     $("#btnProjectCreate").on("click", function () {
        
         var projectName = $("#txtProjectName").val().trim();
@@ -168,15 +195,18 @@
         var PMID=$("#drpProjectManager").val();
 
         if (projectName == ""|| ValidateName(projectName) == false) {
-            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
+            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(5000);
+            ValidateProject();
         }
         else if (Customerid == 0)
         {
-            $("#lblCustomerName").html("Please Select the Customer Name").show().fadeOut(3000);
+            $("#lblCustomerName").html("Please Select the Customer Name").show().fadeOut(5000);
+            ValidateProject();
         }    
         else if (PMID == 0)
         {
-            $("#lblProjectManager").html("Please Select the Customer Name").show().fadeOut(3000);
+            $("#lblProjectManager").html("Please Select the Project Manager").show().fadeOut(5000);
+            ValidateProject();
         }    
         else {
             $.ajax({
@@ -226,15 +256,18 @@
              Cre_By: cre_By
          }
        if (projectName == ""|| ValidateName(projectName) == false) {
-            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
+           $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(5000);
+           ValidateProject();
         }
         else if (Customerid == 0 || Customerid == undefined)
         {
-            $("#lblCustomerName").html("Please enter the Customer Name").show().fadeOut(3000);
+           $("#lblCustomerName").html("Please enter the Customer Name").show().fadeOut(5000);
+           ValidateProject();
        }
             else if (PMID == 0)
         {
-            $("#lblProjectManager").html("Please Select the Project Manager").show().fadeOut(3000);
+           $("#lblProjectManager").html("Please Select the Project Manager").show().fadeOut(5000);
+           ValidateProject();
         }    
         else {
 
