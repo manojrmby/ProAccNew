@@ -142,7 +142,7 @@
                     $('#SubmitInstance').prop("disabled", true);
                 },
                 error: function (a) {
-                    debugger;
+                    //debugger;
                     alert(a);
                 }
             });
@@ -500,7 +500,7 @@
 
                 },
                 {
-                    label: 'ApplicationArea', name: 'ApplicationArea', width: 150,  editable: true
+                    label: 'ApplicationArea', name: 'ApplicationArea', width: 150,  editable: false
 
 
                 },
@@ -706,12 +706,13 @@
             grouping: false,
             rownumbers: true,
             reload: true,
+            reloadAfterSubmit:true,
             pager: "#jqGridPager",
             sortname: 'SequenceNum',
             sortorder: 'asc',
             onSelectRow: editRow,
             serializeRowData: function (postdata) {
-                debugger;
+                //debugger;
                 //var filterResult;
                 //var jsonResult;
                 //var ActualStDate = postdata.Actual_St_Date;
@@ -742,10 +743,19 @@
                 //       }
 
                 //filterResult = JSON.stringify(newResult);
+                var Id = postdata.Id;
+                var Task_Other_Environment = postdata.Task_Other_Environment;
+                var Dependency = postdata.Dependency;
+                var Pending = postdata.Pending;
+                var Delay_occurred = postdata.Delay_occurred;
+                var StatusId = postdata.StatusId;
+                var EST_hours = postdata.EST_hours;
+                var Actual_St_hours = postdata.Actual_St_hours;
                 var Planed__St_Date = postdata.Planed__St_Date;
                 var Planed__En_Date = postdata.Planed__En_Date;
                 var Actual_St_Date = postdata.Actual_St_Date;
-                var Actual_En_Date = postdata.Actual_En_Date;
+                var Actual_En_Date = postdata.Actual_En_Date;                              
+                var Notes = postdata.Notes;
                 var Status = Confirm();
                 if (Status) {
                     $.ajax({
@@ -753,8 +763,20 @@
                     datatype: 'json',
                     //data: { 'resultData': filterResult, 'action': postdata.oper },
                     data: {
-                        'Data': postdata,
-                        'Planed__St_Date':Planed__St_Date
+                        //'Data': postdata,
+                        'Id': Id,
+                        'StatusId': StatusId,
+                        'Task_Other_Environment': Task_Other_Environment,
+                        'Dependency': Dependency,
+                        'Pending': Pending,
+                        'Delay_occurred':Delay_occurred,
+                        'EST_hours': EST_hours,
+                        'Actual_St_hours':Actual_St_hours,
+                        'Planed__St_Date': Planed__St_Date,
+                        'Planed__En_Date': Planed__En_Date,
+                        'Actual_St_Date': Actual_St_Date,
+                        'Actual_En_Date': Actual_En_Date,
+                        'Notes':Notes
                     },
                     type: 'POST',
                     success: function (Result) {
