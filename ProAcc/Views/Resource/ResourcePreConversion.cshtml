@@ -4,10 +4,13 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
-<script src="~/Asset/Jquery/jqGrid/grid.locale-en.js"></script>
-<script src="~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"></script>
-<link href="~/Asset/Jquery/jqGrid/css/octicons.css" rel="stylesheet" />
-<link href="~/Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css" rel="stylesheet" />
+@*<script src="~/Asset/Jquery/jqGrid/grid.locale-en.js"></script>
+    <script src="~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"></script>
+    <link href="~/Asset/Jquery/jqGrid/css/octicons.css" rel="stylesheet" />
+    <link href="~/Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css" rel="stylesheet" />*@
+
+@Styles.Render("~/Content/css/jqGrid")
+@Scripts.Render("~/bundles/Scripts/jqGrid")
 
 <script>
     //$.jgrid.defaults.width =1000;
@@ -54,7 +57,7 @@
             }
             <div class="col-md-4">
                 <label class="">Project Name</label>
-                @if (User.IsInRole("Customer"))
+                @if (User.IsInRole("Customer") || User.IsInRole("Project Manager"))
                 {
                     @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
                 }
@@ -136,7 +139,7 @@
                     }));
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("LoadInstance","Home")',
+                url: '@Url.Action("LoadInstanceforResource","Home")',
                 data: { 'ProjectId' : id},
                 success: function (data) {
                     var select = $("#IDInstance");
@@ -182,6 +185,7 @@
                  success: function (result) {
                      alert("New Live Instance updated");
                      LoadTable(IDInstance);
+                     $('#jqGrid').trigger( 'reloadGrid' );
                      //location.reload();
                  }
                 });
@@ -191,7 +195,7 @@
 <script>
     function LoadTable(Instance) {
         // altrows are set with table striped class for Boostrap
-        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered table-striped";
+        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
         var lastSelection;
         var editParameters = {
             keys: true,
@@ -293,7 +297,7 @@
                 },
                 {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                    sortable: false, align: 'center', editable: true, edittype: 'custom',
+                    sortable: false, align: 'Left', editable: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetPhaseDropDown()
@@ -301,9 +305,9 @@
                     }
                 },
                 { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true },
-                { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true },
+                { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true ,hidden: true},
                 {
-                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'center', editable: true,
+                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'left', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetRoleDropDown(),
@@ -317,23 +321,25 @@
                     },
 
                 },
-                //{
-                //    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: true,
-                //    cellEdit: true, edittype: 'select', formatter: 'select',
-                //    editoptions: {
-                //        value: GetUserDropDown()
-                //    }
-                //},
 
-
-                //Add Only
                 {
                     label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'center', editable: true, hidden: true,
-                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    cellEdit: true, edittype: 'select', formatter: 'select',//Add Only
                     editoptions: {
-                        value: GetMasterAddAssessment()
+                        value: GetMasterAddPreConversion()
                     }
                 },
+
+                {
+                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetUserDropDown()
+                    }
+                },
+
+
+
 
             ],
             loadonce: false,
@@ -354,8 +360,8 @@
             pager: "#jqGridPager",
             rownumbers: true,
             reload: true,
-            sortname: 'SequenceNum',
-            sortorder: 'desc',
+            //sortname: 'SequenceNum',
+            //sortorder: 'desc',
             afterSubmit: function () {
                 //debugger;
                 //location.reload(true);
@@ -369,7 +375,7 @@
 
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
-            { edit: true, add: true, del: true, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
+            { edit: true, add: true, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
                 editCaption: "The Edit Dialog",
@@ -383,6 +389,7 @@
                     $("#tr_SequenceNum").hide();
 
                     $("#Task").attr("disabled", "disabled");
+                     $("#RoleID").attr("disabled", "disabled");
                     //$("#RoleID").attr("disabled", "disabled");
                     UpdateUserByRole($("#RoleID").val());
                     //debugger;
@@ -404,6 +411,7 @@
                     $("#tr_SequenceNum").hide();
                     $("#tr_Task").hide();
                     $("#tr_RoleID").hide();
+                     $("#tr_UserID").hide();
                     //debugger;
                     //alert("In");
                     $("#tr_ActivityID").show();
@@ -517,18 +525,23 @@
          $("#UserID")
             .html("<option value=''>Loading User...</option>")
             .attr("disabled", "disabled");
+
         $.ajax({
             url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
            // data: '{RoleID: ' + JSON.stringify(RoleID)+'}',
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
             success: function (res) {
+                //debugger;
                 $("#UserID")
                     .removeAttr("disabled");
                  $('#UserID').empty()
                 $.each(res, function (data, value) {
+                    var d = "00000000-0000-0000-0000-000000000000"
+                    if (value.UserId!=d) {
+                         $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
+                    }
 
-                    $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
                 })
             }
                     //.html(citiesHtml);
@@ -537,7 +550,7 @@
 
     }
     $("#RoleID").change(function () {
-        debugger;
+       // debugger;
         var RoleID = $("#RoleID").val();
         UpdateUserByRole(RoleID)
     });
@@ -565,14 +578,14 @@
     });
 	return Parameters;
     }
-    function GetMasterAddAssessment() {
+    function GetMasterAddPreConversion() {
 	var Parameters = {};
     $.ajax({
         type: "POST",
-        url: '@Url.Action("MasterAddAssessment","Resource")',
+        url: '@Url.Action("MasterAddPreConversion","Resource")',
         //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
         dataType: "json",
-		async: false,
+        async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data) {
             //debugger;
