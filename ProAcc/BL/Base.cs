@@ -1496,7 +1496,10 @@ namespace ProAcc.BL
             return RA;
         }
 
-
+        public string Phase_Assessment = "Assessment";
+        public string Phase_PreConversion = "Pre Conversion";
+        public string Phase_PostConversion = "Post Conversion";
+        public string Phase_Validation = "Validation Testing";
 
         //private string User_ID = HttpContext.Current.Session["UserName"].ToString();
         //private string InstanceId = HttpContext.Current.Session["UserName"].ToString();
@@ -1616,3 +1619,4 @@ namespace ProAcc.BL
 
     }
 }
+

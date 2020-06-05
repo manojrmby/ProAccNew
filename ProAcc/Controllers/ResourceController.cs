@@ -90,7 +90,7 @@ namespace ProAcc.Controllers
 
         public ActionResult GetData()
         {
-            int PhaseId = 5;
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             string LoginID = Session["loginid"].ToString();
             List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
@@ -136,7 +136,8 @@ namespace ProAcc.Controllers
             Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
             List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
             //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
-             Result = _Base.Sp_GetMasterAdd(Instance,5);
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            Result = _Base.Sp_GetMasterAdd(Instance, PhaseId);
 
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
@@ -195,7 +196,7 @@ namespace ProAcc.Controllers
 
         public ActionResult GetDataPreConversion()
         {
-            int PhaseId = 2;
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             string LoginID = Session["loginid"].ToString();
             List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
@@ -209,6 +210,17 @@ namespace ProAcc.Controllers
                     Result.Add(projM);
                 }
             }
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult MasterAddPreConversion()
+        {
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
+            Result = _Base.Sp_GetMasterAdd(Instance, PhaseId);
 
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
@@ -322,7 +334,7 @@ namespace ProAcc.Controllers
 
         public ActionResult GetDataPostConversion()
         {
-            int PhaseId = 3;
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             string LoginID = Session["loginid"].ToString();
             List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
@@ -340,6 +352,16 @@ namespace ProAcc.Controllers
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult MasterAddPostConversion()
+        {
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
+            Result = _Base.Sp_GetMasterAdd(Instance, PhaseId);
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ResourceValidation()
         {
             int userType = 0;
@@ -386,7 +408,7 @@ namespace ProAcc.Controllers
 
         public ActionResult GetDataValidation()
         {
-            int PhaseId = 4;
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             string LoginID = Session["loginid"].ToString();
             List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
@@ -400,6 +422,17 @@ namespace ProAcc.Controllers
                     Result.Add(projM);
                 }
             }
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult MasterAddValidation()
+        {
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
+            Result = _Base.Sp_GetMasterAdd(Instance, PhaseId);
 
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
