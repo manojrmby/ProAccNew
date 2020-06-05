@@ -7,9 +7,12 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using ProACC_DB;
 using System.Data.Entity;
+using ProAcc.BL;
 
 namespace ProAcc.Controllers
 {
+    [CheckSessionTimeOut]
+    [Authorize(Roles = "Admin")]
     public class InstanceCreationController : Controller
     {
         ProAccEntities db = new ProAccEntities();

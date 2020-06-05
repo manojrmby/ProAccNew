@@ -56,7 +56,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cre_on)
+                @Html.DisplayFor(modelItem => item.Cre_on,"{MM/dd/yyyy}")
             </td>
             @Html.HiddenFor(modelItem => item.UserId)
             <td>
@@ -99,7 +99,8 @@
 <script>
     $(document).ready(function () {
         $("#tblUserTable").dataTable({
-            "order": [[2, 'desc']],
+           //"order": [[1, 'desc']],
+            "ordering": false,
             "columnDefs": [
                 {
                     "targets": [1],

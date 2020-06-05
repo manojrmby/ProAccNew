@@ -41,5 +41,7 @@ namespace ProAcc.BL.Model
 		public DateTime Modified_On { get; set; }
 		public Guid Modified_by { get; set; }
 		public bool IsDeleted { get; set; }
+
+		public bool ValidationStatus { get; set; }
 	}
 }

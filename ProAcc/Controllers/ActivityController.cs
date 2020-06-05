@@ -6,10 +6,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using ProAcc.BL;
 using ProACC_DB;
 
 namespace ProAcc.Controllers
 {
+    [CheckSessionTimeOut]
+    [Authorize(Roles = "Admin")]
     public class ActivityController : Controller
     {
         ProAccEntities db = new ProAccEntities();

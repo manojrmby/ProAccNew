@@ -15,11 +15,12 @@ namespace ProAcc.Controllers
         Base _Base = new Base();
         LogHelper _Log = new LogHelper();
         // GET: Login
-
+       
         public ActionResult Login()
         {
             return View();
         }
+       
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -27,6 +28,7 @@ namespace ProAcc.Controllers
             return RedirectToAction("Login");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken()]
         public ActionResult Validate(UserModel user, string ReturnUrl)
         {
             try

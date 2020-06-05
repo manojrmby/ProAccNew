@@ -532,14 +532,11 @@
     <Compile Include="BL\Base.cs" />
     <Compile Include="BL\DBHelper.cs" />
     <Compile Include="BL\Model\Common.cs" />
-    <Compile Include="Controllers\PhaseMasterController.cs" />
     <Compile Include="Controllers\PreConvertionController.cs" />
     <Compile Include="Controllers\ProjectCreationController.cs" />
     <Compile Include="Controllers\ProjectMonitorController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
-    <Compile Include="Controllers\StatusController.cs" />
-    <Compile Include="Controllers\TeamMasterController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -617,6 +614,8 @@
     <Content Include="Views\Resource\ResourcePostConversion.cshtml" />
     <Content Include="Views\Resource\ResourcePreConversion.cshtml" />
     <Content Include="Views\Resource\ResourceValidation.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\_RoleIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

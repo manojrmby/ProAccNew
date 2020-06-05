@@ -126,7 +126,7 @@ namespace ProAcc.Controllers
             if (!String.IsNullOrEmpty(ProjectId)&& ProjectId !="0")
             {
                 var ID = Guid.Parse(ProjectId);
-                var query = from u in db.Instances where u.Project_ID == ID  select u;
+                var query = from u in db.Instances where u.Project_ID == ID && u.isActive == true select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)
@@ -187,7 +187,7 @@ namespace ProAcc.Controllers
             if (!String.IsNullOrEmpty(ProjectId) && ProjectId != "0")
             {
                 var ID = Guid.Parse(ProjectId);
-                var query = from u in db.Instances where u.Project_ID == ID  select u;
+                var query = from u in db.Instances where u.Project_ID == ID && u.isActive == true select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)

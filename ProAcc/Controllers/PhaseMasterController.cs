@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace ProAcc.Controllers
 {
     [CheckSessionTimeOut]
-    [Authorize(Roles = "Admin,Consultant")]
+    [Authorize(Roles = "Admin")]
     public class PhaseMasterController : Controller
     {
         ProAccEntities db = new ProAccEntities();

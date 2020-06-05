@@ -27,7 +27,7 @@
 				}
 				<div class="col-md-4">
 					<label class="">Project Name</label>
-					@if (User.IsInRole("Customer"))
+					@if (User.IsInRole("Customer")|| User.IsInRole("Project Manager"))
 					{
 						@Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
 					}
