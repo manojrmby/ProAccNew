@@ -698,9 +698,26 @@
                  url: '@Url.Action("SubmitInstance", "Home")',
                  type: "POST",
                  data: { 'IDInstance': IDInstance },
-                 success: function (result) {
-                     alert("New Live Instance updated");
-                     location.reload();
+             success: function (result) {
+                 $.alert({
+                     title: 'Alert alert!',
+                     content: 'This is a simple alert. <br> with some <strong>HTML</strong> <em>contents</em>',
+                     icon: 'fa fa-rocket',
+                     animation: 'scale',
+                     closeAnimation: 'scale',
+                     buttons: {
+                         okay: {
+                             text: 'Okay',
+                             btnClass: 'btn-blue'
+                         }
+                     },
+                     close: function (event, ui) {
+                         location.reload();
+                     }
+                 });
+                 // alert("New Live Instance updated");
+                 //debugger;
+                     //location.reload();
                  }
                 });
     });

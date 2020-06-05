@@ -152,11 +152,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Asset\css\bootstrap.min.css" />
+    <Content Include="Asset\css\jquery-confirm.min.css" />
     <Content Include="Asset\css\LayoutStyles.css" />
     <Content Include="Asset\css\main.css" />
     <Content Include="Asset\css\Menu.css" />
     <Content Include="Asset\css\main_Login.css" />
     <Content Include="Asset\css\style.css" />
+    <Content Include="Asset\Jquery\jquery-confirm.min.js" />
     <Content Include="Content\fonts\fa-solid-900.svg" />
     <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.css" />
     <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.min.css" />
@@ -497,6 +499,7 @@
     <Content Include="Asset\Jquery\jqGrid\css\fonts\octicons.eot" />
     <Content Include="Asset\Jquery\jqGrid\css\fonts\octicons.ttf" />
     <Content Include="Asset\Jquery\jqGrid\css\fonts\octicons.woff2" />
+    <Content Include="Asset\css\jquery-confirm.less" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Web.config" />
     <Content Include="Views\shared\_Layout.cshtml" />
