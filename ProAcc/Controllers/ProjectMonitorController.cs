@@ -84,14 +84,26 @@ namespace ProAcc.Controllers
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SubmitProjectMonitor(DateTime Actual_St_Date)
+        public ActionResult SubmitProjectMonitor(Guid id, bool Task_Other_Environment, bool Dependency,String Pending,bool Delay_occurred, double EST_hours,double Actual_St_hours,int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date,String Notes)
             //, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime  Actual_St_Date, DateTime Actual_En_Date)
          {
-            //Data.Instance = Guid.Parse(Session["InstanceId"].ToString());
-            //Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
-            bool Result=false;
             ProjectMonitorModel Data = new ProjectMonitorModel();
+            Data.Instance = Guid.Parse(Session["InstanceId"].ToString());
+            Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
+            bool Result=false;
+            Data.Id = id;
+            Data.Task_Other_Environment = Task_Other_Environment;
+            Data.Dependency = Dependency;
+            Data.Pending = Pending;
+            Data.Delay_occurred = Delay_occurred;
+            Data.StatusId = StatusId;
+            Data.EST_hours = EST_hours;
+            Data.Actual_St_hours = Actual_St_hours;
+            Data.Planed__St_Date = Planed__St_Date;
+            Data.Planed__En_Date = Planed__En_Date;
             Data.Actual_St_Date = Actual_St_Date;
+            Data.Actual_En_Date = Actual_En_Date;
+            Data.Notes = Notes;
             if (Data.Id==Guid.Empty)
             {
                 if (Data.Instance!=Guid.Empty)
