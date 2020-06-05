@@ -286,40 +286,134 @@
         }
     };
 
-        var DateInput = function (element, options) {
+        //var DateInput = function (element, options) {
 
-            //var ID = options.id;
-            //var Result_PLST = ID.indexOf('Planed__St_Date');
-            //if (Result_PLST == 2)
-            //{
-            //    alert("HOOO");
-            //}
-            //var Cell_Date = $("#" + ID).val();
-            //if (Cell_Date == "17/10/1904") {
-            //    debugger;
-            //    var currentDate=new Date();
-            //     $("#" + ID).val(currentDate);
-            //}
-           // debugger;
+        //    //var ID = options.id;
+        //    //var Result_PLST = ID.indexOf('Planed__St_Date');
+        //    //if (Result_PLST == 2)
+        //    //{
+        //    //    alert("HOOO");
+        //    //}
+        //    //var Cell_Date = $("#" + ID).val();
+        //    //if (Cell_Date == "17/10/1904") {
+        //    //    debugger;
+        //    //    var currentDate=new Date();
+        //    //     $("#" + ID).val(currentDate);
+        //    //}
+        //   // debugger;
 
 
+        //    $(element).on('keypress', function (e) {
+        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
+        //        e.preventDefault();
+        //    })
+        //    $(element).datepicker({
+        //        duration: "slow",
+        //        defaultDate: +1,
+        //        altFormat: "mm/dd/yy",
+        //        dateFormat: "mm/dd/yy",
+        //        autoSize: false,
+        //        changeYear: true,
+        //        changeMonth: true,
+        //        showButtonPanel: false,
+        //        showWeek: false
+        //    //}).datepicker("setDate", new Date());
+        //     }).datepicker();
+        //};
+
+
+
+
+        var Planed_StartDate = function (element, options) {
+            var ID = options.rowId;
             $(element).on('keypress', function (e) {
-                //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
                 e.preventDefault();
             })
             $(element).datepicker({
                 duration: "slow",
-                defaultDate: +1,
-                altFormat: "mm/dd/yy",
-                dateFormat: "mm/dd/yy",
+               // defaultDate: +1,
+                //altFormat: "mm/dd/yy",
+                dateFormat: "dd/mm/yy",
                 autoSize: false,
                 changeYear: true,
                 changeMonth: true,
                 showButtonPanel: false,
-                showWeek: false
+                showWeek: false,
+                onClose: function (selectedDate) {
+                    $("#"+ID+"_Planed__En_Date").datepicker("option", "minDate", selectedDate);
+                },
             //}).datepicker("setDate", new Date());
              }).datepicker();
         };
+        var Planed_EndDate = function (element, options) {
+           var ID = options.rowId;
+            //var ST_Date=$('#').val();
+            $(element).on('keypress', function (e) {
+                e.preventDefault();
+            })
+            $(element).datepicker({
+                duration: "slow",
+               // defaultDate: +1,
+                //altFormat: "mm/dd/yy",
+                dateFormat: "dd/mm/yy",
+                autoSize: false,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: false,
+                showWeek: false,
+                onClose: function (selectedDate) {
+                    $("#"+ID+"_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
+                }
+            //}).datepicker("setDate", new Date());
+             }).datepicker();
+        };
+
+
+        var Actual_St_Date = function (element, options) {
+            var ID = options.rowId;
+            $(element).on('keypress', function (e) {
+                e.preventDefault();
+            })
+            $(element).datepicker({
+                duration: "slow",
+               // defaultDate: +1,
+                //altFormat: "mm/dd/yy",
+                 dateFormat: "dd/mm/yy",
+                autoSize: false,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: false,
+                showWeek: false,
+                onClose: function (selectedDate) {
+                    $("#"+ID+"_Actual_En_Date").datepicker("option", "minDate", selectedDate);
+                },
+            //}).datepicker("setDate", new Date());
+             }).datepicker();
+        };
+        var Actual_En_Date = function (element, options) {
+           var ID = options.rowId;
+            //var ST_Date=$('#').val();
+            $(element).on('keypress', function (e) {
+                e.preventDefault();
+            })
+            $(element).datepicker({
+                duration: "slow",
+               // defaultDate: +1,
+                //altFormat: "mm/dd/yy",
+                dateFormat: "dd/mm/yy",
+                autoSize: false,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: false,
+                showWeek: false,
+                onClose: function (selectedDate) {
+                    $("#"+ID+"_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+                }
+            //}).datepicker("setDate", new Date());
+             }).datepicker();
+        };
+
+
         //var DateInput1 = function (element, options) {
 
         //    //var ID = options.id;
@@ -516,25 +610,25 @@
                 {
                     label: 'Planned Start Date', name: 'Planed__St_Date',
                     width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
-                    editoptions: { dataInit: DateInput, classes: 'DateClass' }
+                    editoptions: { dataInit: Planed_StartDate, classes: 'DateClass' }
                 },
                 {
                     label: 'Actual Start Date/Time (UTC)', name: 'Actual_St_Date',
                     width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
-                    editoptions: { dataInit: DateInput }
+                    editoptions: { dataInit: Actual_St_Date }
 
                 },
                 {
                     label: 'Planned End Date', name: 'Planed__En_Date',
                     width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
-                    editoptions: { dataInit: DateInput }
+                    editoptions: { dataInit: Planed_EndDate }
                 },
                 {
                     label: 'Actual End Date/Time (UTC)', name: 'Actual_En_Date',
                     width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
-                    editoptions: { dataInit: DateInput }
+                    editoptions: { dataInit: Actual_En_Date }
                 },
                 {
                     label: 'Notes/Remarks', name: 'Notes', edittype: "textarea",
@@ -575,7 +669,7 @@
                         //},
                         editformbutton: false,//Determines if popup should open or not
                         afterSave: function (rowid, response, postdata, options) {
-                            alert("success");
+                            //alert("success");
                             //debugger;
                             Show_HideEdit();
                             $('#jqGrid').trigger( 'reloadGrid' );
@@ -618,10 +712,11 @@
             onSelectRow: editRow,
             serializeRowData: function (postdata) {
                 debugger;
-                var filterResult;
-                var jsonResult;
-                var ActualStDate = postdata.Actual_St_Date;
-
+                //var filterResult;
+                //var jsonResult;
+                //var ActualStDate = postdata.Actual_St_Date;
+                //ActualStDate = new Date(ActualStDate).toUTCString();
+                //postdata.Actual_St_Date = ActualStDate;
 
                        //if (tableSrc == "")
                        //    jsonResult = $.parseJSON(commentDetails);
@@ -647,14 +742,28 @@
                 //       }
 
                 //filterResult = JSON.stringify(newResult);
-               
-                       $.ajax({
-                           url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor")',
-                           datatype: 'json',
-                           //data: { 'resultData': filterResult, 'action': postdata.oper },
-                           data: { 'Data': postdata},
-                           type: 'POST',
-                           //success: OnCompleteComments,
+                var Planed__St_Date = postdata.Planed__St_Date;
+                var Planed__En_Date = postdata.Planed__En_Date;
+                var Actual_St_Date = postdata.Actual_St_Date;
+                var Actual_En_Date = postdata.Actual_En_Date;
+                var Status = Confirm();
+                if (Status) {
+                    $.ajax({
+                    url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor")',
+                    datatype: 'json',
+                    //data: { 'resultData': filterResult, 'action': postdata.oper },
+                    data: {
+                        'Data': postdata
+                    },
+                    type: 'POST',
+                    success: function (Result) {
+                        if (Result) {
+                            alert("success");
+                        }
+                        else {
+                            alert("Error");
+                        }
+                    },
                            error: function (xhr, status, error) {
                                if (xhr.statusText == "Session TimeOut/UnAuthorized") {
                                    alert(xhr.statusText);
@@ -664,8 +773,13 @@
                                    alert(xhr.responseText);
                            }
                        });
+                }
+                
                // alert("me");
             },
+            afterrestorefunc: function (response) {
+                alert("afterrestorefunc");
+    },
     //        afterEditCell: function (rowid, cellname, value, iRow, iCol) {
     //            alert("Manoj");
     //    $('#list').jqGrid('getCell', rowid, iCol).focus();
@@ -1043,6 +1157,19 @@
         }
     });
 	return Parameters;
+    }
+    function Confirm() {
+        var input = $("<input />");
+        var Result;
+        input.attr("type", "hidden").attr("name", "confirm_value");
+        if (confirm("Do you want to save data?")) {
+            input.val("Yes");
+            Result = true;
+        } else {
+            input.val("No");
+            Result = false;
+        }
+        return Result;
     }
 </script>
 

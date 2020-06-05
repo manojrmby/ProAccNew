@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ProAcc.BL.Model
 {
@@ -30,8 +27,11 @@ namespace ProAcc.BL.Model
 		public int StatusId { get; set; }
 		public double EST_hours { get; set; }
 		public double Actual_St_hours { get; set; }
+		
 		public DateTime Planed__St_Date { get; set; }
+		
 		public DateTime Actual_St_Date { get; set; }
+		
 		public DateTime Planed__En_Date { get; set; }
 		public DateTime Actual_En_Date { get; set; }
 		public string Notes { get; set; }

@@ -1413,6 +1413,7 @@ namespace ProAcc.BL
                 dB.addIn("@Id", PM.Id);
 
                 dB.ExecuteScalar();
+                Status = true;
             }
             catch (Exception ex )
             {
