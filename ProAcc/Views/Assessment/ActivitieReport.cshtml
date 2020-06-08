@@ -110,7 +110,8 @@
 	}
 </div>
 <script type="text/javascript" charset="utf-8">
-	function Ajax_Activities_Bar(Phase,condition) {
+    function Ajax_Activities_Bar(Phase,condition) {
+       
 		$.ajax({
 			type: "POST",
 			url: '@Url.Action("GetActivitiesReport_Bar")',
@@ -278,7 +279,7 @@
 		var Ses_InstanceId = '@Session["InstanceId"]';
         if (Ses_InstanceId != "") {
             Ajax_Activities_Bar(Phase, condition);
-			TableAjax()
+            TableAjax(Phase, condition);
         }
 		$("#Phase").change(function () {
 
@@ -287,6 +288,7 @@
 			var Ses_InstanceId = '@Session["InstanceId"]';
             if (Ses_InstanceId != "") {
                 Ajax_Activities_Bar(Phase, condition);
+				TableAjax(Phase, condition);
             }
         });
 		$("#condition").change(function () {
@@ -296,6 +298,7 @@
 			var Ses_InstanceId = '@Session["InstanceId"]';
             if (Ses_InstanceId != "") {
                 Ajax_Activities_Bar(Phase, condition);
+				TableAjax(Phase, condition);
             }
         });
 
@@ -307,11 +310,12 @@
    //     $('.dataTables_length').addClass('bs-select');
     });
 
-    function TableAjax() {
+    function TableAjax(Phase, condition) {
+        
 			$.ajax({
                 type: "POST",
                 url: '@Url.Action("ActivitiesTable")',
-                //data: '{LOB: ' + JSON.stringify(a) + '}',
+                data: '{Phase: ' + JSON.stringify(Phase) + ',condition:'+JSON.stringify(condition)+'}',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (Data) {

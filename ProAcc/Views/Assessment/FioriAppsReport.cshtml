@@ -222,8 +222,8 @@
 	//	window.myRadialGauge = new Chart(ctx, config);
 
 	//}
-	function Ajax_Call(a) {
-
+    function Ajax_Call(a) {
+        debugger;
 		$.ajax({
 			type: "POST",
 			url: '@Url.Action("GetFioriAppsReportt_Bar")',
@@ -443,10 +443,11 @@
         //});
 
     function TableAjax(a) {
+        debugger;
 			$.ajax({
                 type: "POST",
                 url: '@Url.Action("FioriAppsTable")',
-               // data: '{LOB: ' + JSON.stringify(a) + '}',
+                data: '{Input: ' + JSON.stringify(a) + '}',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (Data) {
