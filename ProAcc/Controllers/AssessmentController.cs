@@ -13,7 +13,7 @@ using static ProAcc.BL.Model.Common;
 namespace ProAcc.Controllers
 {
     [CheckSessionTimeOut]
-    [Authorize(Roles = "Admin,Consultant,Customer,Project Manager")]
+    [Authorize(Roles = "Consultant,Customer,Project Manager")]
     public class AssessmentController : Controller
     {
        
@@ -22,7 +22,7 @@ namespace ProAcc.Controllers
         Base _Base = new Base();
         private Guid InstanceId = Guid.Empty;
         // GET: Assessment
-        [Authorize(Roles = "Admin,Consultant")]
+        [Authorize(Roles = "Consultant")]
         public ActionResult CreateAnalysis()
         {
 
@@ -306,7 +306,7 @@ namespace ProAcc.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Consultant")]
+        [Authorize(Roles = "Consultant")]
         public ActionResult Upload()
         {
             //string Cust_ID = Request.Params["Cust_ID"].ToString();

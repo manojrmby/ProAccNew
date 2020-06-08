@@ -4,10 +4,7 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 <style>
-    span{
-        color: red;
-    font-size: 14px;
-    }
+  
 </style>
 <a class="card-title">Update Customer</a>
 <hr />
@@ -26,7 +23,7 @@
                     @*<span id="lblCompanyName" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblCompanyName">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCompanyName">&nbsp;</span>
                 </div>
             </div>
 
@@ -42,7 +39,7 @@
                     </select>
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIndustrySector">&nbsp;</span>
                 </div>
             </div>
 
@@ -62,7 +59,7 @@
                     @*<span id="lblIndustrySector" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblContact">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblContact">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -76,7 +73,7 @@
                     @*<span id="lblCustomerEmail" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblCustomerEmail">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerEmail">&nbsp;</span>
                 </div>
             </div>
 
@@ -87,7 +84,7 @@
                     @*<span id="lblCustomerPhone" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblCustomerPhone">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerPhone">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -282,9 +279,26 @@
                     //dataType: "json",
                     success: function (response) {
                         if (response == "success") {
-                            alert("Customers Edited successfully!");
-                            var url = $("#RedirectToCustomerList").val();
+                            $.alert({
+                                title: 'Success !',
+                                content: 'Customers Edited <strong>Successfully</strong>..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                icon: 'fa fa-rocket',
+                                animation: 'scale',
+                                closeAnimation: 'scale',
+                                buttons: {
+                                    okay: {
+                                        text: 'Okay',
+                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                        action: function (event, ui) {
+                                            $(this).remove();
+                                           var url = $("#RedirectToCustomerList").val();
                             location.href = url;
+                                        }
+                                    }
+                                }
+                            });
+
+                            
                             //loadCustomer();
                             //$("#txtCompanyName").val("");
                             //$("#txtIndustrySector").val("");

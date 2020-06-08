@@ -1172,16 +1172,31 @@
 	});
 	$('#SubmitInstance').click(function () {
 		var IDInstance = $("#IDInstance").val();
-		 $.ajax({
-					//url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
-				 url: '@Url.Action("SubmitInstance", "Home")',
-				 type: "POST",
-				 data: { 'IDInstance': IDInstance },
-				 success: function (result) {
-					 alert("New Live Instance updated");
-					 location.reload();
-				 }
-				});
+        $.ajax({
+            //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+            url: '@Url.Action("SubmitInstance", "Home")',
+            type: "POST",
+            data: { 'IDInstance': IDInstance },
+            success: function (result) {
+                $.alert({
+                    title: 'Alert !',
+                    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                    icon: 'fa fa-rocket',
+                    animation: 'scale',
+                    closeAnimation: 'scale',
+                    buttons: {
+                        okay: {
+                            text: 'Okay',
+                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            action: function (event, ui) {
+                                $(this).remove();
+                                location.reload();
+                            }
+                        }
+                    }
+                });
+            }
+        });
 	});
 
 </script>

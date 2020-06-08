@@ -129,7 +129,88 @@
 
     $(".btnActivityDelete").on("click", function () {
         var id = $(this).next().val();
-       var retVal = confirm("Do you want to delete ?");
+        $.confirm({
+                            title: 'Delete !',
+                            content: 'Do you want to delete ?',
+                            icon: 'fa fa-trash-o',
+                            animation: 'scale',
+                            closeAnimation: 'scale',
+                            opacity: 0.5,
+                            buttons: {
+                                'confirm': {
+                                    text: 'Yes',
+                                    btnClass: 'btn-blue',
+                                    action: function () {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: '@Url.Action("Delete","Activity")',
+                                            data: { id: id },
+                                            dataType: "json",
+                                            success: function (response) {
+                                                if (response == "success") {
+                                                    $.alert({
+                                                        title: 'Alert !',
+                                                        content: 'Activity deleted successfully!..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                                        icon: 'fa fa-rocket',
+                                                        animation: 'scale',
+                                                        closeAnimation: 'scale',
+                                                        buttons: {
+                                                            okay: {
+                                                                text: 'Okay',
+                                                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                                                action: function (event, ui) {
+                                                                    $(this).remove();
+                                                                    loadActivityCreation();
+                                                                    location.reload();
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+                                                    //alert("");
+
+                                                }
+                                            },
+                                            failure: function (response) {
+                                                alert(response.responseText);
+                                            },
+                                            error: function (response) {
+                                                alert(response.responseText);
+                                            }
+                                        });
+                                        //$.confirm({
+                                        //    title: 'This maybe critical',
+                                        //    content: 'Critical actions can have multiple confirmations like this one.',
+                                        //    icon: 'fa fa-warning',
+                                        //    animation: 'scale',
+                                        //    closeAnimation: 'zoom',
+                                        //    buttons: {
+                                        //        confirm: {
+                                        //            text: 'Yes, sure!',
+                                        //            btnClass: 'btn-orange',
+                                        //            action: function(){
+                                        //                $.alert('A very critical action <strong>triggered!</strong>');
+                                        //            }
+                                        //        },
+                                        //        cancel: function(){
+                                        //            $.alert('you clicked on <strong>cancel</strong>');
+                                        //        }
+                                        //    }
+                                        //});
+                                    }
+                                },
+                                cancel: function(){
+                                    $.alert('You clicked on <strong>cancel</strong>');
+                                },
+                                //moreButtons: {
+                                //    text: 'something else',
+                                //    action: function(){
+                                //        $.alert('you clicked on <strong>something else</strong>');
+                                //    }
+                                //},
+                            }
+                        });
+
+       @*var retVal = confirm("Do you want to delete ?");
                if( retVal == true ) {
                 $.ajax({
                 type: "POST",
@@ -138,9 +219,26 @@
                 dataType: "json",
                 success: function (response) {
                     if (response == "success") {
-                        alert("Activity deleted successfully!");
-                        loadActivityCreation();
-                        location.reload();
+                        $.alert({
+                        title: 'Alert !',
+                        content: 'Activity deleted successfully!..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                        icon: 'fa fa-rocket',
+                        animation: 'scale',
+                        closeAnimation: 'scale',
+                        buttons: {
+                            okay: {
+                                text: 'Okay',
+                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                action: function (event, ui) {
+                                    $(this).remove();
+                                     loadActivityCreation();
+                                     location.reload();
+                                }
+                            }
+                        }
+                    });
+                        //alert("");
+                       
                     }
                 },
                 failure: function (response) {
@@ -153,6 +251,6 @@
                   return true;
                } else {
                   return false;
-               }
+               }*@
     });
 </script>

@@ -35,13 +35,12 @@ namespace ProAcc.BL.Model
 		public DateTime Planed__En_Date { get; set; }
 		public DateTime Actual_En_Date { get; set; }
 		public string Notes { get; set; }
-		public bool isActive { get; set; }
-		public DateTime Cre_on { get; set; }
+		//public bool isActive { get; set; }
+		//public DateTime Cre_on { get; set; }
 		public Guid Cre_By { get; set; }
 		public DateTime Modified_On { get; set; }
 		public Guid Modified_by { get; set; }
-		public bool IsDeleted { get; set; }
+		//public bool IsDeleted { get; set; }
 
-		public bool ValidationStatus { get; set; }
 	}
 }

@@ -26,6 +26,10 @@
 
     <script src="~/Asset/Jquery/jquery-confirm.min.js"></script>
     <style>
+        .Class_span{
+        color: red;
+    font-size: 14px;
+    }
         @*
  .loader {
   animation: spin 1s infinite linear;
@@ -310,7 +314,7 @@
 
                                     <li>
                                         @*Assessment*@
-                                        @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager"))
+                                        @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
                                         {
                                             <a>
                                                 <!-- <i class="metismenu-icon pe-7s-hourglass"></i> -->

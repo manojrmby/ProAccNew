@@ -85,7 +85,6 @@ namespace ProAcc.Controllers
         }
 
         public ActionResult SubmitProjectMonitor(Guid id, bool Task_Other_Environment, bool Dependency,String Pending,bool Delay_occurred, double EST_hours,double Actual_St_hours,int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date,String Notes)
-            //, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime  Actual_St_Date, DateTime Actual_En_Date)
          {
             ProjectMonitorModel Data = new ProjectMonitorModel();
             Data.Instance = Guid.Parse(Session["InstanceId"].ToString());
@@ -104,6 +103,7 @@ namespace ProAcc.Controllers
             Data.Actual_St_Date = Actual_St_Date;
             Data.Actual_En_Date = Actual_En_Date;
             Data.Notes = Notes;
+
             if (Data.Id==Guid.Empty)
             {
                 if (Data.Instance!=Guid.Empty)
