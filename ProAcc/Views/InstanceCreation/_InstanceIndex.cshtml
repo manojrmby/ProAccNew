@@ -79,7 +79,7 @@
         });
     });
 
-    $(".btnInstanceDelete").on("click", function () {
+    @*$(".btnInstanceDelete").on("click", function () {
         var id = $(this).next().val();
        var retVal = confirm("Do you want to delete ?");
                if( retVal == true ) {
@@ -111,5 +111,82 @@
                } else {
                   return false;
                }
+    });*@
+
+    $(".btnInstanceDelete").on("click", function () {
+        var id = $(this).next().val();
+        $.confirm({
+              title: 'Delete !',
+              content: 'Do you want to delete ?',
+              icon: 'fa fa-trash-o',
+              animation: 'scale',
+              closeAnimation: 'scale',
+              opacity: 0.5,
+              buttons: {
+                 'confirm': {
+                    text: 'Yes',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                      $.ajax({
+                          type: "POST",
+                           url: '@Url.Action("Delete","InstanceCreation")',
+                           data: { id: id },
+                           dataType: "json",
+                           success: function (response) {
+                              if (response == "success") {
+                                 $.alert({
+                                    title: 'Alert !',
+                                    content: 'Instance deleted successfully..!',
+                                    icon: 'fa fa-rocket',
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                       okay: {
+                                          text: 'Okay',
+                                          btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                            action: function (event, ui) {
+                                                  location.reload();
+                                                    $("#txtInstanceName").val("")
+                                                    $("#drpProject").val(0)
+                                            }
+                                       }
+                                    }
+                                 });
+                              }
+                              else {
+                               $.alert({
+                                 title: 'Alert !',
+                                 content: 'Project monitor is on live..!',
+                                 icon: 'fa fa-rocket',
+                                 animation: 'scale',
+                                 closeAnimation: 'scale',
+                                  buttons: {
+                                   okay: {
+                                     text: 'Okay',
+                                     btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                     action: function (event, ui) {
+                                        location.reload();
+                                         $("#txtInstanceName").val("")
+                                         $("#drpProject").val(0)
+                                     }
+                                   }
+                                  }
+                               });
+                              }
+                           },
+                           failure: function (response) {
+                              alert(response.responseText);
+                           },
+                           error: function (response) {
+                               alert(response.responseText);
+                           }
+                      });
+                    }
+                 },
+                 cancel: function(){
+                       $.alert('You clicked on <strong>cancel</strong>');
+                 },
+              }
+         });
     });
 </script>

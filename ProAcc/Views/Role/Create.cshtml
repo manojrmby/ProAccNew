@@ -92,9 +92,23 @@
                             data: { RoleName: RoleName },
                             success: function (response) {
                                 if (response == "success") {
-                                    alert("Role Saved successfully!");
-                                    resetRole();
-                                    loadRole();
+                                    $.alert({
+                                        title: 'Success !',
+                                        content: 'Role Saved successfully..!',
+                                        icon: 'fa fa-rocket',
+                                        animation: 'scale',
+                                        closeAnimation: 'scale',
+                                        buttons: {
+                                            okay: {
+                                                text: 'Okay',
+                                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                                action: function (event, ui) {
+                                                    resetRole();
+                                                    loadRole();
+                                                }
+                                            }
+                                        }
+                                    });                                    
                                 }
                             },
                             failure: function (response) {
@@ -147,11 +161,31 @@
                     data: { model : model},
                     success: function (response) {
                         if (response == "success") {
-                            alert("Role Edited successfully!");
-                            resetRole();
-                            loadRole();
-                             $("#RoleCreation").show();
-                             $("#RoleUpdation").hide();
+                            $.alert({
+                               title: 'Success !',
+                               content: 'Role Edited successfully..!',
+                               icon: 'fa fa-rocket',
+                               animation: 'scale',
+                               closeAnimation: 'scale',
+                               buttons: {
+                                  okay: {
+                                     text: 'Okay',
+                                      btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                       action: function (event, ui) {
+                                          resetRole();
+                                           loadRole();
+                                           $("#RoleCreation").show();
+                                            $("#RoleUpdation").hide();
+                                       }
+                                  }
+                               }
+                            });  
+
+                            //alert("Role Edited successfully!");
+                            //resetRole();
+                            //loadRole();
+                            // $("#RoleCreation").show();
+                            // $("#RoleUpdation").hide();
                         }
                     },
                     failure: function (response) {

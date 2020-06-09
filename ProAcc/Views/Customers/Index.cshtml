@@ -97,7 +97,7 @@
         });
     });
 
-    $(".btnDelete").on("click", function () {
+    @*$(".btnDelete").on("click", function () {
         var id = $(this).next().val();
        var retVal = confirm("Do you want to delete ?");
                if( retVal == true ) {
@@ -161,5 +161,85 @@
                } else {
                   return false;
                }
+    });*@
+
+    $(".btnDelete").on("click", function () {
+        var id = $(this).next().val();
+        $.confirm({
+              title: 'Delete !',
+              content: 'Do you want to delete ?',
+              icon: 'fa fa-trash-o',
+              animation: 'scale',
+              closeAnimation: 'scale',
+              opacity: 0.5,
+              buttons: {
+                 'confirm': {
+                    text: 'Yes',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                      $.ajax({
+                          type: "POST",
+                           url: '@Url.Action("Delete","Customers")',
+                           data: { id: id },
+                           dataType: "json",
+                           success: function (response) {
+                              if (response == "success") {
+                                 $.alert({
+                                    title: 'Alert !',
+                                    content: 'Customer deleted successfully!..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                    icon: 'fa fa-rocket',
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                       okay: {
+                                          text: 'Okay',
+                                          btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                            action: function (event, ui) {
+                                               location.reload();
+                                                $("#txtCompanyName").val("");
+                                                $("#txtIndustrySector").val("");
+                                                $("#txtCustomerPhone").val("");
+                                                $("#txtCustomerEmail").val("");
+                                                $("#btnCustomerUpdate").hide();
+                                                $("#btnCustomerCreate").show();
+                                            }
+                                       }
+                                    }
+                                 });
+                              }
+                              else {
+                               $.alert({
+                                 title: 'Alert !',
+                                 content: 'Customer having a project in active..!',
+                                 icon: 'fa fa-rocket',
+                                 animation: 'scale',
+                                 closeAnimation: 'scale',
+                                  buttons: {
+                                   okay: {
+                                     text: 'Okay',
+                                     btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                     action: function (event, ui) {
+                                        $(this).remove();
+                                        location.reload();
+                                     }
+                                   }
+                                  }
+                               });
+                              }
+                           },
+                           failure: function (response) {
+                              alert(response.responseText);
+                           },
+                           error: function (response) {
+                               alert(response.responseText);
+                           }
+                      });
+                    }
+                 },
+                 cancel: function(){
+                       $.alert('You clicked on <strong>cancel</strong>');
+                 },
+              }
+         });
     });
 </script>

@@ -163,10 +163,24 @@
                 data: { InstaceName: InstanceName, Project_ID: Project },
                     success: function (response) {
                         if (response == "success") {
-                            alert("Instance Saved successfully!");
-                            loadInstanceTable();
-                            $("#txtInstanceName").val("")
-                            $("#drpProject").val(0)
+                            $.alert({
+                                title: 'Success !',
+                                content: 'Instance Saved successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                icon: 'fa fa-rocket',
+                                animation: 'scale',
+                                closeAnimation: 'scale',
+                                buttons: {
+                                    okay: {
+                                        text: 'Okay',
+                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                        action: function (event, ui) {
+                                            loadInstanceTable();
+                                            $("#txtInstanceName").val("")
+                                            $("#drpProject").val(0)
+                                        }
+                                    }
+                                }
+                            });
                         }
                         else {
                             $("#lblInstanceName").html("This Instance Name is already in use for this project").show().fadeOut(5000);
@@ -216,12 +230,32 @@
                     data: { model : model},
                     success: function (response) {
                         if (response == "success") {
-                            alert("Instance Edited successfully!");
-                            loadInstanceTable();
-                            $("#txtInstanceName").val("")
-                            $("#drpProject").val(0)
-                            $("#btnInstanceUpdate").hide();
-                            $("#btnInstanceCreate").show();
+                            $.alert({
+                                title: 'Success !',
+                                content: 'Instance Edited successfully..!',
+                                icon: 'fa fa-rocket',
+                                animation: 'scale',
+                                closeAnimation: 'scale',
+                                buttons: {
+                                    okay: {
+                                        text: 'Okay',
+                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                        action: function (event, ui) {
+                                            loadInstanceTable();
+                                            $("#txtInstanceName").val("")
+                                            $("#drpProject").val(0)
+                                            $("#btnInstanceUpdate").hide();
+                                            $("#btnInstanceCreate").show();
+                                        }
+                                    }
+                                }
+                            });
+                            //alert("Instance Edited successfully!");
+                            //loadInstanceTable();
+                            //$("#txtInstanceName").val("")
+                            //$("#drpProject").val(0)
+                            //$("#btnInstanceUpdate").hide();
+                            //$("#btnInstanceCreate").show();
                         }
                     },
                     failure: function (response) {
