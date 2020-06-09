@@ -243,8 +243,8 @@ namespace ProAcc.Controllers
             Tuple<List<Lis>, List<Lis>> sP_ = _Base.sp_GetActivitiesReportDropdown(InstanceId);
             ViewBag.Condition = new SelectList(sP_.Item2, "Value", "Name");
             ViewBag.Phase = new SelectList(sP_.Item1, "Value", "Name");
-            List<BL.Model.SAPInput_Activities> AR = _Base.GetActivitiesReport_Table(InstanceId);
-            ViewBag.ARReport = AR;
+            //List<BL.Model.SAPInput_Activities> AR = _Base.GetActivitiesReport_Table(InstanceId);
+            //ViewBag.ARReport = AR;
             return View();
         }
 
@@ -260,8 +260,8 @@ namespace ProAcc.Controllers
             }
             GeneralList sP_ = _Base.sp_GetFioriAppsReportDropdown(InstanceId);
             ViewBag.Roles = new SelectList(sP_._List, "_Value", "Name");
-            List<SAPFioriAppsModel> FiR = _Base.sp_GetSAPFioriAppsTable(InstanceId);
-            ViewBag.FiRReport = FiR;
+            //List<SAPFioriAppsModel> FiR = _Base.sp_GetSAPFioriAppsTable(InstanceId);
+            //ViewBag.FiRReport = FiR;
             return View();
         }
 
@@ -274,10 +274,10 @@ namespace ProAcc.Controllers
             
             return Json(SR, JsonRequestBehavior.AllowGet);
         } 
-        public ActionResult ActivitiesTable()
+        public ActionResult ActivitiesTable(string Phase, string condition)
         {
             InstanceId = Guid.Parse(Session["InstanceId"].ToString());
-            List<BL.Model.SAPInput_Activities> AC = _Base.GetActivitiesReport_Table(InstanceId);
+            List<BL.Model.SAPInput_Activities> AC = _Base.GetActivitiesReport_Table(Phase, condition,InstanceId);
             
             return Json(AC, JsonRequestBehavior.AllowGet);
         } 
@@ -289,10 +289,10 @@ namespace ProAcc.Controllers
             return Json(CC, JsonRequestBehavior.AllowGet);
         } 
         
-        public ActionResult FioriAppsTable()
+        public ActionResult FioriAppsTable(string Input)
         {
             InstanceId = Guid.Parse(Session["InstanceId"].ToString());
-            List<SAPFioriAppsModel> AC = _Base.sp_GetSAPFioriAppsTable(InstanceId);
+            List<SAPFioriAppsModel> AC = _Base.sp_GetSAPFioriAppsTable(Input,InstanceId);
             
             return Json(AC, JsonRequestBehavior.AllowGet);
         } 

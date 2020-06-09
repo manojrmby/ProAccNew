@@ -143,15 +143,29 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
-            Project project = db.Projects.Find(id);
-            if (project.Project_Id == id)
+            var del = (from a in db.Projects
+                       join b in db.Instances
+                       on a.Project_Id equals b.Project_ID
+                       where a.Project_Id == id && a.isActive == true && b.isActive == true
+                       select b
+                     ).ToList();
+            if(del.Count!=0)
             {
-                project.isActive = false;
-                project.IsDeleted = true;
-                db.Entry(project).State = EntityState.Modified;
-                db.SaveChanges();
+                return Json("fail");
             }
-            return Json("success");
+            else
+            {
+                Project project = db.Projects.Find(id);
+                if (project.Project_Id == id)
+                {
+                    project.isActive = false;
+                    project.IsDeleted = true;
+                    db.Entry(project).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json("success");
+            }
+           
         }
     }
 }

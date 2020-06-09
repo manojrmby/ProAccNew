@@ -126,6 +126,9 @@
                         alert("User deleted successfully!");
                         location.reload();
                     }
+                    else {
+                         alert("User Holding some task!");
+                    }
                 },
                 failure: function (response) {
                     alert(response.responseText);

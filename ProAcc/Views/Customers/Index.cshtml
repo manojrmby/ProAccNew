@@ -108,15 +108,46 @@
                 dataType: "json",
                 success: function (response) {
                     if (response == "success") {
+                        $.alert({
+                            title: 'Success !',
+                            content: 'Customer deleted <strong>Successfully</strong>..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                            icon: 'fa fa-rocket',
+                            animation: 'scale',
+                            closeAnimation: 'scale',
+                            buttons: {
+                                okay: {
+                                    text: 'Okay',
+                                    btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                    action: function (event, ui) {
+
+                                        // $(this).remove();
+                                        //var url = $("#RedirectToCustomerList").val();
+                                        // location.href = url;
+
+                                        location.reload();
+                                        $("#txtCompanyName").val("");
+                                        $("#txtIndustrySector").val("");
+                                        $("#txtCustomerPhone").val("");
+                                        $("#txtCustomerEmail").val("");
+                                        $("#btnCustomerUpdate").hide();
+                                        $("#btnCustomerCreate").show();
+                                    }
+                                }
+                            }
+                        });
+
                         alert("Customer deleted successfully!");
                         location.reload();
                         //loadCustomer();
-                            $("#txtCompanyName").val("");
-                            $("#txtIndustrySector").val("");
-                            $("#txtCustomerPhone").val("");
-                            $("#txtCustomerEmail").val("");
-                            $("#btnCustomerUpdate").hide();
-                            $("#btnCustomerCreate").show();
+                        $("#txtCompanyName").val("");
+                        $("#txtIndustrySector").val("");
+                        $("#txtCustomerPhone").val("");
+                        $("#txtCustomerEmail").val("");
+                        $("#btnCustomerUpdate").hide();
+                        $("#btnCustomerCreate").show();
+                    }
+                    else {
+                        alert("Customer Project is on live");
                     }
                 },
                 failure: function (response) {

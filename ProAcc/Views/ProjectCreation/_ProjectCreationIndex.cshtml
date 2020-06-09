@@ -105,9 +105,28 @@
                 dataType: "json",
                 success: function (response) {
                     if (response == "success") {
-                        alert("Project deleted successfully!");
-                        //loadProjectCreation();
-                        location.reload();
+                        $.alert({
+                            title: 'Sucess !',
+                            content: 'Project deleted <strong>successfully</strong>..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                            icon: 'fa fa-rocket',
+                            animation: 'scale',
+                            closeAnimation: 'scale',
+                            buttons: {
+                                okay: {
+                                    text: 'Okay',
+                                    btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                    action: function (event, ui) {
+                                        location.reload();
+                                    }
+                                }
+                            }
+                        });
+                        //alert("Project deleted successfully!");
+                        //location.reload();
+                    }
+
+                    else {
+                        alert("Project Instances are in active");
                     }
                 },
                 failure: function (response) {

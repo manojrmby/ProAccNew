@@ -425,13 +425,15 @@ namespace ProAcc.BL
             return CR;
         }
 
-        public List<Model.SAPInput_Activities> GetActivitiesReport_Table(Guid InstanceId)
+        public List<Model.SAPInput_Activities> GetActivitiesReport_Table(string Phase, string condition,Guid InstanceId)
         {
             List<Model.SAPInput_Activities> AR = new List<Model.SAPInput_Activities>();
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_ActivitiesReport", CommandType.StoredProcedure);
             dB.addIn("@Type", "ACT_Table");
             dB.addIn("@InstanceId", InstanceId);
+            dB.addIn("@Phase", Phase);
+            dB.addIn("@condition", condition);          
             dt = dB.ExecuteDataTable();
             //  List<DataRow> list = new List<DataRow>(dt.Select());
             int i = 0;
@@ -453,13 +455,23 @@ namespace ProAcc.BL
             }
             return AR;
         }
-        public List<SAPFioriAppsModel> sp_GetSAPFioriAppsTable(Guid InstanceId)
+        public List<SAPFioriAppsModel> sp_GetSAPFioriAppsTable(String Input,Guid InstanceId)
         {
             List<SAPFioriAppsModel> FiR = new List<SAPFioriAppsModel>();
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_FioriAppsReport", CommandType.StoredProcedure);
-            dB.addIn("@Type", "FioriApps_Table");
+            //dB.addIn("@Type", "FioriApps_Table");
             dB.addIn("@InstanceId", InstanceId);
+            if (Input == "ALL")
+            {
+                dB.addIn("@Type", "FioriApps_Table");
+            }
+            else
+            {
+                dB.addIn("@Type", "FioriApps_Table_Single");
+                dB.addIn("@Input", Input);
+
+            }
             dt = dB.ExecuteDataTable();
             //  List<DataRow> list = new List<DataRow>(dt.Select());
             int i = 0;

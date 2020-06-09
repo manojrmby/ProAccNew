@@ -281,7 +281,7 @@
                         if (response == "success") {
                             $.alert({
                                 title: 'Success !',
-                                content: 'Customers Edited <strong>Successfully</strong>..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                content: 'Customer Edited <strong>Successfully</strong>..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
                                 icon: 'fa fa-rocket',
                                 animation: 'scale',
                                 closeAnimation: 'scale',
@@ -292,7 +292,7 @@
                                         action: function (event, ui) {
                                             $(this).remove();
                                            var url = $("#RedirectToCustomerList").val();
-                            location.href = url;
+                                            location.href = url;
                                         }
                                     }
                                 }
