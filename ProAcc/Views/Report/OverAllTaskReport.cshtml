@@ -1,0 +1,289 @@
+﻿
+@{
+    ViewBag.Title = "OverAllTaskReport";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>*@
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+<style>
+    .outer {
+        overflow-y: auto;
+        height: 522px;
+    }
+
+    .fixed-sidebar .app-sidebar {
+        height: 100% !important;
+    }
+
+    .app-main {
+        flex: 1;
+        display: flex;
+        z-index: 8;
+        position: relative;
+        min-width: 100% !important;
+    }
+
+    .app-theme-white.app-container {
+        background: #ffffff;
+    }
+
+    .app-container {
+        min-height: 100%;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12 card" style="margin-bottom:20px !important;">
+        <div class="row">
+            @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+            {
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail" class="">Customer Name</label>
+                        @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
+                        @*@Html.DropDownList("Project", (IEnumerable<SelectListItem>), "- SELECT-", new { id = "IDProject", @class = "form-control" })*@
+                    </div>
+                </div>
+            }
+            <div class="col-md-4">
+                <label class="">Project Name</label>
+                @if (User.IsInRole("Customer") || User.IsInRole("Project Manager"))
+                {
+                    @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
+                }
+                else
+                {
+                    @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
+                           "Select a Customer", new { id = "IDProject", @class = "form-control" })
+                }
+            </div>
+            <div class="col-md-2">
+                <label for="exampleEmail" class="">Instance Name</label>
+                @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
+                "-Select-", new { id = "IDInstance", @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                <label for="exampleEmail" class="">.</label>
+                <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
+                    Select Instance
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+
+    <div style="width:100%;">
+
+
+        <div class="" style="font-size:12px !important;overflow-x:auto;">
+
+
+            <table id="example" class="table table-striped table-bordered dataTable" style="width:83%!important;po">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Activity / Task</th>
+                        <th>Application Area </th>
+                        <th>Task needed for other environment (Y/N) </th>
+                        <th>Dependency (Y/N) </th>
+                        <th>Pending With </th>
+                        <th>Delay Occurred (Y/N)</th>
+                        <th>Named Owner of Task </th>
+                        <th>Status </th>
+                        <th>Est. Duration (hours) </th>
+                        <th>Actual Duration (hours)</th>
+                        <th>Planned Start Date</th>
+        <th>Actual Start Date/Time (UTC)</th>
+        <th>Planned End Date</th>
+        <th>Actual End Date/Time (UTC)</th>
+
+                    </tr>
+                </thead>
+                @*<tfoot>
+                        <tr>
+                            <th>S No</th>
+                            <th>Custom Code Topic</th>
+                            <th>Status</th>
+                            <th>Application Component</th>
+
+                        </tr>
+                    </tfoot>*@
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+            $("#IDInstance").prop("disabled", true);
+            $('#SubmitInstance').prop("disabled", true);
+    });
+     $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                },
+                error: function (a) {
+                    //debugger;
+                    alert(a);
+                }
+            });
+        });
+    $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstanceforResource","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+            });
+    $('#IDInstance').change(function () {
+                var id = $(this).val();
+                if (id == ""||id =="0") {
+                     $('#SubmitInstance').prop("disabled", true);
+                } else {
+					$('#SubmitInstance').prop("disabled", false);
+                }
+            });
+   $('#SubmitInstance').click(function () {
+        var IDInstance = $("#IDInstance").val();
+        $.ajax({
+            //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+            url: '@Url.Action("SubmitInstance", "Home")',
+            type: "POST",
+            data: { 'IDInstance': IDInstance },
+            success: function (result) {
+                $.alert({
+                    title: 'Alert !',
+                    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                    icon: 'fa fa-rocket',
+                    animation: 'scale',
+                    closeAnimation: 'scale',
+                    buttons: {
+                        okay: {
+                            text: 'Okay',
+                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            action: function (event, ui) {
+                                $(this).remove();
+                                LoadTable(IDInstance);
+                                $('#jqGrid').trigger('reloadGrid');
+                            }
+                        }
+                    }
+
+                });
+
+
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+            document.body.style.zoom = "67%";
+        var t=  $('#example').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("GetData","Report")',
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    //{ "data": "Relevance" },
+                    { "data": "Task" },
+                    { "data": "ApplicationArea"},
+                    { "data": "Task_Other_Environment" },
+                    { "data": "Dependency" },
+                    { "data": "Pending" },
+                    { "data": "Delay_occurred" },
+                    { "data": "UserID" },
+                     { "data": "StatusId" },
+                    { "data": "EST_hours" },
+                    { "data": "Actual_St_hours" },
+                    { "data": "Planed__St_Date"},
+                    { "data": "Actual_St_Date" },
+                    { "data": "Planed__En_Date" },
+                    { "data": "Actual_En_Date" }
+                    //{ "data": "Summary" }
+                    //{ "data": "S_No" },
+                    //{ "data": "Custom_Code_Topic" },
+                    //{ "data": "Status" },
+                    //{ "data": "Application_Component" }
+                    //{ "data": "AlternatePhone" },
+                    //{ "data": "Email" }
+                ],
+        "scrollY": "450px",
+        "scrollCollapse": true,
+        "paging":         false
+
+            });
+         t.on( 'order.dt search.dt', function () {
+        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
+        } );
+</script>

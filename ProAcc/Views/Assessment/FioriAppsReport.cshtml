@@ -223,7 +223,6 @@
 
 	//}
     function Ajax_Call(a) {
-        debugger;
 		$.ajax({
 			type: "POST",
 			url: '@Url.Action("GetFioriAppsReportt_Bar")',
@@ -443,7 +442,7 @@
         //});
 
     function TableAjax(a) {
-        debugger;
+        $("#load").css("display", "block");
 			$.ajax({
                 type: "POST",
                 url: '@Url.Action("FioriAppsTable")',
@@ -451,7 +450,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (Data) {
-                     $("#Table_Body").empty();
+                    $("#Table_Body").empty();
                     $(Data).each(function (index, value) {
                         var Result = "";
                         if (value.SAP_Notes != null) {
@@ -468,15 +467,19 @@
                             '</td><td>' + value.Description
                             + '</td></tr>';
                         $('#Table_Body').append( table );
-                        });
+                    });
+                    
                 },
-				 error: function () {
-                    alert("Error while inserting data");
+                error: function () {
+                      $("#load").css("display", "hide");
+                     alert("Error while inserting data");
+
                 }
             }).done(function (response) {
                 //chart.data = response;
-
+                 $("#load").css("display", "hide");
             });
+         $("#load").css("display", "hide");
     }
 
     jQuery(document).ready(function ($) {

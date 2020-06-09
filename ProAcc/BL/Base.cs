@@ -1350,31 +1350,12 @@ namespace ProAcc.BL
                     ProjectMonitorModel P = new ProjectMonitorModel();
                     P.Id = Guid.Parse(dr["id"].ToString());
                     P.UserID = Guid.Parse(dr["UserID"].ToString());
-                    //P.Instance = InstanceId;
                     P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                     P.Task = dr["Task"].ToString();
                     P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
-                    //P.Task_Other_Environment = false;
-                    //P.Dependency = false;
-                    //P.Pending = "";
-                    //P.Delay_occurred = false;
                     P.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
-                    //P.ConsultantID=
                     P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
-                    //P.EST_hours = 0;
-                    //P.Actual_St_hours = 0;
-                    //P.Planed__St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Actual_St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Planed__En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Actual_En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
                     P.Notes = "";
-
-
-
-
-                    //P.ID = Convert.ToInt32(dr["Id"].ToString());
-                    //P.PictureName = dr["PictureName"].ToString();
-                    //P.GivenName = dr["GivenName"].ToString();
                     PM.Add(P);
                 }
             }
@@ -1646,6 +1627,59 @@ namespace ProAcc.BL
         //private string RE_Warning = "Warning";
         //private string RE_NotApplicable = "Not Applicable";
         //private string RE_Success = "Success";
+
+        public List<ProjectMonitorModel> Sp_GetReportData(Guid InstanceId, string LoginID)
+        {
+            DataTable dt = new DataTable();
+            
+            List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
+            
+                DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+                dB.addIn("@Type", "GetReportData");
+                dB.addIn("@InstunceID", InstanceId);
+                dt = dB.ExecuteDataTable();
+
+                if (dt.Rows.Count > 0)
+                {
+                    //int count = 1;
+                    var myLocalDateTime = DateTime.UtcNow;
+                    foreach (DataRow dr in dt.Rows)
+                    {
+
+                        ProjectMonitorModel P = new ProjectMonitorModel();
+                        P.Id = Guid.Parse(dr["id"].ToString());
+                        P.ActivityID = Convert.ToInt32(dr["ActivityID"].ToString());
+                        P.Instance = Guid.Parse(dr["InstanceID"].ToString());
+                        P.Task = dr["Task"].ToString();
+                        P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
+                        P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
+                        P.ApplicationArea = dr["ApplicationArea"].ToString();
+                        P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
+                        P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
+                        P.Pending = dr["Pending"].ToString();
+                        P.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
+                        P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
+                        P.UserID = Guid.Parse(dr["UserID"].ToString());
+                        P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
+
+                        P.EST_hours = float.Parse(dr["EST_hours"].ToString());
+                        P.Actual_St_hours = float.Parse(dr["Actual_St_hours"].ToString());
+
+                        P.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
+                        P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
+                        P.Planed__En_Date = Convert.ToDateTime(dr["Planed__En_Date"].ToString());
+                        P.Actual_En_Date = Convert.ToDateTime(dr["Actual_En_Date"].ToString());
+                        P.Notes = dr["Notes"].ToString();
+
+                        PM.Add(P);
+                    }
+                }
+            
+            return PM;
+        }
+
+
+
 
 
         public string Phase_Assessment = "Assessment";
