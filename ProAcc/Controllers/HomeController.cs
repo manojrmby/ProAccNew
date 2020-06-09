@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using ProAcc.BL.Model;
 using static ProAcc.BL.Model.Common;
+using System.Dynamic;
 //using static ProAcc.BL.Model.Common;
 
 namespace ProAcc.Controllers
@@ -93,8 +94,28 @@ namespace ProAcc.Controllers
 
                 }
             }
+           
+            var task = (from u in db.ProjectMonitors
+                        join v in db.ActivityMasters on u.ActivityID equals v.Activity_ID
+                        join w in db.StatusMasters on u.StatusId equals w.Id
+                        join x in db.UserMasters on u.UserID equals x.UserId
+                        where u.InstanceID == InstanceID
+                        orderby u.Modified_On descending
+                        select new { v.Task, x.Name, w.StatusName, u.Planed__En_Date }).ToList().Take(5);
+            dynamic output = new List<dynamic>();
 
+            foreach (var inputAttribute in task)
+            {
+                dynamic row = new ExpandoObject();
+                row.Task = inputAttribute.Task;
+                row.Name = inputAttribute.Name;
+                row.StatusName = inputAttribute.StatusName;
+                row.Planed__En_Date = inputAttribute.Planed__En_Date;
+                
+                output.Add(row);
+            }
 
+            ViewBag.Taskdetails = output;
             ViewBag.Project = Project;
             return View();
         }
