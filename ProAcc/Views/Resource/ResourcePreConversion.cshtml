@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "ResourcePreConversion";
+    ViewBag.Title = "Pre-Conversion Resource";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
@@ -11,7 +11,7 @@
 
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
-
+    <a class="card-title">Pre-Conversion Resource</a>
 <script>
     //$.jgrid.defaults.width =1000;
     $.jgrid.defaults.responsive = true;
@@ -346,6 +346,13 @@
                         value: GetMasterAddPreConversion()
                     }
                 },
+                {
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'center', editable: true,hidden: true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetStatusDropDown()
+                    },
+                },
 
                 {
                     label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
@@ -400,6 +407,35 @@
                 checkOnUpdate: true,
                 checkOnSubmit: true,
                 closeAfterEdit: true,
+                beforeInitData: function (form) {
+                    var id = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');
+                    var celValue = jQuery("#jqGrid").jqGrid('getCell', id, 'StatusId');
+                    if (celValue == 3 || celValue == 1) {
+                        $.alert({
+                            title: 'Alert !',
+                            content: 'You\'r  not allowed to edit task Which are already closed..! ',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                            icon: 'fa fa-rocket',
+                            animation: 'scale',
+                            closeAnimation: 'scale',
+                            buttons: {
+                                okay: {
+                                    text: 'Okay',
+                                    btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
+                                    //action: function (event, ui) {
+                                    //    $(this).remove();
+                                    //    LoadTable(IDInstance);
+                                    //    $('#jqGrid').trigger('reloadGrid');
+                                    //}
+                                }
+                            }
+
+                        });
+
+                        return false;
+                    }
+                    //var Status=$("#" + id + "_StatusId").val();
+                    //alert(id);
+                },
                 beforeShowForm: function (form) {
                     //$("#PhaseId").attr("disabled", "disabled");
                     $("#tr_PhaseId").hide();
@@ -483,6 +519,30 @@
                 showQuery: false
             }
         );
+    }
+     function GetStatusDropDown() {
+        var Parameters = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetStatus","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+                //debugger;
+                for (var i = 0; i < Data.length; i++) {
+                    //var obj = {};
+                    var StatusName = Data[i].StatusName;
+                    var key = "" + Data[i].Id;
+                    Parameters[key] = StatusName;
+                }
+            },
+            error: function (data) {
+                alert("GetStatus fail");
+            }
+        });
+        return Parameters;
     }
     function GetPhaseDropDown() {
         var Parameters = {};

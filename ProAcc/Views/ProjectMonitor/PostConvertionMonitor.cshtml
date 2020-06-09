@@ -1,17 +1,15 @@
 ﻿
 @{
-    ViewBag.Title = "Assusment Monitor";
+    ViewBag.Title = "Post-Conversion Monitor";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
-@*<script src="~/Asset/Jquery/jqGrid/grid.locale-en.js"></script>
-    <script src="~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"></script>
 
-    <link href="~/Asset/Jquery/jqGrid/css/octicons.css" rel="stylesheet" />
-    <link href="~/Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css" rel="stylesheet" />*@
 
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
-    <a class="card-title">Assusment Monitor</a>
+
+    <a class="card-title">Post-Conversion Monitor</a>
+
 <script>
     //$.jgrid.defaults.width =1000;
     $.jgrid.defaults.responsive = true;
@@ -238,152 +236,7 @@
 
         // $(document).ready(function () {
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
-    //    var lastSelection;
-    //    var editParameters = {
-    //        keys: true,
-    //        //successfunc: editSuccessful,
-    //        errorfunc: false,
-    //        restoreAfterError: false,
-    //        extraparam: {
-    //            valor: 'texto', any: '20164',
-    //            clave1: function () {
-    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
-    //                var value = $("#grid").jqGrid('getCell', sel_id, 'pas1');
-    //                return value;
-    //            },
-    //            obra: function () {
-    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
-    //                var value = $("#grid").jqGrid('getCell', sel_id, 'obra');
-    //                return value;
-    //            },
-    //            empresa: function () {
-    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
-    //                var value = $("#grid").jqGrid('getCell', sel_id, 'empresa');
-    //                return value;
-    //            }
-    //        }
-    //    };
-    //    var jqId = jQuery("#jqGrid");
-    //    var grid = $("#grid");
-    //    var cancelEditing = function (myGrid) {
-    //        var lrid;
-    //        if (typeof lastSelection !== "undefined") {
-    //            // cancel editing of the previous selected row if it was in editing state.
-    //            // jqGrid hold intern savedRow array inside of jqGrid object,
-    //            // so it is safe to call restoreRow method with any id parameter
-    //            // if jqGrid not in editing state
-    //            myGrid.jqGrid('restoreRow', lastSelection);
 
-
-    //            // now we need to restore the icons in the formatter:"actions"
-    //            lrid = $.jgrid.jqID(lastSelection);
-    //            $("tr#" + lrid + " div.ui-inline-edit, " + "tr#" + lrid + " div.ui-inline-del").show();
-    //            $("tr#" + lrid + " div.ui-inline-save, " + "tr#" + lrid + " div.ui-inline-cancel").hide();
-    //            $("div.ui-inline-close").show();
-    //        }
-    //    };
-
-    //    var getColumnIndexByName = function (grid, columnName) {
-    //        var cm = grid.jqGrid('getGridParam', 'colModel'), i, l = cm.length;
-    //        for (i = 0; i < l; i++) {
-    //            if (cm[i].name === columnName) {
-    //                return i; // return the index
-    //            }
-    //        }
-    //        return -1;
-    //    }
-
-    //    var myEditOptions = {
-    //    keys: true,
-    //    oneditfunc: function (rowid) {
-    //        alert("row with rowid=" + rowid + " is editing.");
-    //    },
-    //    aftersavefunc: function (rowid, response, options) {
-    //        alert("row with rowid=" + rowid + " is successfuly modified.");
-    //    }
-    //};
-
-        //var DateInput = function (element, options) {
-
-        //    //var ID = options.id;
-        //    //var Result_PLST = ID.indexOf('Planed__St_Date');
-        //    //if (Result_PLST == 2)
-        //    //{
-        //    //    alert("HOOO");
-        //    //}
-        //    //var Cell_Date = $("#" + ID).val();
-        //    //if (Cell_Date == "17/10/1904") {
-        //    //    debugger;
-        //    //    var currentDate=new Date();
-        //    //     $("#" + ID).val(currentDate);
-        //    //}
-        //   // debugger;
-
-
-        //    $(element).on('keypress', function (e) {
-        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
-        //        e.preventDefault();
-        //    })
-        //    $(element).datepicker({
-        //        duration: "slow",
-        //        defaultDate: +1,
-        //        altFormat: "mm/dd/yy",
-        //        dateFormat: "mm/dd/yy",
-        //        autoSize: false,
-        //        changeYear: true,
-        //        changeMonth: true,
-        //        showButtonPanel: false,
-        //        showWeek: false
-        //    //}).datepicker("setDate", new Date());
-        //     }).datepicker();
-        //};
-         //var DateInput1 = function (element, options) {
-
-        //    //var ID = options.id;
-        //    //var Cell_Date = $("#" + ID).val();
-        //    //if (Cell_Date == "17/10/1904") {
-        //    //    debugger;
-        //    //    var currentDate=new Date();
-        //    //     $("#" + ID).val(currentDate);
-        //    //}
-        //    //debugger;
-        //    $(element).on('keypress', function (e) {
-        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
-        //        e.preventDefault();
-        //    })
-        //    $(element).datepicker({
-        //        duration: "slow",
-        //        defaultDate: +1,
-
-        //        dateFormat: "mm/dd/yy",
-        //        autoSize: true,
-        //        changeYear: true,
-        //        changeMonth: true,
-        //        showButtonPanel: false,
-        //        showWeek: false
-        //    }).datepicker("setDate",new Date());
-        //};
-                //var initDateEdit = function (elem, options) {
-        //    // we need get the value before changing the type
-        //    var orgValue = $(elem).val(),
-        //        cm = $(this).jqGrid("getColProp", options.name);
-
-        //    $(elem).attr("type", "date");
-        //    if ((Modernizr && !Modernizr.inputtypes.date) || $(elem).prop("type") !== "date") {
-        //        // if type="date" is not supported call jQuery UI datepicker
-        //        $(elem).datepicker({
-        //            dateFormat: "dd/mm/yy",
-        //            autoSize: true,
-        //            changeYear: true,
-        //            changeMonth: true,
-        //            showButtonPanel: true,
-        //            showWeek: true
-        //        });
-        //    } else {
-        //        // convert date to ISO
-        //        $(elem).val($.jgrid.parseDate.call(this, cm.formatoptions.newformat, orgValue, "Y-m-d"));
-        //    }
-        //};
         var Planed_StartDate = function (element, options) {
             var ID = options.rowId;
             $(element).on('keypress', function (e) {
@@ -477,6 +330,7 @@
              }).datepicker();
         };
 
+
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","ProjectMonitor",new { Phase_ID= ViewBag.PhaseID})",
             datatype: "json",
@@ -550,6 +404,7 @@
                     label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80,  editable: true,
                     edittype: 'checkbox',
                     editoptions: { value: "True:False" }
+                    //editrules:{custom:true, custom_func:myValidationFunction}
                     , formatter: "checkbox",
                 },
                 {
@@ -658,6 +513,7 @@
                     label: 'ValidationStatus', name: 'ValidationStatus', width: 80, editable: false,hidden: true,
 
                     editoptions: { value: "True:False" }
+                    //editrules:{custom:true, custom_func:myValidationFunction}
 
                 },
                 {
@@ -711,7 +567,7 @@
             hoverrows: true,
             height: 400,
             rowNum: 1000,
-            caption: 'Assement',
+            caption: 'Post-Conversion',
             sortable: false,
             grouping: false,
             rownumbers: true,
@@ -909,7 +765,28 @@
             ////    },
             loadComplete: function () {
                 //alert("mm");
+                 var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                if (ids.length==0) {
+                      $.alert({
+                    title: 'Alert !',
+                    content: 'Previous Phase <strong>Not Completed </strong>Or Kindly Check <strong>Resource Acllocation</strong> ',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                    icon: 'fa fa-rocket',
+                    animation: 'scale',
+                    closeAnimation: 'scale',
+                    buttons: {
+                        okay: {
+                            text: 'Okay',
+                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
+                            //action: function (event, ui) {
+                            //    $(this).remove();
+                            //    LoadTable(IDInstance);
+                            //    $('#jqGrid').trigger('reloadGrid');
+                            //}
+                        }
+                    }
 
+                });
+                }
             },
             gridComplete: function () {
                // alert("tdyt");
@@ -922,9 +799,6 @@
                     $("#jqGrid").jqGrid('setGridState', 'visible');
                 }
                 Show_HideEdit();
-
-
-
             }
             // set table stripped class in table style in bootsrap
         });
@@ -1226,7 +1100,10 @@
 	return Status;
 
     }
-
+    function myValidationFunction(Data) {
+        var d = Data;
+        return "";
+    }
     function GetUserDropDown() {
 	var Parameters = {};
     $.ajax({
@@ -1278,3 +1155,5 @@
             $("form")[0].appendChild(input[0]);
         }
     </script>*@
+
+

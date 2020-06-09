@@ -619,6 +619,9 @@
     <Content Include="Views\Resource\ResourceValidation.cshtml" />
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\_RoleIndex.cshtml" />
+    <Content Include="Views\ProjectMonitor\PreConvertionMonitor.cshtml" />
+    <Content Include="Views\ProjectMonitor\PostConvertionMonitor.cshtml" />
+    <Content Include="Views\ProjectMonitor\ValidationMonitor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
