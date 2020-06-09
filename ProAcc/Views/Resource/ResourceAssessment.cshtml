@@ -476,8 +476,12 @@
                     //alert("In");
                     $("#tr_ActivityID").show();
                 },
-                reloadAfterSubmit: true,
-                //afterSubmit: function (Data) {
+                reloadAfterSubmit: true, 
+                onclickSubmit: function (options, postdata) {
+                    var Id=postdata.ActivityID
+                    $("#ActivityID option[value="+Id+"]").remove();
+
+                    //$('#jqGrid').trigger('reloadGrid');
                 //    //debugger;
                 //    //if (Data.responseText == true) {
                 //    //    $.alert({
@@ -499,7 +503,7 @@
                 //    //    });
                 //    //}
 
-                //},
+                },
                 errorTextFormat: function (data) {
                     return 'Error: ' + data.responseText
                 }

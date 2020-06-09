@@ -403,8 +403,8 @@
                 onClose: function (selectedDate) {
                     $("#"+ID+"_Planed__En_Date").datepicker("option", "minDate", selectedDate);
                 },
-            //}).datepicker("setDate", new Date());
-             }).datepicker();
+            }).datepicker("setDate", new Date());
+             //}).datepicker();
         };
         var Planed_EndDate = function (element, options) {
            var ID = options.rowId;
@@ -426,8 +426,8 @@
                 onClose: function (selectedDate) {
                     $("#"+ID+"_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
                 }
-            //}).datepicker("setDate", new Date());
-             }).datepicker();
+            }).datepicker("setDate", new Date());
+            // }).datepicker();
         };
 
 
@@ -450,8 +450,8 @@
                 onClose: function (selectedDate) {
                     $("#"+ID+"_Actual_En_Date").datepicker("option", "minDate", selectedDate);
                 },
-            //}).datepicker("setDate", new Date());
-             }).datepicker();
+            }).datepicker("setDate", new Date());
+            // }).datepicker();
         };
         var Actual_En_Date = function (element, options) {
            var ID = options.rowId;
@@ -473,8 +473,8 @@
                 onClose: function (selectedDate) {
                     $("#"+ID+"_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
                 }
-            //}).datepicker("setDate", new Date());
-             }).datepicker();
+            }).datepicker("setDate", new Date());
+            // }).datepicker();
         };
 
         $("#jqGrid").jqGrid({
@@ -670,7 +670,9 @@
                         keys: true,
                         delbutton: false,
 
-                        onEdit:function(rowid) {
+                        onEdit: function (rowid) {
+                            
+                          
                  //alert("in onEdit: rowid="+rowid+"\nWe don't need return anything");
              },
                         //beforeShowForm: function (form) {
@@ -1057,7 +1059,14 @@
 
         }
         else {
-             for (var i = 0; i < ids.length; i++) {
+            var EST_hours = jQuery("#jqGrid").jqGrid('getColProp', 'EST_hours');
+                EST_hours.editable = false;
+             var Planed__St_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__St_Date');
+            Planed__St_Date.editable = false;
+            var Planed__En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__En_Date');
+                Planed__En_Date.editable = false;
+            for (var i = 0; i < ids.length; i++) {
+               
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
                 if (Status_Id == 1|| Status_Id == 2) {
                     j = i;

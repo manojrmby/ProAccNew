@@ -538,6 +538,7 @@
     <Compile Include="Controllers\PreConvertionController.cs" />
     <Compile Include="Controllers\ProjectCreationController.cs" />
     <Compile Include="Controllers\ProjectMonitorController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -612,7 +613,6 @@
     <Content Include="Views\Customers\GetCustomerById.cshtml" />
     <Content Include="Views\Resource\ResourceAssessment.cshtml" />
     <Content Include="Views\ProjectMonitor\AssusmentMonitor.cshtml" />
-    <Content Include="Views\Activity\Testing.cshtml" />
     <Content Include="Views\Resource\ResourceMigration.cshtml" />
     <Content Include="Views\Resource\ResourcePostConversion.cshtml" />
     <Content Include="Views\Resource\ResourcePreConversion.cshtml" />
@@ -622,6 +622,7 @@
     <Content Include="Views\ProjectMonitor\PreConvertionMonitor.cshtml" />
     <Content Include="Views\ProjectMonitor\PostConvertionMonitor.cshtml" />
     <Content Include="Views\ProjectMonitor\ValidationMonitor.cshtml" />
+    <Content Include="Views\Report\OverAllTaskReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
