@@ -163,15 +163,39 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
-            Instance instance = db.Instances.Find(id);
-            if (instance.Instance_id == id)
+            bool result = false;
+
+            var del = (from a in db.Instances
+                       join b in db.ProjectMonitors
+                       on a.Instance_id equals b.InstanceID
+                       where b.InstanceID == id && a.isActive == true && b.isActive == true
+                       select new { V = b.StatusId != 2 } ).ToList();
+            
+            foreach (var i in del)
             {
-                instance.isActive = false;
-                instance.IsDeleted = true;
-                db.Entry(instance).State = EntityState.Modified;
-                db.SaveChanges();
+                if (i.V == false)
+                {
+                    result = true;
+                        break;
+                }                
             }
-            return Json("success");
+            if(result==true)
+            {
+                return Json("fail");
+            }
+            else
+            {
+                Instance instance = db.Instances.Find(id);
+                if (instance.Instance_id == id)
+                {
+                    instance.isActive = false;
+                    instance.IsDeleted = true;
+                    db.Entry(instance).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json("success");
+            }
+            
         }
     }
 }

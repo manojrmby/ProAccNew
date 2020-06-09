@@ -207,15 +207,31 @@ namespace ProAcc.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Customer customer = db.Customers.Find(id);
-            if(customer.Customer_ID==id)
+            
+            var del = (from a in db.Customers
+                       join b in db.Projects
+                       on a.Customer_ID equals b.Customer_Id
+                       where a.Customer_ID==id && a.isActive == true && b.isActive == true
+                       select b).ToList();
+
+            if(del.Count!=0)
             {
-                customer.isActive = false;
-                customer.IsDeleted = true;
-                db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                return Json("fail");
             }
-            return Json("success");
+            else
+            {
+                Customer customer = db.Customers.Find(id);
+                if (customer.Customer_ID == id)
+                {
+                    customer.isActive = false;
+                    customer.IsDeleted = true;
+                    db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json("success");
+            }
+
+            
         }
 
         protected override void Dispose(bool disposing)

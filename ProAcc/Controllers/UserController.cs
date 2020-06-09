@@ -49,7 +49,7 @@ namespace ProAcc.Controllers
             var val = db.User_Type.Where(x => x.isActive == true).ToList();
             ViewBag.UserTypeID = new SelectList(val, "UserTypeID", "UserType");
 
-            var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1).ToList();
+            var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1 && x.RoleId!=10).ToList();
             ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName");
 
             var Cust = db.Customers.Where(x => x.isActive == true ).ToList();
@@ -240,15 +240,27 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
-            UserMaster user = db.UserMasters.Find(id);
-            if (user.UserId == id)
+            var del = (from a in db.UserMasters
+                       join b in db.ProjectMonitors
+                       on a.UserId equals b.UserID
+                       where a.UserId == id && a.isActive == true && b.isActive == true
+                       select b).ToList();
+            if(del.Count!=0)
             {
-                user.isActive = false;
-                user.IsDeleted = true;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
+                return Json("fail");
             }
-            return Json("success");
+            else
+            {
+                UserMaster user = db.UserMasters.Find(id);
+                if (user.UserId == id)
+                {
+                    user.isActive = false;
+                    user.IsDeleted = true;
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json("success");
+            }
         }
 
         public ActionResult ResourceAllocationCreate()

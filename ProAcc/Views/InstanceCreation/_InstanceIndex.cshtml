@@ -93,8 +93,11 @@
                         alert("Instance deleted successfully!");
                         //loadInstanceTable();
                         location.reload();
-                            $("#txtInstanceName").val("")
-                            $("#drpProject").val(0)
+                        $("#txtInstanceName").val("")
+                        $("#drpProject").val(0)
+                    }
+                    else {
+                        alert("Project monitor is in live");
                     }
                 },
                 failure: function (response) {
