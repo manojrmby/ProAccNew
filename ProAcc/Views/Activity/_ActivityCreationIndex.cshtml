@@ -127,6 +127,21 @@
         });
     });
 
+    function loadActivityCreation() {
+         $("#activityrid").val("");
+         $("#txtTask").val("");
+         $("#txtSequence").val("");
+        $("#drpPhase").val(0);
+        $('#drpPhase').attr("disabled", false); 
+         $("#drphiddenPhase").val("");
+         $("#drpRole").val(0);
+         $('#drpRole').attr("disabled", false); 
+         $("#drphiddenRole").val("");
+         $("#txtApplicationArea").val("");
+         $("#actcre_on").val("");
+         $("#actcre_By").val("");
+    }
+
     $(".btnActivityDelete").on("click", function () {
         var id = $(this).next().val();
         $.confirm({

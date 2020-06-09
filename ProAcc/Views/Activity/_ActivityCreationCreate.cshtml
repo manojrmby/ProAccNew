@@ -21,6 +21,7 @@
             <input type="hidden" id="activityrid" />
             <input type="hidden" id="actcre_on" />
             <input type="hidden" id="actcre_By" />
+            <input type="hidden" id="txtSequence" />
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">Task</label>
@@ -384,7 +385,7 @@
             success: function (response) {
                 if (response == "success") {
                     $.alert({
-                        title: 'Alert !',
+                        title: 'success !',
                         content: 'Activity Saved Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
                         icon: 'fa fa-rocket',
                         animation: 'scale',
@@ -425,10 +426,10 @@
     });
 
     $("#btntivityCreUpdate").on("click", function () {
-       
+        
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
-        //var sequence = $("#txtSequence").val();
+        var sequence = $("#txtSequence").val();
         var ApplicationArea = $("#txtApplicationArea").val();
         var Phase = $('#drphiddenPhase').val();
         var Role = $('#drphiddenRole').val();
@@ -439,7 +440,7 @@
              Activity_ID:id,
             Task: Task,
             PhaseID: Phase,
-            //Sequence_Num: sequence,
+            Sequence_Num: sequence,
             ApplicationArea: ApplicationArea,
             RoleID:Role,
             Cre_on: cre_on,

@@ -282,7 +282,7 @@
 
 
     function ValidateName(data) {
-             var letters = /^[A-Za-z, ]+$/;
+             var letters = /^[A-Za-z._, ]+$/;
             if (!letters.test(data)) {
                 return false;
             }
