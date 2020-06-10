@@ -424,7 +424,7 @@
                 showWeek: false,
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
-                    $("#"+ID+"_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
+                    $("#" + ID + "_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
                 }
             }).datepicker("setDate", new Date());
             // }).datepicker();
@@ -471,7 +471,8 @@
                 showWeek: false,
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
-                    $("#"+ID+"_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+                    $("#" + ID + "_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+
                 }
             }).datepicker("setDate", new Date());
             // }).datepicker();
@@ -723,6 +724,7 @@
             sortname: 'SequenceNum',
             sortorder: 'asc',
             onSelectRow: editRow,
+            
             serializeRowData: function (postdata) {
                 //debugger;
                 //var filterResult;
@@ -753,21 +755,43 @@
                 //           newResult.TransactionId = filterResult.TransactionId;
                 //           newResult.TaskId = filterResult.TaskId;
                 //       }
+            //    var EST_hours = $("#jqGrid").jqGrid('getCol', 'EST_hours');               
+            //var Planed__St_Date = $("#jqGrid").jqGrid('getCol', 'Planed__St_Date');            
+            //var Planed__En_Date = $("#jqGrid").jqGrid('getCol', 'Planed__En_Date');
+                var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 
+                var EST_hours = $("#jqGrid").jqGrid('getCell', ColValue, 'EST_hours');
+                var Planed__St_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Planed__St_Date');
+                var Planed__En_Date = $("#jqGrid").jqGrid ('getCell', ColValue, 'Planed__En_Date');
                 //filterResult = JSON.stringify(newResult);
                 var Id = postdata.Id;
                 var Task_Other_Environment = postdata.Task_Other_Environment;
                 var Dependency = postdata.Dependency;
                 var Pending = postdata.Pending;
                 var Delay_occurred = postdata.Delay_occurred;
-                var StatusId = postdata.StatusId;
-                var EST_hours = postdata.EST_hours;
-                var Actual_St_hours = postdata.Actual_St_hours;
-                var Planed__St_Date = postdata.Planed__St_Date;
-                var Planed__En_Date = postdata.Planed__En_Date;
+                var StatusId = postdata.StatusId;               
+                var Actual_St_hours = postdata.Actual_St_hours;                
                 var Actual_St_Date = postdata.Actual_St_Date;
                 var Actual_En_Date = postdata.Actual_En_Date;
                 var Notes = postdata.Notes;
+                //var EST_hours = EST_hours;
+                //var Planed__St_Date = Planed__St_Date;
+                //var Planed__En_Date = Planed__En_Date;
+                var EST_hours;
+                var Planed__St_Date;
+                var Planed__En_Date
+                 var UserType ="@Session["UserType"].ToString()"
+                if (UserType == 'Project Manager') {
+                    EST_hours = postdata.EST_hours;
+                    Planed__St_Date = postdata.Planed__St_Date;
+                    Planed__En_Date = postdata.Planed__En_Date;
+                }
+                else {
+                      EST_hours = EST_hours;
+                     Planed__St_Date = Planed__St_Date;
+                     Planed__En_Date = Planed__En_Date;
+                }
+
                 var Message;
                 if (StatusId == 1 ||StatusId == 3 ) {
                     Message = 'Are you sure..? <br><strong>Once you confirm. You won\'t be able to make any change..!</strong>';
