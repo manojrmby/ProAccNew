@@ -5,6 +5,9 @@
     var mdetails = ViewBag.list;
     var taskdetails = ViewBag.Taskdetails;
 }
+<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
+<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>
 <style>
     /*.cs_Closed {
         color: lightgreen;
@@ -304,7 +307,7 @@
 
 @Scripts.Render("~/bundles/Scripts/ChartJS")
 @*<script src="~/Asset/Scripts/Chart.js"></script>
-<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>*@
+    <script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>*@
 @*<script src="~/Asset/Scripts/Prograssbarjs.js"></script>*@
 
 
@@ -372,10 +375,21 @@
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            @*<div class="col-lg-12">*@
+                            @*<div class="row">*@
+                            <div class="col-lg-12 text-center ">
+                                <canvas id="Chart_Assessment"></canvas>
+                            </div>
+                            @*</div>*@
+                            @*</div>*@
+                        </td>
+                    </tr>
                 </table>
             </div>
-            <hr style="margin-top:-20px !important;" />
-            <div class="row" style="padding:0em 1em 1em 1em;">
+            <hr @*style="margin-top:-20px !important;"*@ />
+            <div class="row" style="padding:0em 1em 3em 1em;">
                 <div class="card-body">
                     <h5 class="card-title">S4 Hana System Conversion</h5>
                     <form class="">
@@ -473,19 +487,19 @@
                                 value = 100;
                             }
                             @*<fieldset class="position-relative form-group" style="top: 50px;">
-                                <monkey-bar min="0" max="100" now=@value class="prograss_Bar" labeled striped></monkey-bar>
-                            </fieldset>*@
+                                    <monkey-bar min="0" max="100" now=@value class="prograss_Bar" labeled striped></monkey-bar>
+                                </fieldset>*@
                         }
                         @*<div class="position-relative form-check">
-                            <label class="form-check-label"><input name="radio1" type="radio" class="form-check-input"> Option one is this and that—be sure to include why it's great</label>
-                        </div>
-                        <div class="position-relative form-check">
-                            <label class="form-check-label">
-                                <input name="radio1" type="radio" class="form-check-input"> Option two can be something else and selecting it will deselect option
-                                one
-                            </label>
-                        </div>
-                        <div class="position-relative form-check disabled"><label class="form-check-label"><input name="radio1" disabled="" type="radio" class="form-check-input"> Option three is disabled</label></div>*@
+                                <label class="form-check-label"><input name="radio1" type="radio" class="form-check-input"> Option one is this and that—be sure to include why it's great</label>
+                            </div>
+                            <div class="position-relative form-check">
+                                <label class="form-check-label">
+                                    <input name="radio1" type="radio" class="form-check-input"> Option two can be something else and selecting it will deselect option
+                                    one
+                                </label>
+                            </div>
+                            <div class="position-relative form-check disabled"><label class="form-check-label"><input name="radio1" disabled="" type="radio" class="form-check-input"> Option three is disabled</label></div>*@
 
                         @*<div class="position-relative form-check"><label class="form-check-label"><input type="checkbox" class="form-check-input"> Check me out</label></div>*@
                     </form>
@@ -520,41 +534,41 @@
 
 
         @*<div class="col-lg-12 card" style="margin-bottom:20px !important;">
-            <div class="row">
-                @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                {
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="exampleEmail" class="">Customer Name</label>
-                            @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
+                <div class="row">
+                    @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                    {
+                        <div class="col-md-4">
+                            <div class="position-relative form-group">
+                                <label for="exampleEmail" class="">Customer Name</label>
+                                @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
+                            </div>
                         </div>
+                    }
+                    <div class="col-md-4">
+                        <label class="">Project Name</label>
+                        @if (User.IsInRole("Customer") || User.IsInRole("Project Manager"))
+                        {
+                            @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
+                                   "Select a Customer", new { id = "IDProject", @class = "form-control" })
+                        }
                     </div>
-                }
-                <div class="col-md-4">
-                    <label class="">Project Name</label>
-                    @if (User.IsInRole("Customer") || User.IsInRole("Project Manager"))
-                    {
-                        @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
-                    }
-                    else
-                    {
-                        @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
-                               "Select a Customer", new { id = "IDProject", @class = "form-control" })
-                    }
+                    <div class="col-md-2">
+                        <label for="exampleEmail" class="">Instance Name</label>
+                        @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
+                        "-Select-", new { id = "IDInstance", @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <label for="exampleEmail" class="">.</label>
+                        <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
+                            Select Instance
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <label for="exampleEmail" class="">Instance Name</label>
-                    @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
-                    "-Select-", new { id = "IDInstance", @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <label for="exampleEmail" class="">.</label>
-                    <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
-                        Select Instance
-                    </button>
-                </div>
-            </div>
-        </div>*@
+            </div>*@
 
         <div class="col-lg-12 card">
             <div class="row">
@@ -573,50 +587,50 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(var item in taskdetails)
+                                @foreach (var item in taskdetails)
                                 {
-                                <tr>
-                                    <td>@item.Task</td>
-                                    <td>@item.Name</td>
-                                    <td>@item.StatusName</td>
-                                    <td>@item.Planed__En_Date</td>
-                                </tr>
+                                    <tr>
+                                        <td>@item.Task</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.StatusName</td>
+                                        <td>@item.Planed__En_Date</td>
+                                    </tr>
                                 }
                                 @*<tr>
-                                    <td>Carry out pricing related updates</td>
-                                    <td>
-                                        <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
-                                    </td>
-                                    <td>InProgress</td>
-                                    <td>08 Apr 2020</td>
-                                </tr>
-                                <tr>
+                                        <td>Carry out pricing related updates</td>
+                                        <td>
+                                            <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
+                                        </td>
+                                        <td>InProgress</td>
+                                        <td>08 Apr 2020</td>
+                                    </tr>
+                                    <tr>
 
-                                    <td>Migration to Material Ledger</td>
-                                    <td>
-                                        <monkey-bar min="0" max="100" now="100" class="prograss_Bar"></monkey-bar>
-                                    </td>
-                                    <td>Completed</td>
-                                    <td>08 Apr 2020</td>
-                                </tr>
-                                <tr>
+                                        <td>Migration to Material Ledger</td>
+                                        <td>
+                                            <monkey-bar min="0" max="100" now="100" class="prograss_Bar"></monkey-bar>
+                                        </td>
+                                        <td>Completed</td>
+                                        <td>08 Apr 2020</td>
+                                    </tr>
+                                    <tr>
 
-                                    <td>Pull and Push Data</td>
-                                    <td>
-                                        <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
-                                    </td>
-                                    <td>InProgress</td>
-                                    <td>08 Apr 2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Pricing Data Model Changes</td>
+                                        <td>Pull and Push Data</td>
+                                        <td>
+                                            <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
+                                        </td>
+                                        <td>InProgress</td>
+                                        <td>08 Apr 2020</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pricing Data Model Changes</td>
 
-                                    <td>
-                                        <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
-                                    </td>
-                                    <td>InProgress</td>
-                                    <td>08 Apr 2020</td>
-                                </tr>*@
+                                        <td>
+                                            <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
+                                        </td>
+                                        <td>InProgress</td>
+                                        <td>08 Apr 2020</td>
+                                    </tr>*@
                             </tbody>
                         </table>
                     </div>
@@ -635,8 +649,109 @@
 	function (evt) {
 		window.location.href = "@Url.Action("ReadinessReport","Assessment")";
 	}
-	);
+    );
+
+    function Ajax_AssessmentDonut() {
+
+		$.ajax({
+				type: "POST",
+				url: '@Url.Action("GetAssessmentReport")',
+				//data: '{std: ' + JSON.stringify(std) + '}',
+				dataType: "json",
+				contentType: "application/json; charset=utf-8",
+                success: function (Data) {                
+				 data_ = [Data.COMPLETE, Data.WIP, Data.ONHOLD, Data.YetToStart];
+				 labels = ["Complete", "Work In Progress", "On Hold", "Yet To Start"];
+				 renderChartAssessment(data_, labels);
+				},
+				error: function () {
+					alert("Error while inserting data");
+				}
+			});
+	}
+    function renderChartAssessment(data, labels) {
+
+		var ctx = document.getElementById("Chart_Assessment").getContext("2d");
+
+		var config = {
+			type: "doughnut",
+			data: {
+				labels: labels,
+				datasets: [{
+					data: data,
+					backgroundColor: [
+							'#71c989',
+							'#74abe2',
+							'#FFCE56',
+							'#f08956'
+						],
+					borderWidth: 2,
+					label: "Score"
+				}]
+			},
+			options: {
+                
+				responsive: true,
+                legend: {
+                    display: false,
+					position: 'right',
+                    labels: {
+                        fontColor: "#000080",
+                    }
+				},
+                title: {
+                    display: true,
+                    text: "Assessment"
+                },
+                centerPercentage: 60,
+                centerArea: {
+                    displayText: true,
+                    text: "100%"
+                },              
+                
+                plugins: {
+                    labels: {
+                        display: true,
+                        render: 'value',
+                        position: 'outside',
+                        arc: true
+                    }
+                },
+               
+				animation: {
+					duration: 5000
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                return previousValue + currentValue;
+                            });
+                            //var currentValue = dataset.data[tooltipItem.index];
+                            //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                            //return percentage + "%";
+
+                             var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                            //return currentValue + ' (' + percentage + '%)';
+                            return percentage + '%';
+                        },
+                        title: function(tooltipItem, data) {
+                            return data.labels[tooltipItem[0].index];
+                        }
+                    }
+                }
+
+			}
+		};
+
+		window.myRadialGauge = new Chart(ctx, config);
+    }
+
     jQuery(document).ready(function ($) {
+
+        Ajax_AssessmentDonut();
 
         var In=@ViewBag.Instance;
         if (In == 0) {
@@ -766,7 +881,7 @@
             });
         });
     });
-    
+
 
 </script>
 <script type="text/javascript">
@@ -775,7 +890,7 @@
     //};
 
     //Chart.defaults.global.defaultFontFamily = "Verdana";
-    
+
     //var ctx = document.getElementById("chart-Assessment").getContext("2d");
     var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
     var ctx2 = document.getElementById("chart-Conversion").getContext("2d");
@@ -785,7 +900,7 @@
     //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
 
     window.onload = function () {
-         //var ctx = document.getElementById("chart-Assessment").getContext("2d");
+        //var ctx = document.getElementById("chart-Assessment").getContext("2d");
         //window.myRadialGauge = new Chart(ctx, config);
         var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
         window.myRadialGauge = new Chart(ctx1, config1);
@@ -814,7 +929,7 @@
     var gradientStroke_2 = ctx2.createLinearGradient(500, 0, 100, 0);
     gradientStroke_2.addColorStop(0, "#FB291B");
     gradientStroke_2.addColorStop(1, "#CD1B2D");
-    
+
 
     var gradientStroke_3 = ctx3.createLinearGradient(500, 0, 100, 0);
     gradientStroke_3.addColorStop(0, "#FDB777");

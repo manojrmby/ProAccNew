@@ -334,6 +334,41 @@ namespace ProAcc.BL
             }
             return GetRelevant;
         }
+
+        public SP_Assessment_Result SAP_Assessment(Guid InstanceId)
+        {
+            SP_Assessment_Result GetRelevant = new SP_Assessment_Result();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_AssessmentReport", CommandType.StoredProcedure);
+            dB.addIn("@Type", "Simple_Donut");
+            dB.addIn("@InstanceId", InstanceId);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count == 1)
+            {
+                //var a = Convert.ToInt32(dt.Rows[0]["COMPLETE"]);
+                //var b = Convert.ToInt32(dt.Rows[0]["WIP"]);
+                //var c = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
+                //var d = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
+
+                //var e = a + b + c + d;
+
+                //int T1 = (int)Math.Round((double)(100 * a) / e);  
+                //int T2 = (int)Math.Round((double)(100 * b) / e);  
+                //int T3 = (int)Math.Round((double)(100 * c) / e); 
+                //int T4 = (int)Math.Round((double)(100 * d) / e); 
+
+                //GetRelevant.COMPLETE = T1; // Convert.ToInt32(T1);//Convert.ToInt32(dt.Rows[0]["COMPLETE"].ToString());
+                //GetRelevant.WIP = T2; // Convert.ToInt32(T2.ToString()); //Convert.ToInt32(dt.Rows[0]["WIP"].ToString());
+                //GetRelevant.ONHOLD = T3; // Convert.ToInt32(T3.ToString()); //Convert.ToInt32(dt.Rows[0]["ONHOLD"].ToString());
+                //GetRelevant.YetToStart = T4+"%"; // Convert.ToInt32(T4.ToString());//Convert.ToInt32(dt.Rows[0]["YetToStart"].ToString());
+
+                GetRelevant.COMPLETE = Convert.ToInt32(dt.Rows[0]["COMPLETE"]);
+                GetRelevant.WIP = Convert.ToInt32(dt.Rows[0]["WIP"]);
+                GetRelevant.ONHOLD = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
+                GetRelevant.YetToStart = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
+            }
+            return GetRelevant;
+        }
         public GeneralList sP_SimplificationReport(Guid InstanceId)
         {
             GeneralList sP_ = new GeneralList();

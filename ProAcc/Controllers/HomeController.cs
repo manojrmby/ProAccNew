@@ -16,6 +16,7 @@ namespace ProAcc.Controllers
     [Authorize(Roles = "Admin,Consultant,Customer,Project Manager")]
     public class HomeController : Controller
     {
+        private Guid InstanceId = Guid.Empty;
         Base _Base = new Base();
         private ProAccEntities db = new ProAccEntities();
         // GET: Home
@@ -119,6 +120,16 @@ namespace ProAcc.Controllers
             ViewBag.Project = Project;
             return View();
         }
+
+        [HttpPost]
+        public JsonResult GetAssessmentReport()
+        {
+            InstanceId = Guid.Parse(Session["InstanceId"].ToString());
+            SP_Assessment_Result GetRelevant = _Base.SAP_Assessment(InstanceId); 
+            return Json(GetRelevant, JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult Test()
         {
             //List<Customer> cust = db.Customers.Where(a => a.isActive == true).ToList();

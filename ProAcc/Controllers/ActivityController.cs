@@ -65,7 +65,7 @@ namespace ProAcc.Controllers
             int? nextSeqNumber = null;
             if (seqNumber == 0)
             {
-                if (type == 5)
+                if (type == 1)
                     nextSeqNumber = 1;
                 else if (type == 2)
                     nextSeqNumber = 1001;
@@ -83,7 +83,7 @@ namespace ProAcc.Controllers
             latestTask.isActive = true;
             db.Entry(latestTask).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-            List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type).Select(p => p.Activity_ID).ToList();
+            List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type&&p.isActive==true).Select(p => p.Activity_ID).ToList();
             int? tid = nextSeqNumber;
             foreach (var id in ids)
             {
@@ -179,15 +179,13 @@ namespace ProAcc.Controllers
                 else
                 {
                     return Json("error");
-                }
-                
+                }                
             }
             catch (Exception)
             {
                
                 throw;
             }
-
         }
 
         [HttpGet]

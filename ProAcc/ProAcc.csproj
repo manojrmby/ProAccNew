@@ -523,6 +523,7 @@
     <Compile Include="BL\Model\SAPInput_CustomCode.cs" />
     <Compile Include="BL\Model\SAPInput_PreConvertion.cs" />
     <Compile Include="BL\Model\SAPInput_SimplificationReport.cs" />
+    <Compile Include="BL\Model\SP_Assessment_Result.cs" />
     <Compile Include="BL\Model\UserModel.cs" />
     <Compile Include="BL\Model\UserRoleProvider.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
