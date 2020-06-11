@@ -355,22 +355,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>06/09/2020 18:20:03</publishTime>
+      <publishTime>06/10/2020 11:41:52</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
       <publishTime>06/05/2020 17:35:11</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>06/09/2020 18:20:03</publishTime>
+      <publishTime>06/10/2020 11:41:52</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
-      <publishTime>06/02/2020 14:40:58</publishTime>
+      <publishTime>06/10/2020 11:41:51</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll.config">
       <publishTime>05/18/2020 05:47:15</publishTime>
     </File>
     <File Include="bin/ProACC_DB.pdb">
-      <publishTime>06/02/2020 14:40:58</publishTime>
+      <publishTime>06/10/2020 11:41:51</publishTime>
     </File>
     <File Include="bin/Release/Publish/Asset/css/main_Login.css">
       <publishTime>04/18/2020 18:23:04</publishTime>
@@ -1543,10 +1543,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/27/2020 22:31:27</publishTime>
     </File>
     <File Include="Views/Activity/_ActivityCreationCreate.cshtml">
-      <publishTime>06/07/2020 10:37:01</publishTime>
+      <publishTime>06/10/2020 10:58:48</publishTime>
     </File>
     <File Include="Views/Activity/_ActivityCreationIndex.cshtml">
-      <publishTime>06/07/2020 11:14:01</publishTime>
+      <publishTime>06/10/2020 10:58:48</publishTime>
     </File>
     <File Include="Views/Assessment/ActivitieReport.cshtml">
       <publishTime>06/09/2020 10:44:07</publishTime>
@@ -1564,7 +1564,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/09/2020 11:59:39</publishTime>
     </File>
     <File Include="Views/Assessment/ReadinessReport.cshtml">
-      <publishTime>06/05/2020 20:17:14</publishTime>
+      <publishTime>06/10/2020 11:41:42</publishTime>
     </File>
     <File Include="Views/Assessment/SimplificationReport - Copy.cshtml">
       <publishTime>05/14/2020 17:37:07</publishTime>
@@ -1606,7 +1606,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2020 13:22:16</publishTime>
     </File>
     <File Include="Views/Customers/Create.cshtml">
-      <publishTime>06/09/2020 12:19:17</publishTime>
+      <publishTime>06/10/2020 10:58:48</publishTime>
     </File>
     <File Include="Views/Customers/Delete.cshtml">
       <publishTime>05/06/2020 16:38:47</publishTime>
@@ -1714,7 +1714,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/26/2020 14:23:24</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_ProjectCreationCreate.cshtml">
-      <publishTime>06/09/2020 12:19:17</publishTime>
+      <publishTime>06/10/2020 10:58:48</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_ProjectCreationIndex.cshtml">
       <publishTime>06/09/2020 12:19:17</publishTime>
@@ -1735,7 +1735,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2020 13:22:47</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/AssusmentMonitor.cshtml">
-      <publishTime>06/09/2020 19:03:30</publishTime>
+      <publishTime>06/10/2020 11:11:41</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/Create.cshtml">
       <publishTime>05/25/2020 16:10:10</publishTime>

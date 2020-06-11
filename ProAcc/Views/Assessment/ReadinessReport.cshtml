@@ -253,33 +253,35 @@
 			//data: '{LOB: ' + JSON.stringify(a) + '}',
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
-			success: function (Data) {
-				var Output = Data._List;
-				var inpName = [];
-				var inpVal = [];
-				var C = 0;
-				for (var i = 0; i < Output.length; i++) {
+            success: function (Data) {
+                if (Data._List!=null) {
+                    var Output = Data._List;
+                    var inpName = [];
+                    var inpVal = [];
+                    var C = 0;
+                    for (var i = 0; i < Output.length; i++) {
 
-					var _Name = Output[i].Name;
+                        var _Name = Output[i].Name;
 
-					if (_Name == 'Custom Code Adaption') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else if (_Name == 'Customizing / Configuration') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else if (_Name == 'User Training') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else {
-						C = C + Output[i]._Value;
-					}
-				}
-				inpName.push("Others");
-				inpVal.push(C);
-				labels = inpName;
-				data_ = inpVal;
-				renderBar1Chart(data_, labels);
+                        if (_Name == 'Custom Code Adaption') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else if (_Name == 'Customizing / Configuration') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else if (_Name == 'User Training') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else {
+                            C = C + Output[i]._Value;
+                        }
+                    }
+                    inpName.push("Others");
+                    inpVal.push(C);
+                    labels = inpName;
+                    data_ = inpVal;
+                    renderBar1Chart(data_, labels);
+                }
 			},
 			error: function () {
 				alert("Error while inserting data");
@@ -407,33 +409,35 @@
 			//data: '{LOB: ' + JSON.stringify(a) + '}',
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
-			success: function (Data) {
-				var Output = Data._List;
-				var inpName = [];
-				var inpVal = [];
-				var C = 0;
-				for (var i = 0; i < Output.length; i++) {
+            success: function (Data) {
+                if (Data._List != null) {
+                    var Output = Data._List;
+                    var inpName = [];
+                    var inpVal = [];
+                    var C = 0;
+                    for (var i = 0; i < Output.length; i++) {
 
-					var _Name = Output[i].Name;
+                        var _Name = Output[i].Name;
 
-					if (_Name == 'During conversion project') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else if (_Name == 'Before conversion project') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else if (_Name == 'Before or during conversion project') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else {
-						C = C + Output[i]._Value;
-					}
-				}
-				inpName.push("Others");
-				inpVal.push(C);
-				labels = inpName;
-				data_ = inpVal;
-				renderBar2Chart(data_, labels);
+                        if (_Name == 'During conversion project') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else if (_Name == 'Before conversion project') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else if (_Name == 'Before or during conversion project') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else {
+                            C = C + Output[i]._Value;
+                        }
+                    }
+                    inpName.push("Others");
+                    inpVal.push(C);
+                    labels = inpName;
+                    data_ = inpVal;
+                    renderBar2Chart(data_, labels);
+                }
 			},
 			error: function () {
 				alert("Error while inserting data");
@@ -595,38 +599,39 @@
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
 			success: function (Data) {
+                if (Data._List != null) {
+                    var Output = Data._List;
+                    var inpName = [];
+                    var inpVal = [];
+                    var C = 0;
 
-				var Output = Data._List;
-				var inpName = [];
-				var inpVal = [];
-				var C = 0;
+                    for (var i = 0; i < Output.length; i++) {
 
-				for (var i = 0; i < Output.length; i++) {
+                        inpName.push(Output[i].Name);
+                        inpVal.push(Output[i]._Value);
 
-					inpName.push(Output[i].Name);
-					inpVal.push(Output[i]._Value);
+                        //var _Name = Output[i].Name;
 
-					//var _Name = Output[i].Name;
+                        //if (_Name == 'Custom Code Adaption') {
+                        //	inpName.push(Output[i].Name);
+                        //	inpVal.push(Output[i]._Value);
+                        //} else if (_Name == 'Customizing / Configuration') {
+                        //	inpName.push(Output[i].Name);
+                        //	inpVal.push(Output[i]._Value);
+                        //} else if (_Name == 'User Training') {
+                        //	inpName.push(Output[i].Name);
+                        //	inpVal.push(Output[i]._Value);
+                        //} else {
+                        //	C = C + Output[i]._Value;
+                        //}
+                    }
+                    //inpName.push("Others");
+                    //inpVal.push(C);
+                    labels = inpName;
+                    data_ = inpVal;
 
-					//if (_Name == 'Custom Code Adaption') {
-					//	inpName.push(Output[i].Name);
-					//	inpVal.push(Output[i]._Value);
-					//} else if (_Name == 'Customizing / Configuration') {
-					//	inpName.push(Output[i].Name);
-					//	inpVal.push(Output[i]._Value);
-					//} else if (_Name == 'User Training') {
-					//	inpName.push(Output[i].Name);
-					//	inpVal.push(Output[i]._Value);
-					//} else {
-					//	C = C + Output[i]._Value;
-					//}
-				}
-				//inpName.push("Others");
-				//inpVal.push(C);
-				labels = inpName;
-				data_ = inpVal;
-
-				renderDonutChart(data_, labels);
+                    renderDonutChart(data_, labels);
+                }
 			},
 			error: function () {
 				alert("Error while inserting data");
@@ -737,36 +742,37 @@
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
 			success: function (Data) {
+                if (Data._List != null) {
+                    var Output = Data._List;
+                    var inpName = [];
+                    var inpVal = [];
+                    var C = 0;
 
-				var Output = Data._List;
-				var inpName = [];
-				var inpVal = [];
-				var C = 0;
+                    for (var i = 0; i < Output.length; i++) {
+                        //inpName.push(Output[i].Name);
+                        //	inpVal.push(Output[i]._Value);
 
-				for (var i = 0; i < Output.length; i++) {
-					//inpName.push(Output[i].Name);
-					//	inpVal.push(Output[i]._Value);
+                        var _Name = Output[i].Name;
 
-					var _Name = Output[i].Name;
-
-					if (_Name == 'General Ledger Accountant') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else if (_Name == 'Purchaser') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else if (_Name == 'Cash Management Specialist') {
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
-					} else {
-						C = C + Output[i]._Value;
-					}
-				}
-				inpName.push("Others");
-				inpVal.push(C);
-				labels = inpName;
-				data_ = inpVal;
-				renderFioriBar1Chart(data_, labels);
+                        if (_Name == 'General Ledger Accountant') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else if (_Name == 'Purchaser') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else if (_Name == 'Cash Management Specialist') {
+                            inpName.push(Output[i].Name);
+                            inpVal.push(Output[i]._Value);
+                        } else {
+                            C = C + Output[i]._Value;
+                        }
+                    }
+                    inpName.push("Others");
+                    inpVal.push(C);
+                    labels = inpName;
+                    data_ = inpVal;
+                    renderFioriBar1Chart(data_, labels);
+                }
 			},
 			error: function () {
 				alert("Error while inserting data");
@@ -899,22 +905,24 @@
 			//data: '{LOB: ' + JSON.stringify(a) + '}',
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
-			success: function (Data) {
-				var Output = Data._List;
-				var inpName = [];
-				var inpVal = [];
-				var C = 0;
-				for (var i = 0; i < Output.length; i++) {
+            success: function (Data) {
+                if (Data._List != null) {
+                    var Output = Data._List;
+                    var inpName = [];
+                    var inpVal = [];
+                    var C = 0;
+                    for (var i = 0; i < Output.length; i++) {
 
-						inpName.push(Output[i].Name);
-						inpVal.push(Output[i]._Value);
+                        inpName.push(Output[i].Name);
+                        inpVal.push(Output[i]._Value);
 
 
-				}
+                    }
 
-				labels = inpName;
-				data_ = inpVal;
-				renderCustomBarChart(data_, labels);
+                    labels = inpName;
+                    data_ = inpVal;
+                    renderCustomBarChart(data_, labels);
+                }
 			},
 			error: function () {
 				alert("Error while inserting data");
@@ -1190,7 +1198,9 @@
                             btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
                             action: function (event, ui) {
                                 $(this).remove();
-                                location.reload();
+								location.reload();
+								
+                                
                             }
                         }
                     }
@@ -1198,5 +1208,24 @@
             }
         });
 	});
-
+    var Status = "@Session["IsCreateAnalysisDone"]"
+    if (Status == 'False') {
+        $.alert({
+            title: 'Alert !',
+            content: 'Create Analysis <Strong>NOT</strong> Completed for Selected Instance..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+            icon: 'fa fa-rocket',
+            animation: 'scale',
+            closeAnimation: 'scale',
+            buttons: {
+                okay: {
+                    text: 'Okay',
+                    btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                    action: function (event, ui) {
+                        $(this).remove();
+                    }
+                }
+            }
+        });
+    }
+                                
 </script>
