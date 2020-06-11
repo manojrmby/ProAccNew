@@ -431,7 +431,7 @@
             })
             $(element).datepicker({
                 duration: "slow",
-               // defaultDate: +1,
+                // defaultDate: +1,
                 //altFormat: "mm/dd/yy",
                 dateFormat: "dd/mm/yy",
                 autoSize: false,
@@ -442,9 +442,10 @@
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
                     $("#" + ID + "_Planed__En_Date").datepicker("option", "minDate", selectedDate);
-                    $("#"+ID+"_Actual_St_Date").datepicker("option", "minDate", selectedDate);
+                    $("#" + ID + "_Actual_St_Date").datepicker("option", "minDate", selectedDate);
+                    $("#" + ID + "_Actual_En_Date").datepicker("option", "minDate", selectedDate);
                 },
-            }).datepicker("setDate", new Date());
+            });//.datepicker("setDate", new Date());
              //}).datepicker();
         };
         var Planed_EndDate = function (element, options) {
@@ -455,7 +456,7 @@
             })
             $(element).datepicker({
                 duration: "slow",
-               // defaultDate: +1,
+                // defaultDate: +1,
                 //altFormat: "mm/dd/yy",
                 dateFormat: "dd/mm/yy",
                 autoSize: false,
@@ -466,10 +467,10 @@
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
                     $("#" + ID + "_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
-
-                    $("#" + ID + "_Actual_En_Date").datepicker("option", "maxDate", selectedDate);
+                    $("#" + ID + "_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+                    //$("#" + ID + "_Actual_En_Date").datepicker("option", "maxDate", selectedDate);
                 }
-            }).datepicker("setDate", new Date());
+            });//.datepicker("setDate", new Date());
             // }).datepicker();
         };
 
@@ -481,9 +482,9 @@
             })
             $(element).datepicker({
                 duration: "slow",
-               // defaultDate: +1,
+                // defaultDate: +1,
                 //altFormat: "mm/dd/yy",
-                 dateFormat: "dd/mm/yy",
+                dateFormat: "dd/mm/yy",
                 autoSize: false,
                 changeYear: true,
                 changeMonth: true,
@@ -491,9 +492,10 @@
                 showWeek: false,
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
-                    $("#"+ID+"_Actual_En_Date").datepicker("option", "minDate", selectedDate);
+                    $("#" + ID + "_Actual_En_Date").datepicker("option", "minDate", selectedDate);
+                    $("#" + ID + "_Planed__En_Date").datepicker("option", "maxDate", selectedDate);
                 },
-            }).datepicker("setDate", new Date());
+            });//.datepicker("setDate", new Date());
             // }).datepicker();
         };
         var Actual_En_Date = function (element, options) {
@@ -504,7 +506,7 @@
             })
             $(element).datepicker({
                 duration: "slow",
-               // defaultDate: +1,
+                // defaultDate: +1,
                 //altFormat: "mm/dd/yy",
                 dateFormat: "dd/mm/yy",
                 autoSize: false,
@@ -515,9 +517,10 @@
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
                     $("#" + ID + "_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+                    //$("#" + ID + "Planed_EndDate").datepicker("option", "maxDate", selectedDate);
 
                 }
-            }).datepicker("setDate", new Date());
+            });//.datepicker("setDate", new Date());
             // }).datepicker();
         };
 
@@ -629,22 +632,41 @@
 
                 },
                 {
-                    label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 55, editable: true, maxlengh: 4,
+                   label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,formatter: "number", editable: true, maxlength:2,
+                    //formatoptions: { masks: 'LongTime', newformat: 'ShortTime' },
+                    editrules: { maxlengh: 2 },
+                    
                     editoptions: {
-                        size: 15, maxlengh: 4,
+                        maxlengh: 2,
                         dataInit: function (element) {
-                            $(element).keypress(function (e) {
-                                //alert(e);
+                            $(element).keypress(function (e) {                                                          
                                 if (e.which == 46) {
 
                                 }
                                 else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                                     return false;
                                 }
-                            });
+                            })
                         }
                     }
                 },
+                //{
+                //    label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 55, editable: true, maxlengh: 4,
+                //    editoptions: {
+                //        size: 15, maxlengh: 4,
+                //        dataInit: function (element) {
+                //            $(element).keypress(function (e) {
+                //                //alert(e);
+                //                if (e.which == 46) {
+
+                //                }
+                //                else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //                    return false;
+                //                }
+                //            });
+                //        }
+                //    }
+                //},
                 {
                     label: 'Actual Duration (hours)', name: 'Actual_St_hours', formatter: "number", width: 55, editable: true,
                     editoptions: {
