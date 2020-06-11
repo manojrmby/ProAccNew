@@ -158,6 +158,8 @@
     <Content Include="Asset\css\Menu.css" />
     <Content Include="Asset\css\main_Login.css" />
     <Content Include="Asset\css\style.css" />
+    <Content Include="Asset\Jquery\jqGrid\plugins\pdfmake.min.js" />
+    <Content Include="Asset\Jquery\jqGrid\plugins\vfs_fonts.js" />
     <Content Include="Asset\Jquery\jquery-confirm.min.js" />
     <Content Include="Content\fonts\fa-solid-900.svg" />
     <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.css" />

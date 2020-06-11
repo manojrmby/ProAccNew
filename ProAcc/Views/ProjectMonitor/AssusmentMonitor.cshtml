@@ -11,7 +11,46 @@
 
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
-    <a class="card-title">Assusment Monitor</a>
+<style>
+    .wrapColumnText
+{
+           white-space: normal !important;
+           height:auto;
+           vertical-align:text-top;
+}
+    .fit_Data {
+        width: fit-content;
+    }
+</style>
+
+    @*<style type="text/css">
+        .ui-jqgrid tr.jqgrow td {
+            word-wrap: break-word; /* IE 5.5+ and CSS3 */
+            white-space: pre-wrap; /* CSS3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            overflow: hidden;
+            height: auto;
+            vertical-align: middle;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        /*.ui-jqgrid tr.jqgrow td { white-space: normal !important; height: auto; vertical-align: text-top; padding-top: 2px; }*/
+        th.ui-th-column div {
+            word-wrap: break-word; /* IE 5.5+ and CSS3 */
+            white-space: pre-wrap; /* CSS3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            overflow: hidden;
+            height: auto;
+            vertical-align: middle;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+    </style>*@
+    <a class="card-title">Assessment Monitor</a>
 <script>
     //$.jgrid.defaults.width =1000;
     $.jgrid.defaults.responsive = true;
@@ -230,10 +269,11 @@
 </script>
 
 <script>
-    document.body.style.zoom = "67%";
-    //$(document).ready(function () {
-
-    //});
+    //document.body.style.zoom = "67%";
+    document.body.style.zoom = "70%";
+    $(document).ready(function () {
+        LoadTable(1);
+    });
     function LoadTable(Instance) {
 
         // $(document).ready(function () {
@@ -401,7 +441,8 @@
                 showWeek: false,
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
-                    $("#"+ID+"_Planed__En_Date").datepicker("option", "minDate", selectedDate);
+                    $("#" + ID + "_Planed__En_Date").datepicker("option", "minDate", selectedDate);
+                    $("#"+ID+"_Actual_St_Date").datepicker("option", "minDate", selectedDate);
                 },
             }).datepicker("setDate", new Date());
              //}).datepicker();
@@ -425,6 +466,8 @@
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
                     $("#" + ID + "_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
+
+                    $("#" + ID + "_Actual_En_Date").datepicker("option", "maxDate", selectedDate);
                 }
             }).datepicker("setDate", new Date());
             // }).datepicker();
@@ -500,7 +543,7 @@
                     }
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,
+                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,classes: 'wrapColumnText',
                     editrules: {
                         required: true,
                         edithidden: true
@@ -508,12 +551,12 @@
 
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false
+                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false ,classes: 'wrapColumnText',
 
 
                 },
                 {
-                    label: 'ApplicationArea', name: 'ApplicationArea', width: 150,  editable: false
+                    label: 'ApplicationArea', name: 'ApplicationArea', width: 100,  editable: false,classes: 'wrapColumnText',
 
 
                 },
@@ -537,31 +580,31 @@
                 },
                 {
                     label: 'Task needed for other environment (Y/N)',
-                    name: 'Task_Other_Environment', width: 50, editable: true,
+                    name: 'Task_Other_Environment', width: 55, editable: true,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
 
                 },
                 {
                     label: 'Dependency (Y/N)',
-                    name: 'Dependency', width: 80,editable: true,
+                    name: 'Dependency', width: 72,editable: true,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
                 },
-                { label: 'Pending With ', name: 'Pending', width: 80,  editable: true },
+                { label: 'Pending With ', name: 'Pending', width: 100,  editable: true },
                 {
-                    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80,  editable: true,
+                    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 58,  editable: true,
                     edittype: 'checkbox',
                     editoptions: { value: "True:False" }
                     , formatter: "checkbox",
                 },
                 {
-                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, align: 'center', editable: false,
+                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
                     }
                 },
                 {
-                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'center', editable: true,
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 100,  align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetStatusDropDown()
@@ -586,7 +629,7 @@
 
                 },
                 {
-                    label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 80, editable: true,
+                    label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 55, editable: true, maxlengh: 4,
                     editoptions: {
                         size: 15, maxlengh: 4,
                         dataInit: function (element) {
@@ -603,7 +646,7 @@
                     }
                 },
                 {
-                    label: 'Actual Duration (hours)', name: 'Actual_St_hours', formatter: "number", width: 80, editable: true,
+                    label: 'Actual Duration (hours)', name: 'Actual_St_hours', formatter: "number", width: 55, editable: true,
                     editoptions: {
                         size: 15, maxlengh: 4,
                         dataInit: function (element) {
@@ -621,24 +664,24 @@
                 },
                 {
                     label: 'Planned Start Date', name: 'Planed__St_Date',
-                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    width: 75, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
                     editoptions: { dataInit: Planed_StartDate, classes: 'DateClass' }
                 },
                 {
-                    label: 'Actual Start Date/Time (UTC)', name: 'Actual_St_Date',
-                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    label: 'Actual Start Date', name: 'Actual_St_Date',
+                    width: 75, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
                     editoptions: { dataInit: Actual_St_Date }
 
                 },
                 {
                     label: 'Planned End Date', name: 'Planed__En_Date',
-                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    width: 75, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
                     editoptions: { dataInit: Planed_EndDate }
                 },
                 {
-                    label: 'Actual End Date/Time (UTC)', name: 'Actual_En_Date',
-                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    label: 'Actual End Date', name: 'Actual_En_Date',
+                    width: 75, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
                     editoptions: { dataInit: Actual_En_Date }
                 },
@@ -652,11 +695,11 @@
                         "class": "", "rows": 5, "wrap": "off", "style": "width:200px"
                         //"readonly": "readonly"
                     },
-                    editrules: { "edithidden": true }, "editable": true, "width": 200,
+                    editrules: { "edithidden": true }, "editable": true, "width": 180,
                     //classes: "jqgrid-readonlycolumn"
                 },
                 {
-                    label: 'ValidationStatus', name: 'ValidationStatus', width: 80, editable: false,hidden: true,
+                    label: 'ValidationStatus', name: 'ValidationStatus', width: 10, editable: false,hidden: true,
 
                     editoptions: { value: "True:False" }
 
@@ -664,7 +707,7 @@
                 {
                     name: "",
                     label: "Actions",
-                    width: 75,
+                    width: 65,
                     align: "center",
                     formatter: "actions",
                     formatoptions: {
@@ -672,8 +715,7 @@
                         delbutton: false,
 
                         onEdit: function (rowid) {
-                            
-                          
+                            $("#" + rowid + "_StatusId").addClass("fit_Data");
                  //alert("in onEdit: rowid="+rowid+"\nWe don't need return anything");
              },
                         //beforeShowForm: function (form) {
@@ -1068,10 +1110,12 @@
          var UserType ="@Session["UserType"].ToString()"
         if (UserType == 'Project Manager')
         {
-
+            var WIP_Status=false;
              for (var i = 0; i < ids.length; i++) {
                  var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
-
+                 if (Status_Id==2) {
+                     WIP_Status = true;
+                 }
                  if (Status_Id == 1||Status_Id == 3) {
                      $('#jEditButton_' + ids[i]).hide();
                  }
@@ -1079,6 +1123,14 @@
                       $('#jEditButton_' + ids[i]).show();
                  }
 
+            }
+            if (WIP_Status) {
+                for (var i = 0; i < ids.length; i++) {
+                    var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+                     if (Status_Id == 4) {
+                     $('#jEditButton_' + ids[i]).hide();
+                 }
+                }
             }
 
         }
@@ -1130,8 +1182,6 @@
                 }
             }
         }
-
-
     }
     function GetPhaseDropDown() {
 				 var Parameters = {};

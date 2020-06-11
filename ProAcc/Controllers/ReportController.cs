@@ -90,8 +90,9 @@ namespace ProAcc.Controllers
             string LoginID = Session["loginid"].ToString();
             List<ProjectMonitorModel> PM = _Base.Sp_GetReportData(InstanceID, LoginID);
             var obj = new { data = PM };
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            return Json(PM, JsonRequestBehavior.AllowGet);
         }
+
 
     }
 }

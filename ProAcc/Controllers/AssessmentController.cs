@@ -150,13 +150,17 @@ namespace ProAcc.Controllers
             if (User.IsInRole("Customer"))
             {
                 Guid customerId = Guid.Parse(Session["loginid"].ToString());
-                var query = from u in db.Projects where (u.Customer_Id == customerId && u.isActive == true) select u;
-                if (query.Count() > 0)
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == customerId
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
                 {
-                    foreach (var v in query)
+                    foreach (var v in Data)
                     {
                         Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
                     }
+
                 }
             }
             else if (User.IsInRole("Project Manager"))
@@ -395,6 +399,7 @@ namespace ProAcc.Controllers
 
                         //    return Json("File Uploaded Successfully!");
                         //}
+                        Session["IsCreateAnalysisDone"] = true;
                         return Json("File Uploaded Successfully!");
                         // Returns message that successfully uploaded  
 

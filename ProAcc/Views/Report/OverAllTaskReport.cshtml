@@ -3,16 +3,42 @@
     ViewBag.Title = "OverAllTaskReport";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
-@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>*@
-<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
-<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+
+@Styles.Render("~/Content/css/jqGrid")
+@Scripts.Render("~/bundles/Scripts/jqGrid")
+
+@*<script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.26/build/pdfmake.min.js"></script>
+<script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.26/build/vfs_fonts.js"></script>*@
+<script src="~/Asset/Jquery/jqGrid/plugins/pdfmake.min.js"></script>
+<script src="~/Asset/Jquery/jqGrid/plugins/vfs_fonts.js"></script>
+<a class="card-title">Over All Task Report</a>
+<script>
+    //$.jgrid.defaults.width =1000;
+    $.jgrid.defaults.responsive = true;
+    $.jgrid.defaults.styleUI = 'Bootstrap4';
+    $.jgrid.defaults.iconSet = "Octicons";
+</script>
 <style>
-    .outer {
-        overflow-y: auto;
-        height: 522px;
+    .ui-jqgrid {
+        font-size: 0.8rem
+    }
+
+    th.ui-th-column div {
+        white-space: normal !important;
+        height: auto !important;
+        padding: 2px;
+    }
+
+    .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
+        font-size: 11px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-bdiv {
+        overflow-y: scroll
+    }
+
+    #jqGridPager_center {
+        visibility: hidden;
     }
 
     .fixed-sidebar .app-sidebar {
@@ -35,6 +61,7 @@
         min-height: 100%;
     }
 </style>
+
 <div class="row">
     <div class="col-lg-12 card" style="margin-bottom:20px !important;">
         <div class="row">
@@ -74,50 +101,11 @@
         </div>
     </div>
 </div>
-<div>
-
-    <div style="width:100%;">
-
-
-        <div class="" style="font-size:12px !important;overflow-x:auto;">
-
-
-            <table id="example" class="table table-striped table-bordered dataTable" style="width:83%!important;po">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Activity / Task</th>
-                        <th>Application Area </th>
-                        <th>Task needed for other environment (Y/N) </th>
-                        <th>Dependency (Y/N) </th>
-                        <th>Pending With </th>
-                        <th>Delay Occurred (Y/N)</th>
-                        <th>Named Owner of Task </th>
-                        <th>Status </th>
-                        <th>Est. Duration (hours) </th>
-                        <th>Actual Duration (hours)</th>
-                        <th>Planned Start Date</th>
-        <th>Actual Start Date/Time (UTC)</th>
-        <th>Planned End Date</th>
-        <th>Actual End Date/Time (UTC)</th>
-
-                    </tr>
-                </thead>
-                @*<tfoot>
-                        <tr>
-                            <th>S No</th>
-                            <th>Custom Code Topic</th>
-                            <th>Status</th>
-                            <th>Application Component</th>
-
-                        </tr>
-                    </tfoot>*@
-            </table>
-        </div>
-    </div>
+<div style="margin-left:20px;margin-top:20px">
+    <table id="jqGrid"></table>
+    <div id="jqGridPager"></div>
+    <button id="export">Export to PDF</button>
 </div>
-
-
 
 <script>
     $(document).ready(function () {
@@ -243,47 +231,849 @@
 </script>
 
 <script>
-    $(document).ready(function () {
-            document.body.style.zoom = "67%";
-        var t=  $('#example').DataTable({
-                "ajax": {
-                    "url": '@Url.Action("GetData","Report")',
-                    "type": "GET",
-                    "datatype": "json"
-                },
-                "columns": [
-                    //{ "data": "Relevance" },
-                    { "data": "Task" },
-                    { "data": "ApplicationArea"},
-                    { "data": "Task_Other_Environment" },
-                    { "data": "Dependency" },
-                    { "data": "Pending" },
-                    { "data": "Delay_occurred" },
-                    { "data": "UserID" },
-                     { "data": "StatusId" },
-                    { "data": "EST_hours" },
-                    { "data": "Actual_St_hours" },
-                    { "data": "Planed__St_Date"},
-                    { "data": "Actual_St_Date" },
-                    { "data": "Planed__En_Date" },
-                    { "data": "Actual_En_Date" }
-                    //{ "data": "Summary" }
-                    //{ "data": "S_No" },
-                    //{ "data": "Custom_Code_Topic" },
-                    //{ "data": "Status" },
-                    //{ "data": "Application_Component" }
-                    //{ "data": "AlternatePhone" },
-                    //{ "data": "Email" }
-                ],
-        "scrollY": "450px",
-        "scrollCollapse": true,
-        "paging":         false
+    document.body.style.zoom = "67%";
+    //$(document).ready(function () {
 
-            });
-         t.on( 'order.dt search.dt', function () {
-        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = i+1;
-        } );
-    } ).draw();
-        } );
+    //});
+    function LoadTable(Instance) {
+
+        // $(document).ready(function () {
+        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
+    //    var lastSelection;
+    //    var editParameters = {
+    //        keys: true,
+    //        //successfunc: editSuccessful,
+    //        errorfunc: false,
+    //        restoreAfterError: false,
+    //        extraparam: {
+    //            valor: 'texto', any: '20164',
+    //            clave1: function () {
+    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+    //                var value = $("#grid").jqGrid('getCell', sel_id, 'pas1');
+    //                return value;
+    //            },
+    //            obra: function () {
+    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+    //                var value = $("#grid").jqGrid('getCell', sel_id, 'obra');
+    //                return value;
+    //            },
+    //            empresa: function () {
+    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+    //                var value = $("#grid").jqGrid('getCell', sel_id, 'empresa');
+    //                return value;
+    //            }
+    //        }
+    //    };
+    //    var jqId = jQuery("#jqGrid");
+    //    var grid = $("#grid");
+    //    var cancelEditing = function (myGrid) {
+    //        var lrid;
+    //        if (typeof lastSelection !== "undefined") {
+    //            // cancel editing of the previous selected row if it was in editing state.
+    //            // jqGrid hold intern savedRow array inside of jqGrid object,
+    //            // so it is safe to call restoreRow method with any id parameter
+    //            // if jqGrid not in editing state
+    //            myGrid.jqGrid('restoreRow', lastSelection);
+
+
+    //            // now we need to restore the icons in the formatter:"actions"
+    //            lrid = $.jgrid.jqID(lastSelection);
+    //            $("tr#" + lrid + " div.ui-inline-edit, " + "tr#" + lrid + " div.ui-inline-del").show();
+    //            $("tr#" + lrid + " div.ui-inline-save, " + "tr#" + lrid + " div.ui-inline-cancel").hide();
+    //            $("div.ui-inline-close").show();
+    //        }
+    //    };
+
+    //    var getColumnIndexByName = function (grid, columnName) {
+    //        var cm = grid.jqGrid('getGridParam', 'colModel'), i, l = cm.length;
+    //        for (i = 0; i < l; i++) {
+    //            if (cm[i].name === columnName) {
+    //                return i; // return the index
+    //            }
+    //        }
+    //        return -1;
+    //    }
+
+    //    var myEditOptions = {
+    //    keys: true,
+    //    oneditfunc: function (rowid) {
+    //        alert("row with rowid=" + rowid + " is editing.");
+    //    },
+    //    aftersavefunc: function (rowid, response, options) {
+    //        alert("row with rowid=" + rowid + " is successfuly modified.");
+    //    }
+    //};
+
+        //var DateInput = function (element, options) {
+
+        //    //var ID = options.id;
+        //    //var Result_PLST = ID.indexOf('Planed__St_Date');
+        //    //if (Result_PLST == 2)
+        //    //{
+        //    //    alert("HOOO");
+        //    //}
+        //    //var Cell_Date = $("#" + ID).val();
+        //    //if (Cell_Date == "17/10/1904") {
+        //    //    debugger;
+        //    //    var currentDate=new Date();
+        //    //     $("#" + ID).val(currentDate);
+        //    //}
+        //   // debugger;
+
+
+        //    $(element).on('keypress', function (e) {
+        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
+        //        e.preventDefault();
+        //    })
+        //    $(element).datepicker({
+        //        duration: "slow",
+        //        defaultDate: +1,
+        //        altFormat: "mm/dd/yy",
+        //        dateFormat: "mm/dd/yy",
+        //        autoSize: false,
+        //        changeYear: true,
+        //        changeMonth: true,
+        //        showButtonPanel: false,
+        //        showWeek: false
+        //    //}).datepicker("setDate", new Date());
+        //     }).datepicker();
+        //};
+         //var DateInput1 = function (element, options) {
+
+        //    //var ID = options.id;
+        //    //var Cell_Date = $("#" + ID).val();
+        //    //if (Cell_Date == "17/10/1904") {
+        //    //    debugger;
+        //    //    var currentDate=new Date();
+        //    //     $("#" + ID).val(currentDate);
+        //    //}
+        //    //debugger;
+        //    $(element).on('keypress', function (e) {
+        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
+        //        e.preventDefault();
+        //    })
+        //    $(element).datepicker({
+        //        duration: "slow",
+        //        defaultDate: +1,
+
+        //        dateFormat: "mm/dd/yy",
+        //        autoSize: true,
+        //        changeYear: true,
+        //        changeMonth: true,
+        //        showButtonPanel: false,
+        //        showWeek: false
+        //    }).datepicker("setDate",new Date());
+        //};
+                //var initDateEdit = function (elem, options) {
+        //    // we need get the value before changing the type
+        //    var orgValue = $(elem).val(),
+        //        cm = $(this).jqGrid("getColProp", options.name);
+
+        //    $(elem).attr("type", "date");
+        //    if ((Modernizr && !Modernizr.inputtypes.date) || $(elem).prop("type") !== "date") {
+        //        // if type="date" is not supported call jQuery UI datepicker
+        //        $(elem).datepicker({
+        //            dateFormat: "dd/mm/yy",
+        //            autoSize: true,
+        //            changeYear: true,
+        //            changeMonth: true,
+        //            showButtonPanel: true,
+        //            showWeek: true
+        //        });
+        //    } else {
+        //        // convert date to ISO
+        //        $(elem).val($.jgrid.parseDate.call(this, cm.formatoptions.newformat, orgValue, "Y-m-d"));
+        //    }
+        //};
+        var Planed_StartDate = function (element, options) {
+            var ID = options.rowId;
+            $(element).on('keypress', function (e) {
+                e.preventDefault();
+            })
+            $(element).datepicker({
+                duration: "slow",
+               // defaultDate: +1,
+                //altFormat: "mm/dd/yy",
+                dateFormat: "dd/mm/yy",
+                autoSize: false,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: false,
+                showWeek: false,
+                showButtonPanel: true,
+                onClose: function (selectedDate) {
+                    $("#" + ID + "_Planed__En_Date").datepicker("option", "minDate", selectedDate);
+                    $("#"+ID+"_Actual_St_Date").datepicker("option", "minDate", selectedDate);
+                },
+            }).datepicker("setDate", new Date());
+             //}).datepicker();
+        };
+        var Planed_EndDate = function (element, options) {
+           var ID = options.rowId;
+            //var ST_Date=$('#').val();
+            $(element).on('keypress', function (e) {
+                e.preventDefault();
+            })
+            $(element).datepicker({
+                duration: "slow",
+               // defaultDate: +1,
+                //altFormat: "mm/dd/yy",
+                dateFormat: "dd/mm/yy",
+                autoSize: false,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: false,
+                showWeek: false,
+                showButtonPanel: true,
+                onClose: function (selectedDate) {
+                    $("#" + ID + "_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
+
+                    $("#" + ID + "_Actual_En_Date").datepicker("option", "maxDate", selectedDate);
+                }
+            }).datepicker("setDate", new Date());
+            // }).datepicker();
+        };
+
+
+        var Actual_St_Date = function (element, options) {
+            var ID = options.rowId;
+            $(element).on('keypress', function (e) {
+                e.preventDefault();
+            })
+            $(element).datepicker({
+                duration: "slow",
+               // defaultDate: +1,
+                //altFormat: "mm/dd/yy",
+                 dateFormat: "dd/mm/yy",
+                autoSize: false,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: false,
+                showWeek: false,
+                showButtonPanel: true,
+                onClose: function (selectedDate) {
+                    $("#"+ID+"_Actual_En_Date").datepicker("option", "minDate", selectedDate);
+                },
+            }).datepicker("setDate", new Date());
+            // }).datepicker();
+        };
+        var Actual_En_Date = function (element, options) {
+           var ID = options.rowId;
+            //var ST_Date=$('#').val();
+            $(element).on('keypress', function (e) {
+                e.preventDefault();
+            })
+            $(element).datepicker({
+                duration: "slow",
+               // defaultDate: +1,
+                //altFormat: "mm/dd/yy",
+                dateFormat: "dd/mm/yy",
+                autoSize: false,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: false,
+                showWeek: false,
+                showButtonPanel: true,
+                onClose: function (selectedDate) {
+                    $("#" + ID + "_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+
+                }
+            }).datepicker("setDate", new Date());
+            // }).datepicker();
+        };
+
+        $("#jqGrid").jqGrid({
+            url: "@Url.Action("GetData","Report")",
+            datatype: "json",
+
+            colModel: [
+                {
+                    label: 'Id', name: 'Id', index: 'Id', width: 70,align: 'center',hidden: true
+                },
+                {
+                    label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 80,
+                     align: 'center', editable: true, edittype: 'custom',
+                    cellEdit: true, edittype: 'select', formatter: 'select',search:true, stype:'text',
+                    editrules: {
+                        required: true,
+                        edithidden: true
+                    },
+                    editoptions: {
+                        value: GetPhaseDropDown()
+                    }
+                },
+                {
+                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,search:true, stype:'text',
+                    editrules: {
+                        required: true,
+                        edithidden: true
+                    }
+
+                },
+                {
+                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false,search:true, stype:'text',
+
+
+                },
+                {
+                    label: 'ApplicationArea', name: 'ApplicationArea', width: 150,  editable: false,search:true, stype:'text',
+
+
+                },
+                {
+                    label: 'Sequence ', name: 'SequenceNum', width: 50,  editable: true, hidden: true,search:true, stype:'text',
+                    editrules: {
+                        required: true,
+                        edithidden: true
+                    },
+                    editoptions: {
+                        size: 15, maxlengh: 10,
+                        dataInit: function (element) {
+                            $(element).keypress(function (e) {
+                                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                                    return false;
+                                }
+                            });
+                        }
+                    }
+
+                },
+                {
+                    label: 'Task needed for other environment (Y/N)',
+                    name: 'Task_Other_Environment', width: 50, editable: true,search:true, stype:'text',align: 'center',
+                    edittype: 'checkbox', editoptions: { value: "True:False" },
+
+                },
+                {
+                    label: 'Dependency (Y/N)',
+                    name: 'Dependency', width: 80,editable: true,search:true, stype:'text',align: 'center',
+                    editoptions: { value: "True:False" },
+                },
+                { label: 'Pending With ', name: 'Pending', width: 80,  editable: true,search:true, stype:'text', },
+                {
+                    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80,  editable: true,align: 'center',
+                    
+                    editoptions: { value: "True:False" }, 
+                },
+                {
+                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, align: 'center', editable: false,search:true, stype:'text',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetUserDropDown()
+                    }
+                },
+                {
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'center', editable: true,search:true, stype:'text',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetStatusDropDown()
+                    },
+
+
+                },
+                {
+                    label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 80, editable: true,search:true, sorttype:"float", formatter:"number",
+
+                },
+                {
+                    label: 'Actual Duration (hours)', name: 'Actual_St_hours', formatter: "number", width: 80, editable: true,search:true, sorttype:"float", formatter:"number",
+
+                },
+                {
+                    label: 'Planned Start Date', name: 'Planed__St_Date',search:true, sorttype:"date", formatter:"date",
+                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                },
+                {
+                    label: 'Actual Start Date/Time (UTC)', name: 'Actual_St_Date',search:true, sorttype:"date", formatter:"date",
+                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+
+                },
+                {
+                    label: 'Planned End Date', name: 'Planed__En_Date',search:true, sorttype:"date", formatter:"date",
+                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    ,
+                    editoptions: { dataInit: Planed_EndDate }
+                },
+                {
+                    label: 'Actual End Date/Time (UTC)', name: 'Actual_En_Date',search:true, sorttype:"date", formatter:"date",
+                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    ,
+                    editoptions: { dataInit: Actual_En_Date }
+                },
+                {
+                    label: 'Notes/Remarks', name: 'Notes', edittype: "textarea",search:true, stype:'text',
+                    wrap: "on"
+                    //formatter: function (v) {
+                    //     return '<div style="max-height:20px">' $.jgrid.htmlEncode(v) '</div>';
+                    // }
+                    , editoptions: {
+                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px"
+                        //"readonly": "readonly"
+                    },
+                    editrules: { "edithidden": true }, "editable": true, "width": 200,
+                    //classes: "jqgrid-readonlycolumn"
+                },
+                {
+                    label: 'ValidationStatus', name: 'ValidationStatus', width: 80, editable: false,hidden: true,
+
+                    editoptions: { value: "True:False" }
+
+                },
+             //   {
+             //       name: "",
+             //       label: "Actions",
+             //       width: 75,
+             //       align: "center",
+             //       formatter: "actions",
+             //       formatoptions: {
+             //           keys: true,
+             //           delbutton: false,
+
+             //           onEdit: function (rowid) {
+
+
+             //    //alert("in onEdit: rowid="+rowid+"\nWe don't need return anything");
+             //},
+             //           //beforeShowForm: function (form) {
+
+             //           //    //$("#tr_pid").find("input,button,textarea,select").attr("disabled", true);
+             //           //},
+             //           editformbutton: false,//Determines if popup should open or not
+             //           afterSave: function (rowid, response, postdata, options) {
+             //               //alert("success");
+             //               //debugger;
+             //               Show_HideEdit();
+             //               $('#jqGrid').trigger( 'reloadGrid' );
+             //              // debugger;
+             //               //var Status_Id = $('#jqGrid').jqGrid('getCell', rowid, 'StatusId')
+             //               //if (Status_Id == 1) {
+             //               //    $('#jEditButton_' + rowid).hide();
+             //               //    $('#jSaveButton_' + rowid).hide();
+             //               //    $('#jCancelButton_' + rowid).hide();
+             //               //    //jSaveButton_12
+             //               //    //jCancelButton_12
+             //               //}
+
+             //           },
+             //           processing:true
+             //       }
+
+             //   }
+
+            ],
+            loadonce: true,
+            altRows: true,
+            //rownumbers : true,
+            //multiselect : true,
+            width: 2000,
+            colMenu: false,
+            menubar: false,
+            viewrecords: true,
+
+            hoverrows: true,
+            height: 400,
+            rowNum: 1000,
+            caption: 'Over All Task Report',
+            sortable: false,
+            grouping: false,
+            rownumbers: true,
+            reload: true,
+            reloadAfterSubmit:true,
+            pager: "#jqGridPager",
+            sortname: 'SequenceNum',
+            sortorder: 'asc',
+
+            loadComplete: function () {
+                //alert("mm");
+
+            },
+            gridComplete: function () {
+               // alert("tdyt");
+                //var recs = $('#jqGrid').jqGrid('getGridParam', 'reccount');
+
+                //if (isNaN(recs) || recs == 0) {
+                //    $("#jqGrid").jqGrid('setGridState', 'hidden');
+                //}
+                //else {
+                //    $("#jqGrid").jqGrid('setGridState', 'visible');
+                //}
+                //Show_HideEdit();
+
+
+
+            }
+            // set table stripped class in table style in bootsrap
+        });
+        //$("#jqGrid").jqGrid('filterToolbar', { stringResult: true, searchOnEnter: false, defaultSearch: "cn" });
+        @*function editRow(id) {
+            // var Status_Id = $('#jqGrid').jqGrid('getCell', id, 'StatusId')
+            //debugger;
+            var UserType ="@Session["UserType"].ToString()"
+            if (UserType == 'Customer'|| UserType == 'Consultant' )
+            {
+                //$("#" + id + "_StatusId option[value='3']").prop('disabled', 'disabled');
+                //$("#" + id + "_StatusId option[value='4']").prop('disabled', 'disabled');
+                //$("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
+
+                $("#" + id + "_StatusId option[value='3']").hide();
+                $("#" + id + "_StatusId option[value='4']").hide();
+                $("#" + id + "_StatusId option[value='5']").hide();
+            }
+            else  if (UserType == 'Project Manager')
+            {
+                //$("#" + id + "_StatusId option[value='1']").prop('disabled', 'disabled');
+                //$("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
+
+                $("#" + id + "_StatusId option[value='1']").hide();
+                $("#" + id + "_StatusId option[value='5']").hide();
+            }
+
+
+
+            //alert(id);
+
+
+        }*@
+        //$('#jqGrid').navGrid('#jqGridPager',
+        //    // the buttons to appear on the toolbar of the grid
+        //    { edit: false, add: false, del: false, search: false, refresh: false, view: false, position: "left", cloneToTop: false },
+        //    // options for the Edit Dialog
+        //    {
+        //        editCaption: "The Edit Dialog",
+        //        recreateForm: true,
+        //        checkOnUpdate: true,
+        //        checkOnSubmit: true,
+        //        closeAfterEdit: true,
+        //        reloadAfterSubmit:true,
+        //          //editParams: myEditOptions,
+        //        beforeShowForm: function (form) {
+        //            //debugger;
+        //            //alert('in');
+        //            //$("#StatusId option[value='3']").attr("disabled", "disabled");
+        //            //$("#StatusId option[value='4']").attr("disabled", "disabled");
+        //            //$("#StatusId option[value='5']").attr("disabled","disabled");
+
+        //        },
+        //        errorTextFormat: function (data) {
+        //            alert("in" + data.responseText);
+        //            return 'Error: ' + data.responseText
+        //        }
+        //    },
+        //    // options for the Add Dialog
+        //    {
+        //        closeAfterAdd: true,
+        //        recreateForm: true,
+        //        beforeShowForm: function (form) {
+
+        //            //var nameColumnField = $('#tr_Task', form).show();
+        //            //$('#tr_Task', form).show();
+
+        //            //$('<tr class="FormData" id="tr_AddInfo"><td class="CaptionTD ui-widget-content"><b>Additional Information:</b></td></tr>').insertAfter (nameColumnField);
+        //            // debugger;
+        //            $('#PhaseId')
+        //                .val(5)//AssumentID
+        //                .prop("disabled", true);
+        //            $("#tr_Task_Other_Environment").hide();
+        //            $("#tr_Dependency").hide();
+        //            $("#tr_Pending").hide();
+        //            $("#tr_Delay_occurred").hide();
+        //            $("#tr_StatusID").hide();
+        //            $("#tr_EST_hours").hide();
+        //            $("#tr_Actual_St_hours").hide();
+        //            $("#tr_Planed__St_Date").hide();
+        //            $("#tr_Actual_St_Date").hide();
+        //            $("#tr_Planed__En_Date").hide();
+        //            $("#tr_Actual_En_Date").hide();
+        //            $("#tr_Notes").hide();
+        //            // $grid.jqGrid('showCol', 'Id');
+        //            //$grid.jqGrid(‘hideCol’, 'Task_Other_Environment');
+        //            // debugger;
+        //            //alert("Mano");
+        //        },
+
+        //        errorTextFormat: function (data) {
+        //            return 'Error: ' + data.responseText
+        //        }
+        //    },
+        //    // options for the Delete Dailog
+        //    {
+        //        errorTextFormat: function (data) {
+        //            return 'Error: ' + data.responseText
+        //        }
+        //    },
+        //    {
+        //        multipleSearch: true,
+        //        showQuery: false
+        //    } // search options - define multiple search
+        //);
+        //jQuery("#jqGrid").removeClass('.table-striped');
+
+        //document.body.style.zoom = "67%";
+    }
+    @*function Show_HideEdit() {
+        var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+        var User = '@Session["UserType"]';
+        var loginid = '@Session["loginid"]';
+        var j = 0;
+
+         var UserType ="@Session["UserType"].ToString()"
+        if (UserType == 'Project Manager')
+        {
+
+             for (var i = 0; i < ids.length; i++) {
+                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+
+                 if (Status_Id == 1||Status_Id == 3) {
+                     $('#jEditButton_' + ids[i]).hide();
+                 }
+                 else {
+                      $('#jEditButton_' + ids[i]).show();
+                 }
+
+            }
+
+        }
+        else {
+            var EST_hours = jQuery("#jqGrid").jqGrid('getColProp', 'EST_hours');
+                EST_hours.editable = false;
+             var Planed__St_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__St_Date');
+            Planed__St_Date.editable = false;
+            var Planed__En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__En_Date');
+                Planed__En_Date.editable = false;
+            for (var i = 0; i < ids.length; i++) {
+
+                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+                if (Status_Id == 1|| Status_Id == 2) {
+                    j = i;
+                    //break;
+                }
+                $('#jEditButton_' + ids[i]).hide();
+            }
+
+            var EditFlag = false;
+            //  debugger;
+            for (var k = j; k < ids.length; k++) {
+                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
+                if ((Status_Id == 5 || Status_Id == 2 ) && !EditFlag) {
+                    $('#jEditButton_' + ids[k]).show();
+                    EditFlag = true;
+                }
+                //else {
+                //    $('#jEditButton_' + ids[k]).hide();
+                //}
+            }
+
+             for (var i = 0; i < ids.length; i++) {
+                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+           if (Status_Id == 2) {
+               $('#jEditButton_' + ids[i]).show();
+                }
+
+            }
+
+            if (User == 'Consultant' || User == 'Customer') {
+                for (var i = 0; i < ids.length; i++) {
+                    var User_ID = $('#jqGrid').jqGrid('getCell', ids[i], 'UserID')
+                    //var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
+                    if (User_ID != loginid) {
+                        $('#jEditButton_' + ids[i]).hide();
+                    }
+                }
+            }
+        }
+
+
+    }*@
+    function GetPhaseDropDown() {
+				 var Parameters = {};
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetPhase","ProjectMonitor")',
+                    //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (Data) {
+						 for (var i = 0; i < Data.length; i++) {
+                           var obj = {};
+                             var PhaseName = Data[i].PhaseName;
+                            var key = ""+Data[i].Id;
+                            Parameters[key] = PhaseName;
+                        }
+                    },
+                    error: function (data) {
+                        alert("GetPhase fail");
+                    }
+                });
+				return Parameters;
+            }
+    function GetPendingDropDown() {
+				 var Parameters = {};
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetPending","ProjectMonitor")',
+                    //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (Data) {
+						 for (var i = 0; i < Data.length; i++) {
+                           var obj = {};
+                             var PendingName = Data[i].PendingName;
+                            var key = ""+Data[i].Id;
+                            Parameters[key] = PendingName;
+                        }
+                    },
+                    error: function (data) {
+                        alert("fail");
+                    }
+                });
+				return Parameters;
+
+            }
+    @*function GetTeamDropDown() {
+		    var Parameters = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetRole","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+		    async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+				    for (var i = 0; i < Data.length; i++) {
+                    var obj = {};
+                        var RoleName = Data[i].RoleName;
+                    var key = ""+Data[i].RoleId;
+                    Parameters[key] = RoleName;
+                }
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+	    return Parameters;
+
+    }*@
+    @*function GetConsultantDropDown() {
+	    var Parameters = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetConsultant","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+		    async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+				    for (var i = 0; i < Data.length; i++) {
+                    var obj = {};
+                        var Name = Data[i].Name;
+                    var key = ""+Data[i].Id;
+                    Parameters[key] = Name;
+                }
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+	    return Parameters;
+    }*@
+    function GetStatusDropDown() {
+    var Parameters = {};
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("GetStatus","ProjectMonitor")',
+        //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+        dataType: "json",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (Data) {
+             //debugger;
+            for (var i = 0; i < Data.length; i++) {
+                //var obj = {};
+                var StatusName = Data[i].StatusName;
+                var key = "" + Data[i].Id;
+                Parameters[key] = StatusName;
+            }
+        },
+        error: function (data) {
+            alert("GetStatus fail");
+        }
+    });
+    return Parameters;
+}
+    function GetYesNo() {
+	var Status = {
+		'true': 'Yes', 'false': 'False'
+	};
+
+	return Status;
+
+    }
+
+    function GetUserDropDown() {
+	var Parameters = {};
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("GetAllUser","ProjectMonitor")',
+        //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+        dataType: "json",
+		async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (Data) {
+            //debugger;
+				for (var i = 0; i < Data.length; i++) {
+                var obj = {};
+                    var Name = Data[i].Name;
+                var key = ""+Data[i].UserId;
+                Parameters[key] = Name;
+            }
+        },
+        error: function (data) {
+            alert("GetAllUser fail");
+        }
+    });
+	return Parameters;
+    }
+    function Confirm() {
+        var input = $("<input />");
+        var Result;
+        input.attr("type", "hidden").attr("name", "confirm_value");
+        if (confirm("Do you want to save data?")) {
+            input.val("Yes");
+            Result = true;
+        } else {
+            input.val("No");
+            Result = false;
+        }
+        return Result;
+    }
+
+    $("#export").on("click", function () {
+        $("#jqGrid").jqGrid("exportToPdf", {
+            title: 'PDF Export',
+            orientation: 'landscape',
+            pageSize: 'A3',
+            description: 'description of the exported document',
+            customSettings: null,
+            download: 'download',
+            includeLabels: true,
+            includeGroupHeader: true,
+            includeFooter: true,
+            fileName: "OverAllReportExport.pdf"
+        })
+    })
 </script>
+
+@*<script type="text/javascript">
+        function Confirm() {
+            var input = $("<input />");
+            input.attr("type", "hidden").attr("name", "confirm_value");
+            if (confirm("Do you want to save data?")) {
+                input.val("Yes");
+            } else {
+                input.val("No");
+            }
+            $("form")[0].appendChild(input[0]);
+        }
+    </script>*@

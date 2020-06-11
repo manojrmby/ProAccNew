@@ -56,6 +56,9 @@
     <Compile Include="Customer.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
+    <Compile Include="FileUploadMaster.cs">
+      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
+    </Compile>
     <Compile Include="HanaStatu.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>

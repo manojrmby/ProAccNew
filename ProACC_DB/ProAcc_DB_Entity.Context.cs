@@ -40,6 +40,7 @@ namespace ProACC_DB
         public virtual DbSet<User_Type> User_Type { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<UserMaster> UserMasters { get; set; }
+        public virtual DbSet<FileUploadMaster> FileUploadMasters { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {
