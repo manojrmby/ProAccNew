@@ -64,7 +64,7 @@
                 <div class="position-relative form-group">
                     <label class="control-label col-md-5 required">Confirm Password</label>
                     <div class="col-md-10">
-                        <input type="password" class="form-control required" onchange="validateConsPwd()" id="txtConsCnfmPassword" />
+                        <input type="password" class="form-control required" onkeyup="validateConsPwd()" id="txtConsCnfmPassword" />
                        
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                 <div class="position-relative form-group">
                     @Html.LabelFor(model => model.EMail, "Email", htmlAttributes: new { @class = "control-label col-md-5 required" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @id = "txtEmail1", @class = "form-control", @onchange = "ValidateEmail1()" } })
+                        @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @id = "txtEmail1", @class = "form-control", @onkeyup = "ValidateEmail1()" } })
                         @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
 
                     </div>
@@ -101,7 +101,7 @@
                 <div class="position-relative form-group">
                     @Html.Label("User Type", htmlAttributes: new { @class = "control-label col-md-5 required" })
                     <div class="col-md-10">
-                        @Html.DropDownList("UserTypeID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("UserTypeID", (IEnumerable<SelectListItem>)ViewBag.UserTypeID, "- SELECT-", htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -165,7 +165,7 @@
             
             var CnstName = $("#txtName1").val().trim();
             if (CnstName == "") {
-                $("#lblName1").html("Please Enter valid Name").show();
+                $("#lblName1").html("Please Enter valid Name").show().fadeOut(5000);
                 SubmitConsultant();
             }
             else {
@@ -176,7 +176,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblName1").html("This Name is already taken,please Try another").show();
+                        $("#lblName1").html("This Name is already taken,please Try another").show().fadeOut(5000);
                         SubmitConsultant();
                     }
                     else {
@@ -194,11 +194,11 @@
 
          });
 
-        $('#LoginID').on('focusout', function () {
+        $('#LoginID').on('keyup', function () {
            
             var CnstUserName = $("#LoginID").val().trim();
             if (CnstUserName == "") {
-                $("#StatusConsultant").html("Please Enter valid LoginId").show();
+                $("#StatusConsultant").html("Please Enter valid LoginId").show().fadeOut(5000);
                 SubmitConsultant()
             }
             else {
@@ -231,9 +231,12 @@
             //if the letter is not digit then display error and don't type anything
              if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                  e.preventDefault();
-                $("#lblMob1").html("Numbers Only").show().fadeOut("slow");
-              
-            }
+                 $("#lblMob1").html("Numbers Only").show().fadeOut(5000);
+                 SubmitConsultant();
+             }
+             else {
+                 SubmitConsultant();
+             }
          });
 
         $("#txtMob").blur(function () {
@@ -241,7 +244,7 @@
             phone = $(this).val();
             phone = phone.replace(/[^0-9]/g,'');
             if (phone.length != 10) {
-                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
+                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(5000);
                 SubmitConsultant();
             }
             else {
@@ -276,6 +279,14 @@
             $("#divCust").show();
         }
     });
+
+    $('#UserTypeID').change(function () {             var Name1 = $("#txtName1").val();
+            var Mob = $("#txtMob").val();
+            var Email1 = $("#txtEmail1").val();
+            var LoginID = $("#LoginID").val();
+            var Passwd = $("#Passwd").val();
+            var UserTypeID = $("#UserTypeID").val();            if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0) {                //$("#txtName1").html("");                //$("#txtMob").html("");                //$("#txtEmail1").html("");                //$("#LoginID").html("");                //$("#Passwd").html("");                SubmitConsultant()            }            else {                SubmitConsultant()
+            }    });
 
     var result = "Success";
    
@@ -329,14 +340,14 @@
         
         //var txtConsCnfmPassword = $("#txtConsCnfmPassword").val();
 
-        var lblName1 = $("#lblName1").text(); // val();
+        var lblName1 = $("#lblName1").text().trim(); // val();
         //var lblDesc = $("#lblDesc").text();
-        var lblMob1 = $("#lblMob1").text();
-        var lblEmail1 = $("#lblEmail1").text();
-        var Status1 = $("#StatusConsultant").text();
-        var lblAltConsPwd = $("#lblAltConsPwd").text();
+        var lblMob1 = $("#lblMob1").text().trim();
+        var lblEmail1 = $("#lblEmail1").text().trim();
+        var Status1 = $("#StatusConsultant").text().trim();
+        var lblAltConsPwd = $("#lblAltConsPwd").text().trim();
 
-        if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 &&
+        if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 &&UserTypeID!=""&&
             lblName1 == "" &&  lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
 
             $("#createconsultant").prop("disabled", false);

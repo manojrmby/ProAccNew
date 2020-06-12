@@ -205,8 +205,8 @@ namespace ProAcc.Controllers
                         userMaster.RoleID = 10;
                         userMaster.Customer_Id = null;
                     }
-                     db.Entry(userMaster).State = EntityState.Modified;
-                    db.SaveChanges();
+                     //db.Entry(userMaster).State = EntityState.Modified;
+                    //db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
