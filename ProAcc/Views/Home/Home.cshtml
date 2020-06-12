@@ -5,9 +5,7 @@
     var mdetails = ViewBag.list;
     var taskdetails = ViewBag.Taskdetails;
 }
-<script src="~/Asset/Scripts/Chart.js"></script>
-<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
-<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>
+
 <style>
     /*.cs_Closed {
         color: lightgreen;
@@ -309,7 +307,7 @@
 @*<script src="~/Asset/Scripts/Chart.js"></script>
     <script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>*@
 @*<script src="~/Asset/Scripts/Prograssbarjs.js"></script>*@
-
+@*<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>*@
 
 <a class="card-title">Dashboard</a>
 <div style="padding: 1em;">
@@ -659,28 +657,33 @@
 				//data: '{std: ' + JSON.stringify(std) + '}',
 				dataType: "json",
 				contentType: "application/json; charset=utf-8",
-                success: function (Data) {                
+                success: function (Data) {
 				 data_ = [Data.COMPLETE, Data.WIP, Data.ONHOLD, Data.YetToStart];
 				 labels = ["Complete", "Work In Progress", "On Hold", "Yet To Start"];
-				 renderChartAssessment(data_, labels);
+				 renderChart(data_, labels);
+
 				},
 				error: function () {
 					alert("Error while inserting data");
 				}
 			});
-	}
-    function renderChartAssessment(data, labels) {
+    }
 
+   function renderChart(data, labels) {
+		//Chart.defaults.global.defaultFontFamily = "Verdana";
 		var ctx = document.getElementById("Chart_Assessment").getContext("2d");
 
+       var Total = data[0] + data[1] + data[2]+data[3];
 		var config = {
 			type: "doughnut",
 			data: {
 				labels: labels,
 				datasets: [{
+
 					data: data,
+					//backgroundColor: [gradientStroke_, gradientStroke_2],
 					backgroundColor: [
-							'#71c989',
+							'#71c989',//'#FF6384',
 							'#74abe2',
 							'#FFCE56',
 							'#f08956'
@@ -690,7 +693,16 @@
 				}]
 			},
 			options: {
-                
+                elements: {
+                    center: {
+                        text: "Total:"+ Total,
+                        color: '#FF6384', // Default is #000000
+                        fontStyle: 'Arial', // Default is Arial
+                        sidePadding: 5, // Default is 20 (as a percentage)
+                        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
+                        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+                    }
+                },
 				responsive: true,
                 legend: {
                     display: false,
@@ -707,21 +719,15 @@
                 centerArea: {
                     displayText: true,
                     text: "100%"
-                },              
-                
-                plugins: {
-                    labels: {
-                        display: true,
-                        render: 'value',
-                        position: 'outside',
-                        arc: true
-                    }
                 },
-               
-				animation: {
-					duration: 5000
+
+				 plugins: {
+					labels: {
+						 render: 'value',
+						position: 'outside'
+					}
                 },
-                tooltips: {
+				 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
                             var dataset = data.datasets[tooltipItem.datasetIndex];
@@ -741,13 +747,97 @@
                             return data.labels[tooltipItem[0].index];
                         }
                     }
-                }
+                },
 
+				animation: {
+					duration: 5000
+				}
 			}
 		};
 
 		window.myRadialGauge = new Chart(ctx, config);
     }
+
+  //  function renderChartAssessment(data, labels) {
+
+		//var ctx = document.getElementById("").getContext("2d");
+
+		//var config = {
+		//	type: "doughnut",
+		//	data: {
+		//		labels: labels,
+		//		datasets: [{
+		//			data: data,
+		//			backgroundColor: [
+		//					'#71c989',
+		//					'#74abe2',
+		//					'#FFCE56',
+		//					'#f08956'
+		//				],
+		//			borderWidth: 2,
+		//			label: "Score"
+		//		}]
+  //          },
+
+		//	options: {
+
+		//		responsive: true,
+  //              legend: {
+  //                  display: false,
+		//			position: 'right',
+  //                  labels: {
+  //                      fontColor: "#000080",
+  //                  }
+		//		},
+  //              title: {
+  //                  display: true,
+  //                  text: "Assessment"
+  //              },
+  //              centerPercentage: 60,
+  //              centerArea: {
+  //                  displayText: true,
+  //                  text: "100%"
+  //              },
+
+  //              plugins: {
+  //                  labels: {
+  //                      display: true,
+  //                      render: 'value',
+  //                      position: 'outside',
+  //                      arc: true
+  //                  }
+  //              },
+
+		//		animation: {
+		//			duration: 5000
+  //              },
+  //              tooltips: {
+  //                  callbacks: {
+  //                      label: function (tooltipItem, data) {
+  //                          var dataset = data.datasets[tooltipItem.datasetIndex];
+  //                          var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+  //                              return previousValue + currentValue;
+  //                          });
+  //                          //var currentValue = dataset.data[tooltipItem.index];
+  //                          //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+  //                          //return percentage + "%";
+
+  //                           var currentValue = dataset.data[tooltipItem.index];
+  //                          var percentage = parseFloat((currentValue/total*100).toFixed(1));
+  //                          //return currentValue + ' (' + percentage + '%)';
+  //                          return percentage + '%';
+  //                      },
+  //                      title: function(tooltipItem, data) {
+  //                          return data.labels[tooltipItem[0].index];
+  //                      }
+  //                  }
+  //              }
+
+		//	}
+		//};
+
+		//window.myRadialGauge = new Chart(ctx, config);
+  //  }
 
     jQuery(document).ready(function ($) {
 
@@ -882,7 +972,89 @@
         });
     });
 
+    // Chart.pluginService.register({
+    //  beforeDraw: function(chart) {
+    //    if (chart.config.options.elements.center) {
+    //      // Get ctx from string
+    //      var ctx = chart.chart.ctx;
 
+    //      // Get options from the center object in options
+    //      var centerConfig = chart.config.options.elements.center;
+    //      var fontStyle = centerConfig.fontStyle || 'Arial';
+    //      var txt = centerConfig.text;
+    //      var color = centerConfig.color || '#000';
+    //      var maxFontSize = centerConfig.maxFontSize || 15;
+    //      var sidePadding = centerConfig.sidePadding || 20;
+    //      var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+    //      // Start with a base font of 30px
+    //      ctx.font = "10px " + fontStyle;
+
+    //      // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+    //      var stringWidth = ctx.measureText(txt).width;
+    //      var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+    //      // Find out how much the font can grow in width.
+    //      var widthRatio = elementWidth / stringWidth;
+    //      var newFontSize = Math.floor(30 * widthRatio);
+    //      var elementHeight = (chart.innerRadius * 2);
+
+    //      // Pick a new font size so it will not be larger than the height of label.
+    //      var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+    //      var minFontSize = centerConfig.minFontSize;
+    //      var lineHeight = centerConfig.lineHeight || 25;
+    //      var wrapText = false;
+
+    //      if (minFontSize === undefined) {
+    //        minFontSize = 50;
+    //      }
+
+    //      if (minFontSize && fontSizeToUse < minFontSize) {
+    //        fontSizeToUse = minFontSize;
+    //        wrapText = true;
+    //      }
+
+    //      // Set font settings to draw it correctly.
+    //      ctx.textAlign = 'center';
+    //      ctx.textBaseline = 'middle';
+    //      var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+    //      var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+    //      ctx.font = fontSizeToUse + "px " + fontStyle;
+    //      ctx.fillStyle = color;
+
+    //      if (!wrapText) {
+    //        ctx.fillText(txt, centerX, centerY);
+    //        return;
+    //      }
+
+    //      var words = txt.split(' ');
+    //      var line = '';
+    //      var lines = [];
+
+    //      // Break words up into multiple lines if necessary
+    //      for (var n = 0; n < words.length; n++) {
+    //        var testLine = line + words[n] + ' ';
+    //        var metrics = ctx.measureText(testLine);
+    //        var testWidth = metrics.width;
+    //        if (testWidth > elementWidth && n > 0) {
+    //          lines.push(line);
+    //          line = words[n] + ' ';
+    //        } else {
+    //          line = testLine;
+    //        }
+    //      }
+
+    //      // Move the center up depending on line height and number of lines
+    //      centerY -= (lines.length / 2) * lineHeight;
+
+    //      for (var n = 0; n < lines.length; n++) {
+    //        ctx.fillText(lines[n], centerX, centerY);
+    //        centerY += lineHeight;
+    //      }
+    //      //Draw text in center
+    //      ctx.fillText(line, centerX, centerY);
+    //    }
+    //  }
+    //});
 </script>
 <script type="text/javascript">
     //var randomScalingFactor = function () {

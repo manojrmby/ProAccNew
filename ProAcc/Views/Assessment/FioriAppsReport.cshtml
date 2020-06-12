@@ -241,13 +241,17 @@
 				labels = inpName;
 				data_ = inpVal;
                 //renderChart(data_, labels, backColor);
-                renderChart2(data_,labels,backColor);
+                renderChart2(data_, labels, backColor);
+
+                var ID = "chartWrapper";
+                scrollToBottom(ID);
 
 			},
 			error: function () {
 				alert("Error while inserting data");
 			}
-		}).done(function (response) {
+        }).done(function (response) {
+            
 			//chart.data = response;
 
 		});
@@ -257,7 +261,12 @@
 		var Ses_InstanceId = '@Session["InstanceId"]';
         if (Ses_InstanceId != "") {
             Ajax_Call(a);
-        }
+    }
+
+    $(document).ajaxComplete(function () {
+      $('.chartAreaWrapper').scrollTop($('.chartAreaWrapper')[0].scrollHeight);
+    });
+
 	$("#IDRoles").change(function () {
 
 		var a = $('#IDRoles option:selected').text();
@@ -282,7 +291,12 @@
         //    }
         //    return chartData;
         //}
-
+    
+    //function scrollToBottom() {
+    //    var div = document.getElementsByClassName(".chartAreaWrapper");
+    //    debugger;
+    //    div.scrollTop = div.scrollHeight - div.clientHeight;
+    //}
     function addData(numData, chart) {
 
             for (var i = 0; i < numData; i++) {
@@ -303,7 +317,8 @@
                 $('.chartAreaWrapper2').height("200px")
                 }
 
-            }
+        }
+         
         }
 
         //var chartData = {
@@ -438,6 +453,7 @@
                }
             });
             addData(data.length, chartTest);
+            
         }
         //});
 
@@ -483,7 +499,7 @@
     }
 
     jQuery(document).ready(function ($) {
-
+        $('.chartAreaWrapper').scrollTop($('.chartAreaWrapper')[0].scrollHeight);
         var a = $('#IDRoles option:selected').text();
 		var Ses_InstanceId = '@Session["InstanceId"]';
        if (Ses_InstanceId != "") {

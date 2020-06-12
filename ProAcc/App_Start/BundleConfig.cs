@@ -19,7 +19,8 @@ namespace ProAcc
                  ));
             bundles.Add(new ScriptBundle("~/bundles/Scripts/ChartJS").Include(
                "~/Asset/Scripts/Chart.js",
-               "~/Asset/Scripts/Chart.RadialGauge.umd.js"
+               "~/Asset/Scripts/Chart.RadialGauge.umd.js",
+               "~/Asset/Scripts/chartjs-plugin-labels.min.js"
                 ));
             bundles.Add(new ScriptBundle("~/bundles/Scripts/jqGrid").Include(
               "~/Asset/Jquery/jqGrid/grid.locale-en.js",

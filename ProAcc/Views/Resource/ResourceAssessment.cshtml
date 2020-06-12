@@ -41,6 +41,14 @@
         visibility: hidden;
     }
 </style>
+<style>
+    .wrapColumnText
+{
+           white-space: normal !important;
+           height:auto;
+           vertical-align:text-top;
+}
+</style>
 
 <div class="row">
     <div class="col-lg-12 card" style="margin-bottom:20px !important;">
@@ -325,7 +333,7 @@
 
                     }
                 },
-                { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true },
+                { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true,classes: 'wrapColumnText' },
                 { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true ,hidden: true},
                 {
                     label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'left', editable: true,
@@ -344,7 +352,7 @@
                 },
 
                 {
-                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'center', editable: true, hidden: true,
+                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'left', editable: true, hidden: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',//Add Only
                     editoptions: {
                         value: GetMasterAddAssessment()
@@ -352,7 +360,7 @@
                     cellbeginedit: rowEdit
                 },
                  {
-                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'center', editable: true,hidden: true,
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'Left', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetStatusDropDown()
@@ -360,7 +368,7 @@
                 },
 
                 {
-                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
+                    label: 'Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
