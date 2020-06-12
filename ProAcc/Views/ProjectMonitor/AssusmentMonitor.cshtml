@@ -272,10 +272,11 @@
     //document.body.style.zoom = "67%";
     document.body.style.zoom = "70%";
     $(document).ready(function () {
+       
         LoadTable(1);
     });
     function LoadTable(Instance) {
-
+        
         // $(document).ready(function () {
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
     //    var lastSelection;
@@ -523,7 +524,8 @@
             });//.datepicker("setDate", new Date());
             // }).datepicker();
         };
-
+        // var EST_hours = 'EST_hours';
+        //EST_hours = EST_hours.replace(".", ":");
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","ProjectMonitor",new { Phase_ID= ViewBag.PhaseID})",
             datatype: "json",
@@ -635,18 +637,18 @@
                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,formatter: "number", editable: true, maxlength:2,
                     //formatoptions: { masks: 'LongTime', newformat: 'ShortTime' },
                     editrules: { maxlengh: 2 },
-                    
                     editoptions: {
                         maxlengh: 2,
                         dataInit: function (element) {
-                            $(element).keypress(function (e) {                                                          
-                                if (e.which == 46) {
-
-                                }
-                                else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                                    return false;
-                                }
-                            })
+                            $(element).keyup(function(event) {
+     
+                                  this.value = this.value
+                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
+                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                                  .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                
+                            });
                         }
                     }
                 },
@@ -847,11 +849,13 @@
                  var UserType ="@Session["UserType"].ToString()"
                 if (UserType == 'Project Manager') {
                     EST_hours = postdata.EST_hours;
+                    EST_hours = EST_hours.replace(":", ".");
                     Planed__St_Date = postdata.Planed__St_Date;
                     Planed__En_Date = postdata.Planed__En_Date;
                 }
                 else {
-                      EST_hours = EST_hours;
+                    EST_hours = EST_hours;
+                    EST_hours = EST_hours.replace(":", ".");
                      Planed__St_Date = Planed__St_Date;
                      Planed__En_Date = Planed__En_Date;
                 }
@@ -999,6 +1003,11 @@
             ////    },
             loadComplete: function () {
                 //alert("mm");
+                var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                for (var i = 0; i < ids.length; i++) {
+                    var EST_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'EST_hours')
+                    EST_hours= EST_hours.replace(".", ":")
+                }
 
             },
             gridComplete: function () {
@@ -1123,6 +1132,8 @@
 
         //document.body.style.zoom = "67%";
     }
+
+   
     function Show_HideEdit() {
         var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
         var User = '@Session["UserType"]';
@@ -1154,7 +1165,8 @@
                  }
                 }
             }
-
+            
+                
         }
         else {
             var EST_hours = jQuery("#jqGrid").jqGrid('getColProp', 'EST_hours');
@@ -1205,6 +1217,8 @@
             }
         }
     }
+
+
     function GetPhaseDropDown() {
 				 var Parameters = {};
                 $.ajax({

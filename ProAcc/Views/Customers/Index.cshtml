@@ -72,7 +72,7 @@
     });
    
     $(".editCustomer").on("click", function () {
-        
+        debugger;
         var id = $(this).next().val();
         $.ajax({
             url: '@Url.Action("GetCustomerById","Customers")',
@@ -82,7 +82,7 @@
                 
                 $("#customerid").val(result.Customer_ID);
                 $("#txtCompanyName").val(result.Company_Name);
-                $("#txtIndustrySector").val(result.Industry_Sector);
+                $("#drpIndustrySector").val(result.Industry_Sector);
                 $("#txtCustomerPhone").val(result.Phone);
                 $("#txtCustomerEmail").val(result.Email);
                 $("#pcre_on").val(result.Cre_on);
