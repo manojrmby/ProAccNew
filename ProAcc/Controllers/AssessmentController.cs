@@ -152,7 +152,7 @@ namespace ProAcc.Controllers
                 Guid customerId = Guid.Parse(Session["loginid"].ToString());
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.Customer_Id equals b.Customer_Id
-                            where a.UserId == customerId
+                            where a.UserId == customerId && b.isActive == true
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {

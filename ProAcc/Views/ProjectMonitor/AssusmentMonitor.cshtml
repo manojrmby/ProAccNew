@@ -634,21 +634,23 @@
 
                 },
                 {
-                   label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,formatter: "number", editable: true, maxlength:2,
+                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,
+                    //formatter: "number",
+                    editable: true, maxlength: 2,
                     //formatoptions: { masks: 'LongTime', newformat: 'ShortTime' },
                     editrules: { maxlengh: 2 },
                     editoptions: {
                         maxlengh: 2,
                         dataInit: function (element) {
-                            $(element).keyup(function(event) {
+                            //$(element).keyup(function(event) {
      
-                                  this.value = this.value
-                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
-                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
-                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
-                                  .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                            //      this.value = this.value
+                            //      .replace(/[^\d:]/g, '')             // numbers and decimals only
+                            //      .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                            //      .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                            //      .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
                 
-                            });
+                            //});
                         }
                     }
                 },
@@ -670,7 +672,9 @@
                 //    }
                 //},
                 {
-                    label: 'Actual Duration (hours)', name: 'Actual_St_hours', formatter: "number", width: 55, editable: true,
+                    label: 'Actual Duration (hours)', name: 'Actual_St_hours',
+                    //formatter: "number",
+                    width: 55, editable: true,
                     editoptions: {
                         size: 15, maxlengh: 4,
                         dataInit: function (element) {
@@ -1004,9 +1008,15 @@
             loadComplete: function () {
                 //alert("mm");
                 var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                //debugger;
                 for (var i = 0; i < ids.length; i++) {
                     var EST_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'EST_hours')
-                    EST_hours= EST_hours.replace(".", ":")
+                    EST_hours = EST_hours.replace(".", ":")
+                    $('#jqGrid').jqGrid('setCell', ids[i], 'EST_hours', EST_hours);
+
+                    var Actual_St_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'Actual_St_hours')
+                    Actual_St_hours = Actual_St_hours.replace(".", ":")
+                    $('#jqGrid').jqGrid('setCell', ids[i], 'Actual_St_hours',Actual_St_hours);
                 }
 
             },
@@ -1202,6 +1212,11 @@
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
            if (Status_Id == 2) {
                $('#jEditButton_' + ids[i]).show();
+                for (var j = 0; j < ids.length; j++) {
+                         if (j != i) {
+                             $('#jEditButton_' + ids[j]).hide();
+                         }
+                     }
                 }
 
             }
