@@ -634,59 +634,57 @@
 
                 },
                 {
-                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,
+                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,maxlength:4,
                     //formatter: "number",
-                    editable: true, maxlength: 2,
+                    editable: true,
                     //formatoptions: { masks: 'LongTime', newformat: 'ShortTime' },
-                    editrules: { maxlengh: 2 },
+                    editrules: { },
                     editoptions: {
-                        maxlengh: 2,
+                        maxlength:4,
                         dataInit: function (element) {
-                            //$(element).keyup(function(event) {
+                            $(element).keyup(function(event) {
      
-                            //      this.value = this.value
-                            //      .replace(/[^\d:]/g, '')             // numbers and decimals only
-                            //      .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
-                            //      .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
-                            //      .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                                  this.value = this.value
+                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
+                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                                  .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                                   
                 
-                            //});
+                            });
+                            
                         }
                     }
                 },
-                //{
-                //    label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 55, editable: true, maxlengh: 4,
-                //    editoptions: {
-                //        size: 15, maxlengh: 4,
-                //        dataInit: function (element) {
-                //            $(element).keypress(function (e) {
-                //                //alert(e);
-                //                if (e.which == 46) {
-
-                //                }
-                //                else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                //                    return false;
-                //                }
-                //            });
-                //        }
-                //    }
-                //},
                 {
                     label: 'Actual Duration (hours)', name: 'Actual_St_hours',
                     //formatter: "number",
                     width: 55, editable: true,
                     editoptions: {
-                        size: 15, maxlengh: 4,
-                        dataInit: function (element) {
-                            $(element).keypress(function (e) {
-                                //alert(e);
-                                if (e.which == 46) {
+                        
+                        //dataInit: function (element) {
+                        //    $(element).keypress(function (e) {
+                        //        //alert(e);
+                        //        if (e.which == 46) {
 
-                                }
-                                else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                                    return false;
-                                }
+                        //        }
+                        //        else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                        //            return false;
+                        //        }
+                        //    });
+                        //}
+                         dataInit: function (element) {
+                            $(element).keyup(function(event) {
+     
+                                  this.value = this.value
+                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
+                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                                  .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                                   
+                
                             });
+                            
                         }
                     }
                 },
@@ -719,11 +717,25 @@
                     //formatter: function (v) {
                     //     return '<div style="max-height:20px">' $.jgrid.htmlEncode(v) '</div>';
                     // }
-                    , editoptions: {
-                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px"
+                    ,editrules: { "edithidden": true }, "editable": true, "width": 180,
+                    editoptions: {
+                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
                         //"readonly": "readonly"
+                        
                     },
-                    editrules: { "edithidden": true }, "editable": true, "width": 180,
+              //      beforeSaveCell:function(rowid,name,val,iRow,iCol) {
+			           //  // var row = $("#list").getRowData(rowid);
+				          //// var row = $('#list').jqGrid('getRowData',rowid);
+				          ////var currentRow= rowid;
+              //          var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+
+              //          var status = $("#jqGrid").jqGrid('getCell', ColValue, 'StatusId');
+              //          alert("HI");
+			
+              //      },
+              //      afterSaveCell: function(rowid,name,val,iRow,iCol) {
+              //      alert("alert1!");
+              //      },
                     //classes: "jqgrid-readonlycolumn"
                 },
                 {
@@ -840,7 +852,8 @@
                 var Pending = postdata.Pending;
                 var Delay_occurred = postdata.Delay_occurred;
                 var StatusId = postdata.StatusId;               
-                var Actual_St_hours = postdata.Actual_St_hours;                
+                var Actual_St_hours = postdata.Actual_St_hours;  
+                Actual_St_hours = Actual_St_hours.replace(":", ".");
                 var Actual_St_Date = postdata.Actual_St_Date;
                 var Actual_En_Date = postdata.Actual_En_Date;
                 var Notes = postdata.Notes;
@@ -850,6 +863,10 @@
                 var EST_hours;
                 var Planed__St_Date;
                 var Planed__En_Date
+                //if (Notes == "") {
+                //    alert("HI");
+                   
+                //}
                  var UserType ="@Session["UserType"].ToString()"
                 if (UserType == 'Project Manager') {
                     EST_hours = postdata.EST_hours;
@@ -1013,7 +1030,7 @@
                     var EST_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'EST_hours')
                     EST_hours = EST_hours.replace(".", ":")
                     $('#jqGrid').jqGrid('setCell', ids[i], 'EST_hours', EST_hours);
-
+                    
                     var Actual_St_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'Actual_St_hours')
                     Actual_St_hours = Actual_St_hours.replace(".", ":")
                     $('#jqGrid').jqGrid('setCell', ids[i], 'Actual_St_hours',Actual_St_hours);
