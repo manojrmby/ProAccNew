@@ -138,7 +138,9 @@ namespace ProAcc.Controllers
                     }
                     else if (con.UserTypeID == 4)
                     {
-                        con.RoleID = 10;
+                         con.RoleID = 10;
+                        //con.RoleID = Convert.ToInt32(db.RoleMasters.Where(x => x.RoleName == "Project Manager").Select(x => x.RoleId));
+
                         con.Customer_Id = null;
                     }
                     db.UserMasters.Add(con);
@@ -203,10 +205,12 @@ namespace ProAcc.Controllers
                     else if (userMaster.UserTypeID == 4)
                     {
                         userMaster.RoleID = 10;
+                        //userMaster.RoleID = Convert.ToInt32(db.RoleMasters.Where(x => x.RoleName == "Project Manager").Select(x => x.RoleId));
+
                         userMaster.Customer_Id = null;
                     }
-                     //db.Entry(userMaster).State = EntityState.Modified;
-                    //db.SaveChanges();
+                    db.Entry(userMaster).State = EntityState.Modified;
+                    db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else

@@ -615,7 +615,7 @@
     <Content Include="Views\User\ResourceAllocationCreate.cshtml" />
     <Content Include="Views\Customers\GetCustomerById.cshtml" />
     <Content Include="Views\Resource\ResourceAssessment.cshtml" />
-    <Content Include="Views\ProjectMonitor\AssusmentMonitor.cshtml" />
+    <Content Include="Views\ProjectMonitor\AssessmentMonitor.cshtml" />
     <Content Include="Views\Resource\ResourceMigration.cshtml" />
     <Content Include="Views\Resource\ResourcePostConversion.cshtml" />
     <Content Include="Views\Resource\ResourcePreConversion.cshtml" />

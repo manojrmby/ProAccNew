@@ -355,9 +355,13 @@
                     label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'left', editable: true, hidden: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',//Add Only
                     editoptions: {
-                        value: GetMasterAddAssessment()
-                    },
-                    cellbeginedit: rowEdit
+    dataUrl: '@Url.Action("MasterAddAssessment","Resource")',
+    buildSelect: buildSelectFromJson
+}
+                    //editoptions: {
+                    //    value: GetMasterAddAssessment()
+                    //}
+                    //cellbeginedit: rowEdit
                 },
                  {
                     label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'Left', editable: true,
@@ -446,6 +450,8 @@
 
                         return false;
                     }
+                    
+                    //$("#jqGrid").jqGrid('getCell', id, 'StatusId');
                     //var Status=$("#" + id + "_StatusId").val();
                     //alert(id);
                 },
@@ -454,7 +460,7 @@
                     $(".navButton").hide();
                     $("#tr_PhaseId").hide();
                     $("#tr_SequenceNum").hide();
-                     $("#tr_StatusId").hide();
+                    $("#tr_StatusId").hide();
 
                     $("#Task").attr("disabled", "disabled");
                      $("#RoleID").attr("disabled", "disabled");
@@ -477,41 +483,54 @@
                 beforeShowForm: function (form) {
                     $("#tr_PhaseId").hide();
                     $("#tr_SequenceNum").hide();
+                    $("#tr_StatusId").hide();
                     $("#tr_Task").hide();
                     $("#tr_RoleID").hide();
                      $("#tr_UserID").hide();
                     //debugger;
                     //alert("In");
                     $("#tr_ActivityID").show();
+
+                    //debugger;
+                    //var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                    //for (var i = 0; i < ids.length; i++) 
+                    //    {
+                    //        var data = $('#jqGrid').jqGrid('getCell', ids[i], 'Task')
+                            
+                    //        if (data != "") {
+                    //            $("#ActivityID option[data="+data+"]").remove();
+                    //        }
+                    //    }
+
                 },
                 reloadAfterSubmit: true, 
-                onclickSubmit: function (options, postdata) {
-                    var Id=postdata.ActivityID
-                    $("#ActivityID option[value="+Id+"]").remove();
+                //onclickSubmit: function (options, postdata) {
+                //    //var Id=postdata.ActivityID
+                //    //$("#ActivityID option[value="+Id+"]").remove();
 
-                    //$('#jqGrid').trigger('reloadGrid');
-                //    //debugger;
-                //    //if (Data.responseText == true) {
-                //    //    $.alert({
-                //    //        title: 'Alert !',
-                //    //        content: 'Resource Added Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                //    //        icon: 'fa fa-rocket',
-                //    //        animation: 'scale',
-                //    //        closeAnimation: 'scale',
-                //    //        buttons: {
-                //    //            okay: {
-                //    //                text: 'Okay',
-                //    //                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
-                //    //                //action: function (event, ui) {
-                //    //                //    $(this).remove();
-                //    //                //    location.reload();
-                //    //                //}
-                //    //            }
-                //    //        }
-                //    //    });
-                //    //}
+                //    //$('#jqGrid').trigger('reloadGrid');
+                ////    //debugger;
+                ////    //if (Data.responseText == true) {
+                ////    //    $.alert({
+                ////    //        title: 'Alert !',
+                ////    //        content: 'Resource Added Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                ////    //        icon: 'fa fa-rocket',
+                ////    //        animation: 'scale',
+                ////    //        closeAnimation: 'scale',
+                ////    //        buttons: {
+                ////    //            okay: {
+                ////    //                text: 'Okay',
+                ////    //                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
+                ////    //                //action: function (event, ui) {
+                ////    //                //    $(this).remove();
+                ////    //                //    location.reload();
+                ////    //                //}
+                ////    //            }
+                ////    //        }
+                ////    //    });
+                ////    //}
 
-                },
+                //},
                 errorTextFormat: function (data) {
                     return 'Error: ' + data.responseText
                 }
@@ -585,6 +604,15 @@
             }
         );
     }
+    var buildSelectFromJson = function (response) {
+        var html = '<select>', d = JSON.parse(response), length = d.length, i = 0, item;
+        for (; i < length; i++) {
+            item = d[i];
+            html += '<option value=' + item.ActivityID + '>' + item.Task + '</option>';
+        }
+        html += '</select>';
+        return html;
+    };
     function GetStatusDropDown() {
         var Parameters = {};
         $.ajax({

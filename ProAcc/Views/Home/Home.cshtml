@@ -657,11 +657,10 @@
 				//data: '{std: ' + JSON.stringify(std) + '}',
 				dataType: "json",
 				contentType: "application/json; charset=utf-8",
-                success: function (Data) {
-				 data_ = [Data.COMPLETE, Data.WIP, Data.ONHOLD, Data.YetToStart];
-				 labels = ["Complete", "Work In Progress", "On Hold", "Yet To Start"];
+            success: function (Data) {
+                data_ = [Data.COMPLETE, Data.WIP, Data.ONHOLD, Data.YetToStart, Data.NA];
+				 labels = ["Complete", "Work In Progress", "On Hold", "Yet To Start","Not Apllicable"];
 				 renderChart(data_, labels);
-
 				},
 				error: function () {
 					alert("Error while inserting data");
@@ -673,7 +672,7 @@
 		//Chart.defaults.global.defaultFontFamily = "Verdana";
 		var ctx = document.getElementById("Chart_Assessment").getContext("2d");
 
-       var Total = data[0] + data[1] + data[2]+data[3];
+       var Total = data[0] + data[1] + data[2]+data[3]+data[4];
 		var config = {
 			type: "doughnut",
 			data: {
@@ -686,7 +685,8 @@
 							'#71c989',//'#FF6384',
 							'#74abe2',
 							'#FFCE56',
-							'#f08956'
+                            '#f08956',
+                            '#8c32a8'
 						],
 					borderWidth: 2,
 					label: "Score"
@@ -723,7 +723,7 @@
 
 				 plugins: {
 					labels: {
-						 render: 'value',
+						 render: 'value' +"%",
 						position: 'outside'
 					}
                 },
@@ -741,7 +741,9 @@
                              var currentValue = dataset.data[tooltipItem.index];
                             var percentage = parseFloat((currentValue/total*100).toFixed(1));
                             //return currentValue + ' (' + percentage + '%)';
-                            return percentage + '%';
+                            //return percentage + '%';
+                            return currentValue;
+
                         },
                         title: function(tooltipItem, data) {
                             return data.labels[tooltipItem[0].index];

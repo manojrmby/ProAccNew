@@ -23,7 +23,7 @@ namespace ProAcc.Controllers
         }
         public ActionResult Create()
         {
-            ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true).OrderBy(x=>x.PhaseName);
+            ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true).OrderBy(x=>x.Id);
             ViewBag.Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1);
             return View();
         }
@@ -43,7 +43,7 @@ namespace ProAcc.Controllers
         [HttpGet]
         public ActionResult GetAllTask(int id)
         {
-            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id&&x.Sequence_Num!=null).Select(p=> new{ p.Activity_ID,p.Task}).ToList();
+            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id&&x.Sequence_Num!=null).OrderBy(a => a.Sequence_Num).Select(p=> new{ p.Activity_ID,p.Task}).ToList();
             return Json(Activitylist, JsonRequestBehavior.AllowGet);           
         }
         [HttpGet]
@@ -83,7 +83,7 @@ namespace ProAcc.Controllers
             latestTask.isActive = true;
             db.Entry(latestTask).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-            List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type&&p.isActive==true).Select(p => p.Activity_ID).ToList();
+            List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type).Select(p => p.Activity_ID).ToList();
             int? tid = nextSeqNumber;
             foreach (var id in ids)
             {

@@ -11,5 +11,6 @@ namespace ProAcc.BL.Model
         public Nullable<int> WIP { get; set; }
         public Nullable<int> ONHOLD { get; set; }
         public Nullable<int> YetToStart { get; set; }
+        public Nullable<int> NA { get; set; }
     }
 }

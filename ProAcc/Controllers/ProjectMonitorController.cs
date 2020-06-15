@@ -243,7 +243,7 @@ namespace ProAcc.Controllers
         #endregion
 
         #region Assusment
-        public ActionResult AssusmentMonitor()
+        public ActionResult AssessmentMonitor()
         {
             int userType = 0;
             if (User.IsInRole("Admin"))

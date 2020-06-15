@@ -366,6 +366,7 @@ namespace ProAcc.BL
                 GetRelevant.WIP = Convert.ToInt32(dt.Rows[0]["WIP"]);
                 GetRelevant.ONHOLD = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
                 GetRelevant.YetToStart = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
+                GetRelevant.NA = Convert.ToInt32(dt.Rows[0]["NA"]);
             }
             return GetRelevant;
         }

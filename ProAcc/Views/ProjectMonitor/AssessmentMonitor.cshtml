@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Assusment Monitor";
+    ViewBag.Title = "Assessment Monitor";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 @*<script src="~/Asset/Jquery/jqGrid/grid.locale-en.js"></script>
@@ -584,7 +584,7 @@
 
                 },
                 {
-                    label: 'Task needed for other environment (Y/N)',
+                    label: 'Task Other Env. (Y/N)',
                     name: 'Task_Other_Environment', width: 55, editable: true,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
 
@@ -596,13 +596,13 @@
                 },
                 { label: 'Pending With ', name: 'Pending', width: 100,  editable: true },
                 {
-                    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 58,  editable: true,
+                    label: 'Delay (Y/N)', name: 'Delay_occurred', width: 58,  editable: true,
                     edittype: 'checkbox',
                     editoptions: { value: "True:False" }
                     , formatter: "checkbox",
                 },
                 {
-                    label: 'Owner of Task', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: false,
+                    label: 'Owner', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
@@ -634,13 +634,14 @@
 
                 },
                 {
-                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,maxlength:4,
+                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,
+                    //maxlength: 4,
                     //formatter: "number",
                     editable: true,
                     //formatoptions: { masks: 'LongTime', newformat: 'ShortTime' },
                     editrules: { },
                     editoptions: {
-                        maxlength:4,
+                       // maxlength:4,
                         dataInit: function (element) {
                             $(element).keyup(function(event) {
      
@@ -712,7 +713,7 @@
                     editoptions: { dataInit: Actual_En_Date }
                 },
                 {
-                    label: 'Notes/Remarks', name: 'Notes', edittype: "textarea",
+                    label: 'comments', name: 'Notes', edittype: "textarea",
                     wrap: "on"
                     //formatter: function (v) {
                     //     return '<div style="max-height:20px">' $.jgrid.htmlEncode(v) '</div>';
