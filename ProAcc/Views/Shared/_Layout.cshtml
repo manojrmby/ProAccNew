@@ -22,9 +22,23 @@
     @Scripts.Render("~/bundles/Scripts/jquery-ui")
     <link href="~/Asset/css/jquery-confirm.min.css" rel="stylesheet" />
     <link href="~/Asset/css/jquery-confirm.less" rel="stylesheet/less" />
-   
+
 
     <script src="~/Asset/Jquery/jquery-confirm.min.js"></script>
+
+    <link href="~/Asset/Notiflix/notiflix-2.3.1.min.css" rel="stylesheet" />
+    <script src="~/Asset/Notiflix/notiflix-2.3.1.min.js"></script>
+    <script src="~/Asset/Notiflix/notiflix-aio-2.3.1.min.js"></script>
+
+    <script>
+        Notiflix.Notify.Init({
+  width: '280px',
+  position: 'right-bottom',
+  distance: '10px',
+  opacity: 1,
+  // ...
+});
+    </script>
     <style>
         .Class_span{
         color: red;

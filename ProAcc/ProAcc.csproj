@@ -161,6 +161,9 @@
     <Content Include="Asset\Jquery\jqGrid\plugins\pdfmake.min.js" />
     <Content Include="Asset\Jquery\jqGrid\plugins\vfs_fonts.js" />
     <Content Include="Asset\Jquery\jquery-confirm.min.js" />
+    <Content Include="Asset\Notiflix\notiflix-2.3.1.min.css" />
+    <Content Include="Asset\Notiflix\notiflix-2.3.1.min.js" />
+    <Content Include="Asset\Notiflix\notiflix-aio-2.3.1.min.js" />
     <Content Include="Content\fonts\fa-solid-900.svg" />
     <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.css" />
     <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.min.css" />
