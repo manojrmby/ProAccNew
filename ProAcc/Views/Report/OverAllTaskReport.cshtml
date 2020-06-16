@@ -60,6 +60,19 @@
     .app-container {
         min-height: 100%;
     }
+      .wrapColumnText
+{
+           white-space: normal !important;
+           height:auto;
+           vertical-align:text-top;
+}
+    .fit_Data {
+        width: fit-content;
+    }
+
+    .MyClass123:before{
+	content:url("https://img.icons8.com/officel/80/000000/export-pdf.png");
+}
 </style>
 
 <div class="row">
@@ -104,7 +117,9 @@
 <div style="margin-left:20px;margin-top:20px">
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
-    <button id="export">Export to PDF</button>
+    @*<i class="fa fa-file-pdf-o" id="export"></i>*@
+    @*<img src="https://img.icons8.com/officel/80/000000/export-pdf.png" />*@
+    <button class="MyClass123" id="export"></button>
 </div>
 
 <script>
@@ -204,25 +219,29 @@
             type: "POST",
             data: { 'IDInstance': IDInstance },
             success: function (result) {
-                $.alert({
-                    title: 'Alert !',
-                    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                    icon: 'fa fa-rocket',
-                    animation: 'scale',
-                    closeAnimation: 'scale',
-                    buttons: {
-                        okay: {
-                            text: 'Okay',
-                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            action: function (event, ui) {
-                                $(this).remove();
-                                LoadTable(IDInstance);
-                                $('#jqGrid').trigger('reloadGrid');
-                            }
-                        }
-                    }
+                Notiflix.Notify.Success('New Live Instance updated !', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+                LoadTable(IDInstance);
+                $('#jqGrid').trigger('reloadGrid');
+                
+                //$.alert({
+                //    title: 'Alert !',
+                //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                //    icon: 'fa fa-rocket',
+                //    animation: 'scale',
+                //    closeAnimation: 'scale',
+                //    buttons: {
+                //        okay: {
+                //            text: 'Okay',
+                //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                //            action: function (event, ui) {
+                //                $(this).remove();
+                //                LoadTable(IDInstance);
+                //                $('#jqGrid').trigger('reloadGrid');
+                //            }
+                //        }
+                //    }
 
-                });
+                //});
 
 
             }
@@ -231,10 +250,15 @@
 </script>
 
 <script>
-    document.body.style.zoom = "67%";
+    document.body.style.zoom = "80%";
     //$(document).ready(function () {
 
     //});
+    $(window).on("resize", function () {
+  var $grid = $("#jqGrid"),
+    newWidth = $grid.closest(".ui-jqgrid").parent().width();
+  $grid.jqGrid("setGridWidth", newWidth, true);
+});
     function LoadTable(Instance) {
 
         // $(document).ready(function () {
@@ -486,14 +510,15 @@
             url: "@Url.Action("GetData","Report")",
             datatype: "json",
 
-            colModel: [
+             colModel: [
                 {
-                    label: 'Id', name: 'Id', index: 'Id', width: 70,align: 'center',hidden: true
+                    label: 'Id', name: 'Id', index: 'Id', width: 70,
+                     align: 'center', editable: true, hidden: true,
                 },
                 {
-                    label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 80,
-                     align: 'center', editable: true, edittype: 'custom',
-                    cellEdit: true, edittype: 'select', formatter: 'select',search:true, stype:'text',
+                    label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
+                    align: 'center', editable: true, hidden: false, edittype: 'custom',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
                     editrules: {
                         required: true,
                         edithidden: true
@@ -503,7 +528,7 @@
                     }
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,search:true, stype:'text',
+                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,classes: 'wrapColumnText',
                     editrules: {
                         required: true,
                         edithidden: true
@@ -511,17 +536,17 @@
 
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false,search:true, stype:'text',
+                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false ,classes: 'wrapColumnText',
 
 
                 },
                 {
-                    label: 'ApplicationArea', name: 'ApplicationArea', width: 150,  editable: false,search:true, stype:'text',
+                    label: 'ApplicationArea', name: 'ApplicationArea', width: 100,  editable: false,classes: 'wrapColumnText',
 
 
                 },
                 {
-                    label: 'Sequence ', name: 'SequenceNum', width: 50,  editable: true, hidden: true,search:true, stype:'text',
+                    label: 'Sequence ', name: 'SequenceNum', width: 50,  editable: true, hidden: true,
                     editrules: {
                         required: true,
                         edithidden: true
@@ -539,82 +564,165 @@
 
                 },
                 {
-                    label: 'Task needed for other environment (Y/N)',
-                    name: 'Task_Other_Environment', width: 50, editable: true,search:true, stype:'text',align: 'center',
-                    edittype: 'checkbox', editoptions: { value: "True:False" },
+                    label: 'Task Other Env. (Y/N)',
+                    name: 'Task_Other_Environment', width: 55, editable: true,
+                    editoptions: { value: "True:False" }
 
                 },
                 {
                     label: 'Dependency (Y/N)',
-                    name: 'Dependency', width: 80,editable: true,search:true, stype:'text',align: 'center',
-                    editoptions: { value: "True:False" },
+                    name: 'Dependency', width: 72,editable: true,
+                    //edittype: 'checkbox',
+                    editoptions: { value: "Yes:No" }
+                    //, formatter: "checkbox",
                 },
-                { label: 'Pending With ', name: 'Pending', width: 80,  editable: true,search:true, stype:'text', },
+                { label: 'Pending With ', name: 'Pending', width: 100,  editable: true },
                 {
-                    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80,  editable: true,align: 'center',
-                    
-                    editoptions: { value: "True:False" }, 
+                    label: 'Delay (Y/N)', name: 'Delay_occurred', width: 58,  editable: true,
+                    //edittype: 'checkbox',
+                    editoptions: { value: "True:False" }
+                    //, formatter: "checkbox",
                 },
                 {
-                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, align: 'center', editable: false,search:true, stype:'text',
+                    label: 'Owner', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
                     }
                 },
                 {
-                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'center', editable: true,search:true, stype:'text',
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 100,  align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetStatusDropDown()
                     },
+                    @*editoptions: {
+                        dataUrl: '@Url.Action("GetStatus","ProjectMonitor")',
+                        buildSelect: function (data) {
 
+                            debugger;
+                            alert('in');
+                            var field_id = this.id; // "myDropDown"
+                            setTimeout(function () {
+                                if (needDisable) {
+                                    $('#tr_' + field_id).attr('disabled', 'disabled');
+                                } else {
+                                    $('#tr_' + field_id).removeAttr('disabled');
+                                }
+                            }, 100);
+                            return data;
+                        }
+                    },*@
 
                 },
                 {
-                    label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 80, editable: true,search:true, sorttype:"float", formatter:"number",
+                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,
+                    //maxlength: 4,
+                    //formatter: "number",
+                    editable: true,
+                    //formatoptions: { masks: 'LongTime', newformat: 'ShortTime' },
+                    editrules: { },
+                    editoptions: {
+                       // maxlength:4,
+                        dataInit: function (element) {
+                            $(element).keyup(function(event) {
+     
+                                  this.value = this.value
+                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
+                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                                  .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                                   
+                
+                            });
+                            
+                        }
+                    }
+                },
+                {
+                    label: 'Actual Duration (hours)', name: 'Actual_St_hours',
+                    //formatter: "number",
+                    width: 55, editable: true,
+                    editoptions: {
+                        
+                        //dataInit: function (element) {
+                        //    $(element).keypress(function (e) {
+                        //        //alert(e);
+                        //        if (e.which == 46) {
+
+                        //        }
+                        //        else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                        //            return false;
+                        //        }
+                        //    });
+                        //}
+                         dataInit: function (element) {
+                            $(element).keyup(function(event) {
+     
+                                  this.value = this.value
+                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
+                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                                  .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                                   
+                
+                            });
+                            
+                        }
+                    }
+                },
+                {
+                    label: 'Planned Start Date', name: 'Planed__St_Date',
+                    width: 75, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    editoptions: { dataInit: Planed_StartDate, classes: 'DateClass' }
+                },
+                {
+                    label: 'Actual Start Date', name: 'Actual_St_Date',
+                    width: 75, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    editoptions: { dataInit: Actual_St_Date }
 
                 },
                 {
-                    label: 'Actual Duration (hours)', name: 'Actual_St_hours', formatter: "number", width: 80, editable: true,search:true, sorttype:"float", formatter:"number",
-
-                },
-                {
-                    label: 'Planned Start Date', name: 'Planed__St_Date',search:true, sorttype:"date", formatter:"date",
-                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
-                },
-                {
-                    label: 'Actual Start Date/Time (UTC)', name: 'Actual_St_Date',search:true, sorttype:"date", formatter:"date",
-                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
-
-                },
-                {
-                    label: 'Planned End Date', name: 'Planed__En_Date',search:true, sorttype:"date", formatter:"date",
-                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    label: 'Planned End Date', name: 'Planed__En_Date',
+                    width: 75, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
                     editoptions: { dataInit: Planed_EndDate }
                 },
                 {
-                    label: 'Actual End Date/Time (UTC)', name: 'Actual_En_Date',search:true, sorttype:"date", formatter:"date",
-                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    label: 'Actual End Date', name: 'Actual_En_Date',
+                    width: 75, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
                     editoptions: { dataInit: Actual_En_Date }
                 },
                 {
-                    label: 'Notes/Remarks', name: 'Notes', edittype: "textarea",search:true, stype:'text',
+                    label: 'comments', name: 'Notes', edittype: "textarea",
                     wrap: "on"
                     //formatter: function (v) {
                     //     return '<div style="max-height:20px">' $.jgrid.htmlEncode(v) '</div>';
                     // }
-                    , editoptions: {
-                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px"
+                    ,editrules: { "edithidden": true }, "editable": true, "width": 180,
+                    editoptions: {
+                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
                         //"readonly": "readonly"
+                        
                     },
-                    editrules: { "edithidden": true }, "editable": true, "width": 200,
+              //      beforeSaveCell:function(rowid,name,val,iRow,iCol) {
+			           //  // var row = $("#list").getRowData(rowid);
+				          //// var row = $('#list').jqGrid('getRowData',rowid);
+				          ////var currentRow= rowid;
+              //          var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+
+              //          var status = $("#jqGrid").jqGrid('getCell', ColValue, 'StatusId');
+              //          alert("HI");
+			
+              //      },
+              //      afterSaveCell: function(rowid,name,val,iRow,iCol) {
+              //      alert("alert1!");
+              //      },
                     //classes: "jqgrid-readonlycolumn"
                 },
                 {
-                    label: 'ValidationStatus', name: 'ValidationStatus', width: 80, editable: false,hidden: true,
+                    label: 'ValidationStatus', name: 'ValidationStatus', width: 10, editable: false,hidden: true,
 
                     editoptions: { value: "True:False" }
 
@@ -622,7 +730,7 @@
              //   {
              //       name: "",
              //       label: "Actions",
-             //       width: 75,
+             //       width: 65,
              //       align: "center",
              //       formatter: "actions",
              //       formatoptions: {
@@ -630,8 +738,7 @@
              //           delbutton: false,
 
              //           onEdit: function (rowid) {
-
-
+             //               $("#" + rowid + "_StatusId").addClass("fit_Data");
              //    //alert("in onEdit: rowid="+rowid+"\nWe don't need return anything");
              //},
              //           //beforeShowForm: function (form) {
