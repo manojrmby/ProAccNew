@@ -599,7 +599,7 @@
     <Content Include="Views\Userasdad\Edit.cshtml" />
     <Content Include="Views\Userasdad\Index.cshtml" />
     <Content Include="Views\Userasdad\_UserCreate.cshtml" />
-    <Content Include="Views\User\CreateUsers.cshtml" />
+    <Content Include="Views\User\CreateUsers_Old.cshtml" />
     <Content Include="Views\ProjectCreation\Create.cshtml" />
     <Content Include="Views\ProjectCreation\_ProjectCreationCreate.cshtml" />
     <Content Include="Views\ProjectCreation\_ProjectCreationIndex.cshtml" />
@@ -610,7 +610,7 @@
     <Content Include="Views\Activity\_ActivityCreationCreate.cshtml" />
     <Content Include="Views\Activity\_ActivityCreationIndex.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Edit_Old.cshtml" />
     <Content Include="Views\Link\ProfileLink.cshtml" />
     <Content Include="Views\User\ResourceAllocationCreate.cshtml" />
     <Content Include="Views\Customers\GetCustomerById.cshtml" />
@@ -626,6 +626,8 @@
     <Content Include="Views\ProjectMonitor\PostConvertionMonitor.cshtml" />
     <Content Include="Views\ProjectMonitor\ValidationMonitor.cshtml" />
     <Content Include="Views\Report\OverAllTaskReport.cshtml" />
+    <Content Include="Views\User\CreateUsers.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

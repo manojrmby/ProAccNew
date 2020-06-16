@@ -24,7 +24,9 @@ namespace ProAcc.Controllers
         public ActionResult Create()
         {
             ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true).OrderBy(x=>x.Id);
-            ViewBag.Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1);
+            var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+            var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+            ViewBag.Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!= adminRoleId && x.RoleId != pmRoleId);
             return View();
         }
 

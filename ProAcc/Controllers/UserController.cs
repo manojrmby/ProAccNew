@@ -46,14 +46,22 @@ namespace ProAcc.Controllers
         // GET: User
         public ActionResult CreateUsers()
         {
-            var val = db.User_Type.Where(x => x.isActive == true).ToList();
-            ViewBag.UserTypeID = new SelectList(val, "UserTypeID", "UserType");
+            //var val = db.User_Type.Where(x => x.isActive == true).ToList();
+            //ViewBag.UserTypeID = new SelectList(val, "UserTypeID", "UserType");
 
-            var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1 && x.RoleId!=10).ToList();
-            ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName");
+            //var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!=1 && x.RoleId!=10).ToList();
+            //ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName");
 
-            var Cust = db.Customers.Where(x => x.isActive == true ).ToList();
-            ViewBag.Customer_Id = new SelectList(Cust, "Customer_ID", "Company_Name");
+            //var Cust = db.Customers.Where(x => x.isActive == true ).ToList();
+            //ViewBag.Customer_Id = new SelectList(Cust, "Customer_ID", "Company_Name");
+            //return View();
+
+            ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
+            var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+            var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+            ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
+            ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
+
             return View();
         }
 
@@ -116,7 +124,7 @@ namespace ProAcc.Controllers
         }
         
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Create(UserMaster con)
         {
             if (ModelState.IsValid)
@@ -127,9 +135,11 @@ namespace ProAcc.Controllers
                     con.Cre_By = Guid.Parse(Session["loginid"].ToString());
                     con.Cre_on = DateTime.UtcNow;
                     con.isActive = true;
+                    //var usertypeid = db.User_Type.Where(x => x.UserTypeID==con.UserTypeID && x.isActive == true).FirstOrDefault().UserTypeID;
                     if (con.UserTypeID == 1)
                     {
-                        con.RoleID = 1;
+                        var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+                        con.RoleID = adminRoleId;
                         con.Customer_Id = null;
                     }
                     else if(con.UserTypeID == 2)
@@ -138,21 +148,21 @@ namespace ProAcc.Controllers
                     }
                     else if (con.UserTypeID == 4)
                     {
-                         con.RoleID = 10;
-                        //con.RoleID = Convert.ToInt32(db.RoleMasters.Where(x => x.RoleName == "Project Manager").Select(x => x.RoleId));
-
+                        var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+                        con.RoleID = pmRoleId;
                         con.Customer_Id = null;
                     }
                     db.UserMasters.Add(con);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return Json("success");
+                    //return RedirectToAction("Index");
                 }
                 else
                 {
-
-                    ViewBag.UserTypeID = new SelectList(db.User_Type, "UserTypeID", "UserType", con.UserTypeID);
-                    ViewBag.Message = true;
-                    return View();
+                    return Json("error");
+                    //ViewBag.UserTypeID = new SelectList(db.User_Type, "UserTypeID", "UserType", con.UserTypeID);
+                    //ViewBag.Message = true;
+                    //return View();
                 }
 
             }
@@ -171,73 +181,50 @@ namespace ProAcc.Controllers
             if (userMaster == null)
             {
                 return HttpNotFound();
-            }            
-            var val = db.User_Type.Where(x => x.isActive == true).ToList();
-            ViewBag.UserTypeID = new SelectList(val, "UserTypeID", "UserType",userMaster.UserTypeID);
+            }
 
-            var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != 1).ToList();
-            ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName", userMaster.RoleID);
+            ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
+            var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+            var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+            ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
+            ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
 
-            var Cust = db.Customers.Where(x => x.isActive == true).ToList();
-            ViewBag.Customer_Id = new SelectList(Cust, "Customer_ID", "Company_Name", userMaster.Customer_Id);
+            //var val = db.User_Type.Where(x => x.isActive == true).ToList();
+            //ViewBag.UserTypeID = new SelectList(val, "UserTypeID", "UserType",userMaster.UserTypeID);
+
+            //var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != 1).ToList();
+            //ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName", userMaster.RoleID);
+
+            //var Cust = db.Customers.Where(x => x.isActive == true).ToList();
+            //ViewBag.Customer_Id = new SelectList(Cust, "Customer_ID", "Company_Name", userMaster.Customer_Id);
             return View(userMaster);
         }
 
         [HttpPost]
         public ActionResult Edit(UserMaster userMaster)
         {
-            if (ModelState.IsValid)
+            
+            if (userMaster.Name != null)
             {
-                if (userMaster.Name != null)
-                {
-                    userMaster.Modified_On = DateTime.UtcNow;
-                    userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
-                    userMaster.isActive = true;
-                    if (userMaster.UserTypeID == 1)
-                    {
-                        userMaster.RoleID = 1;
-                        userMaster.Customer_Id = null;
-                    }
-                    else if (userMaster.UserTypeID == 2)
-                    {
-                        userMaster.Customer_Id = null;
-                    }
-                    else if (userMaster.UserTypeID == 4)
-                    {
-                        userMaster.RoleID = 10;
-                        //userMaster.RoleID = Convert.ToInt32(db.RoleMasters.Where(x => x.RoleName == "Project Manager").Select(x => x.RoleId));
+                 userMaster.Modified_On = DateTime.UtcNow;
+                 userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                 userMaster.isActive = true;
+                    
+                 db.Entry(userMaster).State = EntityState.Modified;
+                 db.SaveChanges();
+                 return Json("success");
+             }
+            else
+            {
+                 ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
+                 var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+                 var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+                 ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
+                 ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
 
-                        userMaster.Customer_Id = null;
-                    }
-                    db.Entry(userMaster).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    var val1 = db.User_Type.Where(x => x.isActive == true).ToList();
-                    ViewBag.UserTypeID = new SelectList(val1, "UserTypeID", "UserType", userMaster.UserTypeID);
-
-                    var Role1 = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != 1).ToList();
-                    ViewBag.RoleID = new SelectList(Role1, "RoleId", "RoleName", userMaster.RoleID);
-
-                    var Cust1 = db.Customers.Where(x => x.isActive == true).ToList();
-                    ViewBag.Customer_Id = new SelectList(Cust1, "Customer_ID", "Company_Name", userMaster.Customer_Id);
-                    ViewBag.Message = true;
-                    return View();
-                }
-
-            }
-            var val = db.User_Type.Where(x => x.isActive == true).ToList();
-            ViewBag.UserTypeID = new SelectList(val, "UserTypeID", "UserType", userMaster.UserTypeID);
-
-            var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != 1).ToList();
-            ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName", userMaster.RoleID);
-
-            var Cust = db.Customers.Where(x => x.isActive == true).ToList();
-            ViewBag.Customer_Id = new SelectList(Cust, "Customer_ID", "Company_Name", userMaster.Customer_Id);
-
-            return View(userMaster);
+                 ViewBag.Message = true;
+                return View();
+             }
             
         }
 

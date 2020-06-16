@@ -1,171 +1,174 @@
-﻿@model ProACC_DB.UserMaster
+﻿
+@model ProACC_DB.UserMaster
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "CreateUsers";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
-<style>
-    .required::after {
-        content: "*";
-        font-weight: bold;
-        color: red;
-    }
-   
-</style>
-<a class="card-title">User Creation</a>
+<a class="card-title">Create User</a>
 <hr />
-@using (Html.BeginForm("Create", "User", FormMethod.Post, new { }))
-{
-    @Html.AntiForgeryToken()
-    @*<h4><b>New Consultant</b></h4>*@
-    <div style="padding:1em;" class="col-lg-12">
-        @*<p style="color:red;float:right;margin-right:100px;">*  All Fields are mandatory</p>*@
-        
-        <div class="row">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="col-6 ">
+<div style="padding:1em;" class="col-lg-12">
+    <div class="row">
+        <div class="col-6">
 
-                <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-5 required" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "txtName1", @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            @*<input type="hidden" id="customerid" />
+                <input type="hidden" id="pcre_on" />
+                <input type="hidden" id="pcre_By" />*@
 
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblName1">&nbsp;</span>
-                    </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Customer Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtName1" />
                 </div>
-
-                <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.LoginId, "Login ID", htmlAttributes: new { @class = "control-label col-md-5 required" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoginId, new { htmlAttributes = new { @id = "LoginID", @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.LoginId, "", new { @class = "text-danger" })
-
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="StatusConsultant">&nbsp;</span>
-                    </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblName1">&nbsp;</span>
                 </div>
+            </div>
 
-                <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-5 required" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @id = "Passwd", @class = "form-control", @type = "password" } })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;
-                    </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Login ID</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="LoginID" />
                 </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="StatusConsultant">&nbsp;</span>
+                </div>
+            </div>
 
-                <div class="position-relative form-group">
-                    <label class="control-label col-md-5 required">Confirm Password</label>
-                    <div class="col-md-10">
-                        <input type="password" class="form-control required" onkeyup="validateConsPwd()" id="txtConsCnfmPassword" />
-                       
-                    </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Password</label>
+                <div class="col-md-10">
+                    <input type="password" class="form-control" id="Passwd" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPwd">&nbsp;</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Confirm Password</label>
+                <div class="col-md-10">
+                    <input type="password" class="form-control" onchange="validateConsPwd()" id="txtConsCnfmPassword" />
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp; <span class="Class_span" id="lblAltConsPwd">&nbsp;</span>
                 </div>
-
             </div>
-            <div class="col-6 ">
-                <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.EMail, "Email", htmlAttributes: new { @class = "control-label col-md-5 required" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @id = "txtEmail1", @class = "form-control", @onkeyup = "ValidateEmail1()" } })
-                        @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
 
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEmail1">&nbsp;</span>
-                    </div>
+        </div>
+
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Email</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" onchange="ValidateEmail1()" id="txtEmail1" />
                 </div>
-
-                <div class="position-relative form-group">
-                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-5 required" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @id = "txtMob", @class = "form-control", @maxlength = "10" } })
-                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
-
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMob1">&nbsp;</span>
-                    </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEmail1">&nbsp;</span>
                 </div>
+            </div>
 
-                <div class="position-relative form-group">
-                    @Html.Label("User Type", htmlAttributes: new { @class = "control-label col-md-5 required" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("UserTypeID", (IEnumerable<SelectListItem>)ViewBag.UserTypeID, "- SELECT-", htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Phone Number</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" maxlength="10" id="txtMob" />
                 </div>
-                <div class="position-relative form-group" id="divRole">
-                    @Html.Label("Role", htmlAttributes: new { @class = "control-label col-md-5" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.RoleMaster, "", new { @class = "text-danger" })
-                    </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMob1">&nbsp;</span>
                 </div>
+            </div>
 
-                <div class="position-relative form-group" id="divCust">
-                    @Html.LabelFor(model => model.Customer, "Customer", htmlAttributes: new { @class = "control-label col-md-5" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("Customer_Id", null, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Customer, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required">User Type</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="UserTypeID">
+                        <option value="0">Select User</option>
+                        @foreach (var item in ViewBag.UserTypeID)
+                        {
+                            <option value="@item.UserTypeID">@item.UserType</option>
+                        }
+                    </select>
                 </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblUserTypeID">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group" id="divRole">
+                <label class="control-label col-md-4 required">Role</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="RoleID">
+                        @*<option value="0">Select Role</option>*@
+                        @foreach (var item in ViewBag.RoleID)
+                        {
+                            <option value="@item.RoleId">@item.RoleName</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="RoleID">&nbsp;</span>
+                </div>
+            </div>
 
 
+            <div class="form-group" id="divCust">
+                <label class="control-label col-md-4 required">Industry Sector</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="Customer_Id">
+                        @*<option value="0">Select Customer</option>*@
+                        @foreach (var item in ViewBag.Customer_Id)
+                        {
+                            <option value="@item.Customer_ID">@item.Company_Name</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomer_Id">&nbsp;</span>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
 
-                <div class="col-md-offset-2 col-md-12">
-                    <input type="submit" id="createconsultant" value="Create" class="btn btn-primary"/> 
-                    <div class="col-lg-3" style="float:right;">
-                        @Html.ActionLink("Back to List", "Index", "User")
-                    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="col-md-offset-2 col-md-12">
+                <input type="button" value="Create" class="btn btn-primary" id="btnConsultantCreate" />
+                <div class="col-lg-3" style="float:right;">
+                    @Html.ActionLink("Back to List", "Index", "User")
                 </div>
             </div>
         </div>
     </div>
-}
-
+</div>
+@Html.Hidden("RedirectToUserList", Url.Action("Index", "User"))
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#btnConsultantCreate").prop("disabled", true);
 
-        $("#createconsultant").click(function () {
-            
-            $("#createconsultant").prop("disabled", true);
-            SubmitConsultant();
-        });
-        
         $("#txtName1").keypress(function(event){
             var inputValue = event.which;
             // allow letters and whitespaces only.
 
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                 event.preventDefault();
-                $("#lblName1").html("Not Allowed").show().fadeOut("slow", function () { $("#lblName1").html(" ") });
-                SubmitConsultant();
+                $("#lblName1").html("Not Allowed").show().fadeOut(5000);
+                //SubmitConsultant();
             }
             else {
+                $("#lblName1").html("");
                 SubmitConsultant();
             }
         });
 
          $('#txtName1').on('focusout', function () {
-            
+
             var CnstName = $("#txtName1").val().trim();
             if (CnstName == "") {
-                $("#lblName1").html("Please Enter valid Name").show().fadeOut(5000);
+                $("#lblName1").html("Please Enter valid Name").show();
                 SubmitConsultant();
             }
             else {
@@ -176,7 +179,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblName1").html("This Name is already taken,please Try another").show().fadeOut(5000);
+                        $("#lblName1").html("This Name is already in use").show();
                         SubmitConsultant();
                     }
                     else {
@@ -194,8 +197,8 @@
 
          });
 
-        $('#LoginID').on('keyup', function () {
-           
+        $('#LoginID').on('focusout', function () {
+
             var CnstUserName = $("#LoginID").val().trim();
             if (CnstUserName == "") {
                 $("#StatusConsultant").html("Please Enter valid LoginId").show().fadeOut(5000);
@@ -209,12 +212,12 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#StatusConsultant").html("This LoginId is already taken , please select another").show();
+                        $("#StatusConsultant").html("This LoginId is already taken , please select another").show().fadeOut(5000);
                         SubmitConsultant()
                     }
                     else {
                         $("#StatusConsultant").html("");
-                        SubmitConsultant()
+                        SubmitConsultant();
                     }
 
                 },
@@ -231,20 +234,17 @@
             //if the letter is not digit then display error and don't type anything
              if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                  e.preventDefault();
-                 $("#lblMob1").html("Numbers Only").show().fadeOut(5000);
+                 $("#lblMob1").html("Numbers Only").show().fadeOut("slow");
                  SubmitConsultant();
-             }
-             else {
-                 SubmitConsultant();
-             }
+            }
          });
 
         $("#txtMob").blur(function () {
-            
+
             phone = $(this).val();
             phone = phone.replace(/[^0-9]/g,'');
             if (phone.length != 10) {
-                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(5000);
+                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
                 SubmitConsultant();
             }
             else {
@@ -257,20 +257,18 @@
             e.preventDefault();
          });
     });
- 
+
 
 </script>
 
 <script>
     $("#UserTypeID").change(function () {
         var Id = $(this).val();
-        if (Id == 1 || Id == 4)
-        {
+        if (Id == 1 || Id == 4||Id == 0) {
             $("#divRole").hide();
             $("#divCust").hide();
         }
-        else if (Id == 2)
-        {
+        else if (Id == 2) {
             $("#divRole").show();
             $("#divCust").hide();
         }
@@ -278,20 +276,13 @@
             $("#divRole").show();
             $("#divCust").show();
         }
+        SubmitConsultant();
     });
 
-    $('#UserTypeID').change(function () {             var Name1 = $("#txtName1").val();
-            var Mob = $("#txtMob").val();
-            var Email1 = $("#txtEmail1").val();
-            var LoginID = $("#LoginID").val();
-            var Passwd = $("#Passwd").val();
-            var UserTypeID = $("#UserTypeID").val();            if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0) {                //$("#txtName1").html("");                //$("#txtMob").html("");                //$("#txtEmail1").html("");                //$("#LoginID").html("");                //$("#Passwd").html("");                SubmitConsultant()            }            else {                SubmitConsultant()
-            }    });
-
     var result = "Success";
-   
+
     function ValidateEmail1() {
-        
+
         var email1 = document.getElementById("txtEmail1").value;
         var lblEmail1 = document.getElementById("lblEmail1");
         lblEmail1.innerHTML = "";
@@ -307,7 +298,7 @@
     }
 
     function validateConsPwd() {
-       
+
         var Passwd = document.getElementById("Passwd").value;
         var txtConsCnfmPassword = document.getElementById("txtConsCnfmPassword").value;
         var lblAltConsPwd = document.getElementById("lblAltConsPwd");
@@ -322,40 +313,117 @@
         SubmitConsultant()
     }
 
-
     
 
     function SubmitConsultant() {
-        
+       
         //alert("HI");
-        var Name1 = $("#txtName1").val();
-        //var Desc = $("#txtDesc").val();
-        var Mob = $("#txtMob").val();
-        var Email1 = $("#txtEmail1").val();
-        var LoginID = $("#LoginID").val();
-        var Passwd = $("#Passwd").val();
-        var UserTypeID = $("#UserTypeID").val();
-        var Role_Data = $("#Role_Data").val();
-        var Cust = $("#Cust").val();
-        
-        //var txtConsCnfmPassword = $("#txtConsCnfmPassword").val();
+        var Name1 = $("#txtName1").val().trim();
+        var Mob = $("#txtMob").val().trim();
+        var Email1 = $("#txtEmail1").val().trim();
+        var LoginID = $("#LoginID").val().trim();
+        var Passwd = $("#Passwd").val().trim();
+        var UserTypeID = $("#UserTypeID").val().trim();
+        var RoleID = $("#RoleID").val().trim();
+        var Customer_Id = $("#Customer_Id").val().trim();
 
-        var lblName1 = $("#lblName1").text().trim(); // val();
-        //var lblDesc = $("#lblDesc").text();
+        var lblName1 = $("#lblName1").text().trim();
         var lblMob1 = $("#lblMob1").text().trim();
         var lblEmail1 = $("#lblEmail1").text().trim();
         var Status1 = $("#StatusConsultant").text().trim();
         var lblAltConsPwd = $("#lblAltConsPwd").text().trim();
 
-        if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 &&UserTypeID!=""&&
-            lblName1 == "" &&  lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
+       
 
-            $("#createconsultant").prop("disabled", false);
+        if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 && UserTypeID!=0 &&
+            lblName1 == "" && lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
+
+            $("#btnConsultantCreate").prop("disabled", false);
         }
         else {
-            $("#createconsultant").prop("disabled", true);
+            $("#btnConsultantCreate").prop("disabled", true);
         }
     }
+
+    function ValidateName(data) {
+       var letters = /^[A-Za-z._, ]+$/;
+       if (!letters.test(data)) {
+           return false;
+       }
+    }
+
+    $("#btnConsultantCreate").on("click", function () {
+       
+        var Name1 = $("#txtName1").val();
+        var Mob = $("#txtMob").val();
+        var Email1 = $("#txtEmail1").val();
+        var LoginID = $("#LoginID").val();
+        var Passwd = $("#Passwd").val();
+        var UserTypeID = $("#UserTypeID").val();
+        var RoleID = $("#RoleID").val();
+        var Customer_Id = $("#Customer_Id").val();
+
+        if (Name1 == "" || ValidateName(Name1) == false) {
+            $("#lblName1").html("Please enter the User Name").show().fadeOut(5000);
+        }
+         else if (Mob =="")
+        {
+            $("#lblMob1").html("Please enter the Mobile Number").show().fadeOut(5000);
+        }
+        else if (Email1 == "")
+        {
+            $("#lblEmail1").html("Please enter the Email Phone").show().fadeOut(5000);
+        }
+        else if (LoginID=="")
+        {
+            $("#StatusConsultant").html("Please enter the Login").show().fadeOut(5000);
+        }
+        else if (Passwd=="")
+        {
+            $("#lblPwd").html("Please enter the Password").show().fadeOut(5000);
+            $("#txtConsCnfmPassword").val("");
+        }
+        else if (UserTypeID.val==0)
+        {
+            $("#lblUserTypeID").html("Please select the User Type").show().fadeOut(5000);
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create","User")',
+                //data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail ,Contact:Contact},
+                data: { Name: Name1, EMail: Email1, Phone: Mob, LoginId: LoginID, Password: Passwd, RoleID: RoleID, UserTypeID: UserTypeID, Customer_Id:Customer_Id },
+                    success: function (response) {
+                        if (response == "success") {
+                            $.alert({
+                                title: 'Success !',
+                                content: 'User Saved successfully..!',
+                                icon: 'fa fa-rocket',
+                                animation: 'scale',
+                                closeAnimation: 'scale',
+                                buttons: {
+                                    okay: {
+                                        text: 'Okay',
+                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                        action: function (event, ui) {
+                                            $(this).remove();
+                                            var url = $("#RedirectToUserList").val();
+                                            location.href = url;
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+    }
+});
 </script>
 
 <script type="text/javascript">
@@ -368,10 +436,8 @@
     });
 
     $(document).ready(function () {
-        $("#createconsultant").prop('disabled', true);
+        $("#btnConsultantCreate").prop('disabled', true);
         $("#divRole").hide();
         $("#divCust").hide();
     });
 </script>
-
-
