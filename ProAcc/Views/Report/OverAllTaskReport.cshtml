@@ -75,7 +75,7 @@
 }
 </style>
 
-<div class="row">
+<div class="row instanceRow">
     <div class="col-lg-12 card" style="margin-bottom:20px !important;">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
@@ -119,7 +119,7 @@
     <div id="jqGridPager"></div>
     @*<i class="fa fa-file-pdf-o" id="export"></i>*@
     @*<img src="https://img.icons8.com/officel/80/000000/export-pdf.png" />*@
-    <button class="MyClass123" id="export"></button>
+    <button class="MyClass123" id="export" style="display:none;"></button>
 </div>
 
 <script>
@@ -222,6 +222,8 @@
                 Notiflix.Notify.Success('New Live Instance updated !', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
                 LoadTable(IDInstance);
                 $('#jqGrid').trigger('reloadGrid');
+                $('#export').show();
+                
                 
                 //$.alert({
                 //    title: 'Alert !',
@@ -250,7 +252,7 @@
 </script>
 
 <script>
-    document.body.style.zoom = "80%";
+    //document.body.style.zoom = "80%";
     //$(document).ready(function () {
 
     //});

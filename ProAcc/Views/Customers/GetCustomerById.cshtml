@@ -287,24 +287,26 @@
                     //dataType: "json",
                     success: function (response) {
                         if (response == "success") {
-                            $.alert({
-                                title: 'Success !',
-                                content: 'Customer Edited <strong>Successfully</strong>..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                                icon: 'fa fa-rocket',
-                                animation: 'scale',
-                                closeAnimation: 'scale',
-                                buttons: {
-                                    okay: {
-                                        text: 'Okay',
-                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                        action: function (event, ui) {
-                                            $(this).remove();
-                                           var url = $("#RedirectToCustomerList").val();
-                                            location.href = url;
-                                        }
-                                    }
-                                }
-                            });
+                             Notiflix.Notify.Success('Customer Updated successfully..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+                   setTimeout(Redirect, 3000);
+                            //$.alert({
+                            //    title: 'Success !',
+                            //    content: 'Customer Edited <strong>Successfully</strong>..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                            //    icon: 'fa fa-rocket',
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                $(this).remove();
+                            //               var url = $("#RedirectToCustomerList").val();
+                            //                location.href = url;
+                            //            }
+                            //        }
+                            //    }
+                            //});
 
                             
                             //loadCustomer();
@@ -326,5 +328,8 @@
 
         }
      });
-
+    function Redirect() {
+        var url = $("#RedirectToCustomerList").val();
+        location.href = url;
+    }
 </script>

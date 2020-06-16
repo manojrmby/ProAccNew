@@ -11,10 +11,10 @@
         color: red;
     }
 
-    span {
+    /*span {
         color: red;
         font-size: 14px;
-    }
+    }*/
 </style>
 <a class="card-title">User Updation</a>
 <hr />
@@ -43,17 +43,17 @@
                     <input type="password" class="form-control" id="txtPassword" value="@Model.Password" />
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblPassword">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPassword">&nbsp;</span>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-md-4 required">Confirm Password</label>
+                <label class="control-label col-md-8 required">Confirm Password</label>
                 <div class="col-md-10">
                     <input type="password" class="form-control" id="txtCnfmPassword" value="@Model.Password" />
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblCnfmPassword">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCnfmPassword">&nbsp;</span>
                 </div>
             </div>
 
@@ -63,7 +63,7 @@
                     <input type="text" class="form-control" id="txtUserEmail" value="@Model.EMail" />
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblUserEmail">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblUserEmail">&nbsp;</span>
                 </div>
             </div>
 
@@ -73,7 +73,7 @@
                     <input type="text" class="form-control" maxlength="10" id="txtMobile" value="@Model.Phone" />
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblMobile">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMobile">&nbsp;</span>
                 </div>
             </div>
 
@@ -89,7 +89,7 @@
                     <input type="text" class="form-control" id="LoginUserID" value="@Model.LoginId" />
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblLoginUserID">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblLoginUserID">&nbsp;</span>
                 </div>
             </div>
 
@@ -170,7 +170,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="col-md-offset-2 col-md-12">
-                <input type="submit" value="Save" id="btnsaveUser" class="btn btn-primary" />
+                <input type="submit" value="Update User" id="btnsaveUser" class="btn btn-primary" />
                 <a class="btn btn-success" id="btnAdduser"><i class="fa fa-plus"></i>Add New User</a>
                 <div class="col-lg-3" style="float:right;">
                     @Html.ActionLink("Back to List", "Index")
@@ -322,29 +322,44 @@
      });
 
     $("#txtPassword").focusout(function () {
+        //debugger;
         var str = $("#txtPassword").val().trim();
         var str1 = $("#txtCnfmPassword").val().trim();
         if (str != str1) {
             $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(5000);
-            $.alert({
-                title: 'Info !',
-                content: 'Do you want to update password?',
-                icon: 'fa fa-trash-o',
-                animation: 'scale',
-                closeAnimation: 'scale',
-                opacity: 0.5,
-                draggable: false,
-                buttons: {
-                    'confirm': {
-                        text: 'Yes',
-                        btnClass: 'btn-danger',
-                        action: function (event, ui) {
-                            $("#txtCnfmPassword").val("");
+            Notiflix.Confirm.Show(
+                'Confirm',
+                'Do you want to update password ?',
+                'Yes', 'No',
+                function () {
+                     $("#txtCnfmPassword").val("");
                             ValidateUser();
-                        }
-                    }
-                },
-            });
+                }, function () {
+                    location.reload();
+                    // No button callback
+                    //alert('If you say so...');
+                }
+            )
+
+            //$.alert({
+            //    title: 'Info !',
+            //    content: 'Do you want to update password?',
+            //    icon: 'fa fa-trash-o',
+            //    animation: 'scale',
+            //    closeAnimation: 'scale',
+            //    opacity: 0.5,
+            //    draggable: false,
+            //    buttons: {
+            //        'confirm': {
+            //            text: 'Yes',
+            //            btnClass: 'btn-danger',
+            //            action: function (event, ui) {
+            //                $("#txtCnfmPassword").val("");
+            //                ValidateUser();
+            //            }
+            //        }
+            //    },
+            //});
         }
 
     });
@@ -483,24 +498,26 @@
                 data: {userMaster:model},
                     success: function (response) {
                         if (response == "success") {
-                            $.alert({
-                                title: 'Success !',
-                                content: 'User Edited successfully..!',
-                                icon: 'fa fa-rocket',
-                                animation: 'scale',
-                                closeAnimation: 'scale',
-                                buttons: {
-                                    okay: {
-                                        text: 'Okay',
-                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                        action: function (event, ui) {
-                                            $(this).remove();
-                                            var url = $("#RedirectToUserList").val();
-                                            location.href = url;
-                                        }
-                                    }
-                                }
-                            });
+                            Notiflix.Notify.Success('User Updated successfully..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+                   setTimeout(Redirect, 3000);
+                            //$.alert({
+                            //    title: 'Success !',
+                            //    content: 'User Edited successfully..!',
+                            //    icon: 'fa fa-rocket',
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                $(this).remove();
+                            //                var url = $("#RedirectToUserList").val();
+                            //                location.href = url;
+                            //            }
+                            //        }
+                            //    }
+                            //});
                         }
                     },
                     failure: function (response) {
@@ -512,7 +529,10 @@
             });
     }
      });
-
+     function Redirect() {
+        var url = $("#RedirectToUserList").val();
+        location.href = url;
+    }
     $(function () {
         var msg = '@ViewBag.Message';
         if (msg == 'True')

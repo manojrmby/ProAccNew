@@ -32,18 +32,25 @@
 
     <script>
         Notiflix.Notify.Init({
-  width: '280px',
-  position: 'right-bottom',
-  distance: '10px',
-  opacity: 1,
-  // ...
-});
+            width: '280px',
+            position: 'right-bottom',
+            opacity: 1,
+            fontFamily: "sans-serif",
+            fontSize: "15px",
+            distance: "2px",
+            borderRadius: "10px",
+        });
+
+        
     </script>
     <style>
         .Class_span{
         color: red;
     font-size: 14px;
     }
+        .instanceRow{
+            max-width:960px;
+        }
         @*
  .loader {
   animation: spin 1s infinite linear;
@@ -598,12 +605,12 @@
                                         <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                     </a>
                                     <ul>
-                                        <li>
+                                        @*<li>
                                             <a href="@Url.Action("CommingSoon", "Test")">
                                                 <i class="metismenu-icon pe-7s-diamond"></i>
                                                 Customer Report
                                             </a>
-                                        </li>
+                                        </li>*@
                                         <li>
                                             <a href="@Url.Action("OverAllTaskReport", "Report")">
                                                 <i class="metismenu-icon pe-7s-diamond"></i>

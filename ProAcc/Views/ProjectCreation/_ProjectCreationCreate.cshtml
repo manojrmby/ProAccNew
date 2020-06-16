@@ -106,7 +106,12 @@
             
             var inputValue = event.which;
             // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0 && inputValue !=95)) {
+                event.preventDefault();
+                $("#lblProjectName").html("Not Allowed").show().fadeOut(3000);
+                ValidateProject();
+            }
+            else if (inputValue==95) {
                 event.preventDefault();
                 $("#lblProjectName").html("Not Allowed").show().fadeOut(3000);
                 ValidateProject();
@@ -210,53 +215,13 @@
                 data: { project_Name: projectName, Customer_Id: Customerid, Description: Description,ProjectManager_Id: PMID },
                     success: function (response) {
                         if (response == "success") {
-                            $.alert({
-                                title: 'Success !',
-                                content: 'Project Saved successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                                icon: 'fa fa-rocket',
-                                animation: 'scale',
-                                closeAnimation: 'scale',
-                                buttons: {
-                                    okay: {
-                                        text: 'Okay',
-                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                        action: function (event, ui) {
-                                           loadProjectCreation();
+                            Notiflix.Notify.Success('Project Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            loadProjectCreation();
                                             $("#txtProjectName").val("")
                                             $("#drpCustomer").val(0)
                                             $("#txtDescription").val("")
                                             $("#btnProjectCreate").show();
-                                        }
-                                    }
-                                }
-                            });
-
-                            //$.alert({
-                            //    title: 'Sucess !',
-                            //    content: 'Project Saved successfully!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                            //    icon: 'fa fa-rocket',
-                            //    animation: 'scale',
-                            //    closeAnimation: 'scale',
-                            //    buttons: {
-                            //        okay: {
-                            //            text: 'Okay',
-                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            //            action: function (event, ui) {
-                            //                loadProjectCreation();
-                            //                $("#txtProjectName").val("")
-                            //                $("#drpCustomer").val(0)
-                            //                $("#txtDescription").val("")
-                            //                $("#btnProjectCreate").show();
-                            //            }
-                            //        }
-                            //    }
-                            //});
-                            //alert("Project Saved successfully!");
-                            //loadProjectCreation();
-                            //$("#txtProjectName").val("")
-                            //$("#drpCustomer").val(0)
-                            //$("#txtDescription").val("")
-                            //$("#btnProjectCreate").show();
+                            
                         }
                     },
                     failure: function (response) {
@@ -314,20 +279,8 @@
                     //dataType: "json",
                     success: function (response) {
                         if (response == "success") {
-                             $.alert({
-                                title: 'Sucess !',
-                                content: 'Project Edited <strong>successfully</strong>..!',
-                                 icon: 'fa fa-rocket',
-                                //position: ['center', [-0.42, 0]],
-                                 //resizable: false,
-                                animation: 'scale',
-                                closeAnimation: 'scale',
-                                buttons: {
-                                    okay: {
-                                        text: 'Okay',
-                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                        action: function (event, ui) {
-                                            loadProjectCreation();
+                            Notiflix.Notify.Success('Project <Strong>Update </strong>successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            loadProjectCreation();
                                             $("#txtProjectName").val("")
                                             $("#drpCustomer").val(0)
                                             $("#drpProjectManager").val(0);
@@ -337,10 +290,33 @@
                                             $("#btnProjectCreate").show();
                                             $("#prjtCreate").show();
                                             $("#prjtUpdate").hide();
-                                        }
-                                    }
-                                }
-                            });
+                            // $.alert({
+                            //    title: 'Sucess !',
+                            //    content: 'Project Edited <strong>successfully</strong>..!',
+                            //     icon: 'fa fa-rocket',
+                            //    //position: ['center', [-0.42, 0]],
+                            //     //resizable: false,
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                loadProjectCreation();
+                            //                $("#txtProjectName").val("")
+                            //                $("#drpCustomer").val(0)
+                            //                $("#drpProjectManager").val(0);
+                            //                $("#txtDescription").val("")
+                            //                $("#btnAddNew").hide();
+                            //                $("#btnProjectUpdate").hide();
+                            //                $("#btnProjectCreate").show();
+                            //                $("#prjtCreate").show();
+                            //                $("#prjtUpdate").hide();
+                            //            }
+                            //        }
+                            //    }
+                            //});
                            // alert("Project Edited successfully!");
                            //loadProjectCreation();
                            // $("#txtProjectName").val("")

@@ -322,24 +322,26 @@
                 data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail ,Contact:Contact},
                     success: function (response) {
                         if (response == "success") {
-                            $.alert({
-                                title: 'Success !',
-                                content: 'Customer Saved successfully..!',
-                                icon: 'fa fa-rocket',
-                                animation: 'scale',
-                                closeAnimation: 'scale',
-                                buttons: {
-                                    okay: {
-                                        text: 'Okay',
-                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                        action: function (event, ui) {
-                                            $(this).remove();
-                                            var url = $("#RedirectToCustomerList").val();
-                                            location.href = url;
-                                        }
-                                    }
-                                }
-                            });
+                            Notiflix.Notify.Success('Customer Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                             setTimeout(Redirect, 3000);
+                            //$.alert({
+                            //    title: 'Success !',
+                            //    content: 'Customer Saved successfully..!',
+                            //    icon: 'fa fa-rocket',
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                $(this).remove();
+                            //                var url = $("#RedirectToCustomerList").val();
+                            //                location.href = url;
+                            //            }
+                            //        }
+                            //    }
+                            //});
                             //alert("");
                            
                             //loadCustomer();
@@ -363,7 +365,9 @@
         }
     });
 
-
+    function Redirect() {
+        location.reload();
+    }
     
 
 </script>

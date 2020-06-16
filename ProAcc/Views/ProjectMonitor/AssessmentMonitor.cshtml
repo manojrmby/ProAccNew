@@ -21,6 +21,9 @@
     .fit_Data {
         width: fit-content;
     }
+    /*.instanceRow {
+        max-width: 1 !important;
+    }*/
 </style>
 
     @*<style type="text/css">
@@ -101,7 +104,7 @@
     }
 </style>
 
-<div class="row">
+<div class="row instanceRow">
     <div class="col-lg-12 card" style="margin-bottom:20px !important;">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
@@ -242,39 +245,45 @@
             type: "POST",
             data: { 'IDInstance': IDInstance },
             success: function (result) {
-                $.alert({
-                    title: 'Alert !',
-                    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                    icon: 'fa fa-rocket',
-                    animation: 'scale',
-                    closeAnimation: 'scale',
-                    buttons: {
-                        okay: {
-                            text: 'Okay',
-                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            action: function (event, ui) {
-                                $(this).remove();
-                                LoadTable(IDInstance);
-                                $('#jqGrid').trigger('reloadGrid');
-                            }
-                        }
-                    }
+                Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                 LoadTable(IDInstance);
+        $('#jqGrid').trigger('reloadGrid');
 
-                });
+                //$.alert({
+                //    title: 'Alert !',
+                //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                //    icon: 'fa fa-rocket',
+                //    animation: 'scale',
+                //    closeAnimation: 'scale',
+                //    buttons: {
+                //        okay: {
+                //            text: 'Okay',
+                //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                //            action: function (event, ui) {
+                //                $(this).remove();
+                //                LoadTable(IDInstance);
+                //                $('#jqGrid').trigger('reloadGrid');
+                //            }
+                //        }
+                //    }
+
+                //});
 
 
             }
         });
-    });
+   });
+    
 </script>
 
 <script>
     //document.body.style.zoom = "67%";
-    document.body.style.zoom = "70%";
-    //$(document).ready(function () {
-       
-    //    LoadTable(1);
-    //});
+    document.body.style.zoom = "90%";
+    $(document).ready(function () {
+       // $("header__pane").find("hamburger").addClass("is-active");
+       //hamburger 
+       // LoadTable(1);
+    });
     function LoadTable(Instance) {
         
         // $(document).ready(function () {
@@ -561,7 +570,7 @@
 
                 },
                 {
-                    label: 'ApplicationArea', name: 'ApplicationArea', width: 100,  editable: false,classes: 'wrapColumnText',
+                    label: 'Application Area', name: 'ApplicationArea', width: 100,  editable: false,classes: 'wrapColumnText',
 
 
                 },
@@ -713,7 +722,7 @@
                     editoptions: { dataInit: Actual_En_Date }
                 },
                 {
-                    label: 'comments', name: 'Notes', edittype: "textarea",
+                    label: 'Comments', name: 'Notes', edittype: "textarea",
                     wrap: "on"
                     //formatter: function (v) {
                     //     return '<div style="max-height:20px">' $.jgrid.htmlEncode(v) '</div>';
@@ -797,7 +806,7 @@
             hoverrows: true,
             height: 400,
             rowNum: 1000,
-            caption: 'Assement',
+            caption: 'Assessment',
             sortable: false,
             grouping: false,
             rownumbers: true,
@@ -1230,11 +1239,16 @@
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
            if (Status_Id == 2) {
                $('#jEditButton_' + ids[i]).show();
-                for (var j = 0; j < ids.length; j++) {
-                         if (j != i) {
-                             $('#jEditButton_' + ids[j]).hide();
-                         }
-                     }
+               //for (var j = 0; j < ids.length; j++) {
+               //     Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+               //     if (j != i) {
+
+               //         if (Status_Id!=4) {
+               //             $('#jEditButton_' + ids[j]).hide();
+               //         }
+                            
+               //          }
+               //      }
                 }
 
             }

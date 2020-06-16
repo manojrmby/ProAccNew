@@ -34,7 +34,9 @@
 
 <script type="text/javascript">
      $(document).ready(function () {
-          $("#tblRoleCreation").dataTable()
+         $("#tblRoleCreation").dataTable({
+             "ordering": false
+         })
      })
     $(".btnRoleDelete").on("click", function () {
         var id = $(this).next().val();

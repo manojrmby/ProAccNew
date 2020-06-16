@@ -384,23 +384,24 @@
             data: { LatestTaskId: LatestTaskId, LastTaskId: LastTaskId,type:type },
             success: function (response) {
                 if (response == "success") {
-                    $.alert({
-                        title: 'success !',
-                        content: 'Activity Saved Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                        icon: 'fa fa-rocket',
-                        animation: 'scale',
-                        closeAnimation: 'scale',
-                        buttons: {
-                            okay: {
-                                text: 'Okay',
-                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
-                                //action: function (event, ui) {
-                                //    $(this).remove();
-                                //    location.reload();
-                                //}
-                            }
-                        }
-                    });
+                    Notiflix.Notify.Success('Activity Saved Successfully..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+                    //$.alert({
+                    //    title: 'success !',
+                    //    content: 'Activity Saved Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                    //    icon: 'fa fa-rocket',
+                    //    animation: 'scale',
+                    //    closeAnimation: 'scale',
+                    //    buttons: {
+                    //        okay: {
+                    //            text: 'Okay',
+                    //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
+                    //            //action: function (event, ui) {
+                    //            //    $(this).remove();
+                    //            //    location.reload();
+                    //            //}
+                    //        }
+                    //    }
+                    //});
                     //alert("");
                     document.getElementById('id01').style.display = 'none';
                     loadActivityCreation();
@@ -426,7 +427,7 @@
     });
 
     $("#btntivityCreUpdate").on("click", function () {
-        
+       
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
         var sequence = $("#txtSequence").val();
@@ -456,7 +457,7 @@
         //}
         else if (ApplicationArea=="")
         {
-           $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(5000);
+           $("#lblApplicationArea").html("Please enter the Application Area").show().fadeOut(5000);
            ValidateActivity();
         }
         else if (Phase==0)

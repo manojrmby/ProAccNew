@@ -334,7 +334,7 @@
                     else
                     {
                         @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
-                               "Select a Customer", new { id = "IDProject", @class = "form-control" })
+                               "-Select-", new { id = "IDProject", @class = "form-control" })
                     }
                 </div>
                 <div class="col-md-2">
@@ -363,7 +363,7 @@
                             <div class="card mb-3 widget-content bg-grow-before" id="AssDivId">
                                 <div class="widget-content-wrapper text-white">
                                     <div class="widget-content-left">
-                                        <div class="widget-heading">Assesment</div>
+                                        <div class="widget-heading">Assessment</div>
                                         <div class="widget-subheading">Readiness Check</div>
                                     </div>
                                     <div class="widget-content-right">
@@ -952,9 +952,8 @@
                 type: "POST",
                 data: { 'IDInstance': IDInstance },
                 success: function (result) {
-                    location.reload();
-                    Notiflix.Notify.Success('New Live Instance updated !', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
-                   
+                   Notiflix.Notify.Success('New Live Instance updated !', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+                   setTimeout(Redirect, 3000);
                     //$.alert({
                     //    title: 'Alert !',
                     //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
@@ -976,7 +975,9 @@
             });
         });
     });
-
+    function Redirect() {
+        location.reload();
+    }
     // Chart.pluginService.register({
     //  beforeDraw: function(chart) {
     //    if (chart.config.options.elements.center) {

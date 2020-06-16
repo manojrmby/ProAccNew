@@ -112,10 +112,78 @@
                   return false;
                }
     });*@
-
+     function Redirect() {
+        location.reload();
+    }
     $(".btnInstanceDelete").on("click", function () {
         var id = $(this).next().val();
-        $.confirm({
+        Notiflix.Confirm.Show('Confirm', 'Do you want to delete ?', 'Yes', 'No',
+            function () { // Yes button callback 
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete","InstanceCreation")',
+                    data: { id: id },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                            Notiflix.Notify.Success('Instance deleted successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            setTimeout(Redirect, 3000);
+                            //$.alert({
+                            //   title: 'Alert !',
+                            //   content: 'Instance deleted successfully..!',
+                            //   icon: 'fa fa-rocket',
+                            //   animation: 'scale',
+                            //   closeAnimation: 'scale',
+                            //   buttons: {
+                            //      okay: {
+                            //         text: 'Okay',
+                            //         btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //           action: function (event, ui) {
+                            //                 location.reload();
+                            //                   $("#txtInstanceName").val("")
+                            //                   $("#drpProject").val(0)
+                            //           }
+                            //      }
+                            //   }
+                            //});
+                        }
+                        else {
+                            Notiflix.Notify.Warning('Project monitor is on live..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            setTimeout(Redirect, 3000);
+                            //$.alert({
+                            //  title: 'Alert !',
+                            //  content: 'Project monitor is on live..!',
+                            //  icon: 'fa fa-rocket',
+                            //  animation: 'scale',
+                            //  closeAnimation: 'scale',
+                            //   buttons: {
+                            //    okay: {
+                            //      text: 'Okay',
+                            //      btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //      action: function (event, ui) {
+                            //         location.reload();
+                            //          $("#txtInstanceName").val("")
+                            //          $("#drpProject").val(0)
+                            //      }
+                            //    }
+                            //   }
+                            //});
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+        }, function () { // No button callback 
+            //alert('If you say so...');
+        }); 
+
+
+
+        @*$.confirm({
               title: 'Delete !',
               content: 'Do you want to delete ?',
               icon: 'fa fa-trash-o',
@@ -133,45 +201,49 @@
                            data: { id: id },
                            dataType: "json",
                            success: function (response) {
-                              if (response == "success") {
-                                 $.alert({
-                                    title: 'Alert !',
-                                    content: 'Instance deleted successfully..!',
-                                    icon: 'fa fa-rocket',
-                                    animation: 'scale',
-                                    closeAnimation: 'scale',
-                                    buttons: {
-                                       okay: {
-                                          text: 'Okay',
-                                          btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                            action: function (event, ui) {
-                                                  location.reload();
-                                                    $("#txtInstanceName").val("")
-                                                    $("#drpProject").val(0)
-                                            }
-                                       }
-                                    }
-                                 });
+                               if (response == "success") {
+                                   Notiflix.Notify.Success('Instance deleted successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                   setTimeout(Redirect, 3000);
+                                 //$.alert({
+                                 //   title: 'Alert !',
+                                 //   content: 'Instance deleted successfully..!',
+                                 //   icon: 'fa fa-rocket',
+                                 //   animation: 'scale',
+                                 //   closeAnimation: 'scale',
+                                 //   buttons: {
+                                 //      okay: {
+                                 //         text: 'Okay',
+                                 //         btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                 //           action: function (event, ui) {
+                                 //                 location.reload();
+                                 //                   $("#txtInstanceName").val("")
+                                 //                   $("#drpProject").val(0)
+                                 //           }
+                                 //      }
+                                 //   }
+                                 //});
                               }
-                              else {
-                               $.alert({
-                                 title: 'Alert !',
-                                 content: 'Project monitor is on live..!',
-                                 icon: 'fa fa-rocket',
-                                 animation: 'scale',
-                                 closeAnimation: 'scale',
-                                  buttons: {
-                                   okay: {
-                                     text: 'Okay',
-                                     btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                     action: function (event, ui) {
-                                        location.reload();
-                                         $("#txtInstanceName").val("")
-                                         $("#drpProject").val(0)
-                                     }
-                                   }
-                                  }
-                               });
+                               else {
+                                   Notiflix.Notify.Warning('Project monitor is on live..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                   setTimeout(Redirect, 3000);
+                               //$.alert({
+                               //  title: 'Alert !',
+                               //  content: 'Project monitor is on live..!',
+                               //  icon: 'fa fa-rocket',
+                               //  animation: 'scale',
+                               //  closeAnimation: 'scale',
+                               //   buttons: {
+                               //    okay: {
+                               //      text: 'Okay',
+                               //      btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                               //      action: function (event, ui) {
+                               //         location.reload();
+                               //          $("#txtInstanceName").val("")
+                               //          $("#drpProject").val(0)
+                               //      }
+                               //    }
+                               //   }
+                               //});
                               }
                            },
                            failure: function (response) {
@@ -187,6 +259,6 @@
                        $.alert('You clicked on <strong>cancel</strong>');
                  },
               }
-         });
+         });*@
     });
 </script>

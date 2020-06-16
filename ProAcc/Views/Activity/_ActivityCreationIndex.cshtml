@@ -15,7 +15,7 @@
             @*<th>Cre_on</th>*@
             <th>Phase</th>
             <th>Role</th>
-            <th>ApplicationArea</th>
+            <th>Application Area</th>
             <th>Sequence</th>
             <th>Actions</th>
         </tr>
@@ -126,12 +126,40 @@
             }
         });
     });
-
+     function Redirect() {
+        location.reload();
+    }
   
 
     $(".btnActivityDelete").on("click", function () {
         var id = $(this).next().val();
-        $.confirm({
+         Notiflix.Confirm.Show(
+                'Confirm',
+                'Do you want to delete ?',
+                'Yes', 'No',
+                function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Delete","Activity")',
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response == "success") {
+                                Notiflix.Notify.Success('Activity deleted Successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                setTimeout(Redirect, 3000);
+                            }
+                        }
+                    });
+                }, function () {
+                    //location.reload();
+                    // No button callback
+                    //alert('If you say so...');
+                }
+            )
+
+
+
+        @*$.confirm({
                             title: 'Delete !',
                             content: 'Do you want to delete ?',
                             icon: 'fa fa-trash-o',
@@ -150,6 +178,8 @@
                                             dataType: "json",
                                             success: function (response) {
                                                 if (response == "success") {
+                                                    Notiflix.Notify.Success('Activity deleted Successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                                    setTimeout(Redirect, 3000);
                                                     $.alert({
                                                         title: 'Alert !',
                                                         content: 'Activity deleted successfully!..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
@@ -210,7 +240,7 @@
                                 //    }
                                 //},
                             }
-                        });
+                        });*@
 
        @*var retVal = confirm("Do you want to delete ?");
                if( retVal == true ) {

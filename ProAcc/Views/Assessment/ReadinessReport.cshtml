@@ -1194,46 +1194,34 @@
             type: "POST",
             data: { 'IDInstance': IDInstance },
             success: function (result) {
-                $.alert({
-                    title: 'Alert !',
-                    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                    icon: 'fa fa-rocket',
-                    animation: 'scale',
-                    closeAnimation: 'scale',
-                    buttons: {
-                        okay: {
-                            text: 'Okay',
-                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            action: function (event, ui) {
-                                $(this).remove();
-								location.reload();
-
-
-                            }
-                        }
-                    }
-                });
+				Notiflix.Notify.Success('New Live Instance updated !', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+                   setTimeout(Redirect, 3000);
+               
             }
         });
-	});
+    });
+	function Redirect() {
+        location.reload();
+    }
     var Status = "@Session["IsCreateAnalysisDone"]"
     if (Status == 'False') {
-        $.alert({
-            title: 'Alert !',
-            content: 'Create Analysis <Strong>NOT</strong> Completed for Selected Instance..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-            icon: 'fa fa-rocket',
-            animation: 'scale',
-            closeAnimation: 'scale',
-            buttons: {
-                okay: {
-                    text: 'Okay',
-                    btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                    action: function (event, ui) {
-                        $(this).remove();
-                    }
-                }
-            }
-        });
+		Notiflix.Notify.Failure('Create Analysis <Strong>NOT</strong> Completed for Selected Instance..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+        //$.alert({
+        //    title: 'Alert !',
+        //    content: 'Create Analysis <Strong>NOT</strong> Completed for Selected Instance..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+        //    icon: 'fa fa-rocket',
+        //    animation: 'scale',
+        //    closeAnimation: 'scale',
+        //    buttons: {
+        //        okay: {
+        //            text: 'Okay',
+        //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+        //            action: function (event, ui) {
+        //                $(this).remove();
+        //            }
+        //        }
+        //    }
+        //});
     }
 
 </script>

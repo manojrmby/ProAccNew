@@ -17,7 +17,7 @@
                 <input type="hidden" id="pcre_By" />*@
 
             <div class="form-group">
-                <label class="control-label col-md-4 required">Customer Name</label>
+                <label class="control-label col-md-4 required">Name</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtName1" />
                 </div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-md-4 required">Confirm Password</label>
+                <label class="control-label col-md-8 required">Confirm Password</label>
                 <div class="col-md-10">
                     <input type="password" class="form-control" onchange="validateConsPwd()" id="txtConsCnfmPassword" />
                 </div>
@@ -114,7 +114,7 @@
 
 
             <div class="form-group" id="divCust">
-                <label class="control-label col-md-4 required">Industry Sector</label>
+                <label class="control-label col-md-4 required">Customer</label>
                 <div class="col-md-10">
                     <select class="form-control" id="Customer_Id">
                         @*<option value="0">Select Customer</option>*@
@@ -395,24 +395,29 @@
                 data: { Name: Name1, EMail: Email1, Phone: Mob, LoginId: LoginID, Password: Passwd, RoleID: RoleID, UserTypeID: UserTypeID, Customer_Id:Customer_Id },
                     success: function (response) {
                         if (response == "success") {
-                            $.alert({
-                                title: 'Success !',
-                                content: 'User Saved successfully..!',
-                                icon: 'fa fa-rocket',
-                                animation: 'scale',
-                                closeAnimation: 'scale',
-                                buttons: {
-                                    okay: {
-                                        text: 'Okay',
-                                        btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                        action: function (event, ui) {
-                                            $(this).remove();
-                                            var url = $("#RedirectToUserList").val();
-                                            location.href = url;
-                                        }
-                                    }
-                                }
-                            });
+                            Notiflix.Notify.Success('User Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            
+                            setTimeout(Redirect, 3000);
+                            
+                            
+                            //$.alert({
+                            //    title: 'Success !',
+                            //    content: 'User Saved successfully..!',
+                            //    icon: 'fa fa-rocket',
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                $(this).remove();
+                            //                var url = $("#RedirectToUserList").val();
+                            //                location.href = url;
+                            //            }
+                            //        }
+                            //    }
+                            //});
                         }
                     },
                     failure: function (response) {
@@ -423,7 +428,11 @@
                     }
             });
     }
-});
+    });
+    function Redirect() {
+        var url = $("#RedirectToUserList").val();
+        location.href = url;
+    }
 </script>
 
 <script type="text/javascript">
