@@ -1,4 +1,7 @@
 ﻿
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using ProAcc.BL.Model;
 using ProACC_DB;
 using System;
@@ -8,6 +11,11 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using static ProAcc.BL.Model.Common;
+
+
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 
 namespace ProAcc.BL
 {
@@ -1727,8 +1735,151 @@ namespace ProAcc.BL
             return PM;
         }
 
-        
 
+        public Boolean Proceess_WordAddImage()
+        {
+            string filePath = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
+
+            // WordprocessingDocument WP =
+            //WordprocessingDocument.Open(filePath, true);
+
+            // using (WordprocessingDocument wordprocessingDocument =
+            //WordprocessingDocument.Open(filePath, true))
+            // {
+            //     // Insert other code here.
+
+            // }
+            // AddGraph(WP, filePath);
+            // MainDocumentPart mainPart = WordprocessingDocument.MainDocumentPart;
+            // ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+
+            // using (FileStream stream = new FileStream(filePath, FileMode.Open))
+            // {
+            //     imagePart.FeedData(stream);
+            // }
+
+            //using (WordprocessingDocument doc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+
+            //{
+
+            //    //// Creates the MainDocumentPart and add it to the document (doc)
+
+            //    MainDocumentPart mainPart = doc.AddMainDocumentPart();
+
+            //    mainPart.Document = new Document(
+
+            //        new Body(
+
+            //            new Paragraph(
+
+            //                new Run(
+
+            //                    new Text("Hello World!!!!!")))));
+
+            //}
+
+
+            WordprocessingDocument wordprocessingDocument =
+        WordprocessingDocument.Open(filePath, true);
+
+            MainDocumentPart mainPart = wordprocessingDocument.MainDocumentPart;
+            ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+            string Imagepath = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
+            using (FileStream stream = new FileStream(Imagepath, FileMode.Open))
+            {
+                imagePart.FeedData(stream);
+            }
+            AddImageToBody(wordprocessingDocument, mainPart.GetIdOfPart(imagePart));
+
+            wordprocessingDocument.Close();
+
+
+
+
+
+            return true;
+        }
+        private static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId)
+        {
+            // Define the reference of the image.
+            var element =
+                 new Drawing(
+                     new DW.Inline(
+                         new DW.Extent() { Cx = 990000L, Cy = 792000L },
+                         new DW.EffectExtent()
+                         {
+                             LeftEdge = 0L,
+                             TopEdge = 0L,
+                             RightEdge = 0L,
+                             BottomEdge = 0L
+                         },
+                         new DW.DocProperties()
+                         {
+                             Id = (UInt32Value)1U,
+                             Name = "Picture 1"
+                         },
+                         new DW.NonVisualGraphicFrameDrawingProperties(
+                             new A.GraphicFrameLocks() { NoChangeAspect = true }),
+                         new A.Graphic(
+                             new A.GraphicData(
+                                 new PIC.Picture(
+                                     new PIC.NonVisualPictureProperties(
+                                         new PIC.NonVisualDrawingProperties()
+                                         {
+                                             Id = (UInt32Value)0U,
+                                             Name = "New Bitmap Image.jpg"
+                                         },
+                                         new PIC.NonVisualPictureDrawingProperties()),
+                                     new PIC.BlipFill(
+                                         new A.Blip(
+                                             new A.BlipExtensionList(
+                                                 new A.BlipExtension()
+                                                 {
+                                                     Uri =
+                                                        "{28A0092B-C50C-407E-A947-70E740481C1C}"
+                                                 })
+                                         )
+                                         {
+                                             Embed = relationshipId,
+                                             CompressionState =
+                                             A.BlipCompressionValues.Print
+                                         },
+                                         new A.Stretch(
+                                             new A.FillRectangle())),
+                                     new PIC.ShapeProperties(
+                                         new A.Transform2D(
+                                             new A.Offset() { X = 0L, Y = 0L },
+                                             new A.Extents() { Cx = 990000L, Cy = 792000L }),
+                                         new A.PresetGeometry(
+                                             new A.AdjustValueList()
+                                         )
+                                         { Preset = A.ShapeTypeValues.Rectangle }))
+                             )
+                             { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
+                     )
+                     {
+                         DistanceFromTop = (UInt32Value)0U,
+                         DistanceFromBottom = (UInt32Value)0U,
+                         DistanceFromLeft = (UInt32Value)0U,
+                         DistanceFromRight = (UInt32Value)0U,
+                         EditId = "50D07946"
+                     });
+
+            // Append the reference to body, the element should be in a Run.
+            wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
+        }
+        //private string AddGraph(WordprocessingDocument wpd, string filepath)
+        //{
+        //    ImagePart ip = wpd.MainDocumentPart.AddImagePart(ImagePartType.Jpeg);
+        //    string Imagepath= @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
+        //    using (FileStream fs = new FileStream(Imagepath, FileMode.Open))
+        //    {
+        //        if (fs.Length == 0) return string.Empty;
+        //        ip.FeedData(fs);
+        //    }
+
+        //    return wpd.MainDocumentPart.GetIdOfPart(ip);
+        //}
 
 
         public string Phase_Assessment = "Assessment";

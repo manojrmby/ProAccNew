@@ -94,5 +94,12 @@ namespace ProAcc.Controllers
         }
 
 
+        public ActionResult AssessmentReport()
+        {
+            Boolean A= _Base.Proceess_WordAddImage();
+            return View();
+        }
+
+
     }
 }

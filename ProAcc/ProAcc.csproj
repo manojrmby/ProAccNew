@@ -531,6 +531,7 @@
     <Compile Include="BL\Model\SP_Assessment_Result.cs" />
     <Compile Include="BL\Model\UserModel.cs" />
     <Compile Include="BL\Model\UserRoleProvider.cs" />
+    <Compile Include="BL\WordImage.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
@@ -631,6 +632,7 @@
     <Content Include="Views\Report\OverAllTaskReport.cshtml" />
     <Content Include="Views\User\CreateUsers.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Report\AssessmentReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
