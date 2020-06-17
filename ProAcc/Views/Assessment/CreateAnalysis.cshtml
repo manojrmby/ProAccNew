@@ -329,7 +329,8 @@
                     data: fileData,
                     //async: false,
                     success: function (result) {
-                        alert(result);
+                        Notiflix.Notify.Failure(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert(result);
                         if (result == 'File Uploaded Successfully!') {
                             location.href = RedirectTo;
                         }
@@ -341,7 +342,8 @@
                                 processData: false, // Not to process data
                                 data: fileData,
                                 success: function (result) {
-                                    alert(result);
+                                    Notiflix.Notify.Failure(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                    //alert(result);
                                 }
                             });
 
@@ -354,13 +356,15 @@
                         }
                     },
                     error: function (err) {
-                        alert(err.statusText);
+                        Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert(err.statusText);
                     }
                 });
 
             }
             else {
-                alert("Kindly check input values");
+                Notiflix.Notify.Failure("Kindly check input values", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                //alert("Kindly check input values");
             }
 
 
@@ -457,7 +461,8 @@
                 },
                 error: function (a) {
                     debugger;
-                    alert(a);
+                    Notiflix.Notify.Failure(a, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    //alert(a);
                 }
 
 
@@ -495,7 +500,8 @@
                 },
                 error: function (a) {
                     debugger;
-                    alert(a);
+                    Notiflix.Notify.Failure(a, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    //alert(a);
                 }
 
 
@@ -757,7 +763,8 @@
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "Activities.xlsx") {
-                        alert("Enter proper file");
+                      Notiflix.Notify.Failure("Enter Activities file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                       // alert("Enter proper file");
                         break;
                     }
                 }
@@ -775,7 +782,8 @@
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "Bwextractors.xlsx") {
-                        alert("Enter proper file");
+                        Notiflix.Notify.Failure("Enter Bwextractors file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert("Enter proper file");
                         break;
                     }
                 }
@@ -793,7 +801,8 @@
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "CustomCode.xlsx") {
-                        alert("Enter proper file");
+                        Notiflix.Notify.Failure("Enter CustomCode file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert("Enter proper file");
                         break;
                     }
                 }
@@ -811,7 +820,8 @@
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "HanaDatabaseTables.xlsx") {
-                        alert("Enter proper file");
+                        Notiflix.Notify.Failure("Enter HanaDatabaseTables file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert("Enter proper file");
                         break;
                     }
                 }
@@ -829,7 +839,8 @@
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "RecommendedFioriApps.xlsx") {
-                        alert("Enter proper file");
+                        Notiflix.Notify.Failure("Enter RecommendedFioriApps file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert("Enter proper file");
                         break;
                     }
                 }
@@ -847,7 +858,8 @@
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "RelevantSimplificationItems.xlsx") {
-                        alert("Enter proper file");
+                        Notiflix.Notify.Failure("Enter RelevantSimplificationItems file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert("Enter proper file");
                         break;
                     }
                 }
@@ -876,7 +888,8 @@
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "SAP Readiness Check.docx") {
-                        alert("Enter proper file");
+                        Notiflix.Notify.Failure("Enter Readiness Check file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert("Enter proper file");
                         break;
                     }
                 }

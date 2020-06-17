@@ -63,7 +63,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Email</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" onchange="ValidateEmail1()" id="txtEmail1" />
+                    <input type="text" class="form-control" id="txtEmail1" />  @*onchange="ValidateEmail1()"*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEmail1">&nbsp;</span>
@@ -281,39 +281,62 @@
 
     var result = "Success";
 
-    function ValidateEmail1() {
+    //function ValidateEmail1() {
 
-        var email1 = document.getElementById("txtEmail1").value;
-        var lblEmail1 = document.getElementById("lblEmail1");
-        lblEmail1.innerHTML = "";
-        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        if (email1 = "" || !expr.test(email1)) {
-            lblEmail1.innerHTML = "Please enter valid email address.";
-            result = "error";
+    //    var email1 = document.getElementById("txtEmail1").value;
+    //    var lblEmail1 = document.getElementById("lblEmail1");
+    //    lblEmail1.innerHTML = "";
+    //    var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    //    if (email1 = "" || !expr.test(email1)) {
+    //        lblEmail1.innerHTML = "Please enter valid email address.";
+    //        result = "error";
+    //    }
+    //    else {
+    //        result = "Success";
+    //    }
+    //    SubmitConsultant()
+    //}
+    $("#txtEmail1").on("focusout", function (event) {
+
+           var str = $(this).val();
+           var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+        if (!filter.test(str)) {
+            $("#lblEmail1").html("Email is not valid").show().fadeOut(5000);
         }
         else {
-            result = "Success";
+            $("#lblEmail1").html("");
         }
         SubmitConsultant()
-    }
+    });
 
-    function validateConsPwd() {
+    //function validateConsPwd() {
 
-        var Passwd = document.getElementById("Passwd").value;
-        var txtConsCnfmPassword = document.getElementById("txtConsCnfmPassword").value;
-        var lblAltConsPwd = document.getElementById("lblAltConsPwd");
-        lblAltConsPwd.innerHTML = "";
-        if (Passwd != txtConsCnfmPassword) {
-            lblAltConsPwd.innerHTML = "password does not match";
-            result = "error";
+    //    var Passwd = document.getElementById("Passwd").value;
+    //    var txtConsCnfmPassword = document.getElementById("txtConsCnfmPassword").value;
+    //    var lblAltConsPwd = document.getElementById("lblAltConsPwd");
+    //    lblAltConsPwd.innerHTML = "";
+    //    if (Passwd != txtConsCnfmPassword) {
+    //        lblAltConsPwd.innerHTML = "password does not match";
+    //        result = "error";
+    //    }
+    //    else {
+    //        result = "Success";
+    //    }
+    //    SubmitConsultant()
+    //}
+
+    $("#txtConsCnfmPassword").focusout(function () {
+        var str = $("#Passwd").val().trim();
+        var str1 = $("#txtConsCnfmPassword").val().trim();
+        if (str != str1) {
+            $("#lblAltConsPwd").html("Password Does not match kindly check").show().fadeOut(5000);
         }
         else {
-            result = "Success";
+            $("#lblAltConsPwd").html("");
         }
-        SubmitConsultant()
-    }
-
-    
+         SubmitConsultant()
+    })
 
     function SubmitConsultant() {
        
