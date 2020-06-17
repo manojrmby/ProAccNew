@@ -317,10 +317,10 @@ namespace ProAcc.Controllers
             string IDProject = Request.Params["IDProject"].ToString();
             string InstanceName = Request.Params["InstanceID"].ToString();
 
-            if (IDProject != null)
+            if (IDProject != null && Request.Files.Count == 7)
             {
-                if (Request.Files.Count > 0)
-                {
+                //if (Request.Files.Count ==7)
+                //{
                     try
                     {
                         bool Result_Process_Activities = false, Result_Process_Bwextractors = false,
@@ -385,8 +385,6 @@ namespace ProAcc.Controllers
                             {
                                 Result_Process_SAPReadinessCheck = _Base.Upload_SAPReadinessCheck(NewID, Instance_ID, User_Id);
                             }
-
-
                         }
 
                         //if (Result_Process_Bwextractors & Result_Process_Bwextractors &
@@ -438,15 +436,15 @@ namespace ProAcc.Controllers
                         }
                         return Json("Error occurred. Error details: " + ex.Message);
                     }
-                }
-                else
-                {
-                    return Json("Select ProjectID");
-                }
+                //}
+                //else
+                //{
+                //    return Json("Please upload all Files");
+                //}
             }
             else
             {
-                return Json("No files selected.");
+                return Json("Please Upload all files.");
             }
 
 
@@ -480,9 +478,15 @@ namespace ProAcc.Controllers
             SelectList items = new SelectList(sP_._List, "Value", "Name");
             return Json(items, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult UploadRevert()
+        {
+            string InstanceName = Request.Params["InstanceID"].ToString();
+            Guid Instance_ID = Guid.Parse(InstanceName);
+            Guid User_Id = Guid.Parse(Session["loginid"].ToString());
+            bool upload_revert = _Base.GetUploadRevert(Instance_ID, User_Id);
+            return Json("Reverted the Upload");
+        }
 
 
-
-        
     }
 }

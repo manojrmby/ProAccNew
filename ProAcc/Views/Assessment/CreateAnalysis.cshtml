@@ -330,13 +330,28 @@
                     //async: false,
                     success: function (result) {
                         alert(result);
-                        location.href = RedirectTo;
-                        //location.reload();
-                        //debugger;
-                        //if (result != "") {
-                        //    //$('#FileBrowse').find("*").prop("disabled", true);
-                        //    LoadProgressBar(result); //calling LoadProgressBar function to load the progress bar.
-                        //}
+                        if (result == 'File Uploaded Successfully!') {
+                            location.href = RedirectTo;
+                        }
+                        else {
+                            $.ajax({
+                                url: '@Url.Action("UploadRevert", "Assessment")',
+                                type: "POST",
+                                contentType: false, // Not to set any content header
+                                processData: false, // Not to process data
+                                data: fileData,
+                                success: function (result) {
+                                    alert(result);
+                                }
+                            });
+
+                            //location.reload();
+                            //debugger;
+                            //if (result != "") {
+                            //    //$('#FileBrowse').find("*").prop("disabled", true);
+                            //    LoadProgressBar(result); //calling LoadProgressBar function to load the progress bar.
+                            //}
+                        }
                     },
                     error: function (err) {
                         alert(err.statusText);
@@ -731,11 +746,21 @@
 
 
     $(document).ready(function () {
+        var fileUpload;
+        var files;
         $("#FileUpload1").on('blur', function () {
-
+            
             if (this.files.length > 0) {
                 $(this).css("background-color", "#3ac47d");
                 $(this).addClass('active')
+                fileUpload = $("#FileUpload1").get(0);  
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "Activities.xlsx") {
+                        alert("Enter proper file");
+                        break;
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -745,7 +770,15 @@
         $("#FileUpload2").on('blur', function () {
             if (this.files.length > 0) {
                 $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                $(this).addClass('active');
+                fileUpload = $("#FileUpload2").get(0);  
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "Bwextractors.xlsx") {
+                        alert("Enter proper file");
+                        break;
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -755,7 +788,15 @@
         $("#FileUpload3").on('blur', function () {
             if (this.files.length > 0) {
                 $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                $(this).addClass('active');
+                fileUpload = $("#FileUpload3").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "CustomCode.xlsx") {
+                        alert("Enter proper file");
+                        break;
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -765,7 +806,15 @@
         $("#FileUpload4").on('blur', function () {
             if (this.files.length > 0) {
                 $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                $(this).addClass('active');
+                fileUpload = $("#FileUpload4").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "HanaDatabaseTables.xlsx") {
+                        alert("Enter proper file");
+                        break;
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -775,7 +824,15 @@
         $("#FileUpload5").on('blur', function () {
             if (this.files.length > 0) {
                 $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                $(this).addClass('active');
+                fileUpload = $("#FileUpload5").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "RecommendedFioriApps.xlsx") {
+                        alert("Enter proper file");
+                        break;
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -785,27 +842,44 @@
         $("#FileUpload6").on('blur', function () {
             if (this.files.length > 0) {
                 $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                $(this).addClass('active');
+                fileUpload = $("#FileUpload6").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "RelevantSimplificationItems.xlsx") {
+                        alert("Enter proper file");
+                        break;
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
                 $(this).css("background-color", "#0090e2");
             }
         });
-        $("#FileUpload6").on('blur', function () {
-            if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
-            }
-            else {
-                $(this).removeClass('active');
-                $(this).css("background-color", "#0090e2");
-            }
-        });
+        //$("#FileUpload6").on('blur', function () {
+        //    if (this.files.length > 0) {
+        //        $(this).css("background-color", "#3ac47d");
+        //        $(this).addClass('active')
+        //        fileUpload = $("#FileUpload7").get(0);
+        //    }
+        //    else {
+        //        $(this).removeClass('active');
+        //        $(this).css("background-color", "#0090e2");
+        //    }
+        //});
         $("#FileUpload7").on('blur', function () {
             if (this.files.length > 0) {
                 $(this).css("background-color", "#3ac47d");
                 $(this).addClass('active')
+                fileUpload = $("#FileUpload7").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "SAP Readiness Check.docx") {
+                        alert("Enter proper file");
+                        break;
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -813,6 +887,7 @@
             }
         });
 
+        
     });
 
     //function OnFileuploadChange(Comp) {

@@ -789,6 +789,19 @@ namespace ProAcc.BL
 
         }
 
+        public Boolean GetUploadRevert(Guid Instance_ID, Guid User_Id)
+        {
+            Boolean status = false;
+
+            DBHelper dB = new DBHelper("SP_CreateAnalysis_UploadRevert", CommandType.StoredProcedure);
+            dB.addIn("@LOGINID", User_Id);
+            dB.addIn("@InstanceID", Instance_ID);           
+
+            var a = dB.ExecuteScalar();
+            status = true;
+            return status;
+        }
+
         #endregion
 
 
@@ -1714,7 +1727,7 @@ namespace ProAcc.BL
             return PM;
         }
 
-
+        
 
 
 
