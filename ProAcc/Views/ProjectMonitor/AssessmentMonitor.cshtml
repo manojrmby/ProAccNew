@@ -533,8 +533,7 @@
             });//.datepicker("setDate", new Date());
             // }).datepicker();
         };
-        // var EST_hours = 'EST_hours';
-        //EST_hours = EST_hours.replace(".", ":");
+       
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","ProjectMonitor",new { Phase_ID= ViewBag.PhaseID})",
             datatype: "json",
@@ -654,12 +653,12 @@
                         dataInit: function (element) {
                             $(element).keyup(function(event) {
      
-                                  this.value = this.value
+                                this.value = this.value
                                   .replace(/[^\d:]/g, '')             // numbers and decimals only
                                   .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
                                   .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
-                                  .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
-                                   
+                                  //.replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                                   .replace(/(\:[0-5][0-9]{1})./g, '$1'); 
                 
                             });
                             
@@ -684,18 +683,22 @@
                         //    });
                         //}
                          dataInit: function (element) {
-                            $(element).keyup(function(event) {
-     
-                                  this.value = this.value
+                            $(element).keyup(function (event) {
+                                //alert(this.value);
+                                
+                                this.value = this.value
                                   .replace(/[^\d:]/g, '')             // numbers and decimals only
-                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at th\e beginning
                                   .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
-                                  .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                                  //.replace(/(\:[\d]{2})./g, '$1')    // not more than 4 digits after decimal
+                                  .replace(/(\:[0-5][0-9]{1})./g, '$1');  
+                                //.replace(/(^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9]))./g, '$1');    
                                    
                 
-                            });
-                            
+                            });  
+                           
                         }
+                       
                     }
                 },
                 {
