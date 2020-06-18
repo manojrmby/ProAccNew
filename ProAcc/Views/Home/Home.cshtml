@@ -358,9 +358,34 @@
                         <td style="text-align:left;vertical-align:top;"><a class="card-title">Project Name :</a>@Session["Project_Name"]</td>
                         <td style="text-align:right;vertical-align:top;"><a class="card-title">Instance Name :</a> @Session["Instance_Name"]</td>
                     </tr>
+                    @*<tr>
+                    <td style="width:50%">
+                        <div class="card mb-3 widget-content bg-grow-before" id="AssDivId">
+                            <div class="widget-content-wrapper text-white">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Assessment</div>
+                                    <div class="widget-subheading">Readiness Check</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-white"><span id="AssId">0 %</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>*@
                     <tr>
-                        <td style="width:50%">
+                        <td>
+                            @*<div class="col-lg-12">*@
+                            @*<div class="row">*@
+                            <div class="col-lg-10 text-center ">
+                                <canvas id="Chart_Assessment"></canvas>
+                            </div>
+                            @*</div>*@
+                            @*</div>*@
+                        </td>
+                        <td>
                             <div class="card mb-3 widget-content bg-grow-before" id="AssDivId">
+
                                 <div class="widget-content-wrapper text-white">
                                     <div class="widget-content-left">
                                         <div class="widget-heading">Assessment</div>
@@ -373,136 +398,111 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            @*<div class="col-lg-12">*@
-                            @*<div class="row">*@
-                            <div class="col-lg-12 text-center ">
-                                <canvas id="Chart_Assessment"></canvas>
-                            </div>
-                            @*</div>*@
-                            @*</div>*@
-                        </td>
-                    </tr>
                 </table>
             </div>
-            <hr @*style="margin-top:-20px !important;"*@ />
-            <div class="row" style="padding:0em 1em 3em 1em;">
-                <div class="card-body">
-                    <h5 class="card-title">S4 Hana System Conversion</h5>
-                    <form class="">
-                        @if (ViewBag.count != null)
+            @*<hr />*@ @*style="margin-top:-20px !important;"*@
+            @*<div class="row" style="padding:0em 1em 3em 1em;">
+            <div class="card-body">
+                <h5 class="card-title">S4 Hana System Conversion</h5>
+                <form class="">
+                    @if (ViewBag.count != null)
+                    {
+                        int i = ViewBag.count;
+                        string progress = "noUi-origin noUi-background1";
+                        string progress1 = "noUi-origin noUi-background1";
+                        string progress2 = "noUi-origin noUi-background1";
+                        string color = "black";
+                        string color1 = "black";
+                        string color2 = "black";
+                        string color3 = "black";
+                        if (i == 1)
                         {
-                            int i = ViewBag.count;
-                            string progress = "noUi-origin noUi-background1";
-                            string progress1 = "noUi-origin noUi-background1";
-                            string progress2 = "noUi-origin noUi-background1";
-                            string color = "black";
-                            string color1 = "black";
-                            string color2 = "black";
-                            string color3 = "black";
-                            if (i == 1)
-                            {
-                                //progress = "noUi-origin noUi-connect";
-                                color = "Green";
-                            }
-                            else if (i == 2)
-                            {
-                                progress = "noUi-origin noUi-connect";
-                                // progress1 = "noUi-origin noUi-connect";
-                                color = "Green";
-                                color1 = "Green";
-                            }
-                            else if (i == 3)
-                            {
-                                progress = "noUi-origin noUi-connect";
-                                progress1 = "noUi-origin noUi-connect";
-                                // progress2 = "noUi-origin noUi-connect";
-                                color = "Green";
-                                color1 = "Green";
-                                color2 = "Green";
-                            }
-                            else if (i == 4)
-                            {
-                                progress = "noUi-origin noUi-connect";
-                                progress1 = "noUi-origin noUi-connect";
-                                progress2 = "noUi-origin noUi-connect";
-                                color = "Green";
-                                color1 = "Green";
-                                color2 = "Green";
-                                color3 = "Green";
-                            }
+                            //progress = "noUi-origin noUi-connect";
+                            color = "Green";
+                        }
+                        else if (i == 2)
+                        {
+                            progress = "noUi-origin noUi-connect";
+                            // progress1 = "noUi-origin noUi-connect";
+                            color = "Green";
+                            color1 = "Green";
+                        }
+                        else if (i == 3)
+                        {
+                            progress = "noUi-origin noUi-connect";
+                            progress1 = "noUi-origin noUi-connect";
+                            // progress2 = "noUi-origin noUi-connect";
+                            color = "Green";
+                            color1 = "Green";
+                            color2 = "Green";
+                        }
+                        else if (i == 4)
+                        {
+                            progress = "noUi-origin noUi-connect";
+                            progress1 = "noUi-origin noUi-connect";
+                            progress2 = "noUi-origin noUi-connect";
+                            color = "Green";
+                            color1 = "Green";
+                            color2 = "Green";
+                            color3 = "Green";
+                        }
 
 
-                            <div id="nouislider_range_example" class="noUi-target noUi-ltr noUi-horizontal" style="margin-top: 25px;">
-                                <div class="noUi-base">
+                        <div id="nouislider_range_example" class="noUi-target noUi-ltr noUi-horizontal" style="margin-top: 25px;">
+                            <div class="noUi-base">
 
-                                    <div class="@progress" style="left: 20%;">
-                                        <div class="noUi-handle noUi-handle-lower" style="background-color:@color">
-                                            <br>
-                                            <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PRE MIGRATION</p>
-                                        </div>
+                                <div class="@progress" style="left: 20%;">
+                                    <div class="noUi-handle noUi-handle-lower" style="background-color:@color">
+                                        <br>
+                                        <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PRE MIGRATION</p>
                                     </div>
-                                    <div class="@progress1" style="left: 40%;">
-                                        <div class="noUi-handle noUi-handle-upper" style="background-color:@color1">
-                                            <br>
-                                            <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PULL & PUSH</p>
-                                        </div>
+                                </div>
+                                <div class="@progress1" style="left: 40%;">
+                                    <div class="noUi-handle noUi-handle-upper" style="background-color:@color1">
+                                        <br>
+                                        <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PULL & PUSH</p>
                                     </div>
-                                    <div class="@progress2" style="left: 60%;">
-                                        <div class="noUi-handle noUi-handle-upper" style="background-color:@color2">
-                                            <br>
-                                            <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;POST MIGRATION</p>
-                                        </div>
+                                </div>
+                                <div class="@progress2" style="left: 60%;">
+                                    <div class="noUi-handle noUi-handle-upper" style="background-color:@color2">
+                                        <br>
+                                        <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;POST MIGRATION</p>
                                     </div>
-                                    <div class="noUi-origin noUi-background" style="left: 80%;background-color: white !important;">
-                                        <div class="noUi-handle noUi-handle-upper" style="background-color:@color3">
-                                            <br>
-                                            <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;VALIDATION</p>
-                                        </div>
+                                </div>
+                                <div class="noUi-origin noUi-background" style="left: 80%;background-color: white !important;">
+                                    <div class="noUi-handle noUi-handle-upper" style="background-color:@color3">
+                                        <br>
+                                        <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;VALIDATION</p>
                                     </div>
                                 </div>
                             </div>
-                        }
-                        @if (ViewBag.count != null)
+                        </div>
+                    }
+                    @if (ViewBag.count != null)
+                    {
+                        int i = ViewBag.count;
+                        int value = 0;
+                        if (i == 1)
                         {
-                            int i = ViewBag.count;
-                            int value = 0;
-                            if (i == 1)
-                            {
-                                value = 10;
-                            }
-                            else if (i == 2)
-                            {
-                                value = 35;
-                            }
-                            else if (i == 3)
-                            {
-                                value = 70;
-                            }
-                            else if (i == 4)
-                            {
-                                value = 100;
-                            }
-                            @*<fieldset class="position-relative form-group" style="top: 50px;">
-                                    <monkey-bar min="0" max="100" now=@value class="prograss_Bar" labeled striped></monkey-bar>
-                                </fieldset>*@
+                            value = 10;
                         }
-                        @*<div class="position-relative form-check">
-                                <label class="form-check-label"><input name="radio1" type="radio" class="form-check-input"> Option one is this and that—be sure to include why it's great</label>
-                            </div>
-                            <div class="position-relative form-check">
-                                <label class="form-check-label">
-                                    <input name="radio1" type="radio" class="form-check-input"> Option two can be something else and selecting it will deselect option
-                                    one
-                                </label>
-                            </div>
-                            <div class="position-relative form-check disabled"><label class="form-check-label"><input name="radio1" disabled="" type="radio" class="form-check-input"> Option three is disabled</label></div>*@
+                        else if (i == 2)
+                        {
+                            value = 35;
+                        }
+                        else if (i == 3)
+                        {
+                            value = 70;
+                        }
+                        else if (i == 4)
+                        {
+                            value = 100;
+                        }
 
-                        @*<div class="position-relative form-check"><label class="form-check-label"><input type="checkbox" class="form-check-input"> Check me out</label></div>*@
-                    </form>
-                </div>
+                    }
+                </form>
             </div>
+        </div>*@
         </div>
         <div class="col-lg-12 card" style="margin-bottom:20px;">
             <div class="row">
@@ -841,21 +841,40 @@
 		//window.myRadialGauge = new Chart(ctx, config);
   //  }
 
+    function Assessment_percentage() {
+
+        $.ajax({
+				type: "POST",
+				url: '@Url.Action("GetAssessmentReport")',
+				dataType: "json",
+				contentType: "application/json; charset=utf-8",
+               success: function (Data) {
+                   var d_total = (Data.COMPLETE + Data.WIP + Data.ONHOLD + Data.YetToStart + Data.NA)
+                   alert(d_total +""+  Data.WIP +""+ Data.YetToStart +""+ d_total);
+                   var percent = (d_total - (Data.WIP + Data.YetToStart) / d_total);
+                   $("#AssId").html(percent+"%");
+				},
+				error: function () {
+					alert("Error while inserting data");
+				}
+			});
+    }
+
     jQuery(document).ready(function ($) {
 
         Ajax_AssessmentDonut();
-
+        Assessment_percentage();
+        
         var In=@ViewBag.Instance;
         if (In == 0) {
             $("#AssDivId").removeClass("bg-grow-early");
             $("#AssDivId").last().addClass("bg-grow-before");
-            $("#AssId").html("0 %")
-            AssId
+            $("#AssId").html("0 %")            
         }
         else {
             $("#AssDivId").removeClass("bg-grow-before");
             $("#AssDivId").last().addClass("bg-grow-early");
-            $("#AssId").html("100 %")
+           // $("#AssId").html(percent)
         }
 
             $("#IDInstance").prop("disabled", true);
@@ -954,25 +973,10 @@
                 success: function (result) {
                    Notiflix.Notify.Success('New Live Instance updated !', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
                    setTimeout(Redirect, 3000);
-                    //$.alert({
-                    //    title: 'Alert !',
-                    //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                    //    icon: 'fa fa-rocket',
-                    //    animation: 'scale',
-                    //    closeAnimation: 'scale',
-                    //    buttons: {
-                    //        okay: {
-                    //            text: 'Okay',
-                    //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                    //            action: function (event, ui) {
-                    //                $(this).remove();
-                    //                location.reload();
-                    //            }
-                    //        }
-                    //    }
-                    //});
                 }
             });
+
+           
         });
     });
     function Redirect() {

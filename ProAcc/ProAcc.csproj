@@ -151,6 +151,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Asset\css\Activity.css" />
     <Content Include="Asset\css\bootstrap.min.css" />
     <Content Include="Asset\css\jquery-confirm.min.css" />
     <Content Include="Asset\css\LayoutStyles.css" />
