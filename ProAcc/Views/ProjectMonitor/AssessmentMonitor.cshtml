@@ -452,8 +452,8 @@
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
                     $("#" + ID + "_Planed__En_Date").datepicker("option", "minDate", selectedDate);
-                    $("#" + ID + "_Actual_St_Date").datepicker("option", "minDate", selectedDate);
-                    $("#" + ID + "_Actual_En_Date").datepicker("option", "minDate", selectedDate);
+                    //$("#" + ID + "_Actual_St_Date").datepicker("option", "minDate", selectedDate);
+                    //$("#" + ID + "_Actual_En_Date").datepicker("option", "minDate", selectedDate);
                 },
             });//.datepicker("setDate", new Date());
              //}).datepicker();
@@ -477,7 +477,7 @@
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
                     $("#" + ID + "_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
-                    $("#" + ID + "_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+                    //$("#" + ID + "_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
                     //$("#" + ID + "_Actual_En_Date").datepicker("option", "maxDate", selectedDate);
                 }
             });//.datepicker("setDate", new Date());
@@ -490,6 +490,12 @@
             $(element).on('keypress', function (e) {
                 e.preventDefault();
             })
+            //var selectedDate = $("#" + ID + "_Planed__St_Date").val();
+            //debugger;
+            //$("#" + ID + "_Actual_St_Date").datepicker("option" "minDate", new Date());
+            //var d=$("#jqGrid").jqGrid('getGridParam', 'selrow');
+            var Date = $('#jqGrid').jqGrid('getCell', ID, 'Planed__St_Date');
+            //debugger;
             $(element).datepicker({
                 duration: "slow",
                 // defaultDate: +1,
@@ -501,9 +507,10 @@
                 showButtonPanel: false,
                 showWeek: false,
                 showButtonPanel: true,
+                minDate: Date,
                 onClose: function (selectedDate) {
                     $("#" + ID + "_Actual_En_Date").datepicker("option", "minDate", selectedDate);
-                    $("#" + ID + "_Planed__En_Date").datepicker("option", "maxDate", selectedDate);
+                    //$("#" + ID + "_Planed__En_Date").datepicker("option", "maxDate", selectedDate);
                 },
             });//.datepicker("setDate", new Date());
             // }).datepicker();
@@ -1206,13 +1213,18 @@
                 }
             }
             
-                
+             var Actual_St_hours = jQuery("#jqGrid").jqGrid('getColProp', 'Actual_St_hours');
+                Actual_St_hours.editable = false;
+             var Actual_St_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Actual_St_Date');
+                 Actual_St_Date.editable = false;
+            var Actual_En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Actual_En_Date');
+                Actual_En_Date.editable = false;   
         }
         else {
             var EST_hours = jQuery("#jqGrid").jqGrid('getColProp', 'EST_hours');
                 EST_hours.editable = false;
              var Planed__St_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__St_Date');
-            Planed__St_Date.editable = false;
+                 Planed__St_Date.editable = false;
             var Planed__En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__En_Date');
                 Planed__En_Date.editable = false;
             for (var i = 0; i < ids.length; i++) {

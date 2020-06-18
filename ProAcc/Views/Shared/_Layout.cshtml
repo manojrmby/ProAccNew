@@ -33,7 +33,7 @@
     <script>
         Notiflix.Notify.Init({
             width: '280px',
-            position: 'right-bottom',
+            position: 'left-bottom',
             opacity: 1,
             fontFamily: "sans-serif",
             fontSize: "15px",
@@ -50,6 +50,10 @@
     }
         .instanceRow{
             max-width:960px;
+        }
+        ._search
+        {
+            border: 1px solid #ced4da !important;
         }
         @*
  .loader {
@@ -552,13 +556,13 @@
                                             <li>
                                                 <a href="@Url.Action("Index", "Customers")">
                                                     <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Customers List
+                                                    Customer List
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="@Url.Action("Index", "User")">
                                                     <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    User's List
+                                                    User List
                                                 </a>
                                             </li>
                                         </ul>
