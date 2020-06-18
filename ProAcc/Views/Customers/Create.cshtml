@@ -138,7 +138,7 @@
             var CompName = $("#txtCompanyName").val().trim();
             var id = $("#customerid").val();
             if (CompName == "") {
-                $("#lblCompanyName").html("Please Enter valid Company Name").show().fadeOut(5000);
+                $("#lblCompanyName").html("Please Enter valid Customer Name").show().fadeOut(5000);
                 validatecustomer()
             }
             else {
@@ -149,7 +149,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblCompanyName").html("This Company Name is already in use").show();
+                        $("#lblCompanyName").html("This Customer Name is already in use").show();
                        validatecustomer()
                     }
                     else {
@@ -366,7 +366,8 @@
     });
 
     function Redirect() {
-        location.reload();
+       var url = $("#RedirectToCustomerList").val();
+        location.href = url;
     }
     
 

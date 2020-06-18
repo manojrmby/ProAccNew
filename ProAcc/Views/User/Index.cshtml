@@ -83,8 +83,8 @@
 
             <td>
                 <div class="row">
-                    &nbsp;&nbsp;<a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("Edit", "User", new { id = item.UserId })"></a> &nbsp;&nbsp;
-                    <a href="#" class="userDelete fa fa-trash"></a><input type="hidden" value="@item.UserId" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("Edit", "User", new { id = item.UserId })"></a> &nbsp;&nbsp;
+                    &nbsp;<a href="#" class="userDelete fa fa-trash"></a><input type="hidden" value="@item.UserId" />
                 </div>
 
                 @*@Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
@@ -99,8 +99,8 @@
 <script>
     $(document).ready(function () {
         $("#tblUserTable").dataTable({
-           //"order": [[1, 'desc']],
-            "ordering": false,
+           "order": [[1, 'desc']],
+            //"ordering": false,
             "columnDefs": [
                 {
                     "targets": [1],

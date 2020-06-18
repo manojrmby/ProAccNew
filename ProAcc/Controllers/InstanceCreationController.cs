@@ -82,7 +82,7 @@ namespace ProAcc.Controllers
                                 join c in db.Projects on e.Project_ID equals c.Project_Id
                                 join cu in db.Customers on c.Customer_Id equals cu.Customer_ID
                             where e.isActive == true && c.isActive == true && cu.isActive==true
-                            select e).ToList();
+                            select e).OrderByDescending(x=>x.Cre_on).ToList();
             return PartialView("_InstanceIndex", InstanceList);
         }
 
@@ -96,8 +96,8 @@ namespace ProAcc.Controllers
                 {
                     instance.Instance_id = Guid.NewGuid();
                     instance.isActive = true;
-                    instance.Cre_on = DateTime.Now.Date;
-                    instance.LastUpdated_Dt = DateTime.Now.Date;
+                    instance.Cre_on = DateTime.UtcNow;
+                    instance.LastUpdated_Dt = DateTime.UtcNow; ;
                     instance.Cre_By = Guid.Parse(Session["loginid"].ToString());
 
                     db.Instances.Add(instance);
@@ -145,8 +145,8 @@ namespace ProAcc.Controllers
             var name = db.Instances.Where(p => p.InstaceName == model.InstaceName).Where(x => x.Instance_id != model.Instance_id).Where(x => x.isActive == true).ToList();
             if (name.Count == 0)
             {
-                model.Modified_On = DateTime.Now;
-                model.LastUpdated_Dt = DateTime.Now;
+                model.Modified_On = DateTime.UtcNow;
+                model.LastUpdated_Dt = DateTime.UtcNow;
                 //model.Cre_on = DateTime.Now;
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
