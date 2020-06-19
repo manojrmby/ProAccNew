@@ -85,11 +85,11 @@ namespace ProAcc.Controllers
             latestTask.isActive = true;
             db.Entry(latestTask).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-            List<int> ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type).Select(p => p.Activity_ID).ToList();
+            var ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type).OrderBy(p=>p.Sequence_Num).ToList();
             int? tid = nextSeqNumber;
             foreach (var id in ids)
             {
-                var task = db.ActivityMasters.Where(p => p.Activity_ID == id).FirstOrDefault();
+                var task = db.ActivityMasters.Where(p => p.Activity_ID == id.Activity_ID).FirstOrDefault();
                 task.Sequence_Num = tid + 1;
                 tid = Convert.ToInt32(task.Sequence_Num);
                 db.Entry(task).State = EntityState.Modified;

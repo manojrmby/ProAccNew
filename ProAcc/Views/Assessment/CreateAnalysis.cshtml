@@ -269,8 +269,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
@@ -278,8 +276,10 @@
 <script>
 
     $(document).ready(function () {
+
+        
         $('#btnUpload').click(function () {
-    var RedirectTo = $("#RedirectTo").val();
+            var RedirectTo = $("#RedirectTo").val();
             var ProjectID = $("#IDProject").val();
             var InstanceId = $("#IDInstance").val();
             var n = $( "input:checked" ).length;
@@ -329,7 +329,7 @@
                     data: fileData,
                     //async: false,
                     success: function (result) {
-                        Notiflix.Notify.Failure(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        Notiflix.Notify.success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                         //alert(result);
                         if (result == 'File Uploaded Successfully!') {
                             location.href = RedirectTo;
@@ -346,13 +346,6 @@
                                     //alert(result);
                                 }
                             });
-
-                            //location.reload();
-                            //debugger;
-                            //if (result != "") {
-                            //    //$('#FileBrowse').find("*").prop("disabled", true);
-                            //    LoadProgressBar(result); //calling LoadProgressBar function to load the progress bar.
-                            //}
                         }
                     },
                     error: function (err) {
@@ -363,7 +356,7 @@
 
             }
             else {
-                Notiflix.Notify.Failure("Kindly check input values", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                Notiflix.Notify.Info("Kindly check input values", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                 //alert("Kindly check input values");
             }
 
@@ -755,17 +748,17 @@
         var fileUpload;
         var files;
         $("#FileUpload1").on('blur', function () {
-            
-            if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+            if (this.files.length > 0) {               
                 fileUpload = $("#FileUpload1").get(0);  
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "Activities.xlsx") {
-                      Notiflix.Notify.Failure("Enter Activities file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                       // alert("Enter proper file");
-                        break;
+                        Notiflix.Notify.Failure("Enter Activities file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        $("#FileUpload1").val('');
+                    }
+                    else {
+                         $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active')
                     }
                 }
             }
@@ -776,15 +769,17 @@
         });
         $("#FileUpload2").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active');
+                
                 fileUpload = $("#FileUpload2").get(0);  
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "Bwextractors.xlsx") {
                         Notiflix.Notify.Failure("Enter Bwextractors file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert("Enter proper file");
-                        break;
+                        $("#FileUpload2").val('');
+                    }
+                    else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
                     }
                 }
             }
@@ -795,15 +790,16 @@
         });
         $("#FileUpload3").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active');
                 fileUpload = $("#FileUpload3").get(0);
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "CustomCode.xlsx") {
                         Notiflix.Notify.Failure("Enter CustomCode file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert("Enter proper file");
-                        break;
+                       $("#FileUpload3").val('');
+                    }
+                     else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
                     }
                 }
             }
@@ -814,15 +810,16 @@
         });
         $("#FileUpload4").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active');
                 fileUpload = $("#FileUpload4").get(0);
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "HanaDatabaseTables.xlsx") {
                         Notiflix.Notify.Failure("Enter HanaDatabaseTables file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert("Enter proper file");
-                        break;
+                       $("#FileUpload4").val('');
+                    }
+                     else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
                     }
                 }
             }
@@ -833,15 +830,16 @@
         });
         $("#FileUpload5").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active');
                 fileUpload = $("#FileUpload5").get(0);
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "RecommendedFioriApps.xlsx") {
                         Notiflix.Notify.Failure("Enter RecommendedFioriApps file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert("Enter proper file");
-                        break;
+                       $("#FileUpload5").val('');
+                    }
+                     else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
                     }
                 }
             }
@@ -852,15 +850,16 @@
         });
         $("#FileUpload6").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active');
                 fileUpload = $("#FileUpload6").get(0);
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "RelevantSimplificationItems.xlsx") {
                         Notiflix.Notify.Failure("Enter RelevantSimplificationItems file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert("Enter proper file");
-                        break;
+                       $("#FileUpload6").val('');
+                    }
+                    else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
                     }
                 }
             }
@@ -882,15 +881,16 @@
         //});
         $("#FileUpload7").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
                 fileUpload = $("#FileUpload7").get(0);
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[0].name != "SAP Readiness Check.docx") {
                         Notiflix.Notify.Failure("Enter Readiness Check file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert("Enter proper file");
-                        break;
+                       $("#FileUpload7").val('');
+                    }
+                    else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
                     }
                 }
             }

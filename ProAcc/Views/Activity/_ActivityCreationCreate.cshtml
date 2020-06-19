@@ -3,8 +3,8 @@
 @{
     ViewBag.Title = "Create Activity";
 }
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-@*<link href="~/Asset/css/Activity.css" rel="stylesheet" />*@
+@*<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">*@
+<link href="~/Asset/css/Activity.css" rel="stylesheet" />
 
 <style>
     /*span {
@@ -122,15 +122,10 @@
 
 </div>
 <div class="w3-container">
-    @*<h2>W3.CSS Modal</h2>*@
-    @* <button onclick="document.getElementById('id01').style.display='block'">Open Modal</button>*@
-
-    <div id="id01" class="w3-modal">
+       <div id="id01" class="w3-modal">
         <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:20%;">
             <div class="w3-container" style="margin:0 auto !important;">
-
                 <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                @*<label style="margin-bottom:10px !important;">Select Task</label>*@
                 <div class="row" style="margin-top:3%;">
                     <div class="col-10">
                         <select class="form-control" id="drpTsk">
@@ -153,7 +148,7 @@
 
     $(document).ready(function () {
         $("#btnActivityCreCreate").prop('disabled', true);
-
+        
         var id = $("#activityrid").val().trim();
         if (id != "") {
             //$("#txtSequence").prop("readonly", true);
@@ -286,7 +281,7 @@
     }
 
     $("#btnActivityCreCreate").on("click", function () {
-
+        
         var Task = $("#txtTask").val();
        // var sequence = $("#txtSequence").val();
         var ApplicationArea = $("#txtApplicationArea").val();
