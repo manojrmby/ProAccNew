@@ -98,22 +98,34 @@ namespace ProAcc.Controllers
 
         public ActionResult AssessmentReport()
         {
+            Guid InstanceId = Guid.Parse(Session["InstanceId"].ToString());
+            if (InstanceId == Guid.Empty)
+            {
+                ViewBag.Message = String.Format("Hello {0},\n Kindly Select Instance", Session["UserName"].ToString());
+                ViewBag.PDFfileName = "";
+                //return RedirectToAction("Home", "Home");
+            }
+            else
+            {
+                //Boolean A= _Base.Proceess_WordAddImage();
+                //Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+                var fileName = (from u in db.FileUploadMasters
+                where
+                u.InstanceID == InstanceId &&
+                u.isActive == true &&
+                u.File_Type == _Base.SAPReportFileName// "SAPReadinessCheck"
+                select u.C_FileName).FirstOrDefault();
 
-            //Boolean A= _Base.Proceess_WordAddImage();
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            var fileName = (from u in db.FileUploadMasters where
-                           u.InstanceID == InstanceID &&
-                           u.isActive == true &&
-                           u.File_Type == _Base.SAPReportFileName// "SAPReadinessCheck"
-                           select u.C_FileName).FirstOrDefault();
-
-            CreatePDF P = new CreatePDF(); 
-            string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath"].ToString());
-            string TempPath= Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString());
-            string PathPdf = TempPath + "\\Pdf\\" + fileName + ".pdf";
-            string PathDoc = Folder_Path + "\\"+ fileName+".docx";
-            P.convertDOCtoPDF(PathDoc, PathPdf);
-            ViewBag.PDFfileName = ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString()+ "/Pdf/"+ fileName + ".pdf";
+                CreatePDF P = new CreatePDF();
+                string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath"].ToString());
+                string TempPath = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString());
+                string PathPdf = TempPath + "\\Pdf\\" + fileName + ".pdf";
+                string PathDoc = Folder_Path + fileName + ".docx";
+                P.SpireconvertDOCtoPDF(PathDoc, PathPdf);
+                //P.convertDOCtoPDF(PathDoc, PathPdf);
+                ViewBag.PDFfileName = ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString() + "/Pdf/" + fileName + ".pdf";
+            }
+            
 
             return View();
         }
