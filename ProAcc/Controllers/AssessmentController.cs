@@ -25,7 +25,16 @@ namespace ProAcc.Controllers
         [Authorize(Roles = "Consultant")]
         public ActionResult CreateAnalysis()
         {
+            InstanceId = Guid.Parse(Session["InstanceId"].ToString());
+            if (InstanceId == Guid.Empty)
+            {
+                ViewBag.Message = String.Format("Hello {0},\n Kindly Select Instance", Session["UserName"].ToString());
+                //return RedirectToAction("Home", "Home");
+            }
+            else
+            {
 
+            }
 
             int userType = 0;
             if (User.IsInRole("Admin"))

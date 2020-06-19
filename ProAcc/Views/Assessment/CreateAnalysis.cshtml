@@ -147,7 +147,7 @@
                                     <tr>
                                         <th>S.No</th>
                                         <th> SAP READINESS CHECK FILES</th>
-                                        <th>UPLOAD</th>
+                                        <th>UPLOAD FILES</th>
                                     </tr>
                                 </thead>
                                 <tr>
@@ -271,6 +271,31 @@
             </div>
         </div>
     </div>
+    <div style="visibility:hidden">
+        <div id="dialog-message" title="Info">
+            <p>
+                <span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 50px 0;"></span>
+                <h6>@ViewBag.Message</h6>
+            </p>
+        </div>
+        @if (ViewBag.Message != null)
+        {
+            <script type="text/javascript">
+                $(function () {
+
+                    $("#dialog-message").dialog({
+                        modal: true,
+                        buttons: {
+                            Ok: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                });
+            </script>
+
+        }
+    </div>
 </div>
 @Html.Hidden("RedirectTo", Url.Action("ReadinessReport", "Assessment"))
 <script>
@@ -329,10 +354,14 @@
                     data: fileData,
                     //async: false,
                     success: function (result) {
-                        Notiflix.Notify.success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert(result);
+                        
                         if (result == 'File Uploaded Successfully!') {
+                            Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             location.href = RedirectTo;
+                        }
+                        else if (result=='Please Upload all files.')
+                        {
+                            Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                         }
                         else {
                             $.ajax({
