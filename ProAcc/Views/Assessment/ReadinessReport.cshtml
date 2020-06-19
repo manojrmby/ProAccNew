@@ -22,7 +22,6 @@
 						<div class="position-relative form-group">
 							<label for="exampleEmail" class="">Customer Name</label>
 							@Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "- SELECT-", new { id = "IDCustomer", @class = "form-control" })
-							@*@Html.DropDownList("Project", (IEnumerable<SelectListItem>), "- SELECT-", new { id = "IDProject", @class = "form-control" })*@
 						</div>
 					</div>
 				}
@@ -50,11 +49,7 @@
 					</button>
 				</div>
 			</div>
-
-
-
-			@*<a>Project Name :<b> @ProAcc.BL.Model.Common.Project_Name</b></a>
-				<a class="float-lg-right">Instance Name :<b> @ProAcc.BL.Model.Common.Instance_Name</b></a>*@
+			
 		</div>
 
 		<a class="toast-title">Readiness Report</a>
@@ -113,18 +108,30 @@
 
 		</div>
 	</div>
-	<div style="visibility:hidden">
-		<div id="dialog-message" title="Info">
-			<p>
-				<span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 50px 0;"></span>
-				<h6>@ViewBag.Message</h6>
-			</p>
-		</div>
-		@if (ViewBag.Message != null)
-		{
-			<script type="text/javascript">
-				$(function () {
+	@if (ViewBag.Message != null)
+	{
+		
+<a id="Msg" style="display:none">@ViewBag.Message</a>
+		<script type="text/javascript">
+            var a = $('#Msg').text();
+            //debugger;
+            Notiflix.Report.Info("ProAcc Info !",a);
+			</script>
 
+    }
+
+		@*<div style="visibility:hidden">
+			<div id="dialog-message" title="Info">
+				<p>
+					<span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 50px 0;"></span>
+					<h6>@ViewBag.Message</h6>
+				</p>
+			</div>
+			@if (ViewBag.Message != null)
+			{
+				<script type="text/javascript">
+                $(function () {
+				
 					$("#dialog-message").dialog({
 						modal: true,
 						buttons: {
@@ -134,13 +141,13 @@
 						}
 					});
 				});
-			</script>
+		</script>
 
-		}
+	}
+</div>*@
+
+
 	</div>
-
-
-</div>
 <script type="text/javascript">
 
 

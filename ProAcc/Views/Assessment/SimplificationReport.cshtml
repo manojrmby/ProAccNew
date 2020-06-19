@@ -99,34 +99,47 @@
 </div>
 <div>
     @Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
-    <div style="visibility:hidden">
-        <div id="dialog-message" title="Info">
-            <p>
-                <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
-                @ViewBag.Message
-            </p>
-        </div>
-    </div>
-
     @if (ViewBag.Message != null)
     {
-        <script type="text/javascript">
-            $(function () {
 
-                $("#dialog-message").dialog({
-                    modal: true,
-                    buttons: {
-                        Ok: function () {
-                            $(this).dialog("close");
-                            var url = $("#RedirectTo").val();
-                            location.href = url;
-                        }
-                    }
-                });
+        <a id="Msg" style="display:none">@ViewBag.Message</a>
+        <script type="text/javascript">
+            var info = $('#Msg').text();
+            Notiflix.Report.Info("ProAcc Info !", info, "Click", function() {
+               var url = $("#RedirectTo").val();
+                                location.href = url;
             });
         </script>
 
     }
+    @*<div style="visibility:hidden">
+            <div id="dialog-message" title="Info">
+                <p>
+                    <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+                    @ViewBag.Message
+                </p>
+            </div>
+        </div>
+
+        @if (ViewBag.Message != null)
+        {
+            <script type="text/javascript">
+                $(function () {
+
+                    $("#dialog-message").dialog({
+                        modal: true,
+                        buttons: {
+                            Ok: function () {
+                                $(this).dialog("close");
+                                var url = $("#RedirectTo").val();
+                                location.href = url;
+                            }
+                        }
+                    });
+                });
+            </script>
+
+        }*@
 </div>
 
 <script type="text/javascript" charset="utf-8">
@@ -322,7 +335,7 @@
                             '</td><td>' + value.Business_Area +
                             //'</td><td>' + value.Consistency_Status +
                             '</td><td>' + value.Manual_Status +
-                            '</td><td><a href="'+value.SAP_Notes+'">'+Result+'</a>' +
+                            '</td><td><a href="'+value.SAP_Notes+'" target="_blank">'+Result+'</a>' +
                             '</td><td>' + value.Relevance_Summary
                             + '</td></tr>';
                         $('#Table_Body').append( table );

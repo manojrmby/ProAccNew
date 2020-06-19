@@ -387,12 +387,16 @@
                             <div class="card mb-3 widget-content bg-grow-before" id="AssDivId">
 
                                 <div class="widget-content-wrapper text-white">
+                                    
                                     <div class="widget-content-left">
-                                        <div class="widget-heading">Assessment</div>
-                                        <div class="widget-subheading">Readiness Check</div>
+                                        <div class="widget-heading">
+                                            Assessment :
+                                        </div>
+                                        <div class="widget-subheading">Readiness Check :</div>
                                     </div>
                                     <div class="widget-content-right">
-                                        <div class="widget-numbers text-white"><span id="AssId">0 %</span></div>
+                                        <div class="text-white"><span id="AssId">0 %</span></div>
+                                        <div class="text-white"><span id="Ass_StatusId"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -848,14 +852,30 @@
 				url: '@Url.Action("GetAssessmentReport")',
 				dataType: "json",
 				contentType: "application/json; charset=utf-8",
-               success: function (Data) {
-                   var d_total = (Data.COMPLETE + Data.WIP + Data.ONHOLD + Data.YetToStart + Data.NA)
-                   alert(d_total +""+  Data.WIP +""+ Data.YetToStart +""+ d_total);
-                   var percent = (d_total - (Data.WIP + Data.YetToStart) / d_total);
-                   $("#AssId").html(percent+"%");
+            success: function (Data) {
+                var d_total = (Data.COMPLETE + Data.WIP + Data.ONHOLD + Data.YetToStart + Data.NA)
+                if (d_total > 0) {
+                    var a = (Data.COMPLETE + Data.ONHOLD + Data.NA) / d_total;
+                    var percent = Math.ceil(a * 100);
+                    $("#AssId").html(percent + "%");
+                   
+                    if (percent == 100) {
+                        $("#Ass_StatusId").html("Complete");
+                    }
+                    else if(percent>0){
+                         $("#Ass_StatusId").html("WIP");
+                    }
+                    else {
+                         $("#Ass_StatusId").html("Yet To Start");
+                    }
+                }
+                else {
+                    
+                    $("#Ass_StatusId").html("Yet To Start");
+                }
 				},
 				error: function () {
-					alert("Error while inserting data");
+					//alert("Error while inserting data");
 				}
 			});
     }
@@ -910,8 +930,8 @@
                     $('#SubmitInstance').prop("disabled", true);
                 },
                 error: function (a) {
-                    debugger;
-                    alert(a);
+                    //debugger;
+                    //alert(a);
                 }
             });
         });
