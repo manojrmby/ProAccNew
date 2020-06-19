@@ -253,9 +253,9 @@
 
 <script>
     //document.body.style.zoom = "80%";
-    //$(document).ready(function () {
-
-    //});
+    $(document).ready(function () {
+        LoadTable(1);
+    });
     $(window).on("resize", function () {
   var $grid = $("#jqGrid"),
     newWidth = $grid.closest(".ui-jqgrid").parent().width();
@@ -813,6 +813,44 @@
             }
             // set table stripped class in table style in bootsrap
         });
+
+        $grid.jqGrid("navButtonAdd", "#pager", {
+    id: "myButton",
+    onClickButton: function () {
+    }
+});
+//        $("#jqGrid").jqGrid('navButtonAdd','#pager0',{
+//    id:'ExportToExcel',
+//    caption:'CSV',
+//    title:'Export To CSV',
+//    onClickButton : function(e)
+//    {
+//        //exportData(e, '#grid');
+//    },
+//    buttonicon: 'ui-icon ui-icon-document',
+//});	
+
+//$("#jqGrid").jqGrid('navButtonAdd','#pager0',{
+//    id:'ExportToPDF',
+//    caption:'PDF',
+//    title:'PDF',
+//    onClickButton : function(e)
+//    {
+//       // exportPDF(e, '#grid');
+//    },
+//    buttonicon: 'ui-icon ui-icon-document',
+//});	
+//$('#jqGrid').navGrid('#jqGridPager',
+//    '#pager0',{
+//    id:'ExportToExcel',
+//    caption:'CSV',
+//    title:'Export To CSV',
+//    onClickButton : function(e)
+//    {
+//        //exportData(e, '#grid');
+//    },
+//    buttonicon: 'ui-icon ui-icon-document',
+//});	
         //$("#jqGrid").jqGrid('filterToolbar', { stringResult: true, searchOnEnter: false, defaultSearch: "cn" });
         @*function editRow(id) {
             // var Status_Id = $('#jqGrid').jqGrid('getCell', id, 'StatusId')

@@ -3,6 +3,8 @@ using ProAcc.BL.Model;
 using ProACC_DB;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -96,7 +98,23 @@ namespace ProAcc.Controllers
 
         public ActionResult AssessmentReport()
         {
+
             //Boolean A= _Base.Proceess_WordAddImage();
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            var fileName = (from u in db.FileUploadMasters where
+                           u.InstanceID == InstanceID &&
+                           u.isActive == true &&
+                           u.File_Type == _Base.SAPReportFileName// "SAPReadinessCheck"
+                           select u.C_FileName).FirstOrDefault();
+
+            CreatePDF P = new CreatePDF(); 
+            string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath"].ToString());
+            string TempPath= Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString());
+            string PathPdf = TempPath + "\\Pdf\\" + fileName + ".pdf";
+            string PathDoc = Folder_Path + "\\"+ fileName+".docx";
+            P.convertDOCtoPDF(PathDoc, PathPdf);
+            ViewBag.PDFfileName = ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString()+ "/Pdf/"+ fileName + ".pdf";
+
             return View();
         }
 

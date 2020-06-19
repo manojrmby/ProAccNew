@@ -1920,10 +1920,12 @@ namespace ProAcc.BL
     //}
 
 
-    public string Phase_Assessment = "Assessment";
+        public string Phase_Assessment = "Assessment";
         public string Phase_PreConversion = "Pre Conversion";
         public string Phase_PostConversion = "Post Conversion";
         public string Phase_Validation = "Validation Testing";
+
+        public string SAPReportFileName = "SAPReadinessCheck";
 
     }
 }
