@@ -209,8 +209,23 @@ namespace ProAcc.Controllers
                  userMaster.Modified_On = DateTime.UtcNow;
                  userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
                  userMaster.isActive = true;
-                    
-                 db.Entry(userMaster).State = EntityState.Modified;
+                if (userMaster.UserTypeID == 1)
+                {
+                    var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+                    userMaster.RoleID = adminRoleId;
+                    userMaster.Customer_Id = null;
+                }
+                else if (userMaster.UserTypeID == 2)
+                {
+                    userMaster.Customer_Id = null;
+                }
+                else if (userMaster.UserTypeID == 4)
+                {
+                    var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+                    userMaster.RoleID = pmRoleId;
+                    userMaster.Customer_Id = null;
+                }
+                db.Entry(userMaster).State = EntityState.Modified;
                  db.SaveChanges();
                  return Json("success");
              }

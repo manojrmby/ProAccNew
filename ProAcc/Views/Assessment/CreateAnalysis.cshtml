@@ -302,7 +302,7 @@
 
     $(document).ready(function () {
 
-        
+
         $('#btnUpload').click(function () {
             var RedirectTo = $("#RedirectTo").val();
             var ProjectID = $("#IDProject").val();
@@ -354,7 +354,7 @@
                     data: fileData,
                     //async: false,
                     success: function (result) {
-                        
+
                         if (result == 'File Uploaded Successfully!') {
                             Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             location.href = RedirectTo;
@@ -364,7 +364,9 @@
                             Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                         }
                         else {
-                            $.ajax({
+                            Notiflix.Report.Info("ProAcc Info !", result, "Click", function () {
+                               
+                                $.ajax({
                                 url: '@Url.Action("UploadRevert", "Assessment")',
                                 type: "POST",
                                 contentType: false, // Not to set any content header
@@ -374,7 +376,11 @@
                                     Notiflix.Notify.Failure(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                                     //alert(result);
                                 }
+                                });
+
                             });
+                           // Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+
                         }
                     },
                     error: function (err) {
