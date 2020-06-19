@@ -7,6 +7,21 @@
 <div>
     <iframe id="pdf-js-viewer" src="~/Asset/UploadedFiles/Temp/678bda2f-c281-48c1-b565-64f3773d3b1f.pdf" title="webviewer" frameborder="0"></iframe>
 </div>
+@Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
+@if (ViewBag.Message != null)
+{
+
+    <a id="Msg" style="display:none">@ViewBag.Message</a>
+    <script type="text/javascript">
+        $('#pdf-js-viewer').hide();
+        var info = $('#Msg').text();
+        Notiflix.Report.Info("ProAcc Info !", info, "Click", function () {
+            var url = $("#RedirectTo").val();
+            location.href = url;
+        });
+    </script>
+
+}
 <script>
     $(document).ready(function () {
         var Path ="@ViewBag.PDFfileName";
