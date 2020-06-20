@@ -918,20 +918,10 @@
                 else {
                     Message='Do you Want to Save the Task?'
                 }
-
-                $.confirm({
-                            title: 'Save !',
-                            content: Message,
-                            icon: 'fa fa-rocket',
-                            animation: 'scale',
-                            closeAnimation: 'scale',
-                            opacity: 0.5,
-                            buttons: {
-                                'confirm': {
-                                    text: 'Yes',
-                                    btnClass: 'btn-blue',
-                                    action: function () {
-                                        $.ajax({
+                Notiflix.Confirm.Show('ProAcc Info. Confirm..!',
+                    Message, 'Yes', 'No',
+                    function () {
+                        $.ajax({
                                             type: "POST",
                                             url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor")',
                                             data: {
@@ -949,71 +939,85 @@
                                                 'Actual_En_Date': Actual_En_Date,
                                                 'Notes': Notes
                                             },
-                                            success: function (Result) {
-                                                if (Result) {
-                                                    $.alert({
-                                                        title: 'Alert !',
-                                                        content: 'Task Saved Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                                                        icon: 'fa fa-rocket',
-                                                        animation: 'scale',
-                                                        closeAnimation: 'scale',
-                                                        buttons: {
-                                                            okay: {
-                                                                text: 'Okay',
-                                                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                                                action: function (event, ui) {
-                                                                    $(this).remove();
-                                                                     $('#jqGrid').trigger('reloadGrid');
-                                                                    //location.reload();
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                                else {
-                                                    $.alert({
-                                                        title: 'Alert !',
-                                                        content: 'Somthing Went wrong..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                                                        icon: 'fa fa-rocket',
-                                                        animation: 'scale',
-                                                        closeAnimation: 'scale',
-                                                        buttons: {
-                                                            okay: {
-                                                                text: 'Okay',
-                                                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                                                action: function (event, ui) {
-                                                                    $(this).remove();
-                                                                     $('#jqGrid').trigger('reloadGrid');
-                                                                    //location.reload();
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-                                                    //alert("Error");
-                                                }
+                            success: function (Result) {
+                                                 $('#jqGrid').trigger('reloadGrid');
+                                                //if (Result) {
+                                                //    $.alert({
+                                                //        title: 'Alert !',
+                                                //        content: 'Task Saved Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                                //        icon: 'fa fa-rocket',
+                                                //        animation: 'scale',
+                                                //        closeAnimation: 'scale',
+                                                //        buttons: {
+                                                //            okay: {
+                                                //                text: 'Okay',
+                                                //                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                                //                action: function (event, ui) {
+                                                //                    $(this).remove();
+                                                //                     $('#jqGrid').trigger('reloadGrid');
+                                                //                    //location.reload();
+                                                //                }
+                                                //            }
+                                                //        }
+                                                //    });
+                                                //}
+                                                //else {
+                                                //    $.alert({
+                                                //        title: 'Alert !',
+                                                //        content: 'Somthing Went wrong..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                                //        icon: 'fa fa-rocket',
+                                                //        animation: 'scale',
+                                                //        closeAnimation: 'scale',
+                                                //        buttons: {
+                                                //            okay: {
+                                                //                text: 'Okay',
+                                                //                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                                //                action: function (event, ui) {
+                                                //                    $(this).remove();
+                                                //                     $('#jqGrid').trigger('reloadGrid');
+                                                //                    //location.reload();
+                                                //                }
+                                                //            }
+                                                //        }
+                                                //    });
+                                                    
+                                                //}
                                             }
-                                                @*,error: function (xhr, status, error) {
-                                                       if (xhr.statusText == "Session TimeOut/UnAuthorized") {
-                                                           alert(xhr.statusText);
-                                                           window.location.href = '@Url.Action("LogOut", "login")';
-                                                       }
-                                                       else
-                                                           alert(xhr.responseText);
-                                                   }*@
+                                                
                                         });
-                                    }
-                                },
-                                cancel: function(){
-                                    //$.alert('You clicked on <strong>cancel</strong>');
-                                },
-                                //moreButtons: {
-                                //    text: 'something else',
-                                //    action: function(){
-                                //        $.alert('you clicked on <strong>something else</strong>');
-                                //    }
-                                //},
-                            }
-                        });
+                        // Yes button callbackalert('Thank you.');
+                    }, function () {
+                        // No button callbackalert('If you say so...');
+                    });
+
+
+
+                //$.confirm({
+                //            title: 'Save !',
+                //            content: Message,
+                //            icon: 'fa fa-rocket',
+                //            animation: 'scale',
+                //            closeAnimation: 'scale',
+                //            opacity: 0.5,
+                //            buttons: {
+                //                'confirm': {
+                //                    text: 'Yes',
+                //                    btnClass: 'btn-blue',
+                //                    action: function () {
+                                        
+                //                    }
+                //                },
+                //                cancel: function(){
+                //                    //$.alert('You clicked on <strong>cancel</strong>');
+                //                },
+                //                //moreButtons: {
+                //                //    text: 'something else',
+                //                //    action: function(){
+                //                //        $.alert('you clicked on <strong>something else</strong>');
+                //                //    }
+                //                //},
+                //            }
+                //        });
 
                // alert("me");
             },

@@ -9,6 +9,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <_PublishTargetUrl>D:\WWW\Test</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="Asset/css/Activity.css">
+      <publishTime>06/19/2020 14:26:58</publishTime>
+    </File>
     <File Include="Asset/css/bootstrap.min.css">
       <publishTime>04/22/2020 23:40:34</publishTime>
     </File>
@@ -385,13 +388,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>06/19/2020 16:13:28</publishTime>
+      <publishTime>06/19/2020 19:05:00</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
-      <publishTime>06/19/2020 11:07:48</publishTime>
+      <publishTime>06/19/2020 17:07:09</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>06/19/2020 16:13:28</publishTime>
+      <publishTime>06/19/2020 19:05:00</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
       <publishTime>06/10/2020 11:41:51</publishTime>
@@ -1062,11 +1065,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Spire.Common.dll">
       <publishTime>05/20/2020 08:46:44</publishTime>
     </File>
+    <File Include="bin/Spire.Doc.dll">
+      <publishTime>11/04/2019 06:51:48</publishTime>
+    </File>
     <File Include="bin/Spire.License.dll">
-      <publishTime>04/02/2020 03:51:42</publishTime>
+      <publishTime>11/04/2019 02:57:52</publishTime>
     </File>
     <File Include="bin/Spire.Pdf.dll">
-      <publishTime>05/20/2020 08:46:48</publishTime>
+      <publishTime>11/04/2019 06:52:56</publishTime>
     </File>
     <File Include="bin/Spire.XLS.dll">
       <publishTime>05/20/2020 08:46:50</publishTime>
@@ -1582,7 +1588,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/19/2020 14:25:44</publishTime>
     </File>
     <File Include="Views/Assessment/CreateAnalysis.cshtml">
-      <publishTime>06/19/2020 14:26:58</publishTime>
+      <publishTime>06/19/2020 19:04:42</publishTime>
     </File>
     <File Include="Views/Assessment/CustomReport.cshtml">
       <publishTime>06/19/2020 14:26:13</publishTime>
@@ -1648,7 +1654,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2020 10:47:10</publishTime>
     </File>
     <File Include="Views/Customers/GetCustomerById.cshtml">
-      <publishTime>06/17/2020 03:11:53</publishTime>
+      <publishTime>06/19/2020 19:04:42</publishTime>
     </File>
     <File Include="Views/Customers/Index.cshtml">
       <publishTime>06/18/2020 20:01:18</publishTime>
@@ -1786,7 +1792,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/09/2020 10:33:09</publishTime>
     </File>
     <File Include="Views/Report/AssessmentReport.cshtml">
-      <publishTime>06/19/2020 10:20:43</publishTime>
+      <publishTime>06/19/2020 17:54:18</publishTime>
     </File>
     <File Include="Views/Report/OverAllTaskReport.cshtml">
       <publishTime>06/19/2020 13:09:10</publishTime>
@@ -1858,7 +1864,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/05/2020 17:38:24</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/19/2020 14:29:00</publishTime>
+      <publishTime>06/19/2020 17:24:50</publishTime>
     </File>
   </ItemGroup>
 </Project>

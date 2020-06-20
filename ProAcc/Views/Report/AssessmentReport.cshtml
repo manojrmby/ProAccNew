@@ -25,9 +25,8 @@
 <script>
     $(document).ready(function () {
         var Path ="@ViewBag.PDFfileName";
-        Path = Path.replace("~/", "");
-        var loc = window.location.protocol + "//" + window.location.host + "/" + Path;
-    $('#pdf-js-viewer').attr('src', loc);
+        Path = Path.replace("~/", "../");
+    $('#pdf-js-viewer').attr('src', Path);
         dimention();
         $(window).resize(function () {
             dimention();
