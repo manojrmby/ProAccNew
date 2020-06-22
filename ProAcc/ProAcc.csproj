@@ -153,12 +153,14 @@
   <ItemGroup>
     <Content Include="Asset\css\Activity.css" />
     <Content Include="Asset\css\bootstrap.min.css" />
+    <Content Include="Asset\css\ErrorStyle.css" />
     <Content Include="Asset\css\jquery-confirm.min.css" />
     <Content Include="Asset\css\LayoutStyles.css" />
     <Content Include="Asset\css\main.css" />
     <Content Include="Asset\css\Menu.css" />
     <Content Include="Asset\css\main_Login.css" />
     <Content Include="Asset\css\style.css" />
+    <Content Include="Asset\images\dribbble_1.gif" />
     <Content Include="Asset\Jquery\jqGrid\plugins\pdfmake.min.js" />
     <Content Include="Asset\Jquery\jqGrid\plugins\vfs_fonts.js" />
     <Content Include="Asset\Jquery\jquery-confirm.min.js" />
@@ -540,6 +542,7 @@
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\ErrorLogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstanceCreationController.cs" />
     <Compile Include="Controllers\LinkController.cs" />
@@ -638,6 +641,8 @@
     <Content Include="Views\User\CreateUsers.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Report\AssessmentReport.cshtml" />
+    <Content Include="Views\ErrorLog\Error404.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

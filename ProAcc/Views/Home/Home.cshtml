@@ -394,8 +394,8 @@
                                         </div>
                                         <div class="widget-subheading">Readiness Check :</div>
                                     </div>
-                                    <div class="widget-content-right">
-                                        <div class="text-white"><span id="AssId">0 %</span></div>
+                                    <div class="widget-content-right" style="margin-left: 7% !important;">
+                                        <div class="text-white"><span id="AssId" style="margin-left: 31%;">0 %</span></div>
                                         <div class="text-white"><span id="Ass_StatusId"></span></div>
                                     </div>
                                 </div>
@@ -595,7 +595,7 @@
                                         <td>@item.Task</td>
                                         <td>@item.Name</td>
                                         <td>@item.StatusName</td>
-                                        <td>@item.Planed__En_Date</td>
+                                        <td>@item.Planed__En_Date.ToString("dd/MM/yyyy")</td>
                                     </tr>
                                 }
                                 @*<tr>
@@ -663,7 +663,7 @@
 				contentType: "application/json; charset=utf-8",
             success: function (Data) {
                 data_ = [Data.COMPLETE, Data.WIP, Data.ONHOLD, Data.YetToStart, Data.NA];
-				 labels = ["Complete", "Work In Progress", "On Hold", "Yet To Start","Not Apllicable"];
+				 labels = ["Completed", "Work In Progress", "On Hold", "Yet To Start","Not Apllicable"];
 				 renderChart(data_, labels);
 				},
 				error: function () {
@@ -858,13 +858,15 @@
                     var a = (Data.COMPLETE + Data.ONHOLD + Data.NA) / d_total;
                     var percent = Math.ceil(a * 100);
                     $("#AssId").html(percent + "%");
-                   
-                    if (percent == 100) {
-                        $("#Ass_StatusId").html("Complete");
+
+
+                    var Rs = Data.UploadStatus
+                    if (Rs == 1) {
+                        $("#Ass_StatusId").html("Completed");
                     }
-                    else if(percent>0){
-                         $("#Ass_StatusId").html("WIP");
-                    }
+                    //else if(percent>0){
+                    //     $("#Ass_StatusId").html("WIP");
+                    //}
                     else {
                          $("#Ass_StatusId").html("Yet To Start");
                     }

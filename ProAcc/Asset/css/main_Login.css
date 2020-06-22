@@ -25,20 +25,23 @@
 [ RESTYLE TAG ]*/
 
 * {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Arvo', serif;
 }
 
 body,
 html {
-  height: 100%;
-  font-family: Poppins-Regular, sans-serif;
+    height: 100%;
+    /*font-family: Poppins-Regular, sans-serif;*/
+    font-family: 'Arvo', serif;
+    
 }
 
 /*---------------------------------------------*/
 a {
-  font-family: Poppins-Regular;
+  /*font-family: Poppins-Regular;*/
   font-size: 14px;
   line-height: 1.7;
   color: #666666;
@@ -69,7 +72,7 @@ h6 {
 }
 
 p {
-  font-family: Poppins-Regular;
+  /*font-family: Poppins-Regular;*/
   font-size: 14px;
   line-height: 1.7;
   color: #666666;
@@ -168,14 +171,14 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
-  font-family: Poppins-Regular;
+  /*font-family: Poppins-Regular;*/
   font-size: 13px;
   line-height: 1.5;
   color: #999999;
 }
 
 .txt2 {
-  font-family: Poppins-Regular;
+  /*font-family: Poppins-Regular;*/
   font-size: 13px;
   line-height: 1.5;
   color: #666666;

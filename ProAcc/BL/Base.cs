@@ -377,6 +377,8 @@ namespace ProAcc.BL
                 GetRelevant.ONHOLD = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
                 GetRelevant.YetToStart = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
                 GetRelevant.NA = Convert.ToInt32(dt.Rows[0]["NA"]);
+                GetRelevant.UploadStatus = Convert.ToInt32(dt.Rows[0]["UploadStatus"]);
+
             }
             return GetRelevant;
         }

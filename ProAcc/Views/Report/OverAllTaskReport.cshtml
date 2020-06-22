@@ -27,6 +27,7 @@
         white-space: normal !important;
         height: auto !important;
         padding: 2px;
+        text-align:center;
     }
 
     .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
@@ -60,12 +61,11 @@
     .app-container {
         min-height: 100%;
     }
-      .wrapColumnText
-{
-           white-space: normal !important;
-           height:auto;
-           vertical-align:text-top;
-}
+    .wrapColumnText {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+    }
     .fit_Data {
         width: fit-content;
     }
@@ -159,7 +159,7 @@
                 },
                 error: function (a) {
                     //debugger;
-                    alert(a);
+                   // alert(a);
                 }
             });
         });
@@ -199,7 +199,7 @@
                     }
                 },
                 error: function (a) {
-                    alert(a);
+                   // alert(a);
                 }
             });
             });
@@ -517,9 +517,9 @@
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
                      align: 'center', editable: true, hidden: true,
                 },
-                {
+                 {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                    align: 'center', editable: true, hidden: false, edittype: 'custom',
+                     align: 'center', editable: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editrules: {
                         required: true,
@@ -567,20 +567,20 @@
                 },
                 {
                     label: 'Task Other Env. (Y/N)',
-                    name: 'Task_Other_Environment', width: 55, editable: true,
+                    name: 'Task_Other_Environment', width: 55, editable: true,hidden: true,
                     editoptions: { value: "True:False" }
 
                 },
                 {
                     label: 'Dependency (Y/N)',
-                    name: 'Dependency', width: 72,editable: true,
+                    name: 'Dependency', width: 72,editable: true,hidden: true,
                     //edittype: 'checkbox',
                     editoptions: { value: "Yes:No" }
                     //, formatter: "checkbox",
                 },
-                { label: 'Pending With ', name: 'Pending', width: 100,  editable: true },
+                { label: 'Pending With ', name: 'Pending', width: 100,  editable: true,hidden: true },
                 {
-                    label: 'Delay (Y/N)', name: 'Delay_occurred', width: 58,  editable: true,
+                    label: 'Delay', name: 'Delay_occurred', width: 58,  editable: true,
                     //edittype: 'checkbox',
                     editoptions: { value: "True:False" }
                     //, formatter: "checkbox",
@@ -618,7 +618,7 @@
 
                 },
                 {
-                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,
+                    label: 'Est.(hrs)', name: 'EST_hours', width: 55,
                     //maxlength: 4,
                     //formatter: "number",
                     editable: true,
@@ -642,7 +642,7 @@
                     }
                 },
                 {
-                    label: 'Actual Duration (hours)', name: 'Actual_St_hours',
+                   label: 'Actual (hrs)', name: 'Actual_St_hours',
                     //formatter: "number",
                     width: 55, editable: true,
                     editoptions: {
@@ -782,7 +782,7 @@
             hoverrows: true,
             height: 400,
             rowNum: 1000,
-            caption: 'Over All Task Report',
+            caption: '',
             sortable: false,
             grouping: false,
             rownumbers: true,
@@ -794,7 +794,7 @@
 
             loadComplete: function () {
                 //alert("mm");
-
+                 $('#export').show();
             },
             gridComplete: function () {
                // alert("tdyt");
@@ -817,7 +817,8 @@
         $grid.jqGrid("navButtonAdd", "#pager", {
     id: "myButton",
     onClickButton: function () {
-    }
+            }
+   
 });
 //        $("#jqGrid").jqGrid('navButtonAdd','#pager0',{
 //    id:'ExportToExcel',
@@ -1032,7 +1033,7 @@
 
     }*@
     function GetPhaseDropDown() {
-				 var Parameters = {};
+        var Parameters = {};
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("GetPhase","ProjectMonitor")',
@@ -1049,7 +1050,7 @@
                         }
                     },
                     error: function (data) {
-                        alert("GetPhase fail");
+                        //alert("GetPhase fail");
                     }
                 });
 				return Parameters;
@@ -1072,7 +1073,7 @@
                         }
                     },
                     error: function (data) {
-                        alert("fail");
+                        //alert("fail");
                     }
                 });
 				return Parameters;
@@ -1144,7 +1145,7 @@
             }
         },
         error: function (data) {
-            alert("GetStatus fail");
+            //alert("GetStatus fail");
         }
     });
     return Parameters;
@@ -1177,7 +1178,7 @@
             }
         },
         error: function (data) {
-            alert("GetAllUser fail");
+           // alert("GetAllUser fail");
         }
     });
 	return Parameters;

@@ -19,7 +19,7 @@
     $.jgrid.defaults.iconSet = "Octicons";
 </script>
 <style>
-    .ui-jqgrid {
+    /*.ui-jqgrid {
         font-size: 0.8rem
     }
 
@@ -35,7 +35,7 @@
 
     .ui-jqgrid .ui-jqgrid-bdiv {
         overflow-y: scroll
-    }
+    }*/
 
     #jqGridPager_center {
         visibility: hidden;
@@ -48,17 +48,17 @@
            height:auto;
            vertical-align:text-top;
 }
-    div.centered {
+    /*div.centered {
     position: fixed;
     top: 40%!important;
     left: 50%!important;
     margin-top: -50px;
     margin-left: -100px;
-}
+}*/
 </style>
 
-<div class="row">
-    <div class="col-lg-12 card" style="margin-bottom:20px !important;">
+<div class="row" style="padding: 1em;">
+    <div class="col-lg-12 card">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
             {
@@ -97,14 +97,19 @@
     </div>
 </div>
 
-<div style="margin-left:20px;margin-top:20px">
+<div>
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
 <script>
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
-            $('#SubmitInstance').prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+
+        $(window).on("resize", function () {
+        var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
+        $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
+});
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);
@@ -401,7 +406,7 @@
             altRows: true,
             //rownumbers : true,
             //multiselect : true,
-            width: 900,
+            width: 950,
             colMenu: false,
             menubar: false,
             viewrecords: true,
@@ -424,6 +429,7 @@
                 //return [true];
             },
             loadComplete: function () {
+
             }
             // set table stripped class in table style in bootsrap
         });

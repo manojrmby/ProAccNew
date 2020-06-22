@@ -40,7 +40,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/08/2020 20:16:20</publishTime>
     </File>
     <File Include="Asset/css/Menu.css">
-      <publishTime>06/03/2020 22:21:46</publishTime>
+      <publishTime>06/20/2020 12:30:15</publishTime>
     </File>
     <File Include="Asset/css/style.css">
       <publishTime>04/22/2020 23:02:10</publishTime>
@@ -133,7 +133,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/25/2020 14:04:23</publishTime>
     </File>
     <File Include="Asset/images/ProACCTool.png">
-      <publishTime>04/28/2020 15:57:52</publishTime>
+      <publishTime>06/20/2020 12:19:40</publishTime>
     </File>
     <File Include="Asset/images/promantus-new-logo.png">
       <publishTime>04/14/2020 13:14:21</publishTime>
@@ -388,13 +388,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>06/19/2020 19:05:00</publishTime>
+      <publishTime>06/20/2020 13:41:41</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
-      <publishTime>06/19/2020 17:07:09</publishTime>
+      <publishTime>06/19/2020 19:32:52</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>06/19/2020 19:05:00</publishTime>
+      <publishTime>06/20/2020 13:41:41</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
       <publishTime>06/10/2020 11:41:51</publishTime>
@@ -1672,7 +1672,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/18/2020 16:38:20</publishTime>
     </File>
     <File Include="Views/Home/Home.cshtml">
-      <publishTime>06/19/2020 12:29:51</publishTime>
+      <publishTime>06/20/2020 12:52:50</publishTime>
     </File>
     <File Include="Views/InstanceCreation/Create.cshtml">
       <publishTime>05/21/2020 16:46:23</publishTime>
@@ -1771,7 +1771,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2020 13:22:47</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/AssessmentMonitor.cshtml">
-      <publishTime>06/18/2020 20:01:18</publishTime>
+      <publishTime>06/20/2020 13:12:54</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/AssusmentMonitor.cshtml">
       <publishTime>06/13/2020 13:51:48</publishTime>
@@ -1819,7 +1819,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/17/2020 03:03:23</publishTime>
     </File>
     <File Include="Views/shared/_Layout.cshtml">
-      <publishTime>06/18/2020 12:28:06</publishTime>
+      <publishTime>06/20/2020 13:01:11</publishTime>
     </File>
     <File Include="Views/Test/CommingSoon.cshtml">
       <publishTime>04/30/2020 17:32:55</publishTime>
@@ -1864,7 +1864,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/05/2020 17:38:24</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/19/2020 17:24:50</publishTime>
+      <publishTime>06/20/2020 13:41:42</publishTime>
     </File>
   </ItemGroup>
 </Project>

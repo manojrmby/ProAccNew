@@ -69,6 +69,7 @@
         white-space: normal !important;
         height: auto !important;
         padding: 2px;
+        text-align:center;
     }
 
     .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
@@ -103,9 +104,9 @@
         min-height: 100%;
     }
 </style>
-
-<div class="row instanceRow">
-    <div class="col-lg-12 card" style="margin-bottom:20px !important;">
+<hr />
+<div class="row instanceRow" style="padding: 1em;">
+    <div class="col-lg-12 card">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
             {
@@ -143,7 +144,7 @@
         </div>
     </div>
 </div>
-<div style="margin-left:20px;margin-top:20px">
+<div style="margin-top:20px">
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
@@ -280,9 +281,11 @@
     //document.body.style.zoom = "67%";
     document.body.style.zoom = "90%";
     $(document).ready(function () {
+        $(".app-main__outer").css("height", "595px");
+       
        // $("header__pane").find("hamburger").addClass("is-active");
        //hamburger 
-       // LoadTable(1);
+        //LoadTable(1);
     });
     function LoadTable(Instance) {
         
@@ -600,18 +603,18 @@
                 },
                 {
                     label: 'Task Other Env. (Y/N)',
-                    name: 'Task_Other_Environment', width: 55, editable: true,
+                    name: 'Task_Other_Environment', width: 55, editable: true,hidden: true ,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
 
                 },
                 {
                     label: 'Dependency (Y/N)',
-                    name: 'Dependency', width: 72,editable: true,
+                    name: 'Dependency', width: 72,editable: true,hidden: true,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
                 },
-                { label: 'Pending With ', name: 'Pending', width: 100,  editable: true },
+                { label: 'Pending With ', name: 'Pending', width: 100,  editable: true ,hidden: true},
                 {
-                    label: 'Delay (Y/N)', name: 'Delay_occurred', width: 58,  editable: true,
+                    label: 'Delay', name: 'Delay_occurred', width: 30,  editable: true, align: 'center',
                     edittype: 'checkbox',
                     editoptions: { value: "True:False" }
                     , formatter: "checkbox",
@@ -649,7 +652,7 @@
 
                 },
                 {
-                    label: 'Est. Duration (hours)', name: 'EST_hours', width: 55,
+                    label: 'Est.(hrs)', name: 'EST_hours', width: 55,
                     //maxlength: 4,
                     //formatter: "number",
                     editable: true,
@@ -673,7 +676,7 @@
                     }
                 },
                 {
-                    label: 'Actual Duration (hours)', name: 'Actual_St_hours',
+                    label: 'Actual (hrs)', name: 'Actual_St_hours',
                     //formatter: "number",
                     width: 55, editable: true,
                     editoptions: {
@@ -710,7 +713,7 @@
                 },
                 {
                     label: 'Planned Start Date', name: 'Planed__St_Date',
-                    width: 75, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    width: 80, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
                     editoptions: { dataInit: Planed_StartDate, classes: 'DateClass' }
                 },
                 {
@@ -732,12 +735,12 @@
                     editoptions: { dataInit: Actual_En_Date }
                 },
                 {
-                    label: 'Comments', name: 'Notes', edittype: "textarea",
+                    label: 'Comments', name: 'Notes', edittype: "textarea",classes: 'wrapColumnText',
                     wrap: "on"
                     //formatter: function (v) {
                     //     return '<div style="max-height:20px">' $.jgrid.htmlEncode(v) '</div>';
                     // }
-                    ,editrules: { "edithidden": true }, "editable": true, "width": 180,
+                    ,editrules: { "edithidden": true }, "editable": true, "width": 100,
                     editoptions: {
                         "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
                         //"readonly": "readonly"
@@ -816,7 +819,7 @@
             hoverrows: true,
             height: 400,
             rowNum: 1000,
-            caption: 'Assessment',
+            caption: '',
             sortable: false,
             grouping: false,
             rownumbers: true,
@@ -1459,6 +1462,9 @@
         }
         return Result;
     }
+//    setTimeout(function(){
+//   jQuery('.ui-th-column').css('text-align','center');
+//},1);
 </script>
 
 @*<script type="text/javascript">
