@@ -109,7 +109,7 @@
         $(window).on("resize", function () {
         var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
         $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
-});
+        });
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);
@@ -334,7 +334,7 @@
         }
 
         $("#jqGrid").jqGrid({
-            url: "@Url.Action("GetData","Resource")",
+            url: "@Url.Action("GetData","Resource",new { Phase_ID= ViewBag.PhaseID})",
             datatype: "json",
             editurl: "@Url.Action("UpdateResource","Resource")",
             colModel: [

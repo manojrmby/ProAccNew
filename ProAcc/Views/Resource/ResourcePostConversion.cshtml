@@ -11,7 +11,7 @@
 
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
-    <a class="card-title">Post-Conversion</a>
+<a class="card-title">Post-Conversion Resource</a>
 <script>
     //$.jgrid.defaults.width =1000;
     $.jgrid.defaults.responsive = true;
@@ -19,7 +19,7 @@
     $.jgrid.defaults.iconSet = "Octicons";
 </script>
 <style>
-    .ui-jqgrid {
+    /*.ui-jqgrid {
         font-size: 0.8rem
     }
 
@@ -35,15 +35,29 @@
 
     .ui-jqgrid .ui-jqgrid-bdiv {
         overflow-y: scroll
-    }
+    }*/
 
     #jqGridPager_center {
         visibility: hidden;
     }
 </style>
+<style>
+        .wrapColumnText {
+            white-space: normal !important;
+            height: auto;
+            vertical-align: text-top;
+        }
+        /*div.centered {
+        position: fixed;
+        top: 40%!important;
+        left: 50%!important;
+        margin-top: -50px;
+        margin-left: -100px;
+    }*/
+</style>
 
-<div class="row">
-    <div class="col-lg-12 card" style="margin-bottom:20px !important;">
+<div class="row" style="padding: 1em;">
+    <div class="col-lg-12 card">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
             {
@@ -82,14 +96,19 @@
     </div>
 </div>
 
-<div style="margin-left:20px;margin-top:20px">
+<div>
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
 <script>
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
-            $('#SubmitInstance').prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+
+         $(window).on("resize", function () {
+        var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
+             $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
+         });
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);
@@ -175,7 +194,7 @@
 					$('#SubmitInstance').prop("disabled", false);
                 }
             });
-   $('#SubmitInstance').click(function () {
+    $('#SubmitInstance').click(function () {
         var IDInstance = $("#IDInstance").val();
         $.ajax({
             //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
@@ -183,25 +202,26 @@
             type: "POST",
             data: { 'IDInstance': IDInstance },
             success: function (result) {
-                $.alert({
-                    title: 'Alert !',
-                    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                    icon: 'fa fa-rocket',
-                    animation: 'scale',
-                    closeAnimation: 'scale',
-                    buttons: {
-                        okay: {
-                            text: 'Okay',
-                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            action: function (event, ui) {
-                                $(this).remove();
-                                LoadTable(IDInstance);
-                                $('#jqGrid').trigger('reloadGrid');
-                            }
-                        }
-                    }
+                 Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                 LoadTable(IDInstance);
+                 $('#jqGrid').trigger('reloadGrid');
+                //$.alert({
+                //    title: 'Alert !',
+                //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                //    icon: 'fa fa-rocket',
+                //    animation: 'scale',
+                //    closeAnimation: 'scale',
+                //    buttons: {
+                //        okay: {
+                //            text: 'Okay',
+                //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                //            action: function (event, ui) {
+                //                $(this).remove();
+                //            }
+                //        }
+                //    }
 
-                });
+                //});
 
 
             }
@@ -301,9 +321,14 @@
             }
         };
 
+         var rowEdit = function (row) {
+            debugger;
+            if (row == 0)
+                return false;
+        }
 
         $("#jqGrid").jqGrid({
-            url: "@Url.Action("GetDataPostConversion","Resource")",
+            url: "@Url.Action("GetData","Resource",new { Phase_ID= ViewBag.PhaseID})",
             datatype: "json",
             editurl: "@Url.Action("UpdateResource","Resource")",
             colModel: [
@@ -321,7 +346,7 @@
 
                     }
                 },
-                { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true },
+                { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true,classes: 'wrapColumnText' },
                 { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true ,hidden: true},
                 {
                     label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'left', editable: true,
@@ -340,15 +365,23 @@
                 },
 
                 {
-                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'center', editable: true, hidden: true,
+                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'left', editable: true, hidden: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',//Add Only
-                    editoptions: {
-                        value: GetMasterAddPostConversion()
+                     editoptions: {
+                        dataUrl: '@Url.Action("MasterAddPostConversion","Resource")',
+                        buildSelect: buildSelectFromJson
                     }
+                },
+                {
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'Left', editable: true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetStatusDropDown()
+                    },
                 },
 
                 {
-                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
+                    label: 'Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
@@ -363,7 +396,7 @@
             altRows: true,
             //rownumbers : true,
             //multiselect : true,
-            width: 900,
+            width: 950,
             colMenu: false,
             menubar: false,
             viewrecords: true,
@@ -400,10 +433,43 @@
                 checkOnUpdate: true,
                 checkOnSubmit: true,
                 closeAfterEdit: true,
+                beforeInitData: function (form) {
+                    var id = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');
+                    var celValue = jQuery("#jqGrid").jqGrid('getCell', id, 'StatusId');
+                    if (celValue == 3 || celValue == 1) {
+                        $.alert({
+                            title: 'Alert !',
+                            content: 'You\'r  not allowed to edit task Which are already closed..! ',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                            icon: 'fa fa-rocket',
+                            animation: 'scale',
+                            closeAnimation: 'scale',
+                            buttons: {
+                                okay: {
+                                    text: 'Okay',
+                                    btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
+                                    //action: function (event, ui) {
+                                    //    $(this).remove();
+                                    //    LoadTable(IDInstance);
+                                    //    $('#jqGrid').trigger('reloadGrid');
+                                    //}
+                                }
+                            }
+
+                        });
+
+                        return false;
+                    }
+                    //var Status=$("#" + id + "_StatusId").val();
+                    //alert(id);
+                },
                 beforeShowForm: function (form) {
                     //$("#PhaseId").attr("disabled", "disabled");
+
+                    $("#editmodjqGrid").addClass("centered");
+                    $(".navButton").hide();
                     $("#tr_PhaseId").hide();
                     $("#tr_SequenceNum").hide();
+                    $("#tr_StatusId").hide();
 
                     $("#Task").attr("disabled", "disabled");
                      $("#RoleID").attr("disabled", "disabled");
@@ -412,6 +478,7 @@
                     //debugger;
                     //needDisable=true;
                 },
+                reloadAfterSubmit: true,
                 // afterShowForm: populateUser,
                 errorTextFormat: function (data) {
                     alert("in" + data.responseText);
@@ -424,8 +491,10 @@
                 closeAfterAdd: true,
                 recreateForm: true,
                 beforeShowForm: function (form) {
+                    $("#editmodjqGrid").addClass("centered");
                     $("#tr_PhaseId").hide();
                     $("#tr_SequenceNum").hide();
+                     $("#tr_StatusId").hide();
                     $("#tr_Task").hide();
                     $("#tr_RoleID").hide();
                      $("#tr_UserID").hide();
@@ -452,8 +521,30 @@
                         success: function (Data) {
 
                             if (Data) {
+
+                                $.alert({
+                                    title: 'Delete !',
+                                    content: 'Deleted Sussfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                    icon: 'fa fa-trfa-trash-o',
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                        okay: {
+                                            text: 'Okay',
+                                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                            action: function (event, ui) {
+                                                $(this).remove();
+                                                //LoadTable(IDInstance);
+                                                $('#jqGrid').trigger('reloadGrid');
+                                            }
+                                        }
+                                    }
+
+                                });
+
+
                                 //debugger;
-                                alert("Deleted Sussfully..!");
+                                //alert("");
                             }
                             //for (var i = 0; i < Data.length; i++) {
                             //    var obj = {};
@@ -483,6 +574,39 @@
                 showQuery: false
             }
         );
+    }
+    var buildSelectFromJson = function (response) {
+        var html = '<select>', d = JSON.parse(response), length = d.length, i = 0, item;
+        for (; i < length; i++) {
+            item = d[i];
+            html += '<option value=' + item.ActivityID + '>' + item.Task + '</option>';
+        }
+        html += '</select>';
+        return html;
+    };
+     function GetStatusDropDown() {
+        var Parameters = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetStatus","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+                //debugger;
+                for (var i = 0; i < Data.length; i++) {
+                    //var obj = {};
+                    var StatusName = Data[i].StatusName;
+                    var key = "" + Data[i].Id;
+                    Parameters[key] = StatusName;
+                }
+            },
+            error: function (data) {
+                alert("GetStatus fail");
+            }
+        });
+        return Parameters;
     }
     function GetPhaseDropDown() {
         var Parameters = {};
