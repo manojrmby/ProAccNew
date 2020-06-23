@@ -1457,7 +1457,7 @@ namespace ProAcc.BL
 
         }
 
-        public bool Sp_UpdateMonitor(ProjectMonitorModel PM)
+        public bool Sp_UpdateMonitor(ProjectMonitorModel PM, int PhaseId)
         {
             bool Status = false;
             LogHelper _log = new LogHelper();
@@ -1472,8 +1472,6 @@ namespace ProAcc.BL
                 dB.addIn("@Pending", PM.Pending);
                 dB.addIn("@Delay_occurred", PM.Delay_occurred);
 
-                //dB.addIn("@DelayedReason", PM.Delayed_Reas);
-                //dB.addIn("@UserID", PM.UserID);
                 dB.addIn("@StatusId", PM.StatusId);
                 dB.addIn("@EST_hours", PM.EST_hours);
                 dB.addIn("@Actual_St_hours", PM.Actual_St_hours);
@@ -1488,7 +1486,20 @@ namespace ProAcc.BL
                 dB.addIn("@Id", PM.Id);
 
                 dB.ExecuteScalar();
+
+                DBHelper Db1 = new DBHelper("SP_AddMail", CommandType.StoredProcedure);
+                Db1.addIn("@Type", "ProjectMonitor");
+                Db1.addIn("@PhaseID", PhaseId);
+                Db1.addIn("@InstanceID", PM.Instance);
+                Db1.addIn("@PM_ID", PM.Id);
+                Db1.addIn("@Cre_By", PM.Cre_By);
+                Db1.ExecuteScalar();
+
                 Status = true;
+
+
+
+
             }
             catch (Exception ex )
             {
@@ -1739,6 +1750,39 @@ namespace ProAcc.BL
             return PM;
         }
 
+
+        public List<AuditReport.ProjectMonitorModel> Sp_GetAuditData()
+        {
+            DataTable dt = new DataTable();
+            AuditReport A = new AuditReport();
+            List<AuditReport.ProjectMonitorModel> AR = new List<AuditReport.ProjectMonitorModel>();
+            DBHelper dB = new DBHelper("SP_Audit", CommandType.StoredProcedure);
+            dB.addIn("@Type", "OverAllReport");
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    AuditReport.ProjectMonitorModel A_PM = new AuditReport.ProjectMonitorModel();
+                    A_PM.Id = Convert.ToInt32(dr["Change_id"].ToString());
+                    A_PM.InstaceName = dr["InstaceName"].ToString();
+                    A_PM.Task = dr["Task"].ToString();
+                    A_PM.PhaseName = dr["PhaseName"].ToString();
+                    A_PM.RoleName = dr["RoleName"].ToString();
+
+                    A_PM.Operation = dr["Operation"].ToString();
+                    A_PM.OperationAt = Convert.ToDateTime(dr["OperationAt"].ToString());
+
+                    A_PM.By = dr["By"].ToString();
+
+                    AR.Add(A_PM);
+
+                }
+            }
+
+                return AR;
+        }
 
         //public Boolean Proceess_WordAddImage()
         //{

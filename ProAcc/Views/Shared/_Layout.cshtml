@@ -41,7 +41,7 @@
             borderRadius: "10px",
         });
 
-        
+
     </script>
     <style>
         .Class_span{
@@ -108,8 +108,48 @@
     background: rgba(0,0,0,0.25);
     display: none;
 }
-    </style>
+.slideBefore{
 
+    transition: 1s;
+    left: 0;
+    margin-left:0;
+    margin-left: -305px;
+}
+.slide{
+
+    transition: 1s;
+    left: 0;
+    margin-left:0;
+}
+    </style>
+    <style>/* ScrollBar */
+        /* width */
+        ::-webkit-scrollbar {
+            opacity:0;
+            width: 12px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+           -webkit-border-radius: 10px;
+    border-radius: 10px;
+    /*background: rgba(255,0,0,0.8);*/ 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+        }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                opacity:1;
+                /*background: rgba(255,0,0,0.4);*/ 
+            }
+    </style>
     @*<link href="~/Asset/css/Loader.css" rel="stylesheet" />*@
 
 </head>
@@ -123,9 +163,10 @@
                                 <polygon fill="#dfa800" points="72.5 50 50 11 27.5 50 50 50" style="animation-play-state: running; animation-delay: 0s;" transform="rotate(122.36 50 38.5)">
                                     <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.8518518518518516s" values="0 50 38.5;360 50 38.5" keyTimes="0;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
                                 </polygon>
-                                <polygon fill="#d96c21" points="5 89 50 89 27.5 50" style="        animation-play-state: running;
-                animation-delay: 0s;
-        " transform="rotate(122.36 27.5 77.5)">
+                                <polygon fill="#d96c21" points="5 89 50 89 27.5 50" style="
+        animation-play-state: running;
+        animation-delay: 0s;
+" transform="rotate(122.36 27.5 77.5)">
                                     <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.8518518518518516s" values="0 27.5 77.5;360 27.5 77.5" keyTimes="0;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
                                 </polygon>
                                 <polygon fill="#35599b" points="72.5 50 50 89 95 89" style="animation-play-state: running; animation-delay: 0s;" transform="rotate(122.36 72.3301 77.5)">
@@ -139,16 +180,16 @@
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
             <div class="app-header header-shadow  sidebar-text-dark " style="background-color:white!important;">
                 <div class="app-header__logo ">
-                    <div class="logo-src">
+                    @*<div class="logo-src">
                         <img src="~/Asset/images/ProACCTool.png" style="width:250px;height:100px;" />
-                    </div>
+                    </div>*@
                     <div class="header__pane ml-auto ">
                         <div>
                             <button type="button"
                                     class="hamburger close-sidebar-btn hamburger--elastic"
                                     data-class="closed-sidebar">
                                 <span class="hamburger-box">
-                                    <span class="hamburger-inner" style="color:green;"></span>
+                                    <span class="hamburger-inner" style="color: green;"></span>
                                 </span>
                             </button>
                         </div>
@@ -175,26 +216,20 @@
                     </span>
                 </div>
                 <div class="app-header__content header-text-dark ">
-                    @*<div class="app-header-left">
-            <div class="search-wrapper">
-                <div class="input-holder">
-                    <input type="text"
-                           class="search-input"
-                           placeholder="Type to search" />
-                    <button class="search-icon"><span></span></button>
-                </div>
-                <button class="close"></button>
-            </div>
-
-        </div>*@
+                    
                     <div class="app-header-left">
+                        <div class="logicon slideBefore">
+                            <img src="~/Asset/images/ProACCTool.png" style="width:250px;height:100px;" />
+                        </div>
+                        
                         <p style="
     font-family: -webkit-body;
     font-size: x-large;
     margin-left: 155px;
     font-weight: 600;
     color: #0e0e0e;
-">Accelerator for S4 HANA Transformation</p>
+">
+                        Accelerator for S4 HANA Transformation</p>
                     </div>
                     <div class="app-header-right">
                         <a href="javascript:void(0);" class="nav-link">
@@ -297,7 +332,7 @@
                     </div>
                 </div>
             </div>
-            <div class="app-main sidebar-shadow">
+            <div class="app-main">
                 <div class="app-sidebar sidebar-shadow">
                     <div class="app-header__logo">
                         <div class="logo-src"></div>
@@ -624,11 +659,11 @@
                                     </a>
                                     <ul>
                                         @*<li>
-                    <a href="@Url.Action("CommingSoon", "Test")">
-                        <i class="metismenu-icon pe-7s-diamond"></i>
-                        Customer Report
-                    </a>
-                </li>*@
+            <a href="@Url.Action("CommingSoon", "Test")">
+                <i class="metismenu-icon pe-7s-diamond"></i>
+                Customer Report
+            </a>
+        </li>*@
                                         <li>
                                             <a href="@Url.Action("OverAllTaskReport", "Report")">
                                                 <i class="metismenu-icon pe-7s-diamond"></i>
@@ -636,218 +671,26 @@
                                             </a>
                                         </li>
 
+                                        <li>
+                                            <a href="@Url.Action("AuditReport", "Report")">
+                                                <i class="metismenu-icon pe-7s-diamond"></i>
+                                                Audit Report
+                                            </a>
+                                        </li>
+                                        
+
                                     </ul>
                                 </li>
-                                @*User Settings*@
-                                <li>
-
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a href="#">
-                                            <i class="metismenu-icon fa fa-user-cog"></i>
-                                            User Settings
-                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                        </a>
-                                        <ul>
-
-                                            <li>
-                                                <a href="@Url.Action("ProfileLink", "Link")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Add New User / Customer
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "Customers")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Customer List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "User")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    User List
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    }
-                                </li>
-                                @*User Settings*@
-                                <li>
-
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a href="#">
-                                            <i class="metismenu-icon fa fa-user-cog"></i>
-                                            User Settings
-                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                        </a>
-                                        <ul>
-
-                                            <li>
-                                                <a href="@Url.Action("ProfileLink", "Link")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Add New User / Customer
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "Customers")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Customer List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "User")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    User List
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    }
-                                </li>
-                                @*User Settings*@
-                                <li>
-
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a href="#">
-                                            <i class="metismenu-icon fa fa-user-cog"></i>
-                                            User Settings
-                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                        </a>
-                                        <ul>
-
-                                            <li>
-                                                <a href="@Url.Action("ProfileLink", "Link")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Add New User / Customer
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "Customers")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Customer List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "User")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    User List
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    }
-                                </li>
-                                @*User Settings*@
-                                <li>
-
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a href="#">
-                                            <i class="metismenu-icon fa fa-user-cog"></i>
-                                            User Settings
-                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                        </a>
-                                        <ul>
-
-                                            <li>
-                                                <a href="@Url.Action("ProfileLink", "Link")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Add New User / Customer
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "Customers")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Customer List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "User")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    User List
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    }
-                                </li>
-                                @*User Settings*@
-                                <li>
-
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a href="#">
-                                            <i class="metismenu-icon fa fa-user-cog"></i>
-                                            User Settings
-                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                        </a>
-                                        <ul>
-
-                                            <li>
-                                                <a href="@Url.Action("ProfileLink", "Link")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Add New User / Customer
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "Customers")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Customer List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "User")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    User List
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    }
-                                </li>
-                                @*User Settings*@
-                                <li>
-
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a href="#">
-                                            <i class="metismenu-icon fa fa-user-cog"></i>
-                                            User Settings
-                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                        </a>
-                                        <ul>
-
-                                            <li>
-                                                <a href="@Url.Action("ProfileLink", "Link")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Add New User / Customer
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "Customers")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Customer List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "User")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    User List
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    }
-                                </li>
+                               
                             </ul>
                             }
                         </div>
                     </div>
                 </div>
-                <div class="app-main__outer scrollbar-sidebar" style="overflow:auto;height:535px;">
+                <div class="app-main__outer" style="overflow:auto;height:535px;">
                     <div class="app-main__inner">
-                        
                             @RenderBody()
                             @RenderSection("scripts", required: false)
-                       
-                        
                     </div>
                     <div class="app-wrapper-footer">
                         <div class="app-footer">
@@ -862,13 +705,23 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>
         <script>
             $(document).ready(function () {
-               // $(".header__pane").remove();
+                // $(".header__pane").remove();
+                $(".header__pane").click(function e() {
+
+                    if ($('.logicon').hasClass('slideBefore')) {
+                        $('.logicon').switchClass('slideBefore', 'slide');
+                    } else {
+                        $('.logicon').switchClass('slide', 'slideBefore');
+                    }
+
+                    
+                   
+                })
                 $(document).ajaxStart(function () {
                     $("#load").css("display", "block");
                 });

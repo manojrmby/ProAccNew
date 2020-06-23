@@ -118,6 +118,9 @@ namespace ProAcc.Controllers
 
             ViewBag.Taskdetails = output;
             ViewBag.Project = Project;
+
+            //Mail m = new Mail();
+            //m.SendEmail();
             return View();
         }
 

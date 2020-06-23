@@ -9,11 +9,14 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title> Promantus ProAcc Login</title>
-
+    <link rel="stylesheet" type="text/css" href="~/Asset/css/loading.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Asset/css/ldbtn.min.css" />
     <link rel="icon" type="image/png" href="~/Asset/images/icons/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="~/Asset/css/main_Login.css" />
     <link rel="stylesheet" type="text/css" href="~/Asset/css/Menu.css" />
-    
+
+
+
     <style>
         .Cl_Tagname {
             font-weight: bolder;
@@ -23,19 +26,19 @@
 
         .container-login100 {
             /*background: #000000;*/
-            background:
-radial-gradient(black 15%, transparent 16%) 0 0,
-radial-gradient(black 15%, transparent 16%) 8px 8px,
-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-background-color:#282828;
-background-size:16px 16px;
+            background: radial-gradient(black 15%, transparent 16%) 0 0, radial-gradient(black 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+            background-color: #282828;
+            background-size: 16px 16px;
         }
-        
+
 
         .wrap-login100 {
             background: #f0f5f7;
             /*background: linear-gradient(344deg, rgba(7,213,213,1) 24%, rgba(1,157,208,1) 64%) !important;*/
+        }
+        .ld ld-ring ld-spin
+        {
+
         }
     </style>
 </head>
@@ -83,13 +86,14 @@ background-size:16px 16px;
                             <div class="panel-footer" style="max-width:222px;">
                                 @if (TempData["Message"] != null)
                                 {
-                                    <span style="color:red;">@TempData["Message"].ToString()</span>
+                                    <span style="color: red;">@TempData["Message"].ToString()</span>
                                 }
                                 <label id="dis"></label><br>
                             </div>
-                            <div class="container-login100-form-btn">
-                                <button class="login100-form-btn" id="loginclick" type="submit">
+                                <div class="container-login100-form-btn">
+                                <button class="login100-form-btn ld-ext-right" id="loginclick" onclick="this.classList.toggle('running')" type="submit">
                                     Login
+                                <div class="ld ld-ring ld-spin"></div>
                                 </button>
                             </div>
                         </form>
@@ -105,10 +109,6 @@ background-size:16px 16px;
     }
     <script src="~/Asset/Scripts/jquery.min.js"></script>
     <script src="~/Asset/Scripts/bootstrap.min.js"></script>
-    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-        <script src="~/Scripts/bootstrap.min.js"></script>*@
-
     <script src="~/Asset/Scripts/tilt.jquery.min.js"></script>
     <script>
         $(".js-tilt").tilt({
@@ -119,6 +119,15 @@ background-size:16px 16px;
 
 
     <script>
+    //   $("#loginclick").click(function() {
+    //  // disable button
+    //  $(this).prop("disabled", true);
+    //  // add spinner to button
+    //  $(this).html(
+    //    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
+    //       );
+    //       $(this).submit();
+    //});
       @*  $('#loginclick').on('click', function () {
             debugger;
             $('#dis').slideDown().html('');

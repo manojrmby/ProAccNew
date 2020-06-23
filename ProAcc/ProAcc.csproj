@@ -526,6 +526,8 @@
     <Compile Include="BL\FileUpload.cs" />
     <Compile Include="BL\FileUpload_Pic.cs" />
     <Compile Include="BL\LogHelper.cs" />
+    <Compile Include="BL\Mail.cs" />
+    <Compile Include="BL\Model\AuditReport.cs" />
     <Compile Include="BL\Model\CreateViewModel.cs" />
     <Compile Include="BL\Model\LogedUser.cs" />
     <Compile Include="BL\Model\PicturetoData.cs" />
@@ -643,6 +645,7 @@
     <Content Include="Views\Report\AssessmentReport.cshtml" />
     <Content Include="Views\ErrorLog\Error404.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Report\AuditReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "AuditReport";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/css/jqGrid")
+@Scripts.Render("~/bundles/Scripts/jqGrid")
+<br />
+<a class="card-title">Resource Allocation</a>
+<hr />
+<script>
+    //$.jgrid.defaults.width =1000;
+    $.jgrid.defaults.responsive = true;
+    $.jgrid.defaults.styleUI = 'Bootstrap4';
+    $.jgrid.defaults.iconSet = "Octicons";
+</script>
+<style>
+    .wrapColumnText
+{
+           white-space: normal !important;
+           height:auto;
+           vertical-align:text-top;
+}
+</style>
+<div>
+    <table id="jqGrid"></table>
+    <div id="jqGridPager"></div>
+</div>
+<script>
+    $(document).ready(function () {
+        LoadTable(1);
+    });
+    function LoadTable(Instance) {
+        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
+        
+        $("#jqGrid").jqGrid({
+            url: "@Url.Action("GetAduitData","Report")",
+            datatype: "json",
+            colModel: [
+                {
+                    label: 'Id', name: 'Change_id', index: 'Change_id', width: 70,
+                    sortable: false, align: 'center', editable: true, hidden: true
+
+                },
+                {
+                    label: 'InstaceName', name: 'InstaceName', index: 'InstaceName', width: 45,
+                    sortable: false, align: 'center', search: true, stype: 'text'
+                },
+                 {
+                    label: 'Task', name: 'Task', index: 'Task', 
+                    sortable: false, align: 'Left',search:true, stype:'text',classes: 'wrapColumnText'
+                },
+                 {
+                    label: 'PhaseName', name: 'PhaseName', index: 'PhaseName', width: 45,
+                    sortable: false, align: 'Left',search:true, stype:'text'
+                },
+                 {
+                    label: 'Role', name: 'RoleName', index: 'RoleName', width: 30,
+                    sortable: false, align: 'Left',search:true, stype:'text'
+                }
+                 ,
+                 {
+                    label: 'Operation', name: 'Operation', index: 'Operation', width: 40,
+                    sortable: false, align: 'Left',search:true, stype:'text'
+                }, {
+                    label: 'Operation on', name: 'OperationAt', index: 'OperationAt', width: 40,
+                     sortable: false, align: 'Left',
+                     formatter: "date", 
+                      formatoptions: { newformat: 'm/d/Y' },
+                     jsonmap: function (element) {
+                        
+                        var d = new Date(parseInt(element.OperationAt.substr(6)));
+                        return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+                    },
+                    sorttype: 'date',
+                    search: true,
+                    searchoptions: {
+                        sopt: ['eq', 'ne'],
+                        dataInit: function (element) {
+                            var self = this;
+                            $(element).datepicker({
+                                autoclose: true,
+                                format: 'mm/dd/yy',
+                                orientation: 'bottom',
+                                showOn: 'focus',
+                                onSelect: function () {
+                                    if (this.id.substr(0, 3) === "gs_") {
+                                        // in case of searching toolbar
+                                        setTimeout(function () {
+                                            self.triggerToolbar();
+                                        }, 50);
+                                    } else {
+                                        // refresh the filter in case of
+                                        // searching dialog
+                                        $(this).trigger('change');
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            ],
+            loadonce: true,
+            altRows: true,
+            //rownumbers : true,
+            //multiselect : true,
+            width: 950,
+            colMenu: false,
+            menubar: false,
+            viewrecords: true,
+            hoverrows: true,
+            // height: 'auto',
+            height: 400,
+             rowNum: 10,
+   
+            caption: 'Project Monitor Audit',
+            sortable: false,
+            grouping: false,
+            pager: "#jqGridPager",
+
+            rownumbers: true,
+            reload: true,
+             emptyrecords: "Empty records",
+           
+            loadComplete: function () {
+
+            }
+            // set table stripped class in table style in bootsrap
+        });
+        $('#jqGrid').jqGrid("filterToolbar");
+        $('#jqGrid').navGrid('#jqGridPager',
+            // the buttons to appear on the toolbar of the grid
+            { edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
+            // options for the Edit Dialog
+            {
+               
+            },
+            // options for the Add Dialog
+            {
+                
+            },
+            // options for the Delete Dailog
+            {
+                
+            },
+            // search options - define multiple search
+            {
+                multipleSearch: true,
+                showQuery: false
+            }
+        );
+    }
+    
+</script>

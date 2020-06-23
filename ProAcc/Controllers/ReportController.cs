@@ -131,5 +131,18 @@ namespace ProAcc.Controllers
         }
 
 
+        public ActionResult AuditReport()
+        {
+            return View(); 
+        }
+
+        public ActionResult GetAduitData()
+        {
+            List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditData();
+            var obj = new { data = PM };
+            return Json(PM, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }
