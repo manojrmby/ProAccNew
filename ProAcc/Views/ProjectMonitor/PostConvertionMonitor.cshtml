@@ -1,15 +1,59 @@
 ﻿
 @{
-    ViewBag.Title = "Post-Conversion Monitor";
+    ViewBag.Title = "PostConversion Monitor";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
+@*<script src="~/Asset/Jquery/jqGrid/grid.locale-en.js"></script>
+    <script src="~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"></script>
 
+    <link href="~/Asset/Jquery/jqGrid/css/octicons.css" rel="stylesheet" />
+    <link href="~/Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css" rel="stylesheet" />*@
 
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
+<style>
+    .wrapColumnText {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+    }
 
-    <a class="card-title">Post-Conversion Monitor</a>
+    .fit_Data {
+        width: fit-content;
+    }
+    /*.instanceRow {
+        max-width: 1 !important;
+    }*/
+</style>
 
+@*<style type="text/css">
+        .ui-jqgrid tr.jqgrow td {
+            word-wrap: break-word; /* IE 5.5+ and CSS3 */
+            white-space: pre-wrap; /* CSS3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            overflow: hidden;
+            height: auto;
+            vertical-align: middle;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        /*.ui-jqgrid tr.jqgrow td { white-space: normal !important; height: auto; vertical-align: text-top; padding-top: 2px; }*/
+        th.ui-th-column div {
+            word-wrap: break-word; /* IE 5.5+ and CSS3 */
+            white-space: pre-wrap; /* CSS3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            overflow: hidden;
+            height: auto;
+            vertical-align: middle;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+    </style>*@
+<a class="card-title">PostConversion Monitor</a>
 <script>
     //$.jgrid.defaults.width =1000;
     $.jgrid.defaults.responsive = true;
@@ -25,6 +69,7 @@
         white-space: normal !important;
         height: auto !important;
         padding: 2px;
+        text-align: center;
     }
 
     .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
@@ -59,9 +104,9 @@
         min-height: 100%;
     }
 </style>
-
-<div class="row">
-    <div class="col-lg-12 card" style="margin-bottom:20px !important;">
+<hr />
+<div class="row instanceRow" style="padding: 1em;">
+    <div class="col-lg-12 card">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
             {
@@ -99,7 +144,7 @@
         </div>
     </div>
 </div>
-<div style="margin-left:20px;margin-top:20px">
+<div style="margin-top:20px">
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
@@ -201,42 +246,197 @@
             type: "POST",
             data: { 'IDInstance': IDInstance },
             success: function (result) {
-                $.alert({
-                    title: 'Alert !',
-                    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                    icon: 'fa fa-rocket',
-                    animation: 'scale',
-                    closeAnimation: 'scale',
-                    buttons: {
-                        okay: {
-                            text: 'Okay',
-                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            action: function (event, ui) {
-                                $(this).remove();
-                                LoadTable(IDInstance);
-                                $('#jqGrid').trigger('reloadGrid');
-                            }
-                        }
-                    }
+                Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                 LoadTable(IDInstance);
+        $('#jqGrid').trigger('reloadGrid');
 
-                });
+                //$.alert({
+                //    title: 'Alert !',
+                //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                //    icon: 'fa fa-rocket',
+                //    animation: 'scale',
+                //    closeAnimation: 'scale',
+                //    buttons: {
+                //        okay: {
+                //            text: 'Okay',
+                //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                //            action: function (event, ui) {
+                //                $(this).remove();
+                //                LoadTable(IDInstance);
+                //                $('#jqGrid').trigger('reloadGrid');
+                //            }
+                //        }
+                //    }
+
+                //});
 
 
             }
         });
-    });
+   });
+
 </script>
 
 <script>
-    document.body.style.zoom = "67%";
-    //$(document).ready(function () {
+    //document.body.style.zoom = "67%";
+    document.body.style.zoom = "90%";
+    $(document).ready(function () {
+        $(".app-main__outer").css("height", "595px");
 
-    //});
+       // $("header__pane").find("hamburger").addClass("is-active");
+       //hamburger
+        //LoadTable(1);
+    });
     function LoadTable(Instance) {
 
         // $(document).ready(function () {
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
+    //    var lastSelection;
+    //    var editParameters = {
+    //        keys: true,
+    //        //successfunc: editSuccessful,
+    //        errorfunc: false,
+    //        restoreAfterError: false,
+    //        extraparam: {
+    //            valor: 'texto', any: '20164',
+    //            clave1: function () {
+    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+    //                var value = $("#grid").jqGrid('getCell', sel_id, 'pas1');
+    //                return value;
+    //            },
+    //            obra: function () {
+    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+    //                var value = $("#grid").jqGrid('getCell', sel_id, 'obra');
+    //                return value;
+    //            },
+    //            empresa: function () {
+    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
+    //                var value = $("#grid").jqGrid('getCell', sel_id, 'empresa');
+    //                return value;
+    //            }
+    //        }
+    //    };
+    //    var jqId = jQuery("#jqGrid");
+    //    var grid = $("#grid");
+    //    var cancelEditing = function (myGrid) {
+    //        var lrid;
+    //        if (typeof lastSelection !== "undefined") {
+    //            // cancel editing of the previous selected row if it was in editing state.
+    //            // jqGrid hold intern savedRow array inside of jqGrid object,
+    //            // so it is safe to call restoreRow method with any id parameter
+    //            // if jqGrid not in editing state
+    //            myGrid.jqGrid('restoreRow', lastSelection);
 
+
+    //            // now we need to restore the icons in the formatter:"actions"
+    //            lrid = $.jgrid.jqID(lastSelection);
+    //            $("tr#" + lrid + " div.ui-inline-edit, " + "tr#" + lrid + " div.ui-inline-del").show();
+    //            $("tr#" + lrid + " div.ui-inline-save, " + "tr#" + lrid + " div.ui-inline-cancel").hide();
+    //            $("div.ui-inline-close").show();
+    //        }
+    //    };
+
+    //    var getColumnIndexByName = function (grid, columnName) {
+    //        var cm = grid.jqGrid('getGridParam', 'colModel'), i, l = cm.length;
+    //        for (i = 0; i < l; i++) {
+    //            if (cm[i].name === columnName) {
+    //                return i; // return the index
+    //            }
+    //        }
+    //        return -1;
+    //    }
+
+    //    var myEditOptions = {
+    //    keys: true,
+    //    oneditfunc: function (rowid) {
+    //        alert("row with rowid=" + rowid + " is editing.");
+    //    },
+    //    aftersavefunc: function (rowid, response, options) {
+    //        alert("row with rowid=" + rowid + " is successfuly modified.");
+    //    }
+    //};
+
+        //var DateInput = function (element, options) {
+
+        //    //var ID = options.id;
+        //    //var Result_PLST = ID.indexOf('Planed__St_Date');
+        //    //if (Result_PLST == 2)
+        //    //{
+        //    //    alert("HOOO");
+        //    //}
+        //    //var Cell_Date = $("#" + ID).val();
+        //    //if (Cell_Date == "17/10/1904") {
+        //    //    debugger;
+        //    //    var currentDate=new Date();
+        //    //     $("#" + ID).val(currentDate);
+        //    //}
+        //   // debugger;
+
+
+        //    $(element).on('keypress', function (e) {
+        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
+        //        e.preventDefault();
+        //    })
+        //    $(element).datepicker({
+        //        duration: "slow",
+        //        defaultDate: +1,
+        //        altFormat: "mm/dd/yy",
+        //        dateFormat: "mm/dd/yy",
+        //        autoSize: false,
+        //        changeYear: true,
+        //        changeMonth: true,
+        //        showButtonPanel: false,
+        //        showWeek: false
+        //    //}).datepicker("setDate", new Date());
+        //     }).datepicker();
+        //};
+         //var DateInput1 = function (element, options) {
+
+        //    //var ID = options.id;
+        //    //var Cell_Date = $("#" + ID).val();
+        //    //if (Cell_Date == "17/10/1904") {
+        //    //    debugger;
+        //    //    var currentDate=new Date();
+        //    //     $("#" + ID).val(currentDate);
+        //    //}
+        //    //debugger;
+        //    $(element).on('keypress', function (e) {
+        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
+        //        e.preventDefault();
+        //    })
+        //    $(element).datepicker({
+        //        duration: "slow",
+        //        defaultDate: +1,
+
+        //        dateFormat: "mm/dd/yy",
+        //        autoSize: true,
+        //        changeYear: true,
+        //        changeMonth: true,
+        //        showButtonPanel: false,
+        //        showWeek: false
+        //    }).datepicker("setDate",new Date());
+        //};
+                //var initDateEdit = function (elem, options) {
+        //    // we need get the value before changing the type
+        //    var orgValue = $(elem).val(),
+        //        cm = $(this).jqGrid("getColProp", options.name);
+
+        //    $(elem).attr("type", "date");
+        //    if ((Modernizr && !Modernizr.inputtypes.date) || $(elem).prop("type") !== "date") {
+        //        // if type="date" is not supported call jQuery UI datepicker
+        //        $(elem).datepicker({
+        //            dateFormat: "dd/mm/yy",
+        //            autoSize: true,
+        //            changeYear: true,
+        //            changeMonth: true,
+        //            showButtonPanel: true,
+        //            showWeek: true
+        //        });
+        //    } else {
+        //        // convert date to ISO
+        //        $(elem).val($.jgrid.parseDate.call(this, cm.formatoptions.newformat, orgValue, "Y-m-d"));
+        //    }
+        //};
         var Planed_StartDate = function (element, options) {
             var ID = options.rowId;
             $(element).on('keypress', function (e) {
@@ -244,7 +444,7 @@
             })
             $(element).datepicker({
                 duration: "slow",
-               // defaultDate: +1,
+                // defaultDate: +1,
                 //altFormat: "mm/dd/yy",
                 dateFormat: "dd/mm/yy",
                 autoSize: false,
@@ -254,10 +454,12 @@
                 showWeek: false,
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
-                    $("#"+ID+"_Planed__En_Date").datepicker("option", "minDate", selectedDate);
+                    $("#" + ID + "_Planed__En_Date").datepicker("option", "minDate", selectedDate);
+                    //$("#" + ID + "_Actual_St_Date").datepicker("option", "minDate", selectedDate);
+                    //$("#" + ID + "_Actual_En_Date").datepicker("option", "minDate", selectedDate);
                 },
-            //}).datepicker("setDate", new Date());
-             }).datepicker();
+            });//.datepicker("setDate", new Date());
+             //}).datepicker();
         };
         var Planed_EndDate = function (element, options) {
            var ID = options.rowId;
@@ -267,7 +469,7 @@
             })
             $(element).datepicker({
                 duration: "slow",
-               // defaultDate: +1,
+                // defaultDate: +1,
                 //altFormat: "mm/dd/yy",
                 dateFormat: "dd/mm/yy",
                 autoSize: false,
@@ -277,10 +479,12 @@
                 showWeek: false,
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
-                    $("#"+ID+"_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
+                    $("#" + ID + "_Planed__St_Date").datepicker("option", "maxDate", selectedDate);
+                    //$("#" + ID + "_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+                    //$("#" + ID + "_Actual_En_Date").datepicker("option", "maxDate", selectedDate);
                 }
-            //}).datepicker("setDate", new Date());
-             }).datepicker();
+            });//.datepicker("setDate", new Date());
+            // }).datepicker();
         };
 
 
@@ -289,22 +493,30 @@
             $(element).on('keypress', function (e) {
                 e.preventDefault();
             })
+            //var selectedDate = $("#" + ID + "_Planed__St_Date").val();
+            //debugger;
+            //$("#" + ID + "_Actual_St_Date").datepicker("option" "minDate", new Date());
+            //var d=$("#jqGrid").jqGrid('getGridParam', 'selrow');
+            var Date = $('#jqGrid').jqGrid('getCell', ID, 'Planed__St_Date');
+            //debugger;
             $(element).datepicker({
                 duration: "slow",
-               // defaultDate: +1,
+                // defaultDate: +1,
                 //altFormat: "mm/dd/yy",
-                 dateFormat: "dd/mm/yy",
+                dateFormat: "dd/mm/yy",
                 autoSize: false,
                 changeYear: true,
                 changeMonth: true,
                 showButtonPanel: false,
                 showWeek: false,
                 showButtonPanel: true,
+                minDate: Date,
                 onClose: function (selectedDate) {
-                    $("#"+ID+"_Actual_En_Date").datepicker("option", "minDate", selectedDate);
+                    $("#" + ID + "_Actual_En_Date").datepicker("option", "minDate", selectedDate);
+                    //$("#" + ID + "_Planed__En_Date").datepicker("option", "maxDate", selectedDate);
                 },
-            //}).datepicker("setDate", new Date());
-             }).datepicker();
+            });//.datepicker("setDate", new Date());
+            // }).datepicker();
         };
         var Actual_En_Date = function (element, options) {
            var ID = options.rowId;
@@ -314,7 +526,7 @@
             })
             $(element).datepicker({
                 duration: "slow",
-               // defaultDate: +1,
+                // defaultDate: +1,
                 //altFormat: "mm/dd/yy",
                 dateFormat: "dd/mm/yy",
                 autoSize: false,
@@ -324,12 +536,13 @@
                 showWeek: false,
                 showButtonPanel: true,
                 onClose: function (selectedDate) {
-                    $("#"+ID+"_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
-                }
-            //}).datepicker("setDate", new Date());
-             }).datepicker();
-        };
+                    $("#" + ID + "_Actual_St_Date").datepicker("option", "maxDate", selectedDate);
+                    //$("#" + ID + "Planed_EndDate").datepicker("option", "maxDate", selectedDate);
 
+                }
+            });//.datepicker("setDate", new Date());
+            // }).datepicker();
+        };
 
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","ProjectMonitor",new { Phase_ID= ViewBag.PhaseID})",
@@ -353,7 +566,7 @@
                     }
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,
+                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,classes: 'wrapColumnText',
                     editrules: {
                         required: true,
                         edithidden: true
@@ -361,12 +574,12 @@
 
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false
+                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false ,classes: 'wrapColumnText',
 
 
                 },
                 {
-                    label: 'ApplicationArea', name: 'ApplicationArea', width: 150,  editable: false
+                    label: 'Application Area', name: 'ApplicationArea', width: 100,  editable: false,classes: 'wrapColumnText',
 
 
                 },
@@ -389,33 +602,32 @@
 
                 },
                 {
-                    label: 'Task needed for other environment (Y/N)',
-                    name: 'Task_Other_Environment', width: 50, editable: true,
+                    label: 'Task Other Env. (Y/N)',
+                    name: 'Task_Other_Environment', width: 55, editable: true,hidden: true ,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
 
                 },
                 {
                     label: 'Dependency (Y/N)',
-                    name: 'Dependency', width: 80,editable: true,
+                    name: 'Dependency', width: 72,editable: true,hidden: true,
                     edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox",
                 },
-                { label: 'Pending With ', name: 'Pending', width: 80,  editable: true },
+                { label: 'Pending With ', name: 'Pending', width: 100,  editable: true ,hidden: true},
                 {
-                    label: 'Delay Occurred (Y/N)', name: 'Delay_occurred', width: 80,  editable: true,
+                    label: 'Delay', name: 'Delay_occurred', width: 30,  editable: true, align: 'center',
                     edittype: 'checkbox',
                     editoptions: { value: "True:False" }
-                    //editrules:{custom:true, custom_func:myValidationFunction}
                     , formatter: "checkbox",
                 },
                 {
-                    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, align: 'center', editable: false,
+                    label: 'Owner', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
                     }
                 },
                 {
-                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'center', editable: true,
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 100,  align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetStatusDropDown()
@@ -440,93 +652,133 @@
 
                 },
                 {
-                    label: 'Est. Duration (hours)', name: 'EST_hours', formatter: "number", edittype: "text", width: 80, editable: true,
+                    label: 'Est.(hrs)', name: 'EST_hours', width: 55,
+                    //maxlength: 4,
+                    //formatter: "number",
+                    editable: true,
+                    //formatoptions: { masks: 'LongTime', newformat: 'ShortTime' },
+                    editrules: { },
                     editoptions: {
-                        size: 15, maxlengh: 4,
+                       // maxlength:4,
                         dataInit: function (element) {
-                            $(element).keypress(function (e) {
-                                //alert(e);
-                                if (e.which == 46) {
+                            $(element).keyup(function(event) {
 
-                                }
-                                else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                                    return false;
-                                }
+                                this.value = this.value
+                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
+                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                                  //.replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                                   .replace(/(\:[0-5][0-9]{1})./g, '$1');
+
                             });
+
                         }
                     }
                 },
                 {
-                    label: 'Actual Duration (hours)', name: 'Actual_St_hours', formatter: "number", width: 80, editable: true,
+                    label: 'Actual (hrs)', name: 'Actual_St_hours',
+                    //formatter: "number",
+                    width: 55, editable: true,
                     editoptions: {
-                        size: 15, maxlengh: 4,
-                        dataInit: function (element) {
-                            $(element).keypress(function (e) {
-                                //alert(e);
-                                if (e.which == 46) {
 
-                                }
-                                else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                                    return false;
-                                }
+                        //dataInit: function (element) {
+                        //    $(element).keypress(function (e) {
+                        //        //alert(e);
+                        //        if (e.which == 46) {
+
+                        //        }
+                        //        else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                        //            return false;
+                        //        }
+                        //    });
+                        //}
+                         dataInit: function (element) {
+                            $(element).keyup(function (event) {
+                                //alert(this.value);
+
+                                this.value = this.value
+                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
+                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at th\e beginning
+                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                                  //.replace(/(\:[\d]{2})./g, '$1')    // not more than 4 digits after decimal
+                                  .replace(/(\:[0-5][0-9]{1})./g, '$1');
+                                //.replace(/(^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9]))./g, '$1');
+
+
                             });
+
                         }
+
                     }
                 },
                 {
                     label: 'Planned Start Date', name: 'Planed__St_Date',
-                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    width: 80, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
                     editoptions: { dataInit: Planed_StartDate, classes: 'DateClass' }
                 },
                 {
-                    label: 'Actual Start Date/Time (UTC)', name: 'Actual_St_Date',
-                    width: 120, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
+                    label: 'Actual Start Date', name: 'Actual_St_Date',
+                    width: 75, align: "center",  formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
                     editoptions: { dataInit: Actual_St_Date }
 
                 },
                 {
                     label: 'Planned End Date', name: 'Planed__En_Date',
-                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    width: 75, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
                     editoptions: { dataInit: Planed_EndDate }
                 },
                 {
-                    label: 'Actual End Date/Time (UTC)', name: 'Actual_En_Date',
-                    width: 120, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
+                    label: 'Actual End Date', name: 'Actual_En_Date',
+                    width: 75, align: "center",  formatter: "date", formatoptions: { newformat: "d/m/Y" }, editable: true
                     ,
                     editoptions: { dataInit: Actual_En_Date }
                 },
                 {
-                    label: 'Notes/Remarks', name: 'Notes', edittype: "textarea",
+                    label: 'Comments', name: 'Notes', edittype: "textarea",classes: 'wrapColumnText',
                     wrap: "on"
                     //formatter: function (v) {
                     //     return '<div style="max-height:20px">' $.jgrid.htmlEncode(v) '</div>';
                     // }
-                    , editoptions: {
-                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px"
+                    ,editrules: { "edithidden": true }, "editable": true, "width": 100,
+                    editoptions: {
+                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
                         //"readonly": "readonly"
+
                     },
-                    editrules: { "edithidden": true }, "editable": true, "width": 200,
+              //      beforeSaveCell:function(rowid,name,val,iRow,iCol) {
+			           //  // var row = $("#list").getRowData(rowid);
+				          //// var row = $('#list').jqGrid('getRowData',rowid);
+				          ////var currentRow= rowid;
+              //          var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+
+              //          var status = $("#jqGrid").jqGrid('getCell', ColValue, 'StatusId');
+              //          alert("HI");
+
+              //      },
+              //      afterSaveCell: function(rowid,name,val,iRow,iCol) {
+              //      alert("alert1!");
+              //      },
                     //classes: "jqgrid-readonlycolumn"
                 },
                 {
-                    label: 'ValidationStatus', name: 'ValidationStatus', width: 80, editable: false,hidden: true,
+                    label: 'ValidationStatus', name: 'ValidationStatus', width: 10, editable: false,hidden: true,
 
                     editoptions: { value: "True:False" }
-                    //editrules:{custom:true, custom_func:myValidationFunction}
 
                 },
                 {
                     name: "",
                     label: "Actions",
-                    width: 75,
+                    width: 65,
                     align: "center",
                     formatter: "actions",
                     formatoptions: {
                         keys: true,
                         delbutton: false,
 
-                        onEdit:function(rowid) {
+                        onEdit: function (rowid) {
+                            $("#" + rowid + "_StatusId").addClass("fit_Data");
                  //alert("in onEdit: rowid="+rowid+"\nWe don't need return anything");
              },
                         //beforeShowForm: function (form) {
@@ -567,7 +819,7 @@
             hoverrows: true,
             height: 400,
             rowNum: 1000,
-            caption: 'Post-Conversion',
+            caption: '',
             sortable: false,
             grouping: false,
             rownumbers: true,
@@ -577,6 +829,7 @@
             sortname: 'SequenceNum',
             sortorder: 'asc',
             onSelectRow: editRow,
+
             serializeRowData: function (postdata) {
                 //debugger;
                 //var filterResult;
@@ -607,7 +860,17 @@
                 //           newResult.TransactionId = filterResult.TransactionId;
                 //           newResult.TaskId = filterResult.TaskId;
                 //       }
+            //    var EST_hours = $("#jqGrid").jqGrid('getCol', 'EST_hours');
+            //var Planed__St_Date = $("#jqGrid").jqGrid('getCol', 'Planed__St_Date');
+            //var Planed__En_Date = $("#jqGrid").jqGrid('getCol', 'Planed__En_Date');
+                var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 
+                var EST_hours = $("#jqGrid").jqGrid('getCell', ColValue, 'EST_hours');
+                var Actual_St_hours=$("#jqGrid").jqGrid('getCell', ColValue, 'Actual_St_hours');
+                var Planed__St_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Planed__St_Date');
+                var Planed__En_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Planed__En_Date');
+                var Actual_St_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Actual_St_Date');
+                var Actual_En_Date = $("#jqGrid").jqGrid ('getCell', ColValue, 'Actual_En_Date');
                 //filterResult = JSON.stringify(newResult);
                 var Id = postdata.Id;
                 var Task_Other_Environment = postdata.Task_Other_Environment;
@@ -615,13 +878,42 @@
                 var Pending = postdata.Pending;
                 var Delay_occurred = postdata.Delay_occurred;
                 var StatusId = postdata.StatusId;
-                var EST_hours = postdata.EST_hours;
-                var Actual_St_hours = postdata.Actual_St_hours;
-                var Planed__St_Date = postdata.Planed__St_Date;
-                var Planed__En_Date = postdata.Planed__En_Date;
-                var Actual_St_Date = postdata.Actual_St_Date;
-                var Actual_En_Date = postdata.Actual_En_Date;
                 var Notes = postdata.Notes;
+                //var EST_hours = EST_hours;
+                //var Planed__St_Date = Planed__St_Date;
+                //var Planed__En_Date = Planed__En_Date;
+                var EST_hours;
+                var Actual_St_hours;
+                var Planed__St_Date;
+                var Planed__En_Date;
+                var Actual_St_Date;
+                var Actual_En_Date;
+                //if (Notes == "") {
+                //    alert("HI");
+
+                //}
+                 var UserType ="@Session["UserType"].ToString()"
+                if (UserType == 'Project Manager') {
+                    EST_hours = postdata.EST_hours;
+                    EST_hours = EST_hours.replace(":", ".");
+                    Actual_St_hours = Actual_St_hours;
+                     Actual_St_hours = Actual_St_hours.replace(":", ".");
+                    Planed__St_Date = postdata.Planed__St_Date;
+                    Planed__En_Date = postdata.Planed__En_Date;
+                     Actual_St_Date = Actual_St_Date;
+                    Actual_En_Date = Actual_En_Date;
+                }
+                else {
+                    EST_hours = EST_hours;
+                    EST_hours = EST_hours.replace(":", ".");
+                     Actual_St_hours = postdata.Actual_St_hours;
+                     Actual_St_hours = Actual_St_hours.replace(":", ".");
+                     Planed__St_Date = Planed__St_Date;
+                    Planed__En_Date = Planed__En_Date;
+                    Actual_St_Date = postdata.Actual_St_Date;
+                    Actual_En_Date = postdata.Actual_En_Date;
+                }
+
                 var Message;
                 if (StatusId == 1 ||StatusId == 3 ) {
                     Message = 'Are you sure..? <br><strong>Once you confirm. You won\'t be able to make any change..!</strong>';
@@ -629,22 +921,12 @@
                 else {
                     Message='Do you Want to Save the Task?'
                 }
-
-                $.confirm({
-                            title: 'Save !',
-                            content: Message,
-                            icon: 'fa fa-rocket',
-                            animation: 'scale',
-                            closeAnimation: 'scale',
-                            opacity: 0.5,
-                            buttons: {
-                                'confirm': {
-                                    text: 'Yes',
-                                    btnClass: 'btn-blue',
-                                    action: function () {
-                                        $.ajax({
+                Notiflix.Confirm.Show('ProAcc Info. Confirm..!',
+                    Message, 'Yes', 'No',
+                    function () {
+                        $.ajax({
                                             type: "POST",
-                                            url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor")',
+                                            url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor",new { Phase_ID= ViewBag.PhaseID})',
                                             data: {
                                                 'Id': "" + Id + "",
                                                 'StatusId': StatusId,
@@ -660,71 +942,45 @@
                                                 'Actual_En_Date': Actual_En_Date,
                                                 'Notes': Notes
                                             },
-                                            success: function (Result) {
-                                                if (Result) {
-                                                    $.alert({
-                                                        title: 'Alert !',
-                                                        content: 'Task Saved Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                                                        icon: 'fa fa-rocket',
-                                                        animation: 'scale',
-                                                        closeAnimation: 'scale',
-                                                        buttons: {
-                                                            okay: {
-                                                                text: 'Okay',
-                                                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                                                action: function (event, ui) {
-                                                                    $(this).remove();
-                                                                     $('#jqGrid').trigger('reloadGrid');
-                                                                    //location.reload();
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                                else {
-                                                    $.alert({
-                                                        title: 'Alert !',
-                                                        content: 'Somthing Went wrong..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                                                        icon: 'fa fa-rocket',
-                                                        animation: 'scale',
-                                                        closeAnimation: 'scale',
-                                                        buttons: {
-                                                            okay: {
-                                                                text: 'Okay',
-                                                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                                                action: function (event, ui) {
-                                                                    $(this).remove();
-                                                                     $('#jqGrid').trigger('reloadGrid');
-                                                                    //location.reload();
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-                                                    //alert("Error");
-                                                }
+                            success: function (Result) {
+                                                 $('#jqGrid').trigger('reloadGrid');
+
                                             }
-                                                @*,error: function (xhr, status, error) {
-                                                       if (xhr.statusText == "Session TimeOut/UnAuthorized") {
-                                                           alert(xhr.statusText);
-                                                           window.location.href = '@Url.Action("LogOut", "login")';
-                                                       }
-                                                       else
-                                                           alert(xhr.responseText);
-                                                   }*@
-                                        });
-                                    }
-                                },
-                                cancel: function(){
-                                    $.alert('You clicked on <strong>cancel</strong>');
-                                },
-                                //moreButtons: {
-                                //    text: 'something else',
-                                //    action: function(){
-                                //        $.alert('you clicked on <strong>something else</strong>');
-                                //    }
-                                //},
-                            }
+
                         });
+                        // Yes button callbackalert('Thank you.');
+                    }, function () {
+                        // No button callbackalert('If you say so...');
+                    });
+
+
+
+                //$.confirm({
+                //            title: 'Save !',
+                //            content: Message,
+                //            icon: 'fa fa-rocket',
+                //            animation: 'scale',
+                //            closeAnimation: 'scale',
+                //            opacity: 0.5,
+                //            buttons: {
+                //                'confirm': {
+                //                    text: 'Yes',
+                //                    btnClass: 'btn-blue',
+                //                    action: function () {
+
+                //                    }
+                //                },
+                //                cancel: function(){
+                //                    //$.alert('You clicked on <strong>cancel</strong>');
+                //                },
+                //                //moreButtons: {
+                //                //    text: 'something else',
+                //                //    action: function(){
+                //                //        $.alert('you clicked on <strong>something else</strong>');
+                //                //    }
+                //                //},
+                //            }
+                //        });
 
                // alert("me");
             },
@@ -765,28 +1021,18 @@
             ////    },
             loadComplete: function () {
                 //alert("mm");
-                 var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
-                if (ids.length==0) {
-                      $.alert({
-                    title: 'Alert !',
-                    content: 'Previous Phase <strong>Not Completed </strong>Or Kindly Check <strong>Resource Acllocation</strong> ',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                    icon: 'fa fa-rocket',
-                    animation: 'scale',
-                    closeAnimation: 'scale',
-                    buttons: {
-                        okay: {
-                            text: 'Okay',
-                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
-                            //action: function (event, ui) {
-                            //    $(this).remove();
-                            //    LoadTable(IDInstance);
-                            //    $('#jqGrid').trigger('reloadGrid');
-                            //}
-                        }
-                    }
+                var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                //debugger;
+                for (var i = 0; i < ids.length; i++) {
+                    var EST_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'EST_hours')
+                    EST_hours = EST_hours.replace(".", ":")
+                    $('#jqGrid').jqGrid('setCell', ids[i], 'EST_hours', EST_hours);
 
-                });
+                    var Actual_St_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'Actual_St_hours')
+                    Actual_St_hours = Actual_St_hours.replace(".", ":")
+                    $('#jqGrid').jqGrid('setCell', ids[i], 'Actual_St_hours',Actual_St_hours);
                 }
+
             },
             gridComplete: function () {
                // alert("tdyt");
@@ -799,6 +1045,9 @@
                     $("#jqGrid").jqGrid('setGridState', 'visible');
                 }
                 Show_HideEdit();
+
+
+
             }
             // set table stripped class in table style in bootsrap
         });
@@ -907,6 +1156,8 @@
 
         //document.body.style.zoom = "67%";
     }
+
+
     function Show_HideEdit() {
         var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
         var User = '@Session["UserType"]';
@@ -916,10 +1167,12 @@
          var UserType ="@Session["UserType"].ToString()"
         if (UserType == 'Project Manager')
         {
-
+            var WIP_Status=false;
              for (var i = 0; i < ids.length; i++) {
                  var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
-
+                 if (Status_Id==2) {
+                     WIP_Status = true;
+                 }
                  if (Status_Id == 1||Status_Id == 3) {
                      $('#jEditButton_' + ids[i]).hide();
                  }
@@ -928,10 +1181,31 @@
                  }
 
             }
+            if (WIP_Status) {
+                for (var i = 0; i < ids.length; i++) {
+                    var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+                     if (Status_Id == 4) {
+                     $('#jEditButton_' + ids[i]).hide();
+                 }
+                }
+            }
 
+             var Actual_St_hours = jQuery("#jqGrid").jqGrid('getColProp', 'Actual_St_hours');
+                Actual_St_hours.editable = false;
+             var Actual_St_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Actual_St_Date');
+                 Actual_St_Date.editable = false;
+            var Actual_En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Actual_En_Date');
+                Actual_En_Date.editable = false;
         }
         else {
-             for (var i = 0; i < ids.length; i++) {
+            var EST_hours = jQuery("#jqGrid").jqGrid('getColProp', 'EST_hours');
+                EST_hours.editable = false;
+             var Planed__St_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__St_Date');
+                 Planed__St_Date.editable = false;
+            var Planed__En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__En_Date');
+                Planed__En_Date.editable = false;
+            for (var i = 0; i < ids.length; i++) {
+
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
                 if (Status_Id == 1|| Status_Id == 2) {
                     j = i;
@@ -957,6 +1231,16 @@
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
            if (Status_Id == 2) {
                $('#jEditButton_' + ids[i]).show();
+               //for (var j = 0; j < ids.length; j++) {
+               //     Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+               //     if (j != i) {
+
+               //         if (Status_Id!=4) {
+               //             $('#jEditButton_' + ids[j]).hide();
+               //         }
+
+               //          }
+               //      }
                 }
 
             }
@@ -971,9 +1255,9 @@
                 }
             }
         }
-
-
     }
+
+
     function GetPhaseDropDown() {
 				 var Parameters = {};
                 $.ajax({
@@ -1100,10 +1384,7 @@
 	return Status;
 
     }
-    function myValidationFunction(Data) {
-        var d = Data;
-        return "";
-    }
+
     function GetUserDropDown() {
 	var Parameters = {};
     $.ajax({
@@ -1141,6 +1422,9 @@
         }
         return Result;
     }
+//    setTimeout(function(){
+//   jQuery('.ui-th-column').css('text-align','center');
+//},1);
 </script>
 
 @*<script type="text/javascript">
@@ -1155,5 +1439,3 @@
             $("form")[0].appendChild(input[0]);
         }
     </script>*@
-
-
