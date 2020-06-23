@@ -34,6 +34,7 @@ namespace ProAcc.Controllers
             }
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)
@@ -88,9 +89,9 @@ namespace ProAcc.Controllers
             return View();
         }
 
-        public ActionResult GetData()
+        public ActionResult GetData(int Phase_ID)
         {
-            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            int PhaseId = Phase_ID;
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             string LoginID = Session["loginid"].ToString();
             List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
@@ -180,7 +181,7 @@ namespace ProAcc.Controllers
 
             }
             ViewBag.Instance = inst;
-
+            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
             List<SelectListItem> Project = new List<SelectListItem>();
 
             if (User.IsInRole("Customer"))
@@ -220,25 +221,25 @@ namespace ProAcc.Controllers
             return View();
         }
 
-        public ActionResult GetDataPreConversion()
-        {
-            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            string LoginID = Session["loginid"].ToString();
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
-            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
-            for (int i = 0; i < PM.Count; i++)
-            {
-                if (PM[i].PhaseId == PhaseId)
-                {
-                    ProjectMonitorModel projM = new ProjectMonitorModel();
-                    projM = PM[i];
-                    Result.Add(projM);
-                }
-            }
+        //public ActionResult GetDataPreConversion()
+        //{
+        //    int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
+        //    Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+        //    string LoginID = Session["loginid"].ToString();
+        //    List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+        //    List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+        //    for (int i = 0; i < PM.Count; i++)
+        //    {
+        //        if (PM[i].PhaseId == PhaseId)
+        //        {
+        //            ProjectMonitorModel projM = new ProjectMonitorModel();
+        //            projM = PM[i];
+        //            Result.Add(projM);
+        //        }
+        //    }
 
-            return Json(Result, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(Result, JsonRequestBehavior.AllowGet);
+        //}
 
         public ActionResult MasterAddPreConversion()
         {
@@ -295,25 +296,25 @@ namespace ProAcc.Controllers
             return View();
         }
 
-        public ActionResult GetDataMigration()
-        {
-            int PhaseId = 4;
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            string LoginID = Session["loginid"].ToString();
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
-            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
-            for (int i = 0; i < PM.Count; i++)
-            {
-                if (PM[i].PhaseId == PhaseId)
-                {
-                    ProjectMonitorModel projM = new ProjectMonitorModel();
-                    projM = PM[i];
-                    Result.Add(projM);
-                }
-            }
+        //public ActionResult GetDataMigration()
+        //{
+        //    int PhaseId = 4;
+        //    Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+        //    string LoginID = Session["loginid"].ToString();
+        //    List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+        //    List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+        //    for (int i = 0; i < PM.Count; i++)
+        //    {
+        //        if (PM[i].PhaseId == PhaseId)
+        //        {
+        //            ProjectMonitorModel projM = new ProjectMonitorModel();
+        //            projM = PM[i];
+        //            Result.Add(projM);
+        //        }
+        //    }
 
-            return Json(Result, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(Result, JsonRequestBehavior.AllowGet);
+        //}
         public ActionResult ResourcePostConversion()
         {
             int userType = 0;
@@ -332,6 +333,7 @@ namespace ProAcc.Controllers
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
             int inst = 0;
             if (InstanceID != Guid.Empty)
             {
@@ -358,25 +360,25 @@ namespace ProAcc.Controllers
             return View();
         }
 
-        public ActionResult GetDataPostConversion()
-        {
-            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            string LoginID = Session["loginid"].ToString();
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
-            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
-            for (int i = 0; i < PM.Count; i++)
-            {
-                if (PM[i].PhaseId == PhaseId)
-                {
-                    ProjectMonitorModel projM = new ProjectMonitorModel();
-                    projM = PM[i];
-                    Result.Add(projM);
-                }
-            }
+        //public ActionResult GetDataPostConversion()
+        //{
+        //    int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
+        //    Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+        //    string LoginID = Session["loginid"].ToString();
+        //    List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+        //    List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+        //    for (int i = 0; i < PM.Count; i++)
+        //    {
+        //        if (PM[i].PhaseId == PhaseId)
+        //        {
+        //            ProjectMonitorModel projM = new ProjectMonitorModel();
+        //            projM = PM[i];
+        //            Result.Add(projM);
+        //        }
+        //    }
 
-            return Json(Result, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(Result, JsonRequestBehavior.AllowGet);
+        //}
 
         public ActionResult MasterAddPostConversion()
         {
@@ -406,6 +408,7 @@ namespace ProAcc.Controllers
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
             int inst = 0;
             if (InstanceID != Guid.Empty)
             {
@@ -432,25 +435,25 @@ namespace ProAcc.Controllers
             return View();
         }
 
-        public ActionResult GetDataValidation()
-        {
-            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            string LoginID = Session["loginid"].ToString();
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
-            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
-            for (int i = 0; i < PM.Count; i++)
-            {
-                if (PM[i].PhaseId == PhaseId)
-                {
-                    ProjectMonitorModel projM = new ProjectMonitorModel();
-                    projM = PM[i];
-                    Result.Add(projM);
-                }
-            }
+        //public ActionResult GetDataValidation()
+        //{
+        //    int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
+        //    Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+        //    string LoginID = Session["loginid"].ToString();
+        //    List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+        //    List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+        //    for (int i = 0; i < PM.Count; i++)
+        //    {
+        //        if (PM[i].PhaseId == PhaseId)
+        //        {
+        //            ProjectMonitorModel projM = new ProjectMonitorModel();
+        //            projM = PM[i];
+        //            Result.Add(projM);
+        //        }
+        //    }
 
-            return Json(Result, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(Result, JsonRequestBehavior.AllowGet);
+        //}
 
         public ActionResult MasterAddValidation()
         {

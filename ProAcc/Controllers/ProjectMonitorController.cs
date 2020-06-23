@@ -86,10 +86,10 @@ namespace ProAcc.Controllers
         }
 
         
-        public ActionResult SubmitProjectMonitor(Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, double EST_hours, double Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
+        public ActionResult SubmitProjectMonitor(int Phase_ID,Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, double EST_hours, double Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
         {
 
-            int PhaseId = 5;
+            int PhaseId = Phase_ID;
             ProjectMonitorModel Data = new ProjectMonitorModel();
             Data.Instance = Guid.Parse(Session["InstanceId"].ToString());
             Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
