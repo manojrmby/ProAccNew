@@ -22,6 +22,21 @@
     </script>
 
 }
+
+@if (ViewBag.Status)
+{ }
+else
+{
+    <a id="MsgStatus" style="display:none">Sorry File Not Found Kindly Contact Admin..!</a>
+<script type="text/javascript">
+    $('#pdf-js-viewer').hide();
+    var info = $('#MsgStatus').text();
+    Notiflix.Report.Info("ProAcc Info !", info, "Click", function () {
+        var url = $("#RedirectTo").val();
+        location.href = url;
+    });
+</script>
+}
 <script>
     $(document).ready(function () {
         var Path ="@ViewBag.PDFfileName";

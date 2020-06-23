@@ -10,12 +10,31 @@ namespace ProAcc.BL
 {
     public class CreatePDF
     {
-        public void SpireconvertDOCtoPDF(string PathDoc, string Pathpdf)
+        public Boolean SpireconvertDOCtoPDF(string PathDoc, string Pathpdf)
         {
             Document document = new Document();
-            document.LoadFromFile(PathDoc);
-            FileDelete(Pathpdf);
-            document.SaveToFile(Pathpdf, FileFormat.PDF);
+            Boolean Status = false; 
+            try
+            {
+                if (File.Exists(PathDoc))
+                {
+                    document.LoadFromFile(PathDoc);
+                    FileDelete(Pathpdf);
+                    document.SaveToFile(Pathpdf, FileFormat.PDF);
+                    Status = true;
+                }
+                else
+                {
+                    Status = false;
+                }
+            }
+            catch (Exception)
+            {
+                Status = false;
+                throw;
+            }
+            return Status;
+           
         }
         //public void convertDOCtoPDF(string PathDoc,string Pathpdf)
         //{

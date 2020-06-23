@@ -646,6 +646,8 @@
     <Content Include="Views\ErrorLog\Error404.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Report\AuditReport.cshtml" />
+    <Content Include="Views\Resource\ResourceConversion.cshtml" />
+    <Content Include="Views\ProjectMonitor\ConvertionMonitor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
