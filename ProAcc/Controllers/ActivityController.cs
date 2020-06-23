@@ -70,11 +70,13 @@ namespace ProAcc.Controllers
                 if (type == 1)
                     nextSeqNumber = 1;
                 else if (type == 2)
-                    nextSeqNumber = 1001;
+                    nextSeqNumber = 10001;
                 else if (type == 3)
-                    nextSeqNumber = 2001;
+                    nextSeqNumber = 20001;
                 else if (type == 4)
-                    nextSeqNumber = 3001;
+                    nextSeqNumber = 30001;
+                else if (type == 5)
+                    nextSeqNumber = 40001;
             }
             else
             {

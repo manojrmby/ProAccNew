@@ -1040,6 +1040,9 @@
 
                 if (isNaN(recs) || recs == 0) {
                     $("#jqGrid").jqGrid('setGridState', 'hidden');
+
+                     var msg='Kindly Complete Or Close All the Previous Phase And Try Again..!'
+                    Notiflix.Report.Info("ProAcc Info !", msg);
                 }
                 else {
                     $("#jqGrid").jqGrid('setGridState', 'visible');

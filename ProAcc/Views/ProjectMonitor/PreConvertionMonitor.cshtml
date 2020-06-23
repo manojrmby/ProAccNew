@@ -143,6 +143,17 @@
             </div>
         </div>
     </div>
+    @*@if (ViewBag.Status != true)
+    {
+
+        <a id="Msg" style="display:none">@ViewBag.Message</a>
+        <script type="text/javascript">
+            var a = $('#Msg').text();
+            //debugger;
+            Notiflix.Report.Info("ProAcc Info !", a);
+        </script>
+
+    }*@
 </div>
 <div style="margin-top:20px">
     <table id="jqGrid"></table>
@@ -1040,6 +1051,9 @@
 
                 if (isNaN(recs) || recs == 0) {
                     $("#jqGrid").jqGrid('setGridState', 'hidden');
+
+                    var msg='Kindly Complete Or Close All the Previous Phase And Try Again..!'
+                    Notiflix.Report.Info("ProAcc Info !", msg);
                 }
                 else {
                     $("#jqGrid").jqGrid('setGridState', 'visible');

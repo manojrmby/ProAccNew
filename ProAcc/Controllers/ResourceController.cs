@@ -181,7 +181,7 @@ namespace ProAcc.Controllers
 
             }
             ViewBag.Instance = inst;
-
+            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
             List<SelectListItem> Project = new List<SelectListItem>();
 
             if (User.IsInRole("Customer"))
@@ -219,6 +219,17 @@ namespace ProAcc.Controllers
 
             ViewBag.Project = Project;
             return View();
+        }
+
+        public ActionResult MasterAddConversion()
+        {
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
+            Result = _Base.Sp_GetMasterAdd(Instance, PhaseId);
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ResourcePreConversion()
         {
