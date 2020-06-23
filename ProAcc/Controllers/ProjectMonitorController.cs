@@ -10,7 +10,7 @@ using static ProAcc.BL.Model.Common;
 namespace ProAcc.Controllers
 {
     [CheckSessionTimeOut]
-    [Authorize(Roles = "Consultant,Customer,Project Manager")]
+    [Authorize(Roles = "Admin,Consultant,Customer,Project Manager")]
 
     public class ProjectMonitorController : Controller
     {
@@ -244,7 +244,9 @@ namespace ProAcc.Controllers
 
         #endregion
 
-        #region Assusment
+        
+
+        #region Assessment
         public ActionResult AssessmentMonitor()
         {
             int userType = 0;
@@ -385,7 +387,77 @@ namespace ProAcc.Controllers
             return View();
         }
         #endregion
+        #region ConvertionMonitor
+        public ActionResult ConvertionMonitor()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true && u.isActive == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
 
+            }
+            ViewBag.Instance = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            if (User.IsInRole("Customer"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        #endregion
         #region PostConvertion
         public ActionResult PostConvertionMonitor()
         {

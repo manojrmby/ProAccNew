@@ -12,6 +12,7 @@
 <script src="~/Asset/Jquery/jqGrid/plugins/pdfmake.min.js"></script>
 <script src="~/Asset/Jquery/jqGrid/plugins/vfs_fonts.js"></script>
 <a class="card-title">Over All Task Report</a>
+<br />
 <script>
     //$.jgrid.defaults.width =1000;
     $.jgrid.defaults.responsive = true;
@@ -262,155 +263,8 @@
   $grid.jqGrid("setGridWidth", newWidth, true);
 });
     function LoadTable(Instance) {
-
-        // $(document).ready(function () {
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
-    //    var lastSelection;
-    //    var editParameters = {
-    //        keys: true,
-    //        //successfunc: editSuccessful,
-    //        errorfunc: false,
-    //        restoreAfterError: false,
-    //        extraparam: {
-    //            valor: 'texto', any: '20164',
-    //            clave1: function () {
-    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
-    //                var value = $("#grid").jqGrid('getCell', sel_id, 'pas1');
-    //                return value;
-    //            },
-    //            obra: function () {
-    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
-    //                var value = $("#grid").jqGrid('getCell', sel_id, 'obra');
-    //                return value;
-    //            },
-    //            empresa: function () {
-    //                var sel_id = $("#grid").jqGrid('getGridParam', 'selrow');
-    //                var value = $("#grid").jqGrid('getCell', sel_id, 'empresa');
-    //                return value;
-    //            }
-    //        }
-    //    };
-    //    var jqId = jQuery("#jqGrid");
-    //    var grid = $("#grid");
-    //    var cancelEditing = function (myGrid) {
-    //        var lrid;
-    //        if (typeof lastSelection !== "undefined") {
-    //            // cancel editing of the previous selected row if it was in editing state.
-    //            // jqGrid hold intern savedRow array inside of jqGrid object,
-    //            // so it is safe to call restoreRow method with any id parameter
-    //            // if jqGrid not in editing state
-    //            myGrid.jqGrid('restoreRow', lastSelection);
-
-
-    //            // now we need to restore the icons in the formatter:"actions"
-    //            lrid = $.jgrid.jqID(lastSelection);
-    //            $("tr#" + lrid + " div.ui-inline-edit, " + "tr#" + lrid + " div.ui-inline-del").show();
-    //            $("tr#" + lrid + " div.ui-inline-save, " + "tr#" + lrid + " div.ui-inline-cancel").hide();
-    //            $("div.ui-inline-close").show();
-    //        }
-    //    };
-
-    //    var getColumnIndexByName = function (grid, columnName) {
-    //        var cm = grid.jqGrid('getGridParam', 'colModel'), i, l = cm.length;
-    //        for (i = 0; i < l; i++) {
-    //            if (cm[i].name === columnName) {
-    //                return i; // return the index
-    //            }
-    //        }
-    //        return -1;
-    //    }
-
-    //    var myEditOptions = {
-    //    keys: true,
-    //    oneditfunc: function (rowid) {
-    //        alert("row with rowid=" + rowid + " is editing.");
-    //    },
-    //    aftersavefunc: function (rowid, response, options) {
-    //        alert("row with rowid=" + rowid + " is successfuly modified.");
-    //    }
-    //};
-
-        //var DateInput = function (element, options) {
-
-        //    //var ID = options.id;
-        //    //var Result_PLST = ID.indexOf('Planed__St_Date');
-        //    //if (Result_PLST == 2)
-        //    //{
-        //    //    alert("HOOO");
-        //    //}
-        //    //var Cell_Date = $("#" + ID).val();
-        //    //if (Cell_Date == "17/10/1904") {
-        //    //    debugger;
-        //    //    var currentDate=new Date();
-        //    //     $("#" + ID).val(currentDate);
-        //    //}
-        //   // debugger;
-
-
-        //    $(element).on('keypress', function (e) {
-        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
-        //        e.preventDefault();
-        //    })
-        //    $(element).datepicker({
-        //        duration: "slow",
-        //        defaultDate: +1,
-        //        altFormat: "mm/dd/yy",
-        //        dateFormat: "mm/dd/yy",
-        //        autoSize: false,
-        //        changeYear: true,
-        //        changeMonth: true,
-        //        showButtonPanel: false,
-        //        showWeek: false
-        //    //}).datepicker("setDate", new Date());
-        //     }).datepicker();
-        //};
-         //var DateInput1 = function (element, options) {
-
-        //    //var ID = options.id;
-        //    //var Cell_Date = $("#" + ID).val();
-        //    //if (Cell_Date == "17/10/1904") {
-        //    //    debugger;
-        //    //    var currentDate=new Date();
-        //    //     $("#" + ID).val(currentDate);
-        //    //}
-        //    //debugger;
-        //    $(element).on('keypress', function (e) {
-        //        //if (e.which === 8 && $.inArray(e.target.tagName, inputTags) === -1)
-        //        e.preventDefault();
-        //    })
-        //    $(element).datepicker({
-        //        duration: "slow",
-        //        defaultDate: +1,
-
-        //        dateFormat: "mm/dd/yy",
-        //        autoSize: true,
-        //        changeYear: true,
-        //        changeMonth: true,
-        //        showButtonPanel: false,
-        //        showWeek: false
-        //    }).datepicker("setDate",new Date());
-        //};
-                //var initDateEdit = function (elem, options) {
-        //    // we need get the value before changing the type
-        //    var orgValue = $(elem).val(),
-        //        cm = $(this).jqGrid("getColProp", options.name);
-
-        //    $(elem).attr("type", "date");
-        //    if ((Modernizr && !Modernizr.inputtypes.date) || $(elem).prop("type") !== "date") {
-        //        // if type="date" is not supported call jQuery UI datepicker
-        //        $(elem).datepicker({
-        //            dateFormat: "dd/mm/yy",
-        //            autoSize: true,
-        //            changeYear: true,
-        //            changeMonth: true,
-        //            showButtonPanel: true,
-        //            showWeek: true
-        //        });
-        //    } else {
-        //        // convert date to ISO
-        //        $(elem).val($.jgrid.parseDate.call(this, cm.formatoptions.newformat, orgValue, "Y-m-d"));
-        //    }
-        //};
+    
         var Planed_StartDate = function (element, options) {
             var ID = options.rowId;
             $(element).on('keypress', function (e) {
@@ -787,25 +641,29 @@
             grouping: false,
             rownumbers: true,
             reload: true,
-            reloadAfterSubmit:true,
-            pager: "#jqGridPager",
+            reloadAfterSubmit: true,
+            pager: false,
+            //pager: "#jqGridPager",
             sortname: 'SequenceNum',
             sortorder: 'asc',
 
             loadComplete: function () {
                 //alert("mm");
-                 $('#export').show();
+                 
             },
             gridComplete: function () {
                // alert("tdyt");
-                //var recs = $('#jqGrid').jqGrid('getGridParam', 'reccount');
-
-                //if (isNaN(recs) || recs == 0) {
-                //    $("#jqGrid").jqGrid('setGridState', 'hidden');
-                //}
-                //else {
-                //    $("#jqGrid").jqGrid('setGridState', 'visible');
-                //}
+                var recs = $('#jqGrid').jqGrid('getGridParam', 'reccount');
+                debugger;
+                if (isNaN(recs) || recs == 0) {
+                    $('#export').hide();
+                    $("#jqGrid").jqGrid('setGridState', 'hidden');
+                    
+                }
+                else {
+                    $('#export').show();
+                    $("#jqGrid").jqGrid('setGridState', 'visible');
+                }
                 //Show_HideEdit();
 
 
@@ -814,12 +672,12 @@
             // set table stripped class in table style in bootsrap
         });
 
-        $grid.jqGrid("navButtonAdd", "#pager", {
-    id: "myButton",
-    onClickButton: function () {
-            }
+//        $grid.jqGrid("navButtonAdd", "#pager", {
+//    id: "myButton",
+//    onClickButton: function () {
+//            }
    
-});
+//});
 //        $("#jqGrid").jqGrid('navButtonAdd','#pager0',{
 //    id:'ExportToExcel',
 //    caption:'CSV',

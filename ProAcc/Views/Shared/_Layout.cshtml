@@ -55,49 +55,7 @@
         {
             border: 1px solid #ced4da !important;
         }
-        @*
- .loader {
-  animation: spin 1s infinite linear;
-  border: solid 2vmin transparent;
-  border-radius: 50%;
-  border-right-color: #09f;
-  border-top-color: #09f;
-  box-sizing: border-box;
-  height: 20vmin;
-  left: calc(50% - 10vmin);
-  position: fixed;
-  top: calc(50% - 10vmin);
-  width: 20vmin;
-  z-index: 1;
-}
-.loader:before {
-  animation: spin 2s infinite linear;
-  border: solid 2vmin transparent;
-  border-radius: 50%;
-  border-right-color: #3cf;
-  border-top-color: #3cf;
-  box-sizing: border-box;
-  content: "";
-  height: 16vmin;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 16vmin;
-}
-            .loader:after {
-                animation: spin 3s infinite linear;
-                border: solid 2vmin transparent;
-                border-radius: 50%;
-                border-right-color: #6ff;
-                border-top-color: #6ff;
-                box-sizing: border-box;
-                content: "";
-                height: 12vmin;
-                left: 2vmin;
-                position: absolute;
-                top: 2vmin;
-                width: 12vmin;
-            }*@
+        
 .LoaderMasterClass
 {
     width: 100%;
@@ -163,10 +121,7 @@
                                 <polygon fill="#dfa800" points="72.5 50 50 11 27.5 50 50 50" style="animation-play-state: running; animation-delay: 0s;" transform="rotate(122.36 50 38.5)">
                                     <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.8518518518518516s" values="0 50 38.5;360 50 38.5" keyTimes="0;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
                                 </polygon>
-                                <polygon fill="#d96c21" points="5 89 50 89 27.5 50" style="
-        animation-play-state: running;
-        animation-delay: 0s;
-" transform="rotate(122.36 27.5 77.5)">
+                                <polygon fill="#d96c21" points="5 89 50 89 27.5 50" style="animation-play-state: running;animation-delay: 0s;"transform="rotate(122.36 27.5 77.5)">
                                     <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.8518518518518516s" values="0 27.5 77.5;360 27.5 77.5" keyTimes="0;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
                                 </polygon>
                                 <polygon fill="#35599b" points="72.5 50 50 89 95 89" style="animation-play-state: running; animation-delay: 0s;" transform="rotate(122.36 72.3301 77.5)">
@@ -180,9 +135,6 @@
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
             <div class="app-header header-shadow  sidebar-text-dark " style="background-color:white!important;">
                 <div class="app-header__logo ">
-                    @*<div class="logo-src">
-                        <img src="~/Asset/images/ProACCTool.png" style="width:250px;height:100px;" />
-                    </div>*@
                     <div class="header__pane ml-auto ">
                         <div>
                             <button type="button"
@@ -221,14 +173,7 @@
                         <div class="logicon slideBefore">
                             <img src="~/Asset/images/ProACCTool.png" style="width:250px;height:100px;" />
                         </div>
-                        
-                        <p style="
-    font-family: -webkit-body;
-    font-size: x-large;
-    margin-left: 155px;
-    font-weight: 600;
-    color: #0e0e0e;
-">
+                        <p style="font-family: -webkit-body;font-size: x-large;margin-left: 155px;font-weight: 600;color: #0e0e0e;">
                         Accelerator for S4 HANA Transformation</p>
                     </div>
                     <div class="app-header-right">
@@ -514,6 +459,41 @@
                                     }
                                 </li>
 
+                                @*Conversion*@
+                                <li>
+
+                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                    {
+                                        <a href="#">
+                                            <i class="metismenu-icon fa fa-desktop"></i>
+                                            Conversion
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
+                                        </a>
+                                        <ul>
+                                            @if (User.IsInRole("Project Manager"))
+                                            {
+                                                <li>
+                                                    @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                                    <a href="@Url.Action("ResourceConversion", "Resource")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Resource Allocation
+                                                    </a>
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("ConvertionMonitor", "ProjectMonitor")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Conversion Monitor
+                                                    </a>
+                                                </li>
+
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+
                                 @*Post-Conversion*@
                                 <li>
                                     @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
@@ -658,12 +638,6 @@
                                         <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                     </a>
                                     <ul>
-                                        @*<li>
-            <a href="@Url.Action("CommingSoon", "Test")">
-                <i class="metismenu-icon pe-7s-diamond"></i>
-                Customer Report
-            </a>
-        </li>*@
                                         <li>
                                             <a href="@Url.Action("OverAllTaskReport", "Report")">
                                                 <i class="metismenu-icon pe-7s-diamond"></i>
@@ -671,17 +645,17 @@
                                             </a>
                                         </li>
 
-                                        <li>
+                                        @*<li>
                                             <a href="@Url.Action("AuditReport", "Report")">
                                                 <i class="metismenu-icon pe-7s-diamond"></i>
                                                 Audit Report
                                             </a>
-                                        </li>
-                                        
+                                        </li>*@
+
 
                                     </ul>
                                 </li>
-                               
+
                             </ul>
                             }
                         </div>
@@ -689,6 +663,7 @@
                 </div>
                 <div class="app-main__outer" style="overflow:auto;height:535px;">
                     <div class="app-main__inner">
+                        <hr />
                             @RenderBody()
                             @RenderSection("scripts", required: false)
                     </div>

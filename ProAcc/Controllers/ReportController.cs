@@ -99,6 +99,7 @@ namespace ProAcc.Controllers
         public ActionResult AssessmentReport()
         {
             Guid InstanceId = Guid.Parse(Session["InstanceId"].ToString());
+            ViewBag.Status = true;
             if (InstanceId == Guid.Empty)
             {
                 ViewBag.Message = String.Format("Hello {0},\n Kindly Select Instance", Session["UserName"].ToString());
@@ -121,12 +122,14 @@ namespace ProAcc.Controllers
                 string TempPath = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString());
                 string PathPdf = TempPath + "\\Pdf\\" + fileName + ".pdf";
                 string PathDoc = Folder_Path + fileName + ".docx";
-                P.SpireconvertDOCtoPDF(PathDoc, PathPdf);
+                Boolean Result = P.SpireconvertDOCtoPDF(PathDoc, PathPdf);
+                ViewBag.Status = Result;
+
                 //P.convertDOCtoPDF(PathDoc, PathPdf);
                 ViewBag.PDFfileName = ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString() + "/Pdf/" + fileName + ".pdf";
             }
-            
 
+            
             return View();
         }
 
