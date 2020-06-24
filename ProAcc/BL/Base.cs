@@ -1493,7 +1493,24 @@ namespace ProAcc.BL
                 Db1.addIn("@InstanceID", PM.Instance);
                 Db1.addIn("@PM_ID", PM.Id);
                 Db1.addIn("@Cre_By", PM.Cre_By);
-                Db1.ExecuteScalar();
+                // Db1.ExecuteScalar();
+                DataTable dt = new DataTable();
+                dt = Db1.ExecuteDataTable();
+                
+                if(dt.Rows.Count>0)
+                {
+                    
+                        foreach (DataRow dr in dt.Rows)
+                    {
+                        String ToMailId = dr["To"].ToString();
+                        bool mail = false;
+                        Mail _mail = new Mail();
+                        mail = _mail.SendEmail(ToMailId);
+                    }
+                       
+                    
+                   
+                }
 
                 Status = true;
             }
