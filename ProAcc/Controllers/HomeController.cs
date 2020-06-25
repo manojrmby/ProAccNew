@@ -125,12 +125,15 @@ namespace ProAcc.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetAssessmentReport()
+        public JsonResult GetHomeDonut()
         {
             InstanceId = Guid.Parse(Session["InstanceId"].ToString());
-            SP_Assessment_Result GetRelevant = _Base.SAP_Assessment(InstanceId); 
+
+            List<SP_HomeDonut_Result> GetRelevant = _Base.SAP_Home_Donut(InstanceId); 
             return Json(GetRelevant, JsonRequestBehavior.AllowGet);
         }
+
+
 
 
         public ActionResult Test()

@@ -81,6 +81,12 @@
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="slf4j-api, Version=1.7.5.4, Culture=neutral, PublicKeyToken=caeb68ac682d6c33, processorArchitecture=MSIL">
+      <HintPath>..\packages\slf4j-api.1.7.5.4\lib\net35\slf4j-api.dll</HintPath>
+    </Reference>
+    <Reference Include="slf4j-NetCommonLogging, Version=1.7.5.4, Culture=neutral, PublicKeyToken=caeb68ac682d6c33, processorArchitecture=MSIL">
+      <HintPath>..\packages\slf4j-NetCommonLogging.1.7.5.4\lib\net35\slf4j-NetCommonLogging.dll</HintPath>
+    </Reference>
     <Reference Include="Spire.Doc, Version=7.11.0.41040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <HintPath>..\packages\FreeSpire.Doc.7.11.0\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
@@ -156,6 +162,8 @@
     <Content Include="Asset\css\ErrorStyle.css" />
     <Content Include="Asset\css\jquery-confirm.min.css" />
     <Content Include="Asset\css\LayoutStyles.css" />
+    <Content Include="Asset\css\ldbtn.min.css" />
+    <Content Include="Asset\css\loading.min.css" />
     <Content Include="Asset\css\main.css" />
     <Content Include="Asset\css\Menu.css" />
     <Content Include="Asset\css\main_Login.css" />
@@ -538,7 +546,7 @@
     <Compile Include="BL\Model\SAPInput_CustomCode.cs" />
     <Compile Include="BL\Model\SAPInput_PreConvertion.cs" />
     <Compile Include="BL\Model\SAPInput_SimplificationReport.cs" />
-    <Compile Include="BL\Model\SP_Assessment_Result.cs" />
+    <Compile Include="BL\Model\SP_HomeDonut_Result.cs" />
     <Compile Include="BL\Model\UserModel.cs" />
     <Compile Include="BL\Model\UserRoleProvider.cs" />
     <Compile Include="Controllers\ActivityController.cs" />

@@ -345,42 +345,63 @@ namespace ProAcc.BL
             return GetRelevant;
         }
 
-        public SP_Assessment_Result SAP_Assessment(Guid InstanceId)
+        public List<SP_HomeDonut_Result> SAP_Home_Donut(Guid InstanceId)
         {
-            SP_Assessment_Result GetRelevant = new SP_Assessment_Result();
-            DataTable dt = new DataTable();
-            DBHelper dB = new DBHelper("SP_AssessmentReport", CommandType.StoredProcedure);
+
+            List<SP_HomeDonut_Result> LS = new List<SP_HomeDonut_Result>();
+            DataSet dS = new DataSet();
+            DBHelper dB = new DBHelper("SP_Home_Donut", CommandType.StoredProcedure);
             dB.addIn("@Type", "Simple_Donut");
             dB.addIn("@InstanceId", InstanceId);
-            dt = dB.ExecuteDataTable();
-            if (dt.Rows.Count == 1)
+            dS = dB.ExecuteDataSet();
+            if (dS.Tables.Count>0)
             {
-                //var a = Convert.ToInt32(dt.Rows[0]["COMPLETE"]);
-                //var b = Convert.ToInt32(dt.Rows[0]["WIP"]);
-                //var c = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
-                //var d = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
-
-                //var e = a + b + c + d;
-
-                //int T1 = (int)Math.Round((double)(100 * a) / e);  
-                //int T2 = (int)Math.Round((double)(100 * b) / e);  
-                //int T3 = (int)Math.Round((double)(100 * c) / e); 
-                //int T4 = (int)Math.Round((double)(100 * d) / e); 
-
-                //GetRelevant.COMPLETE = T1; // Convert.ToInt32(T1);//Convert.ToInt32(dt.Rows[0]["COMPLETE"].ToString());
-                //GetRelevant.WIP = T2; // Convert.ToInt32(T2.ToString()); //Convert.ToInt32(dt.Rows[0]["WIP"].ToString());
-                //GetRelevant.ONHOLD = T3; // Convert.ToInt32(T3.ToString()); //Convert.ToInt32(dt.Rows[0]["ONHOLD"].ToString());
-                //GetRelevant.YetToStart = T4+"%"; // Convert.ToInt32(T4.ToString());//Convert.ToInt32(dt.Rows[0]["YetToStart"].ToString());
-
-                GetRelevant.COMPLETE = Convert.ToInt32(dt.Rows[0]["COMPLETE"]);
-                GetRelevant.WIP = Convert.ToInt32(dt.Rows[0]["WIP"]);
-                GetRelevant.ONHOLD = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
-                GetRelevant.YetToStart = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
-                GetRelevant.NA = Convert.ToInt32(dt.Rows[0]["NA"]);
-                GetRelevant.UploadStatus = Convert.ToInt32(dt.Rows[0]["UploadStatus"]);
-
+                for (int i = 0; i < dS.Tables.Count; i++)
+                {
+                    DataTable dt = new DataTable();
+                    dt = dS.Tables[i];
+                    SP_HomeDonut_Result GetResult = new SP_HomeDonut_Result();
+                    GetResult.COMPLETE = Convert.ToInt32(dt.Rows[0]["COMPLETE"]);
+                    GetResult.WIP = Convert.ToInt32(dt.Rows[0]["WIP"]);
+                    GetResult.ONHOLD = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
+                    GetResult.YetToStart = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
+                    GetResult.NA = Convert.ToInt32(dt.Rows[0]["NA"]);
+                    GetResult.UploadStatus = Convert.ToInt32(dt.Rows[0]["UploadStatus"]);
+                    LS.Add(GetResult);
+                }
+                   
+                
             }
-            return GetRelevant;
+            
+
+            //if (dt.Rows.Count == 1)
+            //{
+            //    //var a = Convert.ToInt32(dt.Rows[0]["COMPLETE"]);
+            //    //var b = Convert.ToInt32(dt.Rows[0]["WIP"]);
+            //    //var c = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
+            //    //var d = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
+
+            //    //var e = a + b + c + d;
+
+            //    //int T1 = (int)Math.Round((double)(100 * a) / e);  
+            //    //int T2 = (int)Math.Round((double)(100 * b) / e);  
+            //    //int T3 = (int)Math.Round((double)(100 * c) / e); 
+            //    //int T4 = (int)Math.Round((double)(100 * d) / e); 
+
+            //    //GetRelevant.COMPLETE = T1; // Convert.ToInt32(T1);//Convert.ToInt32(dt.Rows[0]["COMPLETE"].ToString());
+            //    //GetRelevant.WIP = T2; // Convert.ToInt32(T2.ToString()); //Convert.ToInt32(dt.Rows[0]["WIP"].ToString());
+            //    //GetRelevant.ONHOLD = T3; // Convert.ToInt32(T3.ToString()); //Convert.ToInt32(dt.Rows[0]["ONHOLD"].ToString());
+            //    //GetRelevant.YetToStart = T4+"%"; // Convert.ToInt32(T4.ToString());//Convert.ToInt32(dt.Rows[0]["YetToStart"].ToString());
+
+            //    GetRelevant.COMPLETE = Convert.ToInt32(dt.Rows[0]["As_COMPLETE"]);
+            //    GetRelevant.WIP = Convert.ToInt32(dt.Rows[0]["As_WIP"]);
+            //    GetRelevant.ONHOLD = Convert.ToInt32(dt.Rows[0]["As_ONHOLD"]);
+            //    GetRelevant.YetToStart = Convert.ToInt32(dt.Rows[0]["As_YetToStart"]);
+            //    GetRelevant.NA = Convert.ToInt32(dt.Rows[0]["As_NA"]);
+            //    GetRelevant.UploadStatus = Convert.ToInt32(dt.Rows[0]["As_UploadStatus"]);
+
+            //}
+            return LS;
         }
         public GeneralList sP_SimplificationReport(Guid InstanceId)
         {

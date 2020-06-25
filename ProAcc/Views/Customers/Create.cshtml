@@ -102,11 +102,14 @@
         <div class="col-lg-12">
 
             <div class="col-md-offset-2 col-md-12">
-                <input type="button" value="Create" class="btn btn-primary" id="btnCustomerCreate" />
-                <div class="col-lg-3" style="float:right;">
-                    @Html.ActionLink("Back to List", "Index", "Customers")
-                </div>
-            </div>
+                <button type="button"  id="btnCustomerCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
+                    Create
+                    <div class="ld ld-ring ld-spin"></div>
+                    </button>
+                    <div class="col-lg-3" style="float:right;">
+                        @Html.ActionLink("Back to List", "Index", "Customers")
+                    </div>
+</div>
         </div>
     </div>
 </div>

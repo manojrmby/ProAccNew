@@ -506,6 +506,17 @@ namespace ProAcc.Controllers
 
             return Json(items, JsonRequestBehavior.AllowGet);
         }
+
+
+        [HttpPost]
+        public JsonResult LoadCreateAnalysisInstance(string ProjectId)
+        {
+            GeneralList sP_ = _Base.GetInstanceDropdown(ProjectId);
+            SelectList items = new SelectList(sP_._List, "Value", "Name");
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
+
         public JsonResult UploadRevert()
         {
             string InstanceName = Request.Params["InstanceID"].ToString();
