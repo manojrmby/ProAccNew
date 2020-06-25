@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ProAcc.BL.Model
 {
-    public class SP_Assessment_Result
+    public class SP_HomeDonut_Result
     {
         public Nullable<int> COMPLETE { get; set; }
         public Nullable<int> WIP { get; set; }

@@ -679,7 +679,9 @@
             }
             // set table stripped class in table style in bootsrap
         });
+
         function editRow(id) {
+            //$('#jqGrid').jqGrid('setColProp', 'actions', { editable: false }); 
             // var Status_Id = $('#jqGrid').jqGrid('getCell', id, 'StatusId')
             //debugger;
             var UserType ="@Session["UserType"].ToString()"
@@ -699,7 +701,8 @@
                 //$("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
 
                 $("#" + id + "_StatusId option[value='1']").hide();
-                $("#" + id + "_StatusId option[value='5']").hide();
+                $("#" + id + "_StatusId option[value='2']").hide();
+                //$("#" + id + "_StatusId option[value='5']").hide();
             }
 
 
@@ -721,6 +724,8 @@
                 reloadAfterSubmit:true,
                   //editParams: myEditOptions,
                 beforeShowForm: function (form) {
+
+                   
                     
                 },
                 errorTextFormat: function (data) {
