@@ -9,7 +9,7 @@ namespace ProAcc.BL
 {
     public class Mail
     {
-        public Boolean SendEmail()
+        public Boolean SendEmail(String ToMailId)
         {
             Boolean Status = false;
 
@@ -26,7 +26,7 @@ namespace ProAcc.BL
                 SmtpClient SmtpServer = new SmtpClient(Client);
 
                 mail.From = new MailAddress(UserName);
-                mail.To.Add(UserName);
+                mail.To.Add(ToMailId);
                 mail.Subject = "Test Mail";
                 mail.Body = "This is for testing SMTP mail from GMAIL";
                 mail.IsBodyHtml = true;
