@@ -485,6 +485,25 @@ namespace ProAcc.Controllers
         {
             GeneralList sP_ = _Base.GetInstanceDropdown(ProjectId);
             SelectList items = new SelectList(sP_._List, "Value", "Name");
+            //List<SelectListItem> Instance = new List<SelectListItem>();
+            //foreach (var a in items)
+            //{
+            //    Guid instanceid = Guid.Parse(a.Value.ToString());
+            //    Guid Project_Id = Guid.Parse(ProjectId.ToString());
+            //    var b = (from i in db.Instances
+            //             join pm in db.ProjectMonitors on i.Instance_id equals pm.InstanceID
+            //             where pm.PhaseId == 1 && pm.StatusId != 1 && pm.StatusId != 3 && i.Instance_id == instanceid && i.Project_ID == Project_Id
+            //             select i);
+            //    
+            //    if (b.Count() == 0)
+            //    {
+            //        foreach (var v in b)
+            //        {
+            //            Instance.Add(new SelectListItem { Text = v.InstaceName, Value = v.Instance_id.ToString() });
+            //        }
+            //    }
+            //}
+
             return Json(items, JsonRequestBehavior.AllowGet);
         }
         public JsonResult UploadRevert()
