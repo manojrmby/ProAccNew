@@ -169,8 +169,9 @@ namespace ProAcc.Controllers
                        join b in db.ProjectMonitors
                        on a.Instance_id equals b.InstanceID
                        where b.InstanceID == id && a.isActive == true && b.isActive == true
-                       select new { V = b.StatusId != 2 } ).ToList();
-            
+                       //select new { V = b.StatusId != 4 } ).ToList();
+                       select new { V =( b.StatusId != 2 && b.StatusId != 4) }).ToList();
+
             foreach (var i in del)
             {
                 if (i.V == false)

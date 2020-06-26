@@ -706,10 +706,31 @@
             }
 
 
+             var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
 
+//            function textReadOnly(cellValue, options, rowdata, action) {
+//    if (rowdata.stateId == 4) {
+//        return "<input value='"+ rowdata.stateId +"' readonly='true'></input>";
+//    } else {
+//        return "<input value='"+ rowdata.stateId +"'></input>";
+//    }
+//}
+            if (UserType == 'Project Manager')
+            {
+                //var WIP_Status=false;
+                for (var i = 0; i < ids.length; i++) {
+                    //var Actions = $('#jqGrid').jqGrid('getCell', ids[i], 'Actions')
+                    
+                    $('#jEditButton_' + ids[i]).attr(readonly='true');
+                   // $('#jEditButton_' + ids[i]).prop('readonly', 'readonly');
+                    //$('#jEditButton_' + ids[i]).prop('disabled', 'disabled');
+
+                     //$('#jEditButton_' + ids[i]).hide();
+                    //$(this).attr("readonly", false);
+                    //jEditButton_3
+                }           
+            }
             //alert(id);
-
-
         }
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
