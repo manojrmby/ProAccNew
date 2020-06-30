@@ -512,7 +512,23 @@ namespace ProAcc.Controllers
         public JsonResult LoadCreateAnalysisInstance(string ProjectId)
         {
             GeneralList sP_ = _Base.GetInstanceDropdown(ProjectId);
-            SelectList items = new SelectList(sP_._List, "Value", "Name");
+            List<Lis> Result = new List<Lis>();
+
+            for (int i = 0; i < sP_._List.Count; i++)
+            {
+                var A = Guid.Parse(sP_._List[i].Value);
+                Boolean S= GetInstanceStatus(A);
+                if (S)
+                {
+
+                    Lis List = new Lis();
+                    List.Name = sP_._List[i].Name.ToString();
+                    List.Value = sP_._List[i].Value.ToString();
+
+                    Result.Add(List);
+                }
+            }
+            SelectList items = new SelectList(Result, "Value", "Name");
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
@@ -526,6 +542,19 @@ namespace ProAcc.Controllers
             return Json("Reverted the Upload");
         }
 
+        private Boolean GetInstanceStatus(Guid InstanceId)
+        {
+            Boolean Status = true;
+            //var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) orderby u.InstaceName select u;
 
+            var Query = from u in db.ProjectMonitors where (u.InstanceID == InstanceId && u.PhaseId == 1 && u.StatusId!=1 && u.StatusId!=3)  select u;
+            if (Query.Count()>0)
+            {
+                Status = false;
+            }
+
+            return Status;
+
+        }
     }
 }

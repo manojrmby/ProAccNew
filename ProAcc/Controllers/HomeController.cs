@@ -52,7 +52,7 @@ namespace ProAcc.Controllers
             int inst = 0;
             if (InstanceID!=Guid.Empty)
             {
-                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus==true) select u;
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus==true) orderby u.InstaceName select u;
                 if (q.Count() > 0)
                 {
                     inst = 1;
@@ -68,7 +68,8 @@ namespace ProAcc.Controllers
                 Guid LoginId = Guid.Parse(Session["loginid"].ToString());
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.Customer_Id equals b.Customer_Id
-                            where a.UserId == LoginId && b.isActive == true
+                            where a.UserId == LoginId && b.isActive == true 
+                            orderby b.Project_Name 
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count()>0)
                 {
@@ -85,6 +86,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.UserId equals b.ProjectManager_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -100,9 +102,10 @@ namespace ProAcc.Controllers
                         join v in db.ActivityMasters on u.ActivityID equals v.Activity_ID
                         join w in db.StatusMasters on u.StatusId equals w.Id
                         join x in db.UserMasters on u.UserID equals x.UserId
+                        join P in db.PhaseMasters on u.PhaseId equals P.Id
                         where u.InstanceID == InstanceID
                         orderby u.Modified_On descending
-                        select new { v.Task, x.Name, w.StatusName, u.Planed__En_Date }).ToList().Take(5);
+                        select new { v.Task, x.Name,P.PhaseName, w.StatusName, u.Planed__En_Date }).ToList().Take(5);
             dynamic output = new List<dynamic>();
 
             foreach (var inputAttribute in task)
@@ -112,7 +115,7 @@ namespace ProAcc.Controllers
                 row.Name = inputAttribute.Name;
                 row.StatusName = inputAttribute.StatusName;
                 row.Planed__En_Date = inputAttribute.Planed__En_Date;
-                
+                row.PhaseName = inputAttribute.PhaseName;
                 output.Add(row);
             }
 
@@ -172,7 +175,7 @@ namespace ProAcc.Controllers
             if (!String.IsNullOrEmpty(ProjectId)&& ProjectId !="0")
             {
                 var ID = Guid.Parse(ProjectId);
-                var query = from u in db.Instances where u.Project_ID == ID && u.isActive == true select u;
+                var query = from u in db.Instances where u.Project_ID == ID && u.isActive == true orderby u.InstaceName select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)
@@ -193,7 +196,7 @@ namespace ProAcc.Controllers
                 if (!string.IsNullOrEmpty(CustomerId))
                 {
                     Guid IDCustomer = Guid.Parse(CustomerId);
-                    var query = from u in db.Projects where (u.Customer_Id == IDCustomer && u.isActive == true) select u;
+                    var query = from u in db.Projects where (u.Customer_Id == IDCustomer && u.isActive == true) orderby u.Project_Name select u;
                     if (query.Count() > 0)
                     {
                         foreach (var v in query)
@@ -233,7 +236,7 @@ namespace ProAcc.Controllers
             if (!String.IsNullOrEmpty(ProjectId) && ProjectId != "0")
             {
                 var ID = Guid.Parse(ProjectId);
-                var query = from u in db.Instances where u.Project_ID == ID && u.isActive == true select u;
+                var query = from u in db.Instances where u.Project_ID == ID && u.isActive == true orderby u.InstaceName select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)

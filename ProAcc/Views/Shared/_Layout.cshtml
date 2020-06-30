@@ -41,9 +41,11 @@
             fontSize: "15px",
             distance: "2px",
             borderRadius: "10px",
+           
+            //backOverlayColor:"rgba(0,0,0,0,5)",
         });
 
-
+        //Notiflix.Report.Init({ backOverlayColor: "rgba(248,248,248,0.5)" });
     </script>
     <style>
         .Class_span {
@@ -177,7 +179,7 @@
                             <img src="~/Asset/images/ProACCTool.png" style="width:250px;height:100px;" />
                         </div>
                         <p style="font-family: -webkit-body;font-size: x-large;margin-left: 155px;font-weight: 600;color: #0e0e0e;">
-                        Accelerator for S4 HANA Transformation</p>
+                        Accelerator for S/4HANA Transformation</p>
                     </div>
                     <div class="app-header-right">
                         <a href="javascript:void(0);" class="nav-link">
@@ -468,7 +470,7 @@
                                     @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
                                     {
                                         <a href="#">
-                                            <i class="metismenu-icon fa fa-desktop"></i>
+                                            <i class="metismenu-icon fa fa-ils"></i>
                                             Conversion
                                             <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                         </a>

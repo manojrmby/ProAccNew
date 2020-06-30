@@ -701,33 +701,26 @@
                 //$("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
 
                 $("#" + id + "_StatusId option[value='1']").hide();
-                $("#" + id + "_StatusId option[value='2']").hide();
-                //$("#" + id + "_StatusId option[value='5']").hide();
-
-
-              //  var rows = jqGrid.rows, cRows = rows.length
-                //for (var i = 1; i < ids.length; i++) {
-                //    row = rows[iRow]; // row.id is the rowid
-                //    if (row != row.id) {
-                //       // $(row).addClass('not-editable-row');
-                //      //  var v = myGrid.jqGrid('getCell', row, 'act');
-
-                //        // hide the edit/delete buttons on non-editable rows (not the row we are editing)
-                //        //$("#jqGrid tr#" + row.id + " .ui-inline-edit").hide();
-                //        //$("#jqGrid tr#" + row.id + " .ui-inline-del").hide();
-                //        $('#jEditButton_' + ids[i]).hide();
-                //    }
-                //    else {
-                //        // show the edit/delete buttons for the current row
-                //        //$("#jqGrid tr#" + row.id + " .ui-inline-edit").show();
-                //        //$("#jqGrid tr#" + row.id + " .ui-inline-del").show();
-                //        $('#jEditButton_' + ids[i]).show();
-                //    }
-                //}
+                //$("#" + id + "_StatusId option[value='2']").hide();
+                $("#" + id + "_StatusId option[value='5']").hide();
             }
 
+            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+            var WIP_Status=false;
+            for (var i = 0; i < ids.length; i++) {
+                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+                if (Status_Id == 2) {
+                    WIP_Status = true;
+                }
+            }
+            if (WIP_Status) {
+                $("#" + id + "_StatusId option[value='2']").hide();
+                } else {
+                    $("#" + id + "_StatusId option[value='2']").show();
+                }
 
-            // var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+
+             //var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
 
 //            function textReadOnly(cellValue, options, rowdata, action) {
 //    if (rowdata.stateId == 4) {
@@ -736,30 +729,20 @@
 //        return "<input value='"+ rowdata.stateId +"'></input>";
 //    }
 //}
-           //jCancelButton_2
-            //var cm = jQuery("#jqGrid").jqGrid('getColProp', 'Actions');
-            //cm.editable = false;
             //if (UserType == 'Project Manager')
             //{
+            //    //var WIP_Status=false;
             //    for (var i = 0; i < ids.length; i++) {
             //        //var Actions = $('#jqGrid').jqGrid('getCell', ids[i], 'Actions')
                     
-            //      //  $('#jEditButton_' + ids[i]).attr(readonly='true');
-            //        // $('#jEditButton_' + ids[i]).prop('readonly', 'readonly');
-            //        if (id != i) {
-            //            $('#jEditButton_' + ids[i]).hide();
-            //        }
-            //        else {
-            //            $('#jEditButton_' + ids[i]).show();
-            //        }
-                    
-
-            //       // $('#jEditButton_' + ids[i]).attr('disabled', 'disabled');
+            //        $('#jEditButton_' + ids[i]).attr(readonly='true');
+            //       // $('#jEditButton_' + ids[i]).prop('readonly', 'readonly');
+            //        //$('#jEditButton_' + ids[i]).prop('disabled', 'disabled');
 
             //         //$('#jEditButton_' + ids[i]).hide();
             //        //$(this).attr("readonly", false);
             //        //jEditButton_3
-            //    }
+            //    }           
             //}
             //alert(id);
         }
