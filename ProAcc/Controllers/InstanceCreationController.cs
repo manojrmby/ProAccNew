@@ -170,7 +170,7 @@ namespace ProAcc.Controllers
                        on a.Instance_id equals b.InstanceID
                        where b.InstanceID == id && a.isActive == true && b.isActive == true
                        //select new { V = b.StatusId != 4 } ).ToList();
-                       select new { V =( b.StatusId != 2 && b.StatusId != 4) }).ToList();
+                       select new { V =( b.StatusId != 2 && b.StatusId != 4 && b.StatusId != 5) }).ToList();
 
             foreach (var i in del)
             {
@@ -186,6 +186,16 @@ namespace ProAcc.Controllers
             }
             else
             {
+                var ids = db.ProjectMonitors.Where(x=>x.InstanceID==id && x.isActive==true).ToList();
+                foreach (var pmid in ids)
+                {
+                    var task = db.ProjectMonitors.Where(p => p.InstanceID == pmid.InstanceID&& p.Id==pmid.Id).FirstOrDefault();
+                    task.isActive = false;
+                    task.IsDeleted = true;
+                    db.Entry(task).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
                 Instance instance = db.Instances.Find(id);
                 if (instance.Instance_id == id)
                 {
