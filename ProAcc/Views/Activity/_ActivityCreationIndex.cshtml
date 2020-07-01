@@ -49,7 +49,7 @@
                 <a class="txtG" value="@item.RoleID">@item.RoleMaster.RoleName</a>
             </td>
             <td>
-                <a class="txtG" value="@item.ApplicationArea">@item.ApplicationArea</a>
+                <a class="txtG" value="@item.ApplicationAreaID">@item.ApplicationAreaMaster.ApplicationArea</a>
             </td>
             <td>
                 <a class="txtG" value="@item.Sequence_Num">@item.Sequence_Num</a>
@@ -101,7 +101,7 @@
                     $("#drpRole").val(result.RoleID);
                     $('#drpRole').attr("disabled", true); 
                     $("#drphiddenRole").val(result.RoleID);
-                    $("#txtApplicationArea").val(result.ApplicationArea);
+                    $("#drpApplicationArea").val(result.ApplicationAreaID);
                     $("#actcre_on").val(result.Cre_on);
                     $("#actcre_By").val(result.Cre_By);
                     $("#btntivityCreUpdate").show();

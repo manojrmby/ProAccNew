@@ -124,6 +124,10 @@ namespace ProAcc.Controllers
             return View();
         }
 
+        //public ActionResult Home1()
+        //{
+        //    return View();
+        //}
         [HttpPost]
         public JsonResult GetHomeDonut()
         {

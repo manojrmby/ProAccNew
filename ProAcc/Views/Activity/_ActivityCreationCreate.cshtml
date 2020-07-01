@@ -36,20 +36,28 @@
             </div>
 
             @*<div class="form-group">
-                    <label class="control-label col-md-4 required">Sequence</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtSequence" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span id="lblSequence">&nbsp;</span>
-                    </div>
-                </div>*@
-            <div class="form-group">
                 <label class="control-label col-md-6 required">Application Area</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtApplicationArea" />
                     <input type="hidden" id="hiddenActivityId" />
-                    @*<span id="lblApplicationArea" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblApplicationArea">&nbsp;</span>
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Application Area</label>
+                <div class="col-md-10">
+                    <input id="drphiddenApplicationArea" type="hidden" />
+                    <select class="form-control" id="drpApplicationArea">
+                        <option value="0">Select Application Area</option>
+                        @foreach (var item in ViewBag.ApplicationArea)
+                        {
+                            <option value="@item.Id">@item.ApplicationArea</option>
+                        }
+                    </select>
+                    <input type="hidden" id="hiddenActivityId" />
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblApplicationArea">&nbsp;</span>
@@ -157,16 +165,6 @@
             $("#drpRole").prop("readonly", true);
         }
 
-        //$("#txtTask").keypress(function (event) {
-        //    var inputValue = event.which;
-        //    // allow letters and whitespaces only.
-        //    if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-        //            event.preventDefault();
-        //            $("#lblTask").html("Not Allowed").show().fadeOut(2000);
-        //}
-        //$("#btnActivityCreCreate").prop('disabled', false);
-        //});
-
 
         $('#txtTask').on('focusout', function () {
 
@@ -204,49 +202,31 @@
         });
 
 
+        //$("#txtApplicationArea").keypress(function (event) {
 
-         //$("#txtSequence").keypress(function (e) {
-         //    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-         //        event.preventDefault();
-         //        $("#lblSequence").html("Numbers Only").show().fadeOut(5000);
-         //        ValidateActivity();
-         //    }
-         //    else {
-         //        ValidateActivity();
-         //    }
-         //});
-
-        $("#txtApplicationArea").keypress(function (event) {
-
-            var inputValue = event.which;
-            // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122 || inputValue <= 45) && (inputValue != 32 && inputValue != 0)) {
-                event.preventDefault();
-                $("#lblApplicationArea").html("Not Allowed").show().fadeOut(5000);
-                ValidateActivity();
-            }
-            else {
-                $("#lblApplicationArea").html("")
-                ValidateActivity();
-            }
-        });
-
-        //$('#drpPhase').change(function () {
-        //     var Task = $("#txtTask").val();
-        //    var sequence = $("#txtSequence").val();
-        //    var ApplicationArea = $("#txtApplicationArea").val();
-        //    var Role = $('#drpRole').val();
-        //    if (Task != "" && sequence != "" && ApplicationArea != "" && Role != 0) {
-        //        $("#btnActivityCreCreate").prop("disabled", false);
+        //    var inputValue = event.which;
+        //    // allow letters and whitespaces only.
+        //    if (!(inputValue >= 65 && inputValue <= 122 || inputValue <= 45) && (inputValue != 32 && inputValue != 0)) {
+        //        event.preventDefault();
+        //        $("#lblApplicationArea").html("Not Allowed").show().fadeOut(5000);
+        //        ValidateActivity();
+        //    }
+        //    else {
+        //        $("#lblApplicationArea").html("")
+        //        ValidateActivity();
         //    }
         //});
 
-        $('#drpPhase,#drpRole').change(function () {
+
+        $('#drpPhase,#drpRole,#drpApplicationArea').change(function () {
              var Task = $("#txtTask").val();
             var sequence = $("#txtSequence").val();
-            var ApplicationArea = $("#txtApplicationArea").val();
+           // var ApplicationArea = $("#txtApplicationArea").val();
             var Phase = $('#drpPhase').val();
-            if (Task != "" && sequence != "" && ApplicationArea != "" && Phase != 0) {
+            var Role = $('#drpRole').val();
+            var ApplicationArea = $('#drpApplicationArea').val();
+
+            if (Task != "" && sequence != "" && Phase != 0&& Role!=0 && ApplicationArea!=0) {
                 ValidateActivity();
             }
             else {
@@ -257,9 +237,9 @@
     });
 
     function ValidateActivity() {
-
+        
         var Task = $("#txtTask").val();
-        var ApplicationArea = $("#txtApplicationArea").val();
+        var ApplicationArea = $("#drpApplicationArea").val();
         var Phase = $('#drpPhase').val();
         var Role = $('#drpRole').val();
 
@@ -268,7 +248,7 @@
         var lblPhase = $('#lblPhase').text().trim();
         var lblRole = $('#lblRole').text().trim();
 
-        if (Task.length > 0 && ApplicationArea.length > 0 && Phase != 0 && Role != 0 &&
+        if (Task.length > 0 && ApplicationArea != 0 && Phase != 0 && Role != 0 &&
             lblTask == "" && lblApplicationArea=="" &&  lblPhase == "" && lblRole == "") {
 
              $("#btnActivityCreCreate").prop("disabled", false);
@@ -281,30 +261,27 @@
     }
 
     $("#btnActivityCreCreate").on("click", function () {
-        
+        debugger;
         var Task = $("#txtTask").val();
        // var sequence = $("#txtSequence").val();
-        var ApplicationArea = $("#txtApplicationArea").val();
+        //var ApplicationArea = $("#txtApplicationArea").val();
+        var ApplicationArea = $("#drpApplicationArea").val();
         var Phase = $('#drpPhase').val();
         var Role = $('#drpRole').val();
         var model = {
             Task: Task,
             PhaseID: Phase,
             //Sequence_Num: sequence,
-            ApplicationArea: ApplicationArea,
+            ApplicationAreaID: ApplicationArea,
             RoleID:Role
         }
         if (Task == "") {
             $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
             ValidateActivity();
         }
-        //else if (sequence =="")
-        //{
-        //    $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
-        //}
-        else if (ApplicationArea=="")
+        else if (ApplicationArea==0)
         {
-            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(5000);
+            $("#lblApplicationArea").html("Please select the ApplicationArea").show().fadeOut(5000);
             ValidateActivity();
         }
         else if (Phase==0)
@@ -370,7 +347,7 @@
     });
 
     $("#btnSeq").on("click", function () {
-
+        debugger;
         var LatestTaskId = $("#hiddenActivityId").val();
         var LastTaskId = $("#drpTsk").val();
         var type = $("#drpPhase").val();
@@ -381,29 +358,10 @@
             success: function (response) {
                 if (response == "success") {
                     Notiflix.Notify.Success('Activity Saved Successfully..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
-                    //$.alert({
-                    //    title: 'success !',
-                    //    content: 'Activity Saved Successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                    //    icon: 'fa fa-rocket',
-                    //    animation: 'scale',
-                    //    closeAnimation: 'scale',
-                    //    buttons: {
-                    //        okay: {
-                    //            text: 'Okay',
-                    //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
-                    //            //action: function (event, ui) {
-                    //            //    $(this).remove();
-                    //            //    location.reload();
-                    //            //}
-                    //        }
-                    //    }
-                    //});
-                    //alert("");
                     document.getElementById('id01').style.display = 'none';
                     loadActivityCreation();
                     $("#txtTask").val("");
-                    //$("#txtSequence").val("");
-                    $("#txtApplicationArea").val("");
+                    $("#drpApplicationArea").val(0);
                     $('#drpPhase').val(0);
                     $('#drpRole').val(0);
                     $("#btnActivityCreCreate").show()
@@ -427,7 +385,8 @@
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
         var sequence = $("#txtSequence").val();
-        var ApplicationArea = $("#txtApplicationArea").val();
+        //var ApplicationArea = $("#txtApplicationArea").val();
+        var ApplicationArea = $("#drpApplicationArea").val();
         var Phase = $('#drphiddenPhase').val();
         var Role = $('#drphiddenRole').val();
         var cre_on = $("#actcre_on").val();
@@ -438,7 +397,7 @@
             Task: Task,
             PhaseID: Phase,
             Sequence_Num: sequence,
-            ApplicationArea: ApplicationArea,
+            ApplicationAreaID: ApplicationArea,
             RoleID:Role,
             Cre_on: cre_on,
             Cre_By: cre_By
@@ -447,13 +406,9 @@
            $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
            ValidateActivity();
         }
-        //else if (sequence =="")
-        //{
-        //    $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
-        //}
-        else if (ApplicationArea=="")
+        else if (ApplicationArea==0)
         {
-           $("#lblApplicationArea").html("Please enter the Application Area").show().fadeOut(5000);
+           $("#lblApplicationArea").html("Please select the Application Area").show().fadeOut(5000);
            ValidateActivity();
         }
         else if (Phase==0)
@@ -509,21 +464,6 @@
 
                         }
 
-                        //if (response == "success") {
-                        //    alert("Activity Edited successfully!");
-                        //    loadActivityCreation();
-                        //     $("#txtTask").val("");
-                        //    $("#activityrid").val("");
-                        //    $("#actcre_on").val("");
-                        //    $("#actcre_By").val("");
-                        //    $("#txtSequence").val("");
-                        //    $("#txtApplicationArea").val("");
-                        //    $('#drpPhase').val(0);
-                        //    $('#drpRole').val(0);
-                        //    $("#btnActivityCreCreate").show()
-                        //    $("#btntivityCreUpdate").hide()
-                        //    $("#btnAddNew").hide()
-                        //}
                     },
                     failure: function (response) {
                        alert(response.responseText);

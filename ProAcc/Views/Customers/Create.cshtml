@@ -7,6 +7,16 @@
 }
 
 
+@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>*@
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+
+<link href="~/Asset/css/intlTelInput.css" rel="stylesheet" />
+    <script src="~/Asset/js/intlTelInput.js"></script>
+    <script src="~/Asset/js/intlTelInput.min.js"></script>
+
+
+
 <a class="card-title">Create Customer</a>
 <hr />
 <div style="padding:1em;">
@@ -14,8 +24,8 @@
         <div class="col-6">
 
             @*<input type="hidden" id="customerid" />
-        <input type="hidden" id="pcre_on" />
-        <input type="hidden" id="pcre_By" />*@
+                <input type="hidden" id="pcre_on" />
+                <input type="hidden" id="pcre_By" />*@
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">Customer Name</label>
@@ -45,14 +55,14 @@
             </div>
 
             @*<div class="form-group">
-                <label class="control-label col-md-4 required">Industry Sector</label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtIndustrySector" />
-                </div>
-                <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
-                </div>
-            </div>*@
+                    <label class="control-label col-md-4 required">Industry Sector</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="txtIndustrySector" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
+                    </div>
+                </div>*@
 
             <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Name</label>
@@ -68,7 +78,7 @@
         </div>
 
         <div class="col-6">
-            
+
             <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Email</label>
                 <div class="col-md-10">
@@ -80,40 +90,47 @@
                 </div>
             </div>
 
+            @*<div class="form-group">
+                    <label class="control-label col-md-5 required">Contact Person Phone</label>
+                    <div class="col-md-10">
+                        <input type="tel" class="form-control" id="txtCustomerPhone" maxlength="10" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerPhone">&nbsp;</span>
+                    </div>
+                </div>*@
             <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />
-                    @*<span id="lblCustomerPhone" style="color:red" />*@
+                    <input type="tel" class="form-control" id="txtCustomerPhone" style="width: 150%;">
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerPhone">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
             </div>
         </div>
-        @*<div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="button" value="Create" class="btn btn-primary" id="btnCustomerCreate" />
-                <input type="button" value="Update" class="btn btn-info" id="btnCustomerUpdate" style="display:none" />
-            </div>
-        </div>*@
     </div>
     <div class="row">
         <div class="col-lg-12">
 
             <div class="col-md-offset-2 col-md-12">
-                <button type="button"  id="btnCustomerCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
+                <button type="button" id="btnCustomerCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
                     Create
                     <div class="ld ld-ring ld-spin"></div>
-                    </button>
-                    <div class="col-lg-3" style="float:right;">
-                        @Html.ActionLink("Back to List", "Index", "Customers")
-                    </div>
-</div>
+                </button>
+                <div class="col-lg-3" style="float:right;">
+                    @Html.ActionLink("Back to List", "Index", "Customers")
+                </div>
+            </div>
         </div>
     </div>
 </div>
 @Html.Hidden("RedirectToCustomerList", Url.Action("Index", "Customers"))
+
+
+
+
 
 <script>
 
@@ -121,7 +138,7 @@
         $("#btnCustomerCreate").prop('disabled', true);
 
         $("#txtCompanyName").keypress(function (event) {
-       
+
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
@@ -132,12 +149,12 @@
             else {
                 $("#lblCompanyName").html("").hide();
                 validatecustomer()
-            }           
+            }
         });
 
 
         $('#txtCompanyName').on('focusout', function () {
-            
+
             var CompName = $("#txtCompanyName").val().trim();
             var id = $("#customerid").val();
             if (CompName == "") {
@@ -172,7 +189,7 @@
 
 
         $("#txtIndustrySector").keypress(function (event) {
-       
+
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
@@ -187,7 +204,7 @@
         });
 
         $("#txtContact").keypress(function (event) {
-       
+
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
@@ -198,18 +215,18 @@
             else {
                 $("#lblContact").html("").hide();
                 validatecustomer()
-            }           
+            }
         });
 
         $('#txtContact').on('focusout', function () {
-            
+
             var ContactName = $("#txtContact").val().trim();
             if (ContactName == "") {
                 $("#lblContact").html("Please Enter valid Contact Person Name").show().fadeOut(5000);
                 validatecustomer()
             }
             else {
-               
+
             }
 
         });
@@ -217,33 +234,83 @@
         $("#txtCustomerPhone").keypress(function (e) {
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 event.preventDefault();
-                $("#lblCustomerPhone").html("Numbers Only").show().fadeOut(5000);
+                //$("#lblCustomerPhone").html("Numbers Only").show().fadeOut(5000);
                 validatecustomer()
             }
             else {
-                $("#lblCustomerPhone").html("").hide();
+               // $("#lblCustomerPhone").html("").hide();
                 validatecustomer()
             }
         });
 
-        $("#txtCustomerPhone").blur(function () {
-            
-            phone = $(this).val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
-                validatecustomer();
-            }
-            else {
-                $("#lblCustomerPhone").html("").hide();
-                validatecustomer();
-            }
-            
-       });
+       // $("#txtCustomerPhone").blur(function () {
 
+       //     phone = $(this).val();
+       //     phone = phone.replace(/[^0-9]/g,'');
+       //     if (phone.length != 10) {
+       //         $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
+       //         validatecustomer();
+       //     }
+       //     else {
+       //         $("#lblCustomerPhone").html("").hide();
+       //         validatecustomer();
+       //     }
+
+       //});
+
+        var input = document.querySelector("#txtCustomerPhone"),
+        errorMsg = document.querySelector("#error-msg"),
+        validMsg = document.querySelector("#valid-msg");
+
+    // Error messages based on the code returned from getValidationError
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+    var intl = window.intlTelInput(input, {
+        //initialCountry: "auto",
+        //geoIpLookup: function(success, failure) {
+        //    $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+        //        var countryCode = (resp && resp.country) ? resp.country : "";
+        //        success(countryCode);
+        //    });
+        //},
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+        //utilsScript: "js/utils.js"
+    });
+
+    var reset = function() {
+        input.classList.remove("error");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+        validMsg.classList.add("hide");
+    };
+
+    // Validate on blur event
+        input.addEventListener('blur', function () {
+            debugger;
+        reset();
+        if(input.value.trim()){
+            if(intl.isValidNumber()){
+                validMsg.classList.remove("hide");
+                var getCode = input.intlTelInput('getSelectedCountryData').dialCode;
+       alert(getCode);
+            }else{
+                input.classList.add("error");
+                var errorCode = intl.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
+            }
+        }
+          validatecustomer();
+        //var countryCode = input.intlTelInput("getNumber");
+        //var countryCode = input.getSelectedCountryData();
+    });
+
+    // Reset on keyup/change event
+    input.addEventListener('change', reset);
+    input.addEventListener('keyup', reset);
 
         $("#txtCustomerEmail").on("blur", function (event) {
-            
+
            var str = $(this).val();
            var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
@@ -258,18 +325,19 @@
         });
 
         function validatecustomer() {
-            
+
            var CompanyName = $("#txtCompanyName").val().trim();
             var IndustrySector = $("#drpIndustrySector").val();
             var Contact=$("#txtContact").val().trim();
             var custphone = $("#txtCustomerPhone").val().trim();
             var custEmail = $("#txtCustomerEmail").val().trim();
 
-            var lblCompanyName = $("#lblCompanyName").text().trim(); 
+            var lblCompanyName = $("#lblCompanyName").text().trim();
             var lblIndustrySector = $("#lblIndustrySector").text().trim();
-            var lblcustphone = $("#lblCustomerPhone").text().trim();
+            //var lblcustphone = $("#lblCustomerPhone").text().trim();
+            var lblcustphone = $("#error-msg").text().trim();
             var lblcustEmail = $("#lblCustomerEmail").text().trim();
-        
+
 
             if (CompanyName.length > 0 && IndustrySector.length > 0 && Contact.length > 0 && custphone.length > 0 && custEmail.length > 0 &&
                 lblCompanyName == "" && lblIndustrySector == "" && lblcustphone == "" && lblcustEmail == "" ) {
@@ -292,10 +360,14 @@
     }
 
     $("#btnCustomerCreate").on("click", function () {
-        
+        debugger;
         var CompanyName = $("#txtCompanyName").val().trim();
         var IndustrySector = $("#drpIndustrySector").val();
          var Contact=$("#txtContact").val().trim();
+        //var custphone = $("#txtCustomerPhone").val().trim();
+       // var getCode = input.intlTelInput('getSelectedCountryData').dialCode;
+        //var Countrycode=$("#txtCustomerPhone").intlTelInput('getSelectedCountryData').dialCode;
+        //var Countrycode = countryCode; //$("#txtCustomerPhone").intlTelInput('getSelectedCountryData').dialCode;
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();
 
@@ -312,7 +384,8 @@
         }
         else if (custphone == "")
         {
-            $("#lblCustomerPhone").html("Please enter the Customer Phone").show().fadeOut(2000);
+            //$("#lblCustomerPhone").html("Please enter the Customer Phone").show().fadeOut(2000);
+            $("#error-msg").html("Please enter the Customer Phone").show().fadeOut(2000);
         }
         else if (custEmail=="")
         {
@@ -322,7 +395,7 @@
             $.ajax({
                     type: "POST",
                 url: '@Url.Action("Create","Customers")',
-                data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail ,Contact:Contact},
+                data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail, Contact: Contact},
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('Customer Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
@@ -346,7 +419,7 @@
                             //    }
                             //});
                             //alert("");
-                           
+
                             //loadCustomer();
                             //$("#txtCompanyName").val("");
                             //$("#txtIndustrySector").val("");
@@ -372,6 +445,32 @@
        var url = $("#RedirectToCustomerList").val();
         location.href = url;
     }
-    
+
 
 </script>
+
+
+@*<script>
+        var code={BD:"880",BE:"32",BF:"226",BG:"359",BA:"387",BB:"1",WF:"681",BL:"590",BM:"1",BN:"673",BO:"591",BH:"973",BI:"257",BJ:"229",BT:"975",JM:"1",BW:"267",WS:"685",BQ:"599",BR:"55",BS:"1",JE:"44",BY:"375",BZ:"501",RU:"7",RW:"250",RS:"381",TL:"670",RE:"262",TM:"993",TJ:"992",RO:"40",TK:"690",GW:"245",GU:"1",GT:"502",GR:"30",GQ:"240",GP:"590",JP:"81",GY:"592",GG:"44",GF:"594",GE:"995",GD:"1",GB:"44",GA:"241",SV:"503",GN:"224",GM:"220",GL:"299",GI:"350",GH:"233",OM:"968",TN:"216",JO:"962",HR:"385",HT:"509",HU:"36",HK:"852",HN:"504",VE:"58",PR:"1",PS:"970",PW:"680",PT:"351",SJ:"47",PY:"595",IQ:"964",PA:"507",PF:"689",PG:"675",PE:"51",PK:"92",PH:"63",PN:"870",PL:"48",PM:"508",ZM:"260",EH:"212",EE:"372",EG:"20",ZA:"27",EC:"593",IT:"39",VN:"84",SB:"677",ET:"251",SO:"252",ZW:"263",SA:"966",ES:"34",ER:"291",ME:"382",MD:"373",MG:"261",MF:"590",MA:"212",MC:"377",UZ:"998",MM:"95",ML:"223",MO:"853",MN:"976",MH:"692",MK:"389",MU:"230",MT:"356",MW:"265",MV:"960",MQ:"596",MP:"1",MS:"1",MR:"222",IM:"44",UG:"256",TZ:"255",MY:"60",MX:"52",IL:"972",FR:"33",IO:"246",SH:"290",FI:"358",FJ:"679",FK:"500",FM:"691",FO:"298",NI:"505",NL:"31",NO:"47",NA:"264",VU:"678",NC:"687",NE:"227",NF:"672",NG:"234",NZ:"64",NP:"977",NR:"674",NU:"683",CK:"682",CI:"225",CH:"41",CO:"57",CN:"86",CM:"237",CL:"56",CC:"61",CA:"1",CG:"242",CF:"236",CD:"243",CZ:"420",CY:"357",CX:"61",CR:"506",CW:"599",CV:"238",CU:"53",SZ:"268",SY:"963",SX:"599",KG:"996",KE:"254",SS:"211",SR:"597",KI:"686",KH:"855",KN:"1",KM:"269",ST:"239",SK:"421",KR:"82",SI:"386",KP:"850",KW:"965",SN:"221",SM:"378",SL:"232",SC:"248",KZ:"7",KY:"1",SG:"65",SE:"46",SD:"249",DO:"1",DM:"1",DJ:"253",DK:"45",VG:"1",DE:"49",YE:"967",DZ:"213",US:"1",UY:"598",YT:"262",UM:"1",LB:"961",LC:"1",LA:"856",TV:"688",TW:"886",TT:"1",TR:"90",LK:"94",LI:"423",LV:"371",TO:"676",LT:"370",LU:"352",LR:"231",LS:"266",TH:"66",TG:"228",TD:"235",TC:"1",LY:"218",VA:"379",VC:"1",AE:"971",AD:"376",AG:"1",AF:"93",AI:"1",VI:"1",IS:"354",IR:"98",AM:"374",AL:"355",AO:"244",AS:"1",AR:"54",AU:"61",AT:"43",AW:"297",IN:"91",AX:"358",AZ:"994",IE:"353",ID:"62",UA:"380",QA:"974",MZ:"258"};
+            var selectCountry = $('.select-country');
+            var html = '';
+
+            for (var i in code) {
+                html += '<option value="+' + code[i] + '">' + i + '</option>';
+            }
+
+            selectCountry.html(html);
+            selectCountry.val('+61');
+
+            var cleavePhone = new Cleave('#txtCustomerPhone', {
+                phone:           true,
+                phoneRegionCode: 'AU'
+            });
+
+            selectCountry.on('change', function () {
+                debugger;
+                cleavePhone.setPhoneRegionCode(this.value);
+                cleavePhone.setRawValue(this.value);
+                $('#txtCustomerPhone').focus();
+            });
+    </script>*@

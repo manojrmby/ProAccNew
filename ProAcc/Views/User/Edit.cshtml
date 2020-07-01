@@ -4,6 +4,10 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
+<link href="~/Asset/css/intlTelInput.css" rel="stylesheet" />
+<script src="~/Asset/js/intlTelInput.js"></script>
+<script src="~/Asset/js/intlTelInput.min.js"></script>
+
 <style>
     .required::after {
         content: "*";
@@ -67,16 +71,26 @@
                 </div>
             </div>
 
+            @*<div class="form-group">
+                    <label class="control-label col-md-4 required">Phone</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" maxlength="10" id="txtMobile" value="@Model.Phone" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMobile">&nbsp;</span>
+                    </div>
+                </div>*@
+
             <div class="form-group">
-                <label class="control-label col-md-4 required">Phone</label>
+                <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" maxlength="10" id="txtMobile" value="@Model.Phone" />
+                    <input type="tel" class="form-control" id="txtMobile" value="@Model.Phone" style="width: 150%;">
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMobile">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
             </div>
-
 
 
 
@@ -286,20 +300,60 @@
          ValidateUser()
      });
 
-    $("#txtMobile").blur(function () {
+    //$("#txtMobile").blur(function () {
 
-            phone = $(this).val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
-                 ValidateUser();
+    //        phone = $(this).val();
+    //        phone = phone.replace(/[^0-9]/g,'');
+    //        if (phone.length != 10) {
+    //            $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
+    //             ValidateUser();
+    //        }
+    //        else {
+    //            $("#lblMobile").html("").hide();
+    //             ValidateUser();
+    //        }
+    //        ValidateUser();
+    //   });
+
+    var input = document.querySelector("#txtMobile"),
+        errorMsg = document.querySelector("#error-msg"),
+        validMsg = document.querySelector("#valid-msg");
+
+    // Error messages based on the code returned from getValidationError
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+    var intl = window.intlTelInput(input, {
+       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+        //utilsScript: "~/Asset/js/utils.js"
+    });
+
+    var reset = function() {
+        input.classList.remove("error");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+        validMsg.classList.add("hide");
+    };
+
+    // Validate on blur event
+        input.addEventListener('blur', function () {
+
+        reset();
+        if(input.value.trim()){
+            if(intl.isValidNumber()){
+                validMsg.classList.remove("hide");
+            }else{
+                input.classList.add("error");
+                var errorCode = intl.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
             }
-            else {
-                $("#lblMobile").html("").hide();
-                 ValidateUser();
-            }
-            ValidateUser();
-       });
+        }
+
+    });
+
+    // Reset on keyup/change event
+    input.addEventListener('change', reset);
+    input.addEventListener('keyup', reset);
 
     $("#txtUserEmail").on("blur", function (event) {
 
@@ -418,7 +472,7 @@
     //}
 
     function ValidateUser() {
-        
+
         var id = $("#UserId").val().trim();
         var userMasterName = $("#userMasterName").val().trim();
         var Mobile = $("#txtMobile").val().trim();
@@ -428,7 +482,7 @@
         var lblName = $("#lblName1").text().trim();
         var lblMobile = $("#lblMobile").text().trim();
         var lblEmail = $("#lblUserEmail").text().trim();
-        var lblPassword = $("#lblPassword").text().trim();        
+        var lblPassword = $("#lblPassword").text().trim();
         var lblCnfmPassword = $("#lblCnfmPassword").text().trim();
 
         if (userMasterName != "" && Mobile != "" && Email != ""&& Password!="" && lblName == "" && lblMobile == "" && lblEmail ==""&&lblPassword=="" &&lblCnfmPassword=="" ) {
@@ -447,7 +501,7 @@
     }
 
     $("#btnsaveUser").on("click", function () {
-        
+
         var id = $("#UserId").val().trim();
         var userMasterName = $("#userMasterName").val().trim();
         var Mobile = $("#txtMobile").val().trim();
@@ -459,7 +513,7 @@
          var Customer_Id = $("#Customer_Id").val().trim();
          var pcre_By = $("#pcre_By").val().trim();
          var pcre_on = $("#pcre_on").val().trim();
-         
+
          var model = {
              Name: userMasterName,
              EMail: Email,
@@ -471,7 +525,7 @@
              Customer_Id: Customer_Id,
              Cre_By: pcre_By,
              Cre_On: pcre_on,
-             UserId: id 
+             UserId: id
          }
         if (userMasterName == "" || ValidateName(userMasterName) == false) {
             $("#lblName1").html("Please enter the User Name").show().fadeOut(5000);

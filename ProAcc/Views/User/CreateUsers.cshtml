@@ -6,6 +6,10 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
+<link href="~/Asset/css/intlTelInput.css" rel="stylesheet" />
+<script src="~/Asset/js/intlTelInput.js"></script>
+<script src="~/Asset/js/intlTelInput.min.js"></script>
+
 <a class="card-title">Create User</a>
 <hr />
 <div style="padding:1em;" class="col-lg-12">
@@ -70,13 +74,24 @@
                 </div>
             </div>
 
+            @*<div class="form-group">
+                    <label class="control-label col-md-4 required">Phone Number</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" maxlength="10" id="txtMob" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMob1">&nbsp;</span>
+                    </div>
+                </div>*@
+
             <div class="form-group">
-                <label class="control-label col-md-4 required">Phone Number</label>
+                <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" maxlength="10" id="txtMob" />
+                    <input type="tel" class="form-control" id="txtMob" style="width: 150%;">
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMob1">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
             </div>
 
@@ -136,7 +151,7 @@
         <div class="col-lg-12">
 
             <div class="col-md-offset-2 col-md-12">
-                <button type="button" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')"  id="btnConsultantCreate">
+                <button type="button" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')" id="btnConsultantCreate">
                     Create
                     <div class="ld ld-ring ld-spin"></div>
                 </button>
@@ -242,19 +257,59 @@
             }
          });
 
-        $("#txtMob").blur(function () {
+        //$("#txtMob").blur(function () {
 
-            phone = $(this).val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
-                SubmitConsultant();
+        //    phone = $(this).val();
+        //    phone = phone.replace(/[^0-9]/g,'');
+        //    if (phone.length != 10) {
+        //        $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
+        //        SubmitConsultant();
+        //    }
+        //    else {
+        //        $("#lblMob1").html("").hide();
+        //        SubmitConsultant();
+        //    }
+        //});
+
+        var input = document.querySelector("#txtMob"),
+        errorMsg = document.querySelector("#error-msg"),
+        validMsg = document.querySelector("#valid-msg");
+
+    // Error messages based on the code returned from getValidationError
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+    var intl = window.intlTelInput(input, {
+       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+        //utilsScript: "~/Asset/js/utils.js"
+    });
+
+    var reset = function() {
+        input.classList.remove("error");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+        validMsg.classList.add("hide");
+    };
+
+    // Validate on blur event
+        input.addEventListener('blur', function () {
+
+        reset();
+        if(input.value.trim()){
+            if(intl.isValidNumber()){
+                validMsg.classList.remove("hide");
+            }else{
+                input.classList.add("error");
+                var errorCode = intl.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
             }
-            else {
-                $("#lblMob1").html("").hide();
-                SubmitConsultant();
-            }
-        });
+        }
+
+    });
+
+    // Reset on keyup/change event
+    input.addEventListener('change', reset);
+    input.addEventListener('keyup', reset);
 
         $("#Passwd,#txtConsCnfmPassword").bind('copy paste cut', function (e) {
             e.preventDefault();
@@ -342,7 +397,7 @@
     })
 
     function SubmitConsultant() {
-       
+
         //alert("HI");
         var Name1 = $("#txtName1").val().trim();
         var Mob = $("#txtMob").val().trim();
@@ -359,7 +414,7 @@
         var Status1 = $("#StatusConsultant").text().trim();
         var lblAltConsPwd = $("#lblAltConsPwd").text().trim();
 
-       
+
 
         if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 && UserTypeID!=0 &&
             lblName1 == "" && lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
@@ -379,7 +434,7 @@
     }
 
     $("#btnConsultantCreate").on("click", function () {
-       
+
         var Name1 = $("#txtName1").val();
         var Mob = $("#txtMob").val();
         var Email1 = $("#txtEmail1").val();
@@ -422,10 +477,10 @@
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('User Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                            
+
                             setTimeout(Redirect, 3000);
-                            
-                            
+
+
                             //$.alert({
                             //    title: 'Success !',
                             //    content: 'User Saved successfully..!',

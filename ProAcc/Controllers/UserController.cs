@@ -246,17 +246,18 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
-            var del = (from a in db.UserMasters
-                       join b in db.ProjectMonitors                       
-                       on a.UserId equals b.UserID
-                       where a.UserId == id && a.isActive == true && b.isActive == true
-                       select b).ToList();
+            //var del = (from a in db.UserMasters
+            //           join b in db.ProjectMonitors
+            //           on a.UserId equals b.UserID
+            //           where a.UserId == id && a.isActive == true && b.isActive == true
+            //           select b).ToList();
             var delpm = (from a in db.UserMasters
                          join b in db.Projects
                          on a.UserId equals b.ProjectManager_Id
                          where a.UserId == id && a.isActive == true && b.isActive == true
                          select b).ToList();
-            if(del.Count!=0 || delpm.Count!=0)
+            //if(del.Count!=0 || delpm.Count!=0)
+            if (delpm.Count != 0)
             {
                 return Json("fail");
             }

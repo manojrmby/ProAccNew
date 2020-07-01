@@ -53,6 +53,9 @@
     <Compile Include="ActivityMaster.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
+    <Compile Include="ApplicationAreaMaster.cs">
+      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Customer.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
@@ -93,9 +96,6 @@
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceAllocation.cs">
-      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
-    </Compile>
     <Compile Include="RoleMaster.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>

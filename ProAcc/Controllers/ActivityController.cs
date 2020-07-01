@@ -27,6 +27,7 @@ namespace ProAcc.Controllers
             var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
             var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
             ViewBag.Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!= adminRoleId && x.RoleId != pmRoleId);
+            ViewBag.ApplicationArea = db.ApplicationAreaMasters.Where(x => x.isActive == true).OrderBy(x => x.Id);
             return View();
         }
 
@@ -205,7 +206,7 @@ namespace ProAcc.Controllers
                 return HttpNotFound();
             }
             //var Activity = db.ActivityMasters.Find(id);
-            var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task, p.ApplicationArea, p.PhaseID, p.RoleID,p.Cre_on,p.Cre_By,p.Sequence_Num }).FirstOrDefault();
+            var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task, p.ApplicationAreaID, p.PhaseID, p.RoleID,p.Cre_on,p.Cre_By,p.Sequence_Num }).FirstOrDefault();
             //TempData["Cre_On"] = activity.Cre_on;
             //var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task,p.ApplicationArea,p.PhaseID,p.RoleID });
 
