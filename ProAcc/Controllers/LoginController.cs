@@ -18,7 +18,15 @@ namespace ProAcc.Controllers
        
         public ActionResult Login()
         {
-            return View();
+            if (Session["loginid"] !=null)
+            {
+                return RedirectToAction("Home", "Home");
+            }
+            else
+            {
+                return View();
+            }
+                
         }
        
         public ActionResult Logout()

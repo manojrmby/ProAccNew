@@ -29,13 +29,13 @@ namespace ProAcc.Controllers
         }
         public ActionResult Index()
         {
-            //var customers = db.Customers
-            //    .Where(a => a.isActive == true)
-            //    .OrderByDescending(x => x.Cre_on).ToList();
+            var customers = db.Customers
+                .Where(a => a.isActive == true)
+                .OrderByDescending(x => x.Cre_on).ToList();
             //.Where(x => x.Name.StartsWith(search) || search == null).ToList(); //.ToPagedList(i ?? 1, 5);
-            //return View(customers);
-            ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).OrderByDescending(x => x.Cre_on).ToList();
-            return View(ViewBag.customersIndex);
+            return View(customers);
+            //ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).OrderByDescending(x => x.Cre_on).ToList();
+            //return View(ViewBag.customersIndex);
         }
         // GET: Customers/Details/5
         public ActionResult Details(Guid? id)

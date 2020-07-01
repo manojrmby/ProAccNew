@@ -11,7 +11,7 @@ using static ProAcc.BL.Model.Common;
 namespace ProAcc.Controllers
 {
     [CheckSessionTimeOut]
-    [Authorize(Roles = "Admin,Consultant,Project Manager")]
+    [Authorize(Roles = "Consultant,Project Manager")]
     public class ResourceController : Controller
     {
         Base _Base = new Base();
