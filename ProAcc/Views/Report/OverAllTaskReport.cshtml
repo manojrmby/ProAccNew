@@ -8,7 +8,10 @@
 @Scripts.Render("~/bundles/Scripts/jqGrid")
 
 @*<script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.26/build/pdfmake.min.js"></script>
-<script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.26/build/vfs_fonts.js"></script>*@
+    <script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.26/build/vfs_fonts.js"></script>*@
+
+
+
 <script src="~/Asset/Jquery/jqGrid/plugins/pdfmake.min.js"></script>
 <script src="~/Asset/Jquery/jqGrid/plugins/vfs_fonts.js"></script>
 <a class="card-title">Detailed Task Report</a>
@@ -28,7 +31,7 @@
         white-space: normal !important;
         height: auto !important;
         padding: 2px;
-        text-align:center;
+        text-align: center;
     }
 
     .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
@@ -62,18 +65,20 @@
     .app-container {
         min-height: 100%;
     }
+
     .wrapColumnText {
         white-space: normal !important;
         height: auto;
         vertical-align: text-top;
     }
+
     .fit_Data {
         width: fit-content;
     }
 
-    .MyClass123:before{
-	content:url("https://img.icons8.com/officel/80/000000/export-pdf.png");
-}
+    .MyClass123:before {
+        content: url("https://img.icons8.com/officel/80/000000/export-pdf.png");
+    }
 </style>
 
 <div class="row instanceRow">
@@ -224,8 +229,8 @@
                 LoadTable(IDInstance);
                 $('#jqGrid').trigger('reloadGrid');
                 $('#export').show();
-                
-                
+
+
                 //$.alert({
                 //    title: 'Alert !',
                 //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
@@ -255,7 +260,7 @@
 <script>
     //document.body.style.zoom = "80%";
     $(document).ready(function () {
-        //LoadTable(1);
+        LoadTable(1);
     });
     $(window).on("resize", function () {
   var $grid = $("#jqGrid"),
@@ -264,7 +269,7 @@
 });
     function LoadTable(Instance) {
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
-    
+
         var Planed_StartDate = function (element, options) {
             var ID = options.rowId;
             $(element).on('keypress', function (e) {
@@ -482,16 +487,16 @@
                        // maxlength:4,
                         dataInit: function (element) {
                             $(element).keyup(function(event) {
-     
+
                                   this.value = this.value
                                   .replace(/[^\d:]/g, '')             // numbers and decimals only
                                   .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
                                   .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
                                   .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
-                                   
-                
+
+
                             });
-                            
+
                         }
                     }
                 },
@@ -500,7 +505,7 @@
                     //formatter: "number",
                     width: 55, editable: true,
                     editoptions: {
-                        
+
                         //dataInit: function (element) {
                         //    $(element).keypress(function (e) {
                         //        //alert(e);
@@ -514,16 +519,16 @@
                         //}
                          dataInit: function (element) {
                             $(element).keyup(function(event) {
-     
+
                                   this.value = this.value
                                   .replace(/[^\d:]/g, '')             // numbers and decimals only
                                   .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
                                   .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
                                   .replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
-                                   
-                
+
+
                             });
-                            
+
                         }
                     }
                 },
@@ -560,7 +565,7 @@
                     editoptions: {
                         "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
                         //"readonly": "readonly"
-                        
+
                     },
               //      beforeSaveCell:function(rowid,name,val,iRow,iCol) {
 			           //  // var row = $("#list").getRowData(rowid);
@@ -570,7 +575,7 @@
 
               //          var status = $("#jqGrid").jqGrid('getCell', ColValue, 'StatusId');
               //          alert("HI");
-			
+
               //      },
               //      afterSaveCell: function(rowid,name,val,iRow,iCol) {
               //      alert("alert1!");
@@ -649,7 +654,7 @@
 
             loadComplete: function () {
                 //alert("mm");
-                 
+
             },
             gridComplete: function () {
                // alert("tdyt");
@@ -658,7 +663,7 @@
                 if (isNaN(recs) || recs == 0) {
                     $('#export').hide();
                     $("#jqGrid").jqGrid('setGridState', 'hidden');
-                    
+
                 }
                 else {
                     $('#export').show();
@@ -676,7 +681,7 @@
 //    id: "myButton",
 //    onClickButton: function () {
 //            }
-   
+
 //});
 //        $("#jqGrid").jqGrid('navButtonAdd','#pager0',{
 //    id:'ExportToExcel',
@@ -687,7 +692,7 @@
 //        //exportData(e, '#grid');
 //    },
 //    buttonicon: 'ui-icon ui-icon-document',
-//});	
+//});
 
 //$("#jqGrid").jqGrid('navButtonAdd','#pager0',{
 //    id:'ExportToPDF',
@@ -698,7 +703,7 @@
 //       // exportPDF(e, '#grid');
 //    },
 //    buttonicon: 'ui-icon ui-icon-document',
-//});	
+//});
 //$('#jqGrid').navGrid('#jqGridPager',
 //    '#pager0',{
 //    id:'ExportToExcel',
@@ -709,7 +714,7 @@
 //        //exportData(e, '#grid');
 //    },
 //    buttonicon: 'ui-icon ui-icon-document',
-//});	
+//});
         //$("#jqGrid").jqGrid('filterToolbar', { stringResult: true, searchOnEnter: false, defaultSearch: "cn" });
         @*function editRow(id) {
             // var Status_Id = $('#jqGrid').jqGrid('getCell', id, 'StatusId')

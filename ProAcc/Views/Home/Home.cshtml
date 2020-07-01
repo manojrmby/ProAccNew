@@ -298,9 +298,9 @@
         opacity: 1;
     }
 
-    .bg-grow-before {
+    /*.bg-grow-before {
         background-color: darkcyan;
-    }
+    }*/
 </style>
 
 @Scripts.Render("~/bundles/Scripts/ChartJS")
@@ -309,9 +309,46 @@
 @*<script src="~/Asset/Scripts/Prograssbarjs.js"></script>*@
 @*<script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>*@
 
+<style>
+    .ShadowClass{
+        background:
+	linear-gradient(white 30%, hsla(0,0%,100%, 0)),
+	linear-gradient(hsla(0,0%,100%,0) 10px, white 70%) bottom,
+	radial-gradient(at top, rgba(0,0,0,0.2), transparent 70%), 
+	radial-gradient(at bottom, rgba(0,0,0,0.2), transparent 70%) bottom;
+background-repeat:no-repeat;
+background-size: 100% 20px, 100% 20px, 100% 10px, 100% 10px;
+background-attachment:local, local, scroll, scroll;
+    }
+</style>
+<style>
+    #scrollContainer {
+    height : 190px;
+    overflow : hidden;
+}
+
+ ._Scroll{
+    margin-bottom : 8px;
+  
+}
+
+._Scroll dimmed {
+    opacity : 0.5;
+}
+._Scroll highlighted {
+    opacity : 1;
+    background-color : #CCDDFF;
+}
+
+.bg-grow-be
+{
+    background-image: linear-gradient( #AA076B,#61045f) !important;
+}
+</style>
+
 <a class="card-title">Dashboard</a>
-<div style="padding: 1em;">
-    <div class="row">
+<div style="padding: 1em;" >
+    <div class="row" >
 
         <div class="col-lg-12 card" style="margin-bottom:20px !important;">
             <div class="row">
@@ -352,239 +389,412 @@
             </div>
         </div>
 
-        <div class="col-lg-12 card" style="margin-bottom:20px;min-height:250px;">
+        <div class="col-lg-12 card" style="margin-bottom:10px !important;">
+            <div class="row " style="margin-top: 20px;">
+                <div class="col-md-6 col-xl-4">
+                    <div class="card mb-3 widget-content bg-pink" style="background-color: #E91E63 !important;">
+                        <div class="widget-content-wrapper text-white">
+                            <div class="widget-content-top">
+                                <div class="widget-heading">Assessment</div>
+                                <div class="widget-heading text-white"><span id="AssId"></span></div>
+                            </div>
+                            <div class="widget-content-right">
+
+                                <div class="icon"><i class="fa fa-share-alt" aria-hidden="true"></i></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <div class="card mb-3 widget-content bg-midnight-bloom">
+                        <div class="widget-content-wrapper text-white">
+                            <div class="widget-content-left">
+                                <div class="widget-heading">Readiness Check</div>
+                                <div class="widget-heading text-white"><span id="Ass_StatusId">0</span></div>
+                            </div>
+                            <div class="widget-content-right">
+                                <div class="icon"><i class="fa fa-share-alt" aria-hidden="true"></i></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-12 card" style="margin-bottom:10px !important;">
+
+            <div class="row" style="padding:0em 1em 3em 1em;">
+                <div class="card-body">
+                    <h5 class="card-title">S/4HANA System Conversion</h5>
+                    <form class="">
+                        @if (ViewBag.count != null)
+                        {
+                            int i = ViewBag.count;
+                            string progress = "noUi-origin noUi-background1";
+                            string progress1 = "noUi-origin noUi-background1";
+                            string progress2 = "noUi-origin noUi-background1";
+                            string color = "black";
+                            string color1 = "black";
+                            string color2 = "black";
+                            string color3 = "black";
+                            if (i == 1)
+                            {
+                                //progress = "noUi-origin noUi-connect";
+                                color = "Green";
+                            }
+                            else if (i == 2)
+                            {
+                                progress = "noUi-origin noUi-connect";
+                                // progress1 = "noUi-origin noUi-connect";
+                                color = "Green";
+                                color1 = "Green";
+                            }
+                            else if (i == 3)
+                            {
+                                progress = "noUi-origin noUi-connect";
+                                progress1 = "noUi-origin noUi-connect";
+                                // progress2 = "noUi-origin noUi-connect";
+                                color = "Green";
+                                color1 = "Green";
+                                color2 = "Green";
+                            }
+                            else if (i == 4)
+                            {
+                                progress = "noUi-origin noUi-connect";
+                                progress1 = "noUi-origin noUi-connect";
+                                progress2 = "noUi-origin noUi-connect";
+                                color = "Green";
+                                color1 = "Green";
+                                color2 = "Green";
+                                color3 = "Green";
+                            }
+
+
+                            <div id="nouislider_range_example" class="noUi-target noUi-ltr noUi-horizontal" style="margin-top: 25px;">
+                                <div class="noUi-base">
+
+                                    <div class="@progress" style="left: 20%;">
+                                        <div class="noUi-handle noUi-handle-lower" style="background-color:@color">
+                                            <br>
+                                            <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;Pre-Conversion</p>
+                                        </div>
+                                    </div>
+                                    <div class="@progress1" style="left: 40%;">
+                                        <div class="noUi-handle noUi-handle-upper" style="background-color:@color1">
+                                            <br>
+                                            <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;Conversion</p>
+                                        </div>
+                                    </div>
+                                    <div class="@progress2" style="left: 60%;">
+                                        <div class="noUi-handle noUi-handle-upper" style="background-color:@color2">
+                                            <br>
+                                            <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;Post Conversion</p>
+                                        </div>
+                                    </div>
+                                    <div class="noUi-origin noUi-background" style="left: 80%;background-color: white !important;">
+                                        <div class="noUi-handle noUi-handle-upper" style="background-color:@color3">
+                                            <br>
+                                            <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;Validation</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (ViewBag.count != null)
+                        {
+                            int i = ViewBag.count;
+                            int value = 0;
+                            if (i == 1)
+                            {
+                                value = 10;
+                            }
+                            else if (i == 2)
+                            {
+                                value = 35;
+                            }
+                            else if (i == 3)
+                            {
+                                value = 70;
+                            }
+                            else if (i == 4)
+                            {
+                                value = 100;
+                            }
+
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 card" style="margin-bottom:10px !important;">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-md-6 col-xl-3">
+                    <div class="card mb-3 widget-content"style="background-color: #FF9800 !important;">
+                        <div class="widget-content-wrapper text-white">
+                            <div class="widget-content-left">
+                                <div class="widget-heading">Pre-Conversion</div>
+                                <div class="widget-subheading"><span id="Pre_StatusId"></span></div>
+                            </div>
+                            <div class="widget-content-right">
+                                <div class="widget-numbers text-white"><span id="PreId">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card mb-3 widget-content bg-grow-be">
+                        <div class="widget-content-wrapper text-white">
+                            <div class="widget-content-left">
+                                <div class="widget-heading">Conversion</div>
+                                <div class="widget-subheading"><span id="Con_StatusId"></span></div>
+                            </div>
+                            <div class="widget-content-right">
+                                <div class="widget-numbers text-white"><span id="ConId">46%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card mb-3 widget-content bg-arielle-smile">
+                        <div class="widget-content-wrapper text-white">
+                            <div class="widget-content-left">
+                                <div class="widget-heading">Post-Conversion</div>
+                                <div class="widget-subheading"> <span id="Post_StatusId"></span></div>
+                            </div>
+                            <div class="widget-content-right">
+                                <div class="widget-numbers text-white"><span id="PostId"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card mb-3 widget-content bg-grow-early">
+                        <div class="widget-content-wrapper text-white">
+                            <div class="widget-content-left">
+                                <div class="widget-heading">Validation</div>
+                                <div class="widget-subheading"><span id="Vali_StatusId"></span></div>
+                            </div>
+                            <div class="widget-content-right">
+                                <div class="widget-numbers text-white"><span id="ValiId">46%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 card" style=" margin-bottom: 20px;min-height: 250px;">
             <div class="row">
                 <table>
                     <tr>
-                        <td style="text-align:left;vertical-align:top;"><a class="card-title">Project Name :</a>@Session["Project_Name"]</td>
+                        <td style=" text-align: left; vertical-align: top;"><a class="card-title">Project Name :</a>@Session["Project_Name"]</td>
                         <td style="text-align:right;vertical-align:top;"><a class="card-title">Instance Name :</a> @Session["Instance_Name"]</td>
                     </tr>
-                    @*<tr>
-                    <td style="width:50%">
-                        <div class="card mb-3 widget-content bg-grow-before" id="AssDivId">
-                            <div class="widget-content-wrapper text-white">
-                                <div class="widget-content-left">
-                                    <div class="widget-heading">Assessment</div>
-                                    <div class="widget-subheading">Readiness Check</div>
-                                </div>
-                                <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span id="AssId">0 %</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>*@
                     <tr>
                         <td>
-                            @*<div class="col-lg-12">*@
-                            @*<div class="row">*@
                             <div class="col-lg-10 text-center ">
-                                <label>Assessment</label>
+                                <a class="card-title">Assessment</a>
+
                                 <canvas id="Chart_Assessment"></canvas>
                             </div>
-                            @*</div>*@
-                            @*</div>*@
                         </td>
                         <td>
-                            <div class="card mb-3 widget-content bg-grow-before" id="AssDivId">
+                            <div id="scrollContainer" class="ShadowClass">
 
-                                <div class="widget-content-wrapper text-white">
-                                    
-                                    <div class="widget-content-left">
-                                        <div class="widget-heading">
-                                            Assessment :
+                                <div class="card mb-3 widget-content  _Scroll" id="AssDivId">
+                                    @*<div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="widget-numbers fsize-3 text-muted" id="AssId">0%</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted"> Assessment</div>
+                                            </div>
                                         </div>
-                                        <div class="widget-subheading">Readiness Check :</div>
+                                        <div class="widget-progress-wrapper mt-1">
+                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:100%;" id="AssId_Progress"></div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="text-muted widget-heading">Readiness Check :</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted" id="Ass_StatusId"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>*@
+
+                                </div>
+                                <div class="card mb-3 widget-content _Scroll" id="PreDivId">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="widget-numbers fsize-3 text-muted" id="PreId">0%</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted">  Pre-Conversion :</div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-progress-wrapper mt-1">
+                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:100%;" id="PreId_Progress"></div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="text-muted widget-heading">Pre-Conversion Status :</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted" id="Pre_StatusId"></div>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="widget-content-right" style="margin-left: 7% !important;">
-                                        <div class="text-white"><span id="AssId" style="margin-left: 31%;">0 %</span></div>
-                                        <div class="text-white"><span id="Ass_StatusId"></span></div>
+
+                                </div>
+                                <div class="card mb-3 widget-content bg-grow-before _Scroll" id="ConDivId">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="widget-numbers fsize-3 text-muted" id="ConId">0%</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted">  Conversion :</div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-progress-wrapper mt-1">
+                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:100%;" id="ConId_Progress"></div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="text-muted widget-heading">Conversion Status :</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted" id="Con_StatusId"></div>
+                                            </div>
+                                        </div>
+
                                     </div>
+
+
+                                </div>
+                                <div class="card mb-3 widget-content bg-grow-before _Scroll" id="PostDivId">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="widget-numbers fsize-3 text-muted" id="PostId">0%</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted">Post-Conversion :</div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-progress-wrapper mt-1">
+                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:100%;" id="PostId_Progress"></div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="text-muted widget-heading">Post-Conversion Status :</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted" id="Post_StatusId"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="card mb-3 widget-content bg-grow-before _Scroll" id="ValiDivId">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="widget-numbers fsize-3 text-muted" id="ValiId">0%</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted">  Validation :</div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-progress-wrapper mt-1">
+                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:100%;" id="ValiId_Progress"></div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="text-muted widget-heading">Validation Status :</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="text-muted" id="Vali_StatusId"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="_Scroll align-content-center">
+                                    <img src="~/Asset/images/image_2020_04_26T06_25_25_806Z.png" alt="Alternate Text" width="272px" />
                                 </div>
                             </div>
+
                         </td>
                     </tr>
                 </table>
             </div>
-            @*<hr />*@ @*style="margin-top:-20px !important;"*@
-            @*<div class="row" style="padding:0em 1em 3em 1em;">
-            <div class="card-body">
-                <h5 class="card-title">S4 Hana System Conversion</h5>
-                <form class="">
-                    @if (ViewBag.count != null)
-                    {
-                        int i = ViewBag.count;
-                        string progress = "noUi-origin noUi-background1";
-                        string progress1 = "noUi-origin noUi-background1";
-                        string progress2 = "noUi-origin noUi-background1";
-                        string color = "black";
-                        string color1 = "black";
-                        string color2 = "black";
-                        string color3 = "black";
-                        if (i == 1)
-                        {
-                            //progress = "noUi-origin noUi-connect";
-                            color = "Green";
-                        }
-                        else if (i == 2)
-                        {
-                            progress = "noUi-origin noUi-connect";
-                            // progress1 = "noUi-origin noUi-connect";
-                            color = "Green";
-                            color1 = "Green";
-                        }
-                        else if (i == 3)
-                        {
-                            progress = "noUi-origin noUi-connect";
-                            progress1 = "noUi-origin noUi-connect";
-                            // progress2 = "noUi-origin noUi-connect";
-                            color = "Green";
-                            color1 = "Green";
-                            color2 = "Green";
-                        }
-                        else if (i == 4)
-                        {
-                            progress = "noUi-origin noUi-connect";
-                            progress1 = "noUi-origin noUi-connect";
-                            progress2 = "noUi-origin noUi-connect";
-                            color = "Green";
-                            color1 = "Green";
-                            color2 = "Green";
-                            color3 = "Green";
-                        }
+            <hr /> @*style="margin-top:-20px !important;"*@
 
 
-                        <div id="nouislider_range_example" class="noUi-target noUi-ltr noUi-horizontal" style="margin-top: 25px;">
-                            <div class="noUi-base">
 
-                                <div class="@progress" style="left: 20%;">
-                                    <div class="noUi-handle noUi-handle-lower" style="background-color:@color">
-                                        <br>
-                                        <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PRE MIGRATION</p>
-                                    </div>
-                                </div>
-                                <div class="@progress1" style="left: 40%;">
-                                    <div class="noUi-handle noUi-handle-upper" style="background-color:@color1">
-                                        <br>
-                                        <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PULL & PUSH</p>
-                                    </div>
-                                </div>
-                                <div class="@progress2" style="left: 60%;">
-                                    <div class="noUi-handle noUi-handle-upper" style="background-color:@color2">
-                                        <br>
-                                        <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;POST MIGRATION</p>
-                                    </div>
-                                </div>
-                                <div class="noUi-origin noUi-background" style="left: 80%;background-color: white !important;">
-                                    <div class="noUi-handle noUi-handle-upper" style="background-color:@color3">
-                                        <br>
-                                        <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;VALIDATION</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    @if (ViewBag.count != null)
-                    {
-                        int i = ViewBag.count;
-                        int value = 0;
-                        if (i == 1)
-                        {
-                            value = 10;
-                        }
-                        else if (i == 2)
-                        {
-                            value = 35;
-                        }
-                        else if (i == 3)
-                        {
-                            value = 70;
-                        }
-                        else if (i == 4)
-                        {
-                            value = 100;
-                        }
-
-                    }
-                </form>
-            </div>
-        </div>*@
         </div>
+
         <div class="col-lg-12 card" style="margin-bottom:20px;">
             <div class="row">
-                <div class="col-lg-6 card text-center">
-                    <label>Pre Conversion</label>
+
+                <div class="col-lg-6 card text-center border">
+                    <br />
+                    <div class="card-title">Pre Conversion</div>
                     <canvas id="chart-Pre_Conversion"></canvas>
-                    <label>Pre Conversion:<span id="Percentage_Pre_Conversion"></span></label>
-                    <label>Status:<span id="Status_Pre_Conversion"></span></label>
                 </div>
-                <div class="col-lg-6 card text-center">
-                    <label>Conversion</label>
+                <div class="col-lg-6 card text-center border">
+                    <br />
+                    <div class="card-title">Conversion</div>
                     <canvas id="chart-Conversion"></canvas>
-                    <label>Conversion:<span id="Percentage_Conversion"></span></label>
-                    <label>Status:<span id="Status_Conversion"></span></label>
                     @*<label>Total:365</label>*@
                 </div>
+
             </div>
             <br />
-                <div class="row">
-                    <div class="col-lg-6 card text-center">
-                        <label>Post Conversion</label>
-                        <canvas id="chart-Post_Conversion"></canvas>
-                        <label>Post Conversion:<span id="Percentage_Post_Conversion"></span></label>
-                        <label>Status:<span id="Status_Post_Conversion"></span></label>
-                        @*<label>Total:215</label>*@
-                    </div>
-                    <div class="col-lg-6 card text-center">
-                        <label>Validation</label>
-                        <canvas id="chart-Validation"></canvas>
-                        <label>Validation:<span id="Percentage_Validation"></span></label>
-                        <label>Status:<span id="Status_Validation"></span></label>
-                        @*<label>Total:215</label>*@
-                    </div>
-                </div>
+            <div class="row">
+                <div class="col-lg-6 card text-center border">
+                    <br />
+                    <div class="card-title">Post Conversion</div>
 
+                    <canvas id="chart-Post_Conversion"></canvas>
+                    @*<label>Total:215</label>*@
+                </div>
+                <div class="col-lg-6 card text-center border">
+                    <br />
+                    <div class="card-title">Validation</div>
+                    <canvas id="chart-Validation"></canvas>
+                    @*<label>Total:215</label>*@
+                </div>
             </div>
 
+        </div>
 
-        @*<div class="col-lg-12 card" style="margin-bottom:20px !important;">
-                <div class="row">
-                    @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                    {
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="exampleEmail" class="">Customer Name</label>
-                                @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
-                            </div>
-                        </div>
-                    }
-                    <div class="col-md-4">
-                        <label class="">Project Name</label>
-                        @if (User.IsInRole("Customer") || User.IsInRole("Project Manager"))
-                        {
-                            @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
-                                   "Select a Customer", new { id = "IDProject", @class = "form-control" })
-                        }
-                    </div>
-                    <div class="col-md-2">
-                        <label for="exampleEmail" class="">Instance Name</label>
-                        @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
-                        "-Select-", new { id = "IDInstance", @class = "form-control" })
-                    </div>
-                    <div class="col-md-2">
-                        <label for="exampleEmail" class="">.</label>
-                        <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
-                            Select Instance
-                        </button>
-                    </div>
-                </div>
-            </div>*@
 
-        <div class="col-lg-12 card">
+
+
+        @*<div class="col-lg-12 card">
             <div class="row">
 
                 <div class="col-lg-12 card">
@@ -596,6 +806,7 @@
                                 <tr>
                                     <th>Tasks</th>
                                     <th>Named owner of task</th>
+                                    <th>PhaseName</th>
                                     <th>Status</th>
                                     <th>Deadline</th>
                                 </tr>
@@ -606,65 +817,40 @@
                                     <tr>
                                         <td>@item.Task</td>
                                         <td>@item.Name</td>
+                                        <td>@item.PhaseName</td>
                                         <td>@item.StatusName</td>
                                         <td>@item.Planed__En_Date.ToString("dd/MM/yyyy")</td>
                                     </tr>
                                 }
-                                @*<tr>
-                                        <td>Carry out pricing related updates</td>
-                                        <td>
-                                            <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
-                                        </td>
-                                        <td>InProgress</td>
-                                        <td>08 Apr 2020</td>
-                                    </tr>
-                                    <tr>
 
-                                        <td>Migration to Material Ledger</td>
-                                        <td>
-                                            <monkey-bar min="0" max="100" now="100" class="prograss_Bar"></monkey-bar>
-                                        </td>
-                                        <td>Completed</td>
-                                        <td>08 Apr 2020</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>Pull and Push Data</td>
-                                        <td>
-                                            <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
-                                        </td>
-                                        <td>InProgress</td>
-                                        <td>08 Apr 2020</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pricing Data Model Changes</td>
-
-                                        <td>
-                                            <monkey-bar min="0" max="100" now="80" class="prograss_Bar"></monkey-bar>
-                                        </td>
-                                        <td>InProgress</td>
-                                        <td>08 Apr 2020</td>
-                                    </tr>*@
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
+
+
 
 
     </div>
 
 
 </div>
+
+<div>
+
+</div>
 <script>
 	//This Project & Instance
     $("#chart-Assessment").click(
-	function (evt) {
-		window.location.href = "@Url.Action("ReadinessReport","Assessment")";
-	}
+        function (evt) {
+            window.location.href = "@Url.Action("ReadinessReport","Assessment")";
+        }
     );
-
+var blue = '#3f6ad8';
+var Yellow = '#f7b924';
+var Green = '#3ac47d';
     function Ajax_Donut() {
 
 		$.ajax({
@@ -674,7 +860,7 @@
 				dataType: "json",
 				contentType: "application/json; charset=utf-8",
             success: function (Result) {
-               // debugger;
+               //debugger;
                 percentage(Result);
                 Data = Result[0];
                 
@@ -704,14 +890,96 @@
 			});
     }
 
+    function Render_No_Data(ID) {
+        
+        var ctx = document.getElementById(ID).getContext("2d");
+        var config = {
+			type: "doughnut",
+			data: {
+				labels: ["Not Yet Started"],
+				datasets: [{
+					data: [100],
+					backgroundColor: [
+							'#FF6384'
+						],
+					borderWidth: 2,
+					label: ""
+				}]
+			},
+			options: {
+				responsive: true,
+                legend: {
+                    display: false
+				
+                },
+                dataLabels: {
+                    display: false
+                },
+                
+                centerPercentage: 60,
+                centerArea: {
+                    displayText: true,
+                    text: "Manoj"
+                },
 
+				 plugins: {
+                     labels: {
+                         //arc: true,
+                         render: 'label',
+                         fontColor: '#000',
+                       fontColor: '#000'
+						//position: 'outside'
+					}
+                },
+				 tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                return previousValue + currentValue;
+                            });
+                            //var currentValue = dataset.data[tooltipItem.index];
+                            //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                            //return percentage + "%";
+
+                             var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                            //return currentValue + ' (' + percentage + '%)';
+                            //return percentage + '%';
+                            return '';
+
+                        },
+                        title: function(tooltipItem, data) {
+                            return data.labels[tooltipItem[0].index];
+                        }
+                    }
+                },
+
+				animation: {
+					duration: 5000
+				}
+            },
+            centerText: {
+                display: true,
+                text: "NO Data" 
+            }
+		};
+
+		window.myRadialGauge = new Chart(ctx, config);
+    }
 
 
    function render_Ass_Chart(data, labels) {
 		//Chart.defaults.global.defaultFontFamily = "Verdana";
-		var ctx = document.getElementById("Chart_Assessment").getContext("2d");
+       var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+       if (Total == 0) {
+           var ID = 'Chart_Assessment';
+           Render_No_Data(ID)
+       }
+       else {
+           var ctx = document.getElementById("Chart_Assessment").getContext("2d");
 
-       var Total = data[0] + data[1] + data[2]+data[3]+data[4];
+       
 		var config = {
 			type: "doughnut",
 			data: {
@@ -749,7 +1017,8 @@
                     labels: {
                         fontColor: "#000080",
                     }
-				},
+                },
+
                 //title: {
                 //    display: true,
                 //    text: "Assessment"
@@ -762,7 +1031,8 @@
 
 				 plugins: {
 					labels: {
-						 render: 'value' +"%",
+                         render: 'value' + "%",
+                        fontColor: '#000',
 						position: 'outside'
 					}
                 },
@@ -793,408 +1063,459 @@
 				animation: {
 					duration: 5000
 				}
-			}
+            },
+            centerText: {
+                display: true,
+                text: "Total:" + Total
+            }
 		};
 
 		window.myRadialGauge = new Chart(ctx, config);
+       }
+		
     }
-
+    
    function render_Pre_Conversion_Chart(data, labels) {
         //Chart.defaults.global.defaultFontFamily = "Verdana";
-		var ctx = document.getElementById("chart-Pre_Conversion").getContext("2d");
+       var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+       if (Total == 0) {
+           var ID = 'chart-Pre_Conversion';
+           Render_No_Data(ID)
+       }
+       else {
+           var ctx = document.getElementById("chart-Pre_Conversion").getContext("2d");
+           var textInside = Total;
+           var config = {
+               type: "doughnut",
+               data: {
+                   labels: labels,
+                   datasets: [{
 
-        var Total = data[0] + data[1] + data[2] + data[3] + data[4];
-        var textInside = Total;
-		var config = {
-			type: "doughnut",
-			data: {
-				labels: labels,
-				datasets: [{
+                       data: data,
+                       //backgroundColor: [gradientStroke_, gradientStroke_2],
+                       backgroundColor: [
+                           '#71c989',//'#FF6384',
+                           '#74abe2',
+                           '#FFCE56',
+                           '#f08956',
+                           '#8c32a8'
+                       ],
+                       borderWidth: 2,
+                       label: "Score"
+                   }]
+               },
+               options: {
+                   //elements: {
+                   //    center: {
+                   //        text: "Total:"+ Total,
+                   //        color: '#FF6384', // Default is #000000
+                   //        fontStyle: 'Arial', // Default is Arial
+                   //        sidePadding: 5, // Default is 20 (as a percentage)
+                   //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
+                   //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+                   //    }
+                   //},
+                   elements: {
+                       center: {
+                           text: textInside
+                       }
+                   },
 
-					data: data,
-					//backgroundColor: [gradientStroke_, gradientStroke_2],
-					backgroundColor: [
-							'#71c989',//'#FF6384',
-							'#74abe2',
-							'#FFCE56',
-                            '#f08956',
-                            '#8c32a8'
-						],
-					borderWidth: 2,
-					label: "Score"
-				}]
-			},
-			options: {
-                //elements: {
-                //    center: {
-                //        text: "Total:"+ Total,
-                //        color: '#FF6384', // Default is #000000
-                //        fontStyle: 'Arial', // Default is Arial
-                //        sidePadding: 5, // Default is 20 (as a percentage)
-                //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
-                //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
-                //    }
-                //},
-                 elements: {
-          center: {
-            text: textInside
-          }
-        },
-       
-				responsive: true,
-                legend: {
-                    display: false,
-					position: 'right',
-                    labels: {
-                        fontColor: "#000080",
-                    }
-                },
+                   responsive: true,
+                   legend: {
+                       display: false,
+                       position: 'right',
+                       labels: {
+                           fontColor: "#000080",
+                       }
+                   },
 
-                //title: {
-                //    display: true,
-                //    text: "Assessment"
-                //},
-                centerPercentage: 60,
-                centerArea: {
-                    displayText: true,
-                    text: "100%"
-                },
+                   //title: {
+                   //    display: true,
+                   //    text: "Assessment"
+                   //},
+                   centerPercentage: 60,
+                   centerArea: {
+                       displayText: true,
+                       text: "100%"
+                   },
 
-				 plugins: {
-					labels: {
-						 render: 'value' +"%",
-						position: 'outside'
-					}
-                },
-				 tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            var dataset = data.datasets[tooltipItem.datasetIndex];
-                            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
-                                return previousValue + currentValue;
-                            });
-                            //var currentValue = dataset.data[tooltipItem.index];
-                            //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
-                            //return percentage + "%";
+                   plugins: {
+                       labels: {
+                           render: 'value' + "%",
+                           fontColor: '#000',
+                           position: 'outside'
+                       }
+                   },
+                   tooltips: {
+                       callbacks: {
+                           label: function (tooltipItem, data) {
+                               var dataset = data.datasets[tooltipItem.datasetIndex];
+                               var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                   return previousValue + currentValue;
+                               });
+                               //var currentValue = dataset.data[tooltipItem.index];
+                               //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                               //return percentage + "%";
 
-                             var currentValue = dataset.data[tooltipItem.index];
-                            var percentage = parseFloat((currentValue/total*100).toFixed(1));
-                            //return currentValue + ' (' + percentage + '%)';
-                            //return percentage + '%';
-                            return currentValue;
+                               var currentValue = dataset.data[tooltipItem.index];
+                               var percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                               //return currentValue + ' (' + percentage + '%)';
+                               //return percentage + '%';
+                               return currentValue;
 
-                        },
-                        title: function(tooltipItem, data) {
-                            return data.labels[tooltipItem[0].index];
-                        }
-                    }
-                },
+                           },
+                           title: function (tooltipItem, data) {
+                               return data.labels[tooltipItem[0].index];
+                           }
+                       }
+                   },
 
-				animation: {
-					duration: 5000
-				}
-			}
-		};
+                   animation: {
+                       duration: 5000
+                   }
+               },
+               centerText: {
+                   display: true,
+                   text: "Total:" + Total
+               }
+           };
 
-		window.myRadialGauge = new Chart(ctx, config);
+           window.myRadialGauge = new Chart(ctx, config);
+       }
     }
    function render_Conversion_Chart(data, labels) {
 		//Chart.defaults.global.defaultFontFamily = "Verdana";
-		var ctx = document.getElementById("chart-Conversion").getContext("2d");
+       var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+       if (Total == 0) {
+           var ID = 'chart-Conversion';
+           Render_No_Data(ID)
+       }
+       else {
+           var ctx = document.getElementById("chart-Conversion").getContext("2d");
 
-        var Total = data[0] + data[1] + data[2] + data[3] + data[4];
-        var textInside = Total;
-		var config = {
-			type: "doughnut",
-			data: {
-				labels: labels,
-				datasets: [{
 
-					data: data,
-					//backgroundColor: [gradientStroke_, gradientStroke_2],
-					backgroundColor: [
-							'#71c989',//'#FF6384',
-							'#74abe2',
-							'#FFCE56',
-                            '#f08956',
-                            '#8c32a8'
-						],
-					borderWidth: 2,
-					label: "Score"
-				}]
-			},
-			options: {
-                //elements: {
-                //    center: {
-                //        text: "Total:"+ Total,
-                //        color: '#FF6384', // Default is #000000
-                //        fontStyle: 'Arial', // Default is Arial
-                //        sidePadding: 5, // Default is 20 (as a percentage)
-                //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
-                //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
-                //    }
-                //},
-                 elements: {
-          center: {
-            text: textInside
-          }
-        },
-       
-				responsive: true,
-                legend: {
-                    display: false,
-					position: 'right',
-                    labels: {
-                        fontColor: "#000080",
-                    }
-                },
+           var textInside = Total;
+           var config = {
+               type: "doughnut",
+               data: {
+                   labels: labels,
+                   datasets: [{
 
-                //title: {
-                //    display: true,
-                //    text: "Assessment"
-                //},
-                centerPercentage: 60,
-                centerArea: {
-                    displayText: true,
-                    text: "100%"
-                },
+                       data: data,
+                       //backgroundColor: [gradientStroke_, gradientStroke_2],
+                       backgroundColor: [
+                           '#71c989',//'#FF6384',
+                           '#74abe2',
+                           '#FFCE56',
+                           '#f08956',
+                           '#8c32a8'
+                       ],
+                       borderWidth: 2,
+                       label: "Score"
+                   }]
+               },
+               options: {
+                   //elements: {
+                   //    center: {
+                   //        text: "Total:"+ Total,
+                   //        color: '#FF6384', // Default is #000000
+                   //        fontStyle: 'Arial', // Default is Arial
+                   //        sidePadding: 5, // Default is 20 (as a percentage)
+                   //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
+                   //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+                   //    }
+                   //},
+                   elements: {
+                       center: {
+                           text: textInside
+                       }
+                   },
 
-				 plugins: {
-					labels: {
-						 render: 'value' +"%",
-						position: 'outside'
-					}
-                },
-				 tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            var dataset = data.datasets[tooltipItem.datasetIndex];
-                            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
-                                return previousValue + currentValue;
-                            });
-                            //var currentValue = dataset.data[tooltipItem.index];
-                            //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
-                            //return percentage + "%";
+                   responsive: true,
+                   legend: {
+                       display: false,
+                       position: 'right',
+                       labels: {
+                           fontColor: "#000080",
+                       }
+                   },
 
-                             var currentValue = dataset.data[tooltipItem.index];
-                            var percentage = parseFloat((currentValue/total*100).toFixed(1));
-                            //return currentValue + ' (' + percentage + '%)';
-                            //return percentage + '%';
-                            return currentValue;
+                   //title: {
+                   //    display: true,
+                   //    text: "Assessment"
+                   //},
+                   centerPercentage: 60,
+                   centerArea: {
+                       displayText: true,
+                       text: "100%"
+                   },
 
-                        },
-                        title: function(tooltipItem, data) {
-                            return data.labels[tooltipItem[0].index];
-                        }
-                    }
-                },
+                   plugins: {
+                       labels: {
+                           render: 'value' + "%",
+                           fontColor: '#000',
+                           position: 'outside'
+                       }
+                   },
+                   tooltips: {
+                       callbacks: {
+                           label: function (tooltipItem, data) {
+                               var dataset = data.datasets[tooltipItem.datasetIndex];
+                               var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                   return previousValue + currentValue;
+                               });
+                               //var currentValue = dataset.data[tooltipItem.index];
+                               //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                               //return percentage + "%";
 
-				animation: {
-					duration: 5000
-				}
-			}
-		};
+                               var currentValue = dataset.data[tooltipItem.index];
+                               var percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                               //return currentValue + ' (' + percentage + '%)';
+                               //return percentage + '%';
+                               return currentValue;
 
-		window.myRadialGauge = new Chart(ctx, config);
+                           },
+                           title: function (tooltipItem, data) {
+                               return data.labels[tooltipItem[0].index];
+                           }
+                       }
+                   },
+
+                   animation: {
+                       duration: 5000
+                   }
+               },
+               centerText: {
+                   display: true,
+                   text: "Total:" + Total
+               }
+
+           };
+
+           window.myRadialGauge = new Chart(ctx, config);
+       }
     }
     
      function render_Post_Conversion_Chart(data, labels) {
-		//Chart.defaults.global.defaultFontFamily = "Verdana";
-		var ctx = document.getElementById("chart-Post_Conversion").getContext("2d");
+         //Chart.defaults.global.defaultFontFamily = "Verdana";
+      var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+         if (Total == 0) {
+             var ID = 'chart-Post_Conversion';
+             Render_No_Data(ID)
+         }
+         else {
+             var ctx = document.getElementById("chart-Post_Conversion").getContext("2d");
+             var textInside = Total;
+             var config = {
+                 type: "doughnut",
+                 data: {
+                     labels: labels,
+                     datasets: [{
 
-        var Total = data[0] + data[1] + data[2] + data[3] + data[4];
-        var textInside = Total;
-		var config = {
-			type: "doughnut",
-			data: {
-				labels: labels,
-				datasets: [{
+                         data: data,
+                         //backgroundColor: [gradientStroke_, gradientStroke_2],
+                         backgroundColor: [
+                             '#71c989',//'#FF6384',
+                             '#74abe2',
+                             '#FFCE56',
+                             '#f08956',
+                             '#8c32a8'
+                         ],
+                         borderWidth: 2,
+                         label: "Score"
+                     }]
+                 },
+                 options: {
+                     //elements: {
+                     //    center: {
+                     //        text: "Total:"+ Total,
+                     //        color: '#FF6384', // Default is #000000
+                     //        fontStyle: 'Arial', // Default is Arial
+                     //        sidePadding: 5, // Default is 20 (as a percentage)
+                     //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
+                     //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+                     //    }
+                     //},
+                     elements: {
+                         center: {
+                             text: textInside
+                         }
+                     },
 
-					data: data,
-					//backgroundColor: [gradientStroke_, gradientStroke_2],
-					backgroundColor: [
-							'#71c989',//'#FF6384',
-							'#74abe2',
-							'#FFCE56',
-                            '#f08956',
-                            '#8c32a8'
-						],
-					borderWidth: 2,
-					label: "Score"
-				}]
-			},
-			options: {
-                //elements: {
-                //    center: {
-                //        text: "Total:"+ Total,
-                //        color: '#FF6384', // Default is #000000
-                //        fontStyle: 'Arial', // Default is Arial
-                //        sidePadding: 5, // Default is 20 (as a percentage)
-                //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
-                //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
-                //    }
-                //},
-                 elements: {
-          center: {
-            text: textInside
-          }
-        },
-       
-				responsive: true,
-                legend: {
-                    display: false,
-					position: 'right',
-                    labels: {
-                        fontColor: "#000080",
-                    }
-                },
+                     responsive: true,
+                     legend: {
+                         display: false,
+                         position: 'right',
+                         labels: {
+                             fontColor: "#000080",
+                         }
+                     },
 
-                //title: {
-                //    display: true,
-                //    text: "Assessment"
-                //},
-                centerPercentage: 60,
-                centerArea: {
-                    displayText: true,
-                    text: "100%"
-                },
+                     //title: {
+                     //    display: true,
+                     //    text: "Assessment"
+                     //},
+                     centerPercentage: 60,
+                     centerArea: {
+                         displayText: true,
+                         text: "100%"
+                     },
 
-				 plugins: {
-					labels: {
-						 render: 'value' +"%",
-						position: 'outside'
-					}
-                },
-				 tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            var dataset = data.datasets[tooltipItem.datasetIndex];
-                            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
-                                return previousValue + currentValue;
-                            });
-                            //var currentValue = dataset.data[tooltipItem.index];
-                            //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
-                            //return percentage + "%";
+                     plugins: {
+                         labels: {
+                             render: 'value' + "%",
+                             fontColor: '#000',
+                             position: 'outside'
+                         }
+                     },
+                     tooltips: {
+                         callbacks: {
+                             label: function (tooltipItem, data) {
+                                 var dataset = data.datasets[tooltipItem.datasetIndex];
+                                 var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                     return previousValue + currentValue;
+                                 });
+                                 //var currentValue = dataset.data[tooltipItem.index];
+                                 //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                                 //return percentage + "%";
 
-                             var currentValue = dataset.data[tooltipItem.index];
-                            var percentage = parseFloat((currentValue/total*100).toFixed(1));
-                            //return currentValue + ' (' + percentage + '%)';
-                            //return percentage + '%';
-                            return currentValue;
+                                 var currentValue = dataset.data[tooltipItem.index];
+                                 var percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                                 //return currentValue + ' (' + percentage + '%)';
+                                 //return percentage + '%';
+                                 return currentValue;
 
-                        },
-                        title: function(tooltipItem, data) {
-                            return data.labels[tooltipItem[0].index];
-                        }
-                    }
-                },
+                             },
+                             title: function (tooltipItem, data) {
+                                 return data.labels[tooltipItem[0].index];
+                             }
+                         }
+                     },
 
-				animation: {
-					duration: 5000
-				}
-			}
-		};
+                     animation: {
+                         duration: 5000
+                     }
+                 },
+                 centerText: {
+                     display: true,
+                     text: "Total:" + Total
+                 }
+             };
 
-		window.myRadialGauge = new Chart(ctx, config);
+             window.myRadialGauge = new Chart(ctx, config);
+         }
     }
     function render_Validation_Chart(data, labels) {
 		//Chart.defaults.global.defaultFontFamily = "Verdana";
-		var ctx = document.getElementById("chart-Validation").getContext("2d");
-
         var Total = data[0] + data[1] + data[2] + data[3] + data[4];
-        var textInside = Total;
-		var config = {
-			type: "doughnut",
-			data: {
-				labels: labels,
-				datasets: [{
+        if (Total == 0) {
+            var ID = 'chart-Validation';
+            Render_No_Data(ID)
+        }
+        else {
+            var ctx = document.getElementById("chart-Validation").getContext("2d");
 
-					data: data,
-					//backgroundColor: [gradientStroke_, gradientStroke_2],
-					backgroundColor: [
-							'#71c989',//'#FF6384',
-							'#74abe2',
-							'#FFCE56',
+            var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+            var textInside = Total;
+            var config = {
+                type: "doughnut",
+                data: {
+                    labels: labels,
+                    datasets: [{
+
+                        data: data,
+                        //backgroundColor: [gradientStroke_, gradientStroke_2],
+                        backgroundColor: [
+                            '#71c989',//'#FF6384',
+                            '#74abe2',
+                            '#FFCE56',
                             '#f08956',
                             '#8c32a8'
-						],
-					borderWidth: 2,
-					label: "Score"
-				}]
-			},
-			options: {
-                //elements: {
-                //    center: {
-                //        text: "Total:"+ Total,
-                //        color: '#FF6384', // Default is #000000
-                //        fontStyle: 'Arial', // Default is Arial
-                //        sidePadding: 5, // Default is 20 (as a percentage)
-                //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
-                //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
-                //    }
-                //},
-                 elements: {
-          center: {
-            text: textInside
-          }
-        },
-       
-				responsive: true,
-                legend: {
-                    display: false,
-					position: 'right',
-                    labels: {
-                        fontColor: "#000080",
-                    }
+                        ],
+                        borderWidth: 2,
+                        label: "Score"
+                    }]
                 },
-
-                //title: {
-                //    display: true,
-                //    text: "Assessment"
-                //},
-                centerPercentage: 60,
-                centerArea: {
-                    displayText: true,
-                    text: "100%"
-                },
-
-				 plugins: {
-					labels: {
-						 render: 'value' +"%",
-						position: 'outside'
-					}
-                },
-				 tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            var dataset = data.datasets[tooltipItem.datasetIndex];
-                            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
-                                return previousValue + currentValue;
-                            });
-                            //var currentValue = dataset.data[tooltipItem.index];
-                            //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
-                            //return percentage + "%";
-
-                             var currentValue = dataset.data[tooltipItem.index];
-                            var percentage = parseFloat((currentValue/total*100).toFixed(1));
-                            //return currentValue + ' (' + percentage + '%)';
-                            //return percentage + '%';
-                            return currentValue;
-
-                        },
-                        title: function(tooltipItem, data) {
-                            return data.labels[tooltipItem[0].index];
+                options: {
+                    //elements: {
+                    //    center: {
+                    //        text: "Total:"+ Total,
+                    //        color: '#FF6384', // Default is #000000
+                    //        fontStyle: 'Arial', // Default is Arial
+                    //        sidePadding: 5, // Default is 20 (as a percentage)
+                    //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
+                    //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+                    //    }
+                    //},
+                    elements: {
+                        center: {
+                            text: textInside
                         }
+                    },
+
+                    responsive: true,
+                    legend: {
+                        display: false,
+                        position: 'right',
+                        labels: {
+                            fontColor: "#000080",
+                        }
+                    },
+
+                    //title: {
+                    //    display: true,
+                    //    text: "Assessment"
+                    //},
+                    centerPercentage: 60,
+                    centerArea: {
+                        displayText: true,
+                        text: "100%"
+                    },
+
+                    plugins: {
+                        labels: {
+                            render: 'value' + "%",
+                            fontColor: '#000',
+                            position: 'outside'
+                        }
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                    return previousValue + currentValue;
+                                });
+                                //var currentValue = dataset.data[tooltipItem.index];
+                                //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                                //return percentage + "%";
+
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                                //return currentValue + ' (' + percentage + '%)';
+                                //return percentage + '%';
+                                return currentValue;
+
+                            },
+                            title: function (tooltipItem, data) {
+                                return data.labels[tooltipItem[0].index];
+                            }
+                        }
+                    },
+
+                    animation: {
+                        duration: 5000
                     }
                 },
+                centerText: {
+                    display: true,
+                    text: "Total:" + Total
+                }
+            };
 
-				animation: {
-					duration: 5000
-				}
-			}
-		};
-
-		window.myRadialGauge = new Chart(ctx, config);
+            window.myRadialGauge = new Chart(ctx, config);
+        }
     }
   //  function renderChartAssessment(data, labels) {
 
@@ -1278,23 +1599,24 @@
   //  }
 
     function percentage(Result) {
-        //debugger;
-
-        @*$.ajax({
-				type: "POST",
-				url: '@Url.Action("GetHomeDonut")',
-				dataType: "json",
-				contentType: "application/json; charset=utf-8",
-            success: function (Data) {*@
-
-
-        //Assessment
+       
                 var Data = Result[0];
-                var d_total = (Data.COMPLETE + Data.WIP + Data.ONHOLD + Data.YetToStart +Data.NA)
+                var d_total = (Data.COMPLETE + Data.WIP + Data.ONHOLD + Data.YetToStart)
                 if (d_total > 0) {
-                    var a = (Data.COMPLETE + Data.NA) / d_total;
+                    var a = (Data.COMPLETE) / d_total;
                     var percent = Math.ceil(a * 100);
                     $("#AssId").html(percent + "%");
+                    $("#AssId_Progress").css('width', percent + '%');
+                    var progressid = '#AssId_Progress';
+                    if (percent > 0 && percent<50) {
+                         $(progressid).css('background-color', blue);
+                    }
+                    else if (percent > 50 && percent<100) {
+                        $(progressid).css('background-color', Yellow);
+                    }
+                    else if (percent==100) {
+                         $(progressid).css('background-color', Green);
+                    }
                     var Rs = Data.UploadStatus
                     if (Rs == 1) {
                         $("#Ass_StatusId").html("Completed");
@@ -1307,94 +1629,167 @@
                     }
                 }
                 else {
-                    
+                    $("#AssId").html(0 + "%");
+                    $("#AssId_Progress").css('width', 0 + '%');
                     $("#Ass_StatusId").html("Yet To Start");
                     }
 
 
         //Pre-Convertion
         var Data1 = Result[1];
-        var d1_total = (Data1.COMPLETE + Data1.WIP + Data1.ONHOLD + Data1.YetToStart + Data1.NA);
+        var d1_total = (Data1.COMPLETE + Data1.WIP + Data1.ONHOLD + Data1.YetToStart );
         if (d1_total > 0) {
-            var a = (Data1.COMPLETE + Data1.NA) / d1_total;
+            var a = (Data1.COMPLETE) / d1_total;
             var percent = Math.ceil(a * 100);
-            $("#Percentage_Pre_Conversion").html(percent + "%");
+            $("#PreId").html(percent + "%");
             
-            if (percent == 100) {
-                $("#Status_Pre_Conversion").html("Completed");
+            $("#PreId_Progress").css('width', percent + '%');
+            var progressid = '#PreId_Progress';
+            if (percent > 0 && percent < 50) {
+                $(progressid).css('background-color', blue);
+                $("#Pre_StatusId").html("WIP");
+            }
+            else if (percent > 50 && percent < 100) {
+                $(progressid).css('background-color', Yellow);
+                $("#Pre_StatusId").html("WIP");
+            }
+            else if (percent == 100) {
+                $(progressid).css('background-color', Green);
+                $("#Pre_StatusId").html("Completed");
             }
             else {
-
-                $("#Status_Pre_Conversion").html("Yet To Start/WIP");
+                $("#PreId").html(0 + "%");
+            $("#PreId_Progress").css('width', 0 + '%');
+            $("#Pre_StatusId").html("Yet To Start");
             }
         }
          else {
-
-                $("#Status_Pre_Conversion").html("Yet To Start/WIP");
+            $("#PreId").html(0 + "%");
+            $("#PreId_Progress").css('width', 0 + '%');
+            $("#Pre_StatusId").html("Yet To Start");
+             //$("#PreDivId").removeClass("bg-grow-early");
+             //   $("#PreDivId").last().addClass("bg-grow-before");
             }
 
         //Convertion
-        
+        //debugger;
          var Data2 = Result[2];
-        var d2_total = (Data2.COMPLETE + Data2.WIP + Data2.ONHOLD + Data2.YetToStart + Data2.NA);
+        var d2_total = (Data2.COMPLETE + Data2.WIP + Data2.ONHOLD + Data2.YetToStart );
         if (d2_total > 0) {
-            var a = (Data2.COMPLETE + Data2.NA) / d1_total;
+            var a = (Data2.COMPLETE) / d2_total;
             var percent = Math.ceil(a * 100);
-            $("#Percentage_Conversion").html(percent + "%");
-            
-            if (percent == 100) {
-                $("#Status_Conversion").html("Completed");
+            $("#ConId").html(percent + "%");
+            $("#ConId_Progress").css('width', percent + '%');
+                    var progressid = '#ConId_Progress';
+            if (percent > 0 && percent < 50) {
+                $(progressid).css('background-color', blue);
+                $("#Con_StatusId").html("WIP");
+            }
+            else if (percent > 50 && percent < 100) {
+                $(progressid).css('background-color', Yellow);
+                $("#Con_StatusId").html("WIP");
+            }
+            else if (percent == 100) {
+                $(progressid).css('background-color', Green);
+                $("#Con_StatusId").html("Completed");
             }
             else {
-
-                $("#Status_Conversion").html("Yet To Start/WIP");
+                $("#ConId").html(0 + "%");
+            $("#ConId_Progress").css('width', 0 + '%');
+            $("#Con_StatusId").html("Yet To Start");
             }
         }
         else {
-
-                $("#Status_Conversion").html("Yet To Start/WIP");
+            $("#ConId").html(0 + "%");
+            $("#ConId_Progress").css('width', 0 + '%');
+            $("#Con_StatusId").html("Yet To Start");
+             //$("#ConDivId").removeClass("bg-grow-early");
+             //   $("#ConDivId").last().addClass("bg-grow-before");
             }
 
          //Post-Convertion
         var Data3 = Result[3];
-        var d3_total = (Data3.COMPLETE + Data3.WIP + Data3.ONHOLD + Data3.YetToStart + Data3.NA);
+        var d3_total = (Data3.COMPLETE + Data3.WIP + Data3.ONHOLD + Data3.YetToStart);
         if (d3_total > 0) {
-            var a = (Data3.COMPLETE + Data3.NA) / d1_total;
+            var a = (Data3.COMPLETE) / d3_total;
             var percent = Math.ceil(a * 100);
-            $("#Percentage_Post_Conversion").html(percent + "%");
-            
-            if (percent == 100) {
-                $("#Status_Post_Conversion").html("Completed");
+            $("#PostId").html(percent + "%");
+            var progressid = '#PostId_Progress';
+            $(progressid).css('width', percent + '%');
+            if (percent > 0 && percent < 50) {
+                $(progressid).css('background-color', blue);
+                $("#Post_StatusId").html("WIP");
+            }
+            else if (percent > 50 && percent < 100) {
+                $(progressid).css('background-color', Yellow);
+                $("#Post_StatusId").html("WIP");
+            }
+            else if (percent == 100) {
+                $(progressid).css('background-color', Green);
+                $("#Post_StatusId").html("Completed");
             }
             else {
-
-                $("#Status_Post_Conversion").html("Yet To Start/WIP");
+                 $("#PostId").html(0 + "%");
+            $("#PostId_Progress").css('width', 0 + '%');
+            $("#Post_StatusId").html("Yet To Start");
             }
+            
         }
         else {
-
-                $("#Status_Post_Conversion").html("Yet To Start/WIP");
+              $("#PostId").html(0 + "%");
+            $("#PostId_Progress").css('width', 0 + '%');
+            $("#Post_StatusId").html("Yet To Start");
+             //$("#PostDivId").removeClass("bg-grow-early");
+             //   $("#PostDivId").last().addClass("bg-grow-before");
             }
 
          //Validation
         var Data4 = Result[4];
-        var d4_total = (Data4.COMPLETE + Data4.WIP + Data4.ONHOLD + Data4.YetToStart + Data4.NA);
+        var d4_total = (Data4.COMPLETE + Data4.WIP + Data4.ONHOLD + Data4.YetToStart);
         if (d4_total > 0) {
-            var a = (Data4.COMPLETE + Data4.NA) / d1_total;
+            var a = (Data4.COMPLETE) / d4_total;
             var percent = Math.ceil(a * 100);
-            $("#Percentage_Validation").html(percent + "%");
-            
-            if (percent == 100) {
-                $("#Status_Validation").html("Completed");
+            $("#ValiId").html(percent + "%");
+            var progressid = '#ValiId_Progress';
+            $(progressid).css('width', percent + '%');
+            if (percent > 0 && percent < 50) {
+                $(progressid).css('background-color', blue);
+                $("#Vali_StatusId").html("WIP");
+            }
+            else if (percent > 50 && percent < 100) {
+                $(progressid).css('background-color', Yellow);
+                $("#Vali_StatusId").html("WIP");
+            }
+            else if (percent == 100) {
+                $(progressid).css('background-color', Green);
+                $("#Vali_StatusId").html("Completed");
             }
             else {
-
-                $("#Status_Validation").html("Yet To Start/WIP");
+                 $("#ValiId").html(0 + "%");
+            $("#ValiId_Progress").css('width', 0 + '%');
+            $("#Vali_StatusId").html("Yet To Start");
             }
+            //if (percent == 100) {
+            //    $("#Vali_StatusId").html("Completed");
+            //     $("#ValiDivId").removeClass("bg-grow-before");
+            //    $("#ValiDivId").last().addClass("bg-grow-early");
+
+            //}
+            //else {
+
+            //    $("#Vali_StatusId").html("Yet To Start/WIP");
+            //    $("#ValiDivId").removeClass("bg-grow-early");
+            //    $("#ValiDivId").last().addClass("bg-grow-before");
+            //}
         }
         else {
+             $("#ValiId").html(0 + "%");
+            $("#ValiId_Progress").css('width', 0 + '%');
+            $("#Vali_StatusId").html("Yet To Start");
+            //$("#ValiDivId").removeClass("bg-grow-early");
+            //$("#ValiDivId").last().addClass("bg-grow-before");
+                
 
-                $("#Status_Validation").html("Yet To Start/WIP");
             }
         
 			//	},
@@ -1409,19 +1804,22 @@
         Ajax_Donut();
         //Assessment_percentage();
         
-        var In=@ViewBag.Instance;
+        var In =@ViewBag.Instance;
+
         if (In == 0) {
-            $("#AssDivId").removeClass("bg-grow-early");
-            $("#AssDivId").last().addClass("bg-grow-before");
-            $("#AssId").html("0 %")            
+            //$("#AssDivId").removeClass("bg-grow-early");
+            //$("#AssDivId").last().addClass("bg-grow-before");
+            $("#AssId").html("0 %")
+            //$('.Home-Bottem').hide();
         }
         else {
-            $("#AssDivId").removeClass("bg-grow-before");
-            $("#AssDivId").last().addClass("bg-grow-early");
+            //$("#AssDivId").removeClass("bg-grow-before");
+            //$("#AssDivId").last().addClass("bg-grow-early");
+            //$('.Home-Bottem').show();
            // $("#AssId").html(percent)
         }
 
-            $("#IDInstance").prop("disabled", true);
+            //$("#IDInstance").prop("disabled", true);
             $('#SubmitInstance').prop("disabled", true);
             $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);
@@ -1516,7 +1914,8 @@
                 data: { 'IDInstance': IDInstance },
                 success: function (result) {
                    Notiflix.Notify.Success('New Live Instance updated !', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
-                   setTimeout(Redirect, 3000);
+                    setTimeout(Redirect, 3000);
+                    
                 }
             });
 
@@ -1609,6 +2008,36 @@
     //    }
     //  }
     //});
+
+//    Chart.Chart.pluginService.register({
+//        beforeDraw: function (chart) {
+//            //debugger;
+//        if (chart.config.centerText.display !== null &&
+//            typeof chart.config.centerText.display !== 'undefined' &&
+//            chart.config.centerText.display) {
+//            drawTotals(chart);
+//        }
+//    },
+//    });
+
+//    function drawTotals(chart) {
+ 
+//    var width = chart.chart.width,
+//    height = chart.chart.height,
+//    ctx = chart.chart.ctx;
+ 
+//    ctx.restore();
+//    var fontSize = (height / 114).toFixed(2);
+//    ctx.font = fontSize + "em sans-serif";
+//    ctx.textBaseline = "middle";
+ 
+//    var text = chart.config.centerText.text,
+//    textX = Math.round((width - ctx.measureText(text).width) / 2),
+//    textY = height / 2;
+ 
+//    ctx.fillText(text, textX, textY);
+//    ctx.save();
+//}
 </script>
 <script type="text/javascript">
     //var randomScalingFactor = function () {
@@ -1836,5 +2265,44 @@
     //    }
     //};
 
+
+</script>
+<script>
+    var $container = $("#scrollContainer"),
+    $ps = $container.find("._Scroll"),
+    containerHeight = $container.height(),
+    contentHeight = 0,
+    scrollTop = 0,
+    paused = false;
+
+$ps.each(function() {
+    contentHeight += $(this).outerHeight();
+});
+
+$("<div></div>").css("height", 75).appendTo($container).clone().prependTo($container);
+
+setInterval(function() {
+    if (paused)
+        return;
+    if (scrollTop > contentHeight + containerHeight)
+        scrollTop = 0;
+    $container.scrollTop(scrollTop++);
+        
+    $ps.removeClass("highlighted")
+       .addClass("dimmed")
+       .each(function() {
+           var $this = $(this),
+               top = $this.position().top,
+               height = $this.height();
+           if (top > 0 && top + height < containerHeight)
+                    $(this).addClass("highlighted");
+    });
+}, 20);
+
+$container.hover(function() {
+    paused = true;
+}, function() {
+    paused = false;
+});
 
 </script>

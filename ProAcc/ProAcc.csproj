@@ -169,6 +169,7 @@
     <Content Include="Asset\css\Menu.css" />
     <Content Include="Asset\css\main_Login.css" />
     <Content Include="Asset\css\style.css" />
+    <Content Include="Asset\css\Temp.css" />
     <Content Include="Asset\images\dribbble_1.gif" />
     <Content Include="Asset\images\flags%402x.png" />
     <Content Include="Asset\images\flags.png" />

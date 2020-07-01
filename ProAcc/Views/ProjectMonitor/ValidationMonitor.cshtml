@@ -1041,7 +1041,8 @@
                 if (isNaN(recs) || recs == 0) {
                     $("#jqGrid").jqGrid('setGridState', 'hidden');
 
-                     var msg='Kindly Complete Or Close All the Previous Phase And Try Again..!'
+                    //var msg = 'Kindly Complete Or Close All the Previous Phase And Try Again..!'
+                    var msg = 'one or more previous phase task\'s are not completed ,Please complete the task\'s and try..!';
                     Notiflix.Report.Info("ProAcc Info !", msg);
                 }
                 else {

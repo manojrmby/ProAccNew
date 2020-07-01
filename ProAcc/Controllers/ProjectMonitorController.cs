@@ -70,18 +70,39 @@ namespace ProAcc.Controllers
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             // InstanceID = Guid.Parse("52b6d7fa-18e2-4101-8040-1f8fcfd3bdaa");
             string LoginID = Session["loginid"].ToString();
-            List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitorEdit(InstanceID, LoginID, PhaseId);
             List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
-            for (int i = 0; i < PM.Count; i++)
+            if (Phase_ID!=1)
             {
-                if (PM[i].PhaseId == PhaseId)
+                var query = from u in db.Instances
+                            where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true)
+                            select u;
+                if (query.Count() > 0)
                 {
-                    ProjectMonitorModel projM = new ProjectMonitorModel();
-                    projM = PM[i];
-                    Result.Add(projM);
+                    List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitorEdit(InstanceID, LoginID, PhaseId);
+                    for (int i = 0; i < PM.Count; i++)
+                    {
+                        if (PM[i].PhaseId == PhaseId)
+                        {
+                            ProjectMonitorModel projM = new ProjectMonitorModel();
+                            projM = PM[i];
+                            Result.Add(projM);
+                        }
+                    }
                 }
             }
-
+            else
+            {
+                List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitorEdit(InstanceID, LoginID, PhaseId);
+                for (int i = 0; i < PM.Count; i++)
+                {
+                    if (PM[i].PhaseId == PhaseId)
+                    {
+                        ProjectMonitorModel projM = new ProjectMonitorModel();
+                        projM = PM[i];
+                        Result.Add(projM);
+                    }
+                }
+            }
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
