@@ -168,6 +168,7 @@
     <Content Include="Asset\css\Menu.css" />
     <Content Include="Asset\css\main_Login.css" />
     <Content Include="Asset\css\style.css" />
+    <Content Include="Asset\css\Temp.css" />
     <Content Include="Asset\images\dribbble_1.gif" />
     <Content Include="Asset\Jquery\jqGrid\plugins\pdfmake.min.js" />
     <Content Include="Asset\Jquery\jqGrid\plugins\vfs_fonts.js" />

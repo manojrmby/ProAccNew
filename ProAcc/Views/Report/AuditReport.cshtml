@@ -7,21 +7,28 @@
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
 @*<br />
-<a class="card-title">Resource Allocation</a>
-<hr />*@
-<script>
-    //$.jgrid.defaults.width =1000;
-    $.jgrid.defaults.responsive = true;
-    $.jgrid.defaults.styleUI = 'Bootstrap4';
-    $.jgrid.defaults.iconSet = "Octicons";
+    <a class="card-title">Resource Allocation</a>
+    <hr />*@
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/themes/redmond/jquery-ui.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.4/css/ui.jqgrid.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.4/jquery.jqgrid.min.js"></script>*@
+    <script>
+        //$.jgrid.defaults.width =1000;
+        $.jgrid.defaults.responsive = true;
+        $.jgrid.defaults.styleUI = 'Bootstrap4';
+        $.jgrid.defaults.iconSet = "Octicons";
 </script>
 <style>
-    .wrapColumnText
-{
-           white-space: normal !important;
-           height:auto;
-           vertical-align:text-top;
-}
+    .wrapColumnText {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+    }
+
+    /*.ui-jqgrid .ui-jqgrid-titlebar {
+        background-color: antiquewhite;
+    }*/
 </style>
 <div>
     <table id="jqGrid"></table>
@@ -33,7 +40,7 @@
     });
     function LoadTable(Instance) {
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
-        
+
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetAduitData","Report")",
             datatype: "json",
@@ -48,7 +55,7 @@
                     sortable: false, align: 'center', search: true, stype: 'text'
                 },
                  {
-                    label: 'Task', name: 'Task', index: 'Task', 
+                    label: 'Task', name: 'Task', index: 'Task',
                     sortable: false, align: 'Left',search:true, stype:'text',classes: 'wrapColumnText'
                 },
                  {
@@ -66,10 +73,10 @@
                 }, {
                     label: 'Operation on', name: 'OperationAt', index: 'OperationAt', width: 40,
                      sortable: false, align: 'Left',
-                     formatter: "date", 
+                     formatter: "date",
                       formatoptions: { newformat: 'm/d/Y' },
                      jsonmap: function (element) {
-                        
+
                         var d = new Date(parseInt(element.OperationAt.substr(6)));
                         return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
                     },
@@ -113,8 +120,8 @@
             // height: 'auto',
             height: 400,
              rowNum: 10,
-   
-            caption: 'Project Monitor Audit',
+
+            caption: '',
             sortable: false,
             grouping: false,
             pager: "#jqGridPager",
@@ -122,7 +129,7 @@
             rownumbers: true,
             reload: true,
              emptyrecords: "Empty records",
-           
+
             loadComplete: function () {
 
             }
@@ -134,15 +141,15 @@
             { edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
-               
+
             },
             // options for the Add Dialog
             {
-                
+
             },
             // options for the Delete Dailog
             {
-                
+
             },
             // search options - define multiple search
             {
@@ -151,5 +158,5 @@
             }
         );
     }
-    
+
 </script>
