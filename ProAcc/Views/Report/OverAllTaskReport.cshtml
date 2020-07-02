@@ -402,8 +402,11 @@
 
                 },
                 {
-                    label: 'ApplicationArea', name: 'ApplicationArea', width: 100,  editable: false,classes: 'wrapColumnText',
-
+                    label: 'Application Area', name: 'ApplicationAreaID',index: 'ApplicationAreaID', width: 100, editable: false, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                   editoptions: {
+                        value: GetApplicationAreaDropDown()
+                    } 
 
                 },
                 {
@@ -917,7 +920,33 @@
                     }
                 });
 				return Parameters;
-            }
+    }
+
+     function GetApplicationAreaDropDown() {
+				 var Parameters = {};
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetApplicationArea","ProjectMonitor")',
+                    //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (Data) {
+                        for (var i = 0; i < Data.length; i++) {
+                          
+                           var obj = {};
+                             var ApplicationArea = Data[i].ApplicationArea;
+                            var key = ""+Data[i].Id;
+                            Parameters[key] = ApplicationArea;
+                        }
+                    },
+                    error: function (data) {
+                        alert("GetApplicationArea fail");
+                    }
+                });
+				return Parameters;
+    }
+
     function GetPendingDropDown() {
 				 var Parameters = {};
                 $.ajax({
