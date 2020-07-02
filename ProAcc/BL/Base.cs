@@ -1388,7 +1388,7 @@ namespace ProAcc.BL
                         P.Task = dr["Task"].ToString();
                         P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                         P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
-                        P.ApplicationArea = Convert.ToInt32(dr["ApplicationAreaID"].ToString());  //dr["ApplicationAreaID"].ToString();
+                        P.ApplicationAreaID = Convert.ToInt32(dr["ApplicationAreaID"].ToString());  //dr["ApplicationAreaID"].ToString();
                         P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
                         P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
                         P.Pending = dr["Pending"].ToString();
@@ -1507,7 +1507,7 @@ namespace ProAcc.BL
                 _log.createLog((PM.Planed__St_Date).ToString());
                 DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
                 dB.addIn("@Type", "UpdateTask");
-                dB.addIn("@ApplicationArea", PM.ApplicationArea);
+                dB.addIn("@ApplicationArea", PM.ApplicationAreaID);
                 dB.addIn("@Task_Other_Environment", PM.Task_Other_Environment);
                 dB.addIn("@Dependency", PM.Dependency);
                 dB.addIn("@Pending", PM.Pending);
@@ -1779,7 +1779,7 @@ namespace ProAcc.BL
                         P.Task = dr["Task"].ToString();
                         P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                         P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
-                        P.ApplicationArea = Convert.ToInt32(dr["ApplicationAreaID"].ToString());  //dr["ApplicationArea"].ToString();
+                        P.ApplicationAreaID = Convert.ToInt32(dr["ApplicationAreaID"].ToString());  //dr["ApplicationArea"].ToString();
                         P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
                         P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
                         P.Pending = dr["Pending"].ToString();

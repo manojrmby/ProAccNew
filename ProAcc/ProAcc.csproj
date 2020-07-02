@@ -171,8 +171,6 @@
     <Content Include="Asset\css\style.css" />
     <Content Include="Asset\css\Temp.css" />
     <Content Include="Asset\images\dribbble_1.gif" />
-    <Content Include="Asset\images\flags%402x.png" />
-    <Content Include="Asset\images\flags.png" />
     <Content Include="Asset\img\flags%402x.png" />
     <Content Include="Asset\img\flags.png" />
     <Content Include="Asset\Jquery\jqGrid\plugins\pdfmake.min.js" />
