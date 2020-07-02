@@ -258,6 +258,10 @@ namespace ProAcc.Controllers
                          select b).ToList();
             if(del.Count!=0 || delpm.Count!=0)            
             {
+                //var projectname = (from a in db.Projects
+                //                   join b in db.Instances on a.Project_Id equals b.Project_ID
+                //                   join c in db.ProjectMonitors on b.Instance_id equals c.InstanceID
+                //                   where c.UserID == id select a.Project_Name).ToList();
                 return Json("fail");
             }
             else

@@ -1202,6 +1202,26 @@ namespace ProAcc.BL
 
             return PM;
         }
+        public List<ApplicationAreaMaster> GetApplicationAreaMasters()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetApplicationArea");
+            dt = dB.ExecuteDataTable();
+            List<ApplicationAreaMaster> AA = new List<ApplicationAreaMaster>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ApplicationAreaMaster P = new ApplicationAreaMaster();
+                    P.Id = Convert.ToInt32(dr["Id"].ToString());
+                    P.ApplicationArea = dr["ApplicationArea"].ToString();
+                    AA.Add(P);
+                }
+            }
+
+            return AA;
+        }
 
         //public List<PendingMaster> GetPendingMasters()
         //{
@@ -1368,7 +1388,7 @@ namespace ProAcc.BL
                         P.Task = dr["Task"].ToString();
                         P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                         P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
-                        P.ApplicationArea = dr["ApplicationArea"].ToString();
+                        P.ApplicationArea = Convert.ToInt32(dr["ApplicationAreaID"].ToString());  //dr["ApplicationAreaID"].ToString();
                         P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
                         P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
                         P.Pending = dr["Pending"].ToString();
@@ -1759,7 +1779,7 @@ namespace ProAcc.BL
                         P.Task = dr["Task"].ToString();
                         P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                         P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
-                        P.ApplicationArea = dr["ApplicationArea"].ToString();
+                        P.ApplicationArea = Convert.ToInt32(dr["ApplicationAreaID"].ToString());  //dr["ApplicationArea"].ToString();
                         P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
                         P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
                         P.Pending = dr["Pending"].ToString();

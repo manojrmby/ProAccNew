@@ -109,7 +109,7 @@ namespace ProAcc.Controllers
                     customer.Cre_By = Guid.Parse(Session["loginid"].ToString());
                     db.Customers.Add(customer);
                     db.SaveChanges();
-                    return Json("success");
+                    return Json("success");                    
                 }
                 else
                 {
@@ -137,7 +137,7 @@ namespace ProAcc.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             var Data = db.Customers.Find(id);
             ViewBag.IndustrySector = db.IndustrySectors.Where(x => x.IsActive == true);
             Customer cust = new Customer();

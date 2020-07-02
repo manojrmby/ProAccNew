@@ -14,7 +14,7 @@ namespace ProAcc.BL.Model
 		public int PhaseId { get; set; }
 		public int SequenceNum { get; set; }
 
-		public string ApplicationArea { get; set; }
+		public int ApplicationArea { get; set; }
 
 		public bool Task_Other_Environment { get; set; }
 		public bool Dependency { get; set; }

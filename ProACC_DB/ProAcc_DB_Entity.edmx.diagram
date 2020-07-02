@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8e2369ce9df44ff58790c5c178865d31" Name="Diagram1" ZoomLevel="63">
-        <EntityTypeShape EntityType="ProAccModel.Customer" Width="1.5" PointX="0.75" PointY="5.625" />
         <EntityTypeShape EntityType="ProAccModel.HanaStatu" Width="1.5" PointX="7.75" PointY="5.75" />
         <EntityTypeShape EntityType="ProAccModel.Instance" Width="1.5" PointX="5.25" PointY="10" />
         <EntityTypeShape EntityType="ProAccModel.PhaseMaster" Width="1.5" PointX="5.75" PointY="1.5" />
@@ -13,12 +12,9 @@
         <EntityTypeShape EntityType="ProAccModel.StatusMaster" Width="1.5" PointX="9.75" PointY="5.75" />
         <EntityTypeShape EntityType="ProAccModel.IndustrySector" Width="1.5" PointX="0.75" PointY="11.25" />
         <EntityTypeShape EntityType="ProAccModel.RoleMaster" Width="1.5" PointX="0.75" PointY="1.875" />
-        <AssociationConnector Association="ProAccModel.FK_Customer_IndustrySector" />
         <EntityTypeShape EntityType="ProAccModel.User_Type" Width="1.5" PointX="10.375" PointY="1" />
         <EntityTypeShape EntityType="ProAccModel.Project" Width="1.5" PointX="3.125" PointY="7.5" />
         <EntityTypeShape EntityType="ProAccModel.UserMaster" Width="1.5" PointX="3.375" PointY="2.25" />
-        <AssociationConnector Association="ProAccModel.FK_Project_Customer" />
-        <AssociationConnector Association="ProAccModel.FK_UserMaster_Customer" />
         <AssociationConnector Association="ProAccModel.FK_Instance_Project" />
         <AssociationConnector Association="ProAccModel.FK_Project_UserMaster" />
         <AssociationConnector Association="ProAccModel.FK_UserMaster_RoleMaster" />
@@ -29,6 +25,10 @@
         <AssociationConnector Association="ProAccModel.FK_ActivityMaster_ApplicationAreaMaster" />
         <AssociationConnector Association="ProAccModel.FK_ActivityMaster_PhaseMaster" />
         <AssociationConnector Association="ProAccModel.FK_ActivityMaster_RoleMaster" />
+        <EntityTypeShape EntityType="ProAccModel.Customer" Width="1.5" PointX="3" PointY="12.625" />
+        <AssociationConnector Association="ProAccModel.FK_Customer_IndustrySector" />
+        <AssociationConnector Association="ProAccModel.FK_Project_Customer" />
+        <AssociationConnector Association="ProAccModel.FK_UserMaster_Customer" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

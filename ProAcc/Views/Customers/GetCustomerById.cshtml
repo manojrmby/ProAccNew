@@ -99,6 +99,7 @@
             <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
+                    <input type="hidden" class="form-control" value="@Model.Phone" id="selectedCountry">
                     <input type="tel" class="form-control" value="@Model.Phone" id="txtCustomerPhone" style="width: 150%;">
                 </div>
                 <div>
@@ -203,6 +204,8 @@
         errorMsg = document.querySelector("#error-msg"),
         validMsg = document.querySelector("#valid-msg");
 
+        
+        $("#txtCustomerPhone").intlTelInput("setCountry", $("#inputCountryCode").val());
     // Error messages based on the code returned from getValidationError
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 

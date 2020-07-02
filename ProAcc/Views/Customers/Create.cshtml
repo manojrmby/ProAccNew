@@ -11,9 +11,13 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>*@
 @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput-jquery.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput-jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet" />
+
 <link href="~/Asset/css/intlTelInput.css" rel="stylesheet" />
-    <script src="~/Asset/js/intlTelInput.js"></script>
-    <script src="~/Asset/js/intlTelInput.min.js"></script>
+<script src="~/Asset/js/intlTelInput.js"></script>
+<script src="~/Asset/js/intlTelInput.min.js"></script>
 
 
 
@@ -102,6 +106,7 @@
             <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
+                    <input type="hidden" class="form-control" id="selectedCountry">
                     <input type="tel" class="form-control" id="txtCustomerPhone" style="width: 150%;">
                 </div>
                 <div>
@@ -266,13 +271,7 @@
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
     var intl = window.intlTelInput(input, {
-        //initialCountry: "auto",
-        //geoIpLookup: function(success, failure) {
-        //    $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-        //        var countryCode = (resp && resp.country) ? resp.country : "";
-        //        success(countryCode);
-        //    });
-        //},
+       
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
         //utilsScript: "js/utils.js"
     });
@@ -283,16 +282,21 @@
         errorMsg.classList.add("hide");
         validMsg.classList.add("hide");
     };
+        var countryCode;
+        input.addEventListener('countrychange', function () {
+            countryCode = intl.getSelectedCountryData().iso2;
+            $("#selectedCountry").val(countryCode);
+           //alert(countryCode)
+        })
 
     // Validate on blur event
         input.addEventListener('blur', function () {
-            debugger;
+            //debugger;
         reset();
         if(input.value.trim()){
             if(intl.isValidNumber()){
                 validMsg.classList.remove("hide");
-                var getCode = input.intlTelInput('getSelectedCountryData').dialCode;
-       alert(getCode);
+               
             }else{
                 input.classList.add("error");
                 var errorCode = intl.getValidationError();
@@ -301,8 +305,6 @@
             }
         }
           validatecustomer();
-        //var countryCode = input.intlTelInput("getNumber");
-        //var countryCode = input.getSelectedCountryData();
     });
 
     // Reset on keyup/change event
@@ -365,9 +367,7 @@
         var IndustrySector = $("#drpIndustrySector").val();
          var Contact=$("#txtContact").val().trim();
         //var custphone = $("#txtCustomerPhone").val().trim();
-       // var getCode = input.intlTelInput('getSelectedCountryData').dialCode;
-        //var Countrycode=$("#txtCustomerPhone").intlTelInput('getSelectedCountryData').dialCode;
-        //var Countrycode = countryCode; //$("#txtCustomerPhone").intlTelInput('getSelectedCountryData').dialCode;
+        var SelectedCountrycode = $("#selectedCountry").val();
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();
 
@@ -395,37 +395,11 @@
             $.ajax({
                     type: "POST",
                 url: '@Url.Action("Create","Customers")',
-                data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail, Contact: Contact},
+                data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail, Contact: Contact, Countrycode: SelectedCountrycode },
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('Customer Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                             setTimeout(Redirect, 3000);
-                            //$.alert({
-                            //    title: 'Success !',
-                            //    content: 'Customer Saved successfully..!',
-                            //    icon: 'fa fa-rocket',
-                            //    animation: 'scale',
-                            //    closeAnimation: 'scale',
-                            //    buttons: {
-                            //        okay: {
-                            //            text: 'Okay',
-                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            //            action: function (event, ui) {
-                            //                $(this).remove();
-                            //                var url = $("#RedirectToCustomerList").val();
-                            //                location.href = url;
-                            //            }
-                            //        }
-                            //    }
-                            //});
-                            //alert("");
-
-                            //loadCustomer();
-                            //$("#txtCompanyName").val("");
-                            //$("#txtIndustrySector").val("");
-                            //$("#txtCustomerPhone").val("");
-                            //$("#txtCustomerEmail").val("");
-                            //$("#btnCustomerCreate").show();
+                             setTimeout(Redirect, 3000);                            
                         }
                     },
                     failure: function (response) {

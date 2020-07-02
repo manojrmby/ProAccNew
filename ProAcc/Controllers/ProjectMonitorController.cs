@@ -101,6 +101,7 @@ namespace ProAcc.Controllers
                         projM = PM[i];
                         Result.Add(projM);
                     }
+                   
                 }
             }
             return Json(Result, JsonRequestBehavior.AllowGet);
@@ -147,6 +148,11 @@ namespace ProAcc.Controllers
         public ActionResult GetPhase()
         {
             List<PhaseMaster> P = _Base.GetPhaseMasters();
+            return Json(P, JsonRequestBehavior.AllowGet);
+        } 
+        public ActionResult GetApplicationArea()
+        {
+            List<ApplicationAreaMaster> P = _Base.GetApplicationAreaMasters();
             return Json(P, JsonRequestBehavior.AllowGet);
         }
         //public ActionResult GetPending()
