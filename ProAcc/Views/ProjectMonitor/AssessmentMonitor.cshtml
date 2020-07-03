@@ -687,8 +687,38 @@
                     $("#jqGrid").jqGrid('setGridState', 'visible');
                 }
                 Show_HideEdit();
+                @*var User = '@Session["UserType"]';
+                var loginid = '@Session["loginid"]';
+                var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                if (User == 'Consultant' || User == 'Customer') {
+                    debugger; 
+                    for (var i = 0; i < ids.length; i++) {
+                        var User_ID = $('#jqGrid').jqGrid('getCell', ids[i], 'UserID')
+                        if (User_ID != loginid) {
+                            if ($('#jEditButton_' + ids[i]) == true) {
+                                Notiflix.Notify.success("you don't have any task to perform", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            }
+                            else {
+                                Notiflix.Notify.Failure("yahoo", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            }
+                           
+                        }
+                   
+                    }
+                 }*@
 
-
+                var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                 var UserType ="@Session["UserType"].ToString()"
+                if (UserType == 'Customer' || UserType == 'Consultant') {
+                    debugger;
+                    for (var i = 0; i < ids.length; i++) {
+                        var a = $('#jEditButton_' + ids[i])
+                        //if ($('#jEditButton_' + ids[i]).show() == false) {
+                        //    alert("you got it");                            
+                        //}
+                    }
+                    
+                }
 
             }
             // set table stripped class in table style in bootsrap
@@ -927,6 +957,7 @@
                     if (User_ID != loginid) {
                         $('#jEditButton_' + ids[i]).hide();
                     }
+                   
                 }
             }
         }

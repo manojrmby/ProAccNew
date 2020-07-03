@@ -556,6 +556,7 @@
     <Compile Include="BL\Model\SP_HomeDonut_Result.cs" />
     <Compile Include="BL\Model\UserModel.cs" />
     <Compile Include="BL\Model\UserRoleProvider.cs" />
+    <Compile Include="BL\URIHandler.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
@@ -663,6 +664,7 @@
     <Content Include="Views\Report\AuditReport.cshtml" />
     <Content Include="Views\Resource\ResourceConversion.cshtml" />
     <Content Include="Views\ProjectMonitor\ConvertionMonitor.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

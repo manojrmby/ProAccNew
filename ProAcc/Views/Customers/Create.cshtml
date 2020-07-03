@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            @*<div class="form-group">
+            <div class="form-group">
                     <label class="control-label col-md-5 required">Contact Person Phone</label>
                     <div class="col-md-10">
                         <input type="tel" class="form-control" id="txtCustomerPhone" maxlength="10" />
@@ -102,8 +102,8 @@
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerPhone">&nbsp;</span>
                     </div>
-                </div>*@
-            <div class="form-group">
+                </div>
+            @*<div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="hidden" class="form-control" id="selectedCountry">
@@ -113,7 +113,7 @@
                     &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
                     &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
     <div class="row">
@@ -248,68 +248,68 @@
             }
         });
 
-       // $("#txtCustomerPhone").blur(function () {
+        $("#txtCustomerPhone").blur(function () {
 
-       //     phone = $(this).val();
-       //     phone = phone.replace(/[^0-9]/g,'');
-       //     if (phone.length != 10) {
-       //         $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
-       //         validatecustomer();
-       //     }
-       //     else {
-       //         $("#lblCustomerPhone").html("").hide();
-       //         validatecustomer();
-       //     }
-
-       //});
-
-        var input = document.querySelector("#txtCustomerPhone"),
-        errorMsg = document.querySelector("#error-msg"),
-        validMsg = document.querySelector("#valid-msg");
-
-    // Error messages based on the code returned from getValidationError
-    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-
-    var intl = window.intlTelInput(input, {
-       
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
-        //utilsScript: "js/utils.js"
-    });
-
-    var reset = function() {
-        input.classList.remove("error");
-        errorMsg.innerHTML = "";
-        errorMsg.classList.add("hide");
-        validMsg.classList.add("hide");
-    };
-        var countryCode;
-        input.addEventListener('countrychange', function () {
-            countryCode = intl.getSelectedCountryData().iso2;
-            $("#selectedCountry").val(countryCode);
-           //alert(countryCode)
-        })
-
-    // Validate on blur event
-        input.addEventListener('blur', function () {
-            //debugger;
-        reset();
-        if(input.value.trim()){
-            if(intl.isValidNumber()){
-                validMsg.classList.remove("hide");
-               
-            }else{
-                input.classList.add("error");
-                var errorCode = intl.getValidationError();
-                errorMsg.innerHTML = errorMap[errorCode];
-                errorMsg.classList.remove("hide");
+            phone = $(this).val();
+            phone = phone.replace(/[^0-9]/g,'');
+            if (phone.length != 10) {
+                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
+                validatecustomer();
             }
-        }
-          validatecustomer();
-    });
+            else {
+                $("#lblCustomerPhone").html("").hide();
+                validatecustomer();
+            }
 
-    // Reset on keyup/change event
-    input.addEventListener('change', reset);
-    input.addEventListener('keyup', reset);
+       });
+
+    //    var input = document.querySelector("#txtCustomerPhone"),
+    //    errorMsg = document.querySelector("#error-msg"),
+    //    validMsg = document.querySelector("#valid-msg");
+
+    //// Error messages based on the code returned from getValidationError
+    //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+    //var intl = window.intlTelInput(input, {
+       
+    //    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+    //    //utilsScript: "js/utils.js"
+    //});
+
+    //var reset = function() {
+    //    input.classList.remove("error");
+    //    errorMsg.innerHTML = "";
+    //    errorMsg.classList.add("hide");
+    //    validMsg.classList.add("hide");
+    //};
+    //    var countryCode;
+    //    input.addEventListener('countrychange', function () {
+    //        countryCode = intl.getSelectedCountryData().iso2;
+    //        $("#selectedCountry").val(countryCode);
+    //       //alert(countryCode)
+    //    })
+
+    //// Validate on blur event
+    //    input.addEventListener('blur', function () {
+    //        //debugger;
+    //    reset();
+    //    if(input.value.trim()){
+    //        if(intl.isValidNumber()){
+    //            validMsg.classList.remove("hide");
+               
+    //        }else{
+    //            input.classList.add("error");
+    //            var errorCode = intl.getValidationError();
+    //            errorMsg.innerHTML = errorMap[errorCode];
+    //            errorMsg.classList.remove("hide");
+    //        }
+    //    }
+    //      validatecustomer();
+    //});
+
+    //// Reset on keyup/change event
+    //input.addEventListener('change', reset);
+    //input.addEventListener('keyup', reset);
 
         $("#txtCustomerEmail").on("blur", function (event) {
 
