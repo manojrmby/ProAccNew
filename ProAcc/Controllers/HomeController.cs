@@ -22,17 +22,14 @@ namespace ProAcc.Controllers
         // GET: Home
         public ActionResult Home()
         {
-            int j = 0;
-            var stat = db.HanaStatus.ToList();
-            for (int i = 0; i < stat.Count(); i++)
+            
+             
+            int Count = 1;
+            if (Session["loginid"].ToString()!=null)
             {
-                if (stat[i].IsActive == true)
-                {
-                    j = j + 1;
-                }
+                Lis Status = _Base.SpConvertionStatus(Session["InstanceId"].ToString());
+                Count = Convert.ToInt32(Status.Value);
             }
-            ViewBag.count = j;
-
             int userType = 0;
             if (User.IsInRole("Admin"))
             {
@@ -118,7 +115,7 @@ namespace ProAcc.Controllers
                 row.PhaseName = inputAttribute.PhaseName;
                 output.Add(row);
             }
-
+            ViewBag.count = Count;
             ViewBag.Taskdetails = output;
             ViewBag.Project = Project;
 

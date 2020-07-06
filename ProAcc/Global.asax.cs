@@ -1,3 +1,4 @@
+using ProAcc.BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,17 @@ namespace ProAcc
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             GlobalFilters.Filters.Add(new AuthorizeAttribute());
+        }
+         protected void Application_Error()
+        {
+            var ex = Server.GetLastError();
+            //log the error!
+            LogHelper log = new LogHelper();
+            log.createLog(ex);
         }
     }
 }

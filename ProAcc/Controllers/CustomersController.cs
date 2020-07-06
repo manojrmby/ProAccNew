@@ -107,6 +107,8 @@ namespace ProAcc.Controllers
                     customer.isActive = true;
                     customer.Cre_on = DateTime.UtcNow;
                     customer.Cre_By = Guid.Parse(Session["loginid"].ToString());
+                    customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                    customer.Modified_On = DateTime.UtcNow;
                     db.Customers.Add(customer);
                     db.SaveChanges();
                     return Json("success");                    

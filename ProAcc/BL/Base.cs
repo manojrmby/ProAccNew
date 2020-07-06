@@ -941,7 +941,25 @@ namespace ProAcc.BL
             sP_._List = _Lob;
             return sP_;
         }
+        public Lis SpConvertionStatus(string Instance)
+        {
+            Lis Status = new Lis();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_ConvertionStatus", CommandType.StoredProcedure);
+            dB.addIn("@Type", "Status");
+            dB.addIn("@Instance", Instance);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Status.Value = dr[0].ToString();
 
+                }
+            }
+                
+            return Status;
+        }
         public GeneralList sP_AnalysisDropdownProject()
         {
             GeneralList sP_ = new GeneralList();

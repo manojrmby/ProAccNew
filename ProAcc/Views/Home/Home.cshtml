@@ -439,7 +439,7 @@ background-attachment:local, local, scroll, scroll;
                     <form class="">
                         @if (ViewBag.count != null)
                         {
-                            int i = ViewBag.count;
+                            int i = ViewBag.count-1;
                             string progress = "noUi-origin noUi-background1";
                             string progress1 = "noUi-origin noUi-background1";
                             string progress2 = "noUi-origin noUi-background1";
@@ -450,16 +450,21 @@ background-attachment:local, local, scroll, scroll;
                             if (i == 1)
                             {
                                 //progress = "noUi-origin noUi-connect";
-                                color = "Green";
+                                color = "black";
                             }
                             else if (i == 2)
+                            {
+                                //progress = "noUi-origin noUi-connect";
+                                color = "Green";
+                            }
+                            else if (i == 3)
                             {
                                 progress = "noUi-origin noUi-connect";
                                 // progress1 = "noUi-origin noUi-connect";
                                 color = "Green";
                                 color1 = "Green";
                             }
-                            else if (i == 3)
+                            else if (i == 4)
                             {
                                 progress = "noUi-origin noUi-connect";
                                 progress1 = "noUi-origin noUi-connect";
@@ -468,7 +473,7 @@ background-attachment:local, local, scroll, scroll;
                                 color1 = "Green";
                                 color2 = "Green";
                             }
-                            else if (i == 4)
+                            else if (i == 5)
                             {
                                 progress = "noUi-origin noUi-connect";
                                 progress1 = "noUi-origin noUi-connect";
@@ -510,7 +515,7 @@ background-attachment:local, local, scroll, scroll;
                                 </div>
                             </div>
                         }
-                        @if (ViewBag.count != null)
+                        @*@if (ViewBag.count != null)
                         {
                             int i = ViewBag.count;
                             int value = 0;
@@ -531,7 +536,7 @@ background-attachment:local, local, scroll, scroll;
                                 value = 100;
                             }
 
-                        }
+                        }*@
                     </form>
                 </div>
             </div>
@@ -2312,6 +2317,6 @@ $container.hover(function() {
     paused = true;
 }, function() {
     paused = false;
-});*@
+});
 
-</script>
+</script>*@
