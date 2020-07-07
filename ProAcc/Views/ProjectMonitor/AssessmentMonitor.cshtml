@@ -235,6 +235,7 @@
     document.body.style.zoom = "90%";
     $(document).ready(function () {
         $(".app-main__outer").css("height", "595px");
+       // LoadTable(1);
     });
     function LoadTable(Instance) {
         
@@ -707,7 +708,7 @@
                     }
                  }*@
 
-                var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                @*var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
                  var UserType ="@Session["UserType"].ToString()"
                 if (UserType == 'Customer' || UserType == 'Consultant') {
                     debugger;
@@ -718,7 +719,7 @@
                         //}
                     }
                     
-                }
+                }*@
 
             }
             // set table stripped class in table style in bootsrap
@@ -728,9 +729,8 @@
             //$('#jqGrid').jqGrid('setColProp', 'actions', { editable: false }); 
             // var Status_Id = $('#jqGrid').jqGrid('getCell', id, 'StatusId')
             //debugger;
-            var UserType ="@Session["UserType"].ToString()"
-            if (UserType == 'Customer'|| UserType == 'Consultant' )
-            {
+            var UserType = "@Session["UserType"].ToString()"
+            if (UserType == 'Customer' || UserType == 'Consultant') {
                 //$("#" + id + "_StatusId option[value='3']").prop('disabled', 'disabled');
                 //$("#" + id + "_StatusId option[value='4']").prop('disabled', 'disabled');
                 //$("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
@@ -739,30 +739,29 @@
                 $("#" + id + "_StatusId option[value='4']").hide();
                 $("#" + id + "_StatusId option[value='5']").hide();
             }
-            else  if (UserType == 'Project Manager')
-            {
+            else if (UserType == 'Project Manager') {
                 //$("#" + id + "_StatusId option[value='1']").prop('disabled', 'disabled');
                 //$("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
 
                 $("#" + id + "_StatusId option[value='1']").hide();
-                //$("#" + id + "_StatusId option[value='2']").hide();
-                $("#" + id + "_StatusId option[value='5']").hide();
-            }
-
-            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
-            var WIP_Status=false;
-            for (var i = 0; i < ids.length; i++) {
-                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
-                if (Status_Id == 2) {
-                    WIP_Status = true;
-                }
-            }
-            if (WIP_Status) {
                 $("#" + id + "_StatusId option[value='2']").hide();
-                } else {
-                    $("#" + id + "_StatusId option[value='2']").show();
-                }
+                //$("#" + id + "_StatusId option[value='5']").hide();
+            }
 
+            //var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+            //var WIP_Status = false;
+            //for (var i = 0; i < ids.length; i++) {
+            //    var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+            //    if (Status_Id == 2) {
+            //        WIP_Status = true;
+            //    }
+            //}
+            //if (WIP_Status) {
+            //    $("#" + id + "_StatusId option[value='2']").hide();
+            //} else {
+            //    $("#" + id + "_StatusId option[value='2']").show();
+            //}
+        }
 
              //var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
 
@@ -789,7 +788,7 @@
             //    }           
             //}
             //alert(id);
-        }
+        
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
             { edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
@@ -909,6 +908,7 @@
                  Planed__St_Date.editable = false;
             var Planed__En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__En_Date');
                 Planed__En_Date.editable = false;
+            //debugger;
             for (var i = 0; i < ids.length; i++) {
                
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
@@ -921,7 +921,7 @@
 
             var EditFlag = false;
             //  debugger;
-            for (var k = j; k < ids.length; k++) {
+            for (var k = 0; k < ids.length; k++) {
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
                 if ((Status_Id == 5 || Status_Id == 2 ) && !EditFlag) {
                     $('#jEditButton_' + ids[k]).show();
@@ -935,7 +935,7 @@
              for (var i = 0; i < ids.length; i++) {
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
            if (Status_Id == 2) {
-               $('#jEditButton_' + ids[i]).show();
+              $('#jEditButton_' + ids[i]).show();
                //for (var j = 0; j < ids.length; j++) {
                //     Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
                //     if (j != i) {
@@ -961,6 +961,14 @@
                 }
             }
         }
+        var a = 0;
+        for (var i = 0; i < ids.length; i++) {
+            if ($('#jEditButton_' + ids[i]).is(":visible")) {a = a + 1;}
+        }
+        //debugger;
+        if (a==0) {
+            Notiflix.Report.Info("ProAcc Info !", "You dont have any Task to Perform");
+        } 
     }
 
 
@@ -1065,9 +1073,7 @@
 	var Status = {
 		'true': 'Yes', 'false': 'False'
 	};
-
 	return Status;
-
     }
 
     function GetUserDropDown() {

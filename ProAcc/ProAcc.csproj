@@ -545,6 +545,7 @@
     <Compile Include="BL\Model\AuditReport.cs" />
     <Compile Include="BL\Model\CreateViewModel.cs" />
     <Compile Include="BL\Model\LogedUser.cs" />
+    <Compile Include="BL\Model\MailModel.cs" />
     <Compile Include="BL\Model\PicturetoData.cs" />
     <Compile Include="BL\Model\ProjectMonitorModel.cs" />
     <Compile Include="BL\Model\ResourceAllocationModel.cs" />

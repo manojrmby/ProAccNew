@@ -1546,7 +1546,7 @@ namespace ProAcc.BL
 
                 dB.ExecuteScalar();
 
-                DBHelper Db1 = new DBHelper("SP_AddMail", CommandType.StoredProcedure);
+                DBHelper Db1 = new DBHelper("SP_Mail", CommandType.StoredProcedure);
                 Db1.addIn("@Type", "ProjectMonitor");
                 Db1.addIn("@PhaseID", PhaseId);
                 Db1.addIn("@InstanceID", PM.Instance);
@@ -1556,20 +1556,20 @@ namespace ProAcc.BL
                 DataTable dt = new DataTable();
                 dt = Db1.ExecuteDataTable();
                 
-                if(dt.Rows.Count>0)
-                {
+                //if(dt.Rows.Count>0)
+                //{
                     
-                        foreach (DataRow dr in dt.Rows)
-                    {
-                        String ToMailId = dr["To"].ToString();
-                        bool mail = false;
-                        Mail _mail = new Mail();
-                        mail = _mail.SendEmail(ToMailId);
-                    }
+                //        foreach (DataRow dr in dt.Rows)
+                //    {
+                //        String ToMailId = dr["To"].ToString();
+                //        bool mail = false;
+                //        Mail _mail = new Mail();
+                //        mail = _mail.SendEmail(ToMailId);
+                //    }
                        
                     
                    
-                }
+                //}
 
                 Status = true;
             }
@@ -1856,6 +1856,27 @@ namespace ProAcc.BL
                 return AR;
         }
 
+        public List<MailModel> GetMailList()
+        {
+            List<MailModel> ListM = new List<MailModel>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+            dB.addIn("@Type", "MailList");
+            //dB.addIn("@InstunceID", InstanceId);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    MailModel M = new MailModel();
+                    M.To = Convert.ToString(dr["TO"].ToString());
+                    M.Running_ID = Convert.ToInt32(dr["Running_ID"].ToString());
+                    ListM.Add(M);
+                }
+            }
+            return ListM;
+        }
+
         //public Boolean Proceess_WordAddImage()
         //{
         //    string document = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
@@ -1874,168 +1895,168 @@ namespace ProAcc.BL
         //    doc.SaveToFile(document, FileFormat.Docx);
         //}
 
-    //public Boolean Proceess_WordAddImage()
-    //{
-    //    string filePath = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
+        //public Boolean Proceess_WordAddImage()
+        //{
+        //    string filePath = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
 
-    //    // WordprocessingDocument WP =
-    //    //WordprocessingDocument.Open(filePath, true);
+        //    // WordprocessingDocument WP =
+        //    //WordprocessingDocument.Open(filePath, true);
 
-    //    // using (WordprocessingDocument wordprocessingDocument =
-    //    //WordprocessingDocument.Open(filePath, true))
-    //    // {
-    //    //     // Insert other code here.
+        //    // using (WordprocessingDocument wordprocessingDocument =
+        //    //WordprocessingDocument.Open(filePath, true))
+        //    // {
+        //    //     // Insert other code here.
 
-    //    // }
-    //    // AddGraph(WP, filePath);
-    //    // MainDocumentPart mainPart = WordprocessingDocument.MainDocumentPart;
-    //    // ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+        //    // }
+        //    // AddGraph(WP, filePath);
+        //    // MainDocumentPart mainPart = WordprocessingDocument.MainDocumentPart;
+        //    // ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
 
-    //    // using (FileStream stream = new FileStream(filePath, FileMode.Open))
-    //    // {
-    //    //     imagePart.FeedData(stream);
-    //    // }
+        //    // using (FileStream stream = new FileStream(filePath, FileMode.Open))
+        //    // {
+        //    //     imagePart.FeedData(stream);
+        //    // }
 
-    //    //using (WordprocessingDocument doc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+        //    //using (WordprocessingDocument doc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
 
-    //    //{
+        //    //{
 
-    //    //    //// Creates the MainDocumentPart and add it to the document (doc)
+        //    //    //// Creates the MainDocumentPart and add it to the document (doc)
 
-    //    //    MainDocumentPart mainPart = doc.AddMainDocumentPart();
+        //    //    MainDocumentPart mainPart = doc.AddMainDocumentPart();
 
-    //    //    mainPart.Document = new Document(
+        //    //    mainPart.Document = new Document(
 
-    //    //        new Body(
+        //    //        new Body(
 
-    //    //            new Paragraph(
+        //    //            new Paragraph(
 
-    //    //                new Run(
+        //    //                new Run(
 
-    //    //                    new Text("Hello World!!!!!")))));
+        //    //                    new Text("Hello World!!!!!")))));
 
-    //    //}
-
-
-    //    WordprocessingDocument wordprocessingDocument =
-    //WordprocessingDocument.Open(filePath, true);
-
-    //    MainDocumentPart mainPart = wordprocessingDocument.MainDocumentPart;
-    //    ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
-    //    string Imagepath = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
-    //    //using (FileStream stream = new FileStream(Imagepath, FileMode.Open))
-    //    //{
-    //    //    imagePart.FeedData(stream);
-    //    //}
-
-    //    Bitmap image = new Bitmap(Imagepath);
-    //    SdtElement controlBlock = doc.MainDocumentPart.HeaderParts.First().Header.Descendants<SdtElement>().Where
-    //                                    (r => r.SdtProperties.GetFirstChild<Tag>().Val == tagName).SingleOrDefault();
-    //    //find the Blip element of the content control
-    //    Blip blip = controlBlock.Descendants<Blip>().FirstOrDefault();
-
-    //    //add image and change embeded id
-    //    ImagePart imagePart = doc.MainDocumentPart.AddImagePart(ImagePartType.Jpeg);
-    //    using (MemoryStream stream = new MemoryStream())
-    //    {
-    //        image.Save(stream, ImageFormat.Jpeg);
-    //        stream.Position = 0;
-    //        imagePart.FeedData(stream);
-    //    }
-    //    blip.Embed = doc.MainDocumentPart.GetIdOfPart(imagePart);
+        //    //}
 
 
-    //    //AddImageToBody(wordprocessingDocument, mainPart.GetIdOfPart(imagePart));
+        //    WordprocessingDocument wordprocessingDocument =
+        //WordprocessingDocument.Open(filePath, true);
 
-    //    wordprocessingDocument.Close();
+        //    MainDocumentPart mainPart = wordprocessingDocument.MainDocumentPart;
+        //    ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+        //    string Imagepath = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
+        //    //using (FileStream stream = new FileStream(Imagepath, FileMode.Open))
+        //    //{
+        //    //    imagePart.FeedData(stream);
+        //    //}
+
+        //    Bitmap image = new Bitmap(Imagepath);
+        //    SdtElement controlBlock = doc.MainDocumentPart.HeaderParts.First().Header.Descendants<SdtElement>().Where
+        //                                    (r => r.SdtProperties.GetFirstChild<Tag>().Val == tagName).SingleOrDefault();
+        //    //find the Blip element of the content control
+        //    Blip blip = controlBlock.Descendants<Blip>().FirstOrDefault();
+
+        //    //add image and change embeded id
+        //    ImagePart imagePart = doc.MainDocumentPart.AddImagePart(ImagePartType.Jpeg);
+        //    using (MemoryStream stream = new MemoryStream())
+        //    {
+        //        image.Save(stream, ImageFormat.Jpeg);
+        //        stream.Position = 0;
+        //        imagePart.FeedData(stream);
+        //    }
+        //    blip.Embed = doc.MainDocumentPart.GetIdOfPart(imagePart);
 
 
+        //    //AddImageToBody(wordprocessingDocument, mainPart.GetIdOfPart(imagePart));
+
+        //    wordprocessingDocument.Close();
 
 
 
-    //    return true;
-    //}
-    //private static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId)
-    //{
-    //    // Define the reference of the image.
-    //    var element =
-    //         new Drawing(
-    //             new DW.Inline(
-    //                 new DW.Extent() { Cx = 990000L, Cy = 792000L },
-    //                 new DW.EffectExtent()
-    //                 {
-    //                     LeftEdge = 0L,
-    //                     TopEdge = 0L,
-    //                     RightEdge = 0L,
-    //                     BottomEdge = 0L
-    //                 },
-    //                 new DW.DocProperties()
-    //                 {
-    //                     Id = (UInt32Value)1U,
-    //                     Name = "Picture 1"
-    //                 },
-    //                 new DW.NonVisualGraphicFrameDrawingProperties(
-    //                     new A.GraphicFrameLocks() { NoChangeAspect = true }),
-    //                 new A.Graphic(
-    //                     new A.GraphicData(
-    //                         new PIC.Picture(
-    //                             new PIC.NonVisualPictureProperties(
-    //                                 new PIC.NonVisualDrawingProperties()
-    //                                 {
-    //                                     Id = (UInt32Value)0U,
-    //                                     Name = "New Bitmap Image.jpg"
-    //                                 },
-    //                                 new PIC.NonVisualPictureDrawingProperties()),
-    //                             new PIC.BlipFill(
-    //                                 new A.Blip(
-    //                                     new A.BlipExtensionList(
-    //                                         new A.BlipExtension()
-    //                                         {
-    //                                             Uri =
-    //                                                "{28A0092B-C50C-407E-A947-70E740481C1C}"
-    //                                         })
-    //                                 )
-    //                                 {
-    //                                     Embed = relationshipId,
-    //                                     CompressionState =
-    //                                     A.BlipCompressionValues.Print
-    //                                 },
-    //                                 new A.Stretch(
-    //                                     new A.FillRectangle())),
-    //                             new PIC.ShapeProperties(
-    //                                 new A.Transform2D(
-    //                                     new A.Offset() { X = 0L, Y = 0L },
-    //                                     new A.Extents() { Cx = 990000L, Cy = 792000L }),
-    //                                 new A.PresetGeometry(
-    //                                     new A.AdjustValueList()
-    //                                 )
-    //                                 { Preset = A.ShapeTypeValues.Rectangle }))
-    //                     )
-    //                     { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
-    //             )
-    //             {
-    //                 DistanceFromTop = (UInt32Value)0U,
-    //                 DistanceFromBottom = (UInt32Value)0U,
-    //                 DistanceFromLeft = (UInt32Value)0U,
-    //                 DistanceFromRight = (UInt32Value)0U,
-    //                 EditId = "50D07946"
-    //             });
 
-    //    // Append the reference to body, the element should be in a Run.
-    //    wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
-    //}
-    //private string AddGraph(WordprocessingDocument wpd, string filepath)
-    //{
-    //    ImagePart ip = wpd.MainDocumentPart.AddImagePart(ImagePartType.Jpeg);
-    //    string Imagepath= @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
-    //    using (FileStream fs = new FileStream(Imagepath, FileMode.Open))
-    //    {
-    //        if (fs.Length == 0) return string.Empty;
-    //        ip.FeedData(fs);
-    //    }
 
-    //    return wpd.MainDocumentPart.GetIdOfPart(ip);
-    //}
+        //    return true;
+        //}
+        //private static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId)
+        //{
+        //    // Define the reference of the image.
+        //    var element =
+        //         new Drawing(
+        //             new DW.Inline(
+        //                 new DW.Extent() { Cx = 990000L, Cy = 792000L },
+        //                 new DW.EffectExtent()
+        //                 {
+        //                     LeftEdge = 0L,
+        //                     TopEdge = 0L,
+        //                     RightEdge = 0L,
+        //                     BottomEdge = 0L
+        //                 },
+        //                 new DW.DocProperties()
+        //                 {
+        //                     Id = (UInt32Value)1U,
+        //                     Name = "Picture 1"
+        //                 },
+        //                 new DW.NonVisualGraphicFrameDrawingProperties(
+        //                     new A.GraphicFrameLocks() { NoChangeAspect = true }),
+        //                 new A.Graphic(
+        //                     new A.GraphicData(
+        //                         new PIC.Picture(
+        //                             new PIC.NonVisualPictureProperties(
+        //                                 new PIC.NonVisualDrawingProperties()
+        //                                 {
+        //                                     Id = (UInt32Value)0U,
+        //                                     Name = "New Bitmap Image.jpg"
+        //                                 },
+        //                                 new PIC.NonVisualPictureDrawingProperties()),
+        //                             new PIC.BlipFill(
+        //                                 new A.Blip(
+        //                                     new A.BlipExtensionList(
+        //                                         new A.BlipExtension()
+        //                                         {
+        //                                             Uri =
+        //                                                "{28A0092B-C50C-407E-A947-70E740481C1C}"
+        //                                         })
+        //                                 )
+        //                                 {
+        //                                     Embed = relationshipId,
+        //                                     CompressionState =
+        //                                     A.BlipCompressionValues.Print
+        //                                 },
+        //                                 new A.Stretch(
+        //                                     new A.FillRectangle())),
+        //                             new PIC.ShapeProperties(
+        //                                 new A.Transform2D(
+        //                                     new A.Offset() { X = 0L, Y = 0L },
+        //                                     new A.Extents() { Cx = 990000L, Cy = 792000L }),
+        //                                 new A.PresetGeometry(
+        //                                     new A.AdjustValueList()
+        //                                 )
+        //                                 { Preset = A.ShapeTypeValues.Rectangle }))
+        //                     )
+        //                     { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
+        //             )
+        //             {
+        //                 DistanceFromTop = (UInt32Value)0U,
+        //                 DistanceFromBottom = (UInt32Value)0U,
+        //                 DistanceFromLeft = (UInt32Value)0U,
+        //                 DistanceFromRight = (UInt32Value)0U,
+        //                 EditId = "50D07946"
+        //             });
+
+        //    // Append the reference to body, the element should be in a Run.
+        //    wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
+        //}
+        //private string AddGraph(WordprocessingDocument wpd, string filepath)
+        //{
+        //    ImagePart ip = wpd.MainDocumentPart.AddImagePart(ImagePartType.Jpeg);
+        //    string Imagepath= @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
+        //    using (FileStream fs = new FileStream(Imagepath, FileMode.Open))
+        //    {
+        //        if (fs.Length == 0) return string.Empty;
+        //        ip.FeedData(fs);
+        //    }
+
+        //    return wpd.MainDocumentPart.GetIdOfPart(ip);
+        //}
 
 
         public string Phase_Assessment = "Assessment";
