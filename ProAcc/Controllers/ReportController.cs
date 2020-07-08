@@ -134,17 +134,30 @@ namespace ProAcc.Controllers
         }
 
 
-        public ActionResult AuditReport()
-        {
-            return View(); 
-        }
+        //public ActionResult AuditReport()
+        //{
+        //    return View(); 
+        //}
 
+        public ActionResult AuditReports()
+        {
+            List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditDatas();
+            var obj = new { data = PM };
+            return View(PM);
+        }
         public ActionResult GetAduitData()
         {
             List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditData();
             var obj = new { data = PM };
             return Json(PM, JsonRequestBehavior.AllowGet);
         }
+
+        //public ActionResult GetAduitDatas()
+        //{
+        //    List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditDatas();
+        //    var obj = new { data = PM };
+        //    return Json(PM, JsonRequestBehavior.AllowGet);
+        //}
 
 
     }

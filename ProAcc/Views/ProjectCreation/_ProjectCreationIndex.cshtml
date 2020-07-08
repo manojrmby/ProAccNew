@@ -64,7 +64,7 @@
     });
 
     $(".editProjectCreation").on("click", function () {
-
+        // $('html, body').animate({scrollTop:0}, 'slow');
         var id = $(this).next().val();
         $.ajax({
             url: '@Url.Action("GetProjCreationById","ProjectCreation")',

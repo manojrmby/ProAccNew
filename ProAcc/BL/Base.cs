@@ -1856,6 +1856,33 @@ namespace ProAcc.BL
                 return AR;
         }
 
+        public List<AuditReport.ProjectMonitorModel> Sp_GetAuditDatas()
+        {
+            DataTable dt = new DataTable();
+            AuditReport A = new AuditReport();
+            List<AuditReport.ProjectMonitorModel> AR = new List<AuditReport.ProjectMonitorModel>();
+            DBHelper dB = new DBHelper("SP_Audit", CommandType.StoredProcedure);
+            dB.addIn("@Type", "AuditReport");
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    AuditReport.ProjectMonitorModel A_PM = new AuditReport.ProjectMonitorModel();
+                    A_PM.Id = Convert.ToInt32(dr["AUDIT_ID"].ToString());
+                    A_PM.UserID= Guid.Parse(dr["UserID"].ToString());
+                    A_PM.TABLE_NAME= dr["TABLE_NAME"].ToString();
+                    A_PM.SUMMARY = dr["SUMMARY"].ToString();
+                    A_PM.ACTION = dr["ACTION"].ToString();
+                    
+                    AR.Add(A_PM);
+
+                }
+            }
+
+            return AR;
+        }
+
         public List<MailModel> GetMailList()
         {
             List<MailModel> ListM = new List<MailModel>();

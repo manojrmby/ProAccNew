@@ -21,11 +21,11 @@ namespace ProAcc.BL.Model
 
 			public string By { get; set; }
 
+			public string TABLE_NAME { get; set; }
+			public string SUMMARY { get; set; }
+			public string ACTION { get; set; }
+					   
 
-
-
-
-			
 			public int ActivityID { get; set; }
 			public Guid Instance { get; set; }
 
