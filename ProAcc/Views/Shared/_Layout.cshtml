@@ -540,7 +540,7 @@
                                 </li>
                                 @*Validation*@
                                 <li>
-                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager"))
+                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager")|| User.IsInRole("Customer"))
                                     {
                                         <a href="@Url.Action("CommingSoon", "Test")">
                                             <i class="metismenu-icon fa fa-gavel"></i>

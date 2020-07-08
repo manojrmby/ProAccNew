@@ -20,6 +20,9 @@
     background-color: orange;
     background-image: none
 }
+     #info_dialog{
+        margin-left:150vh;
+    }
 </style>
 
     <a class="card-title">Assessment Monitor</a>
@@ -507,7 +510,7 @@
                 {
                     label: 'Comments', name: 'Notes', edittype: "textarea",classes: 'wrapColumnText',
                     wrap: "on"
-                    ,editrules: { "edithidden": true }, "editable": true, "width": 100,
+                    ,editrules: { "edithidden": true, required:true }, "editable": true, "width": 100,
                     editoptions: {
                         "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
                     },
@@ -530,7 +533,9 @@
 
                         onEdit: function (rowid) {
                             $("#" + rowid + "_StatusId").addClass("fit_Data");
-             },
+                            Show_HideEdit();
+
+                        },
                        
                         editformbutton: false,//Determines if popup should open or not
                         afterSave: function (rowid, response, postdata, options) {
@@ -707,18 +712,17 @@
                     }
                  }*@
 
-                var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                @*var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
                  var UserType ="@Session["UserType"].ToString()"
                 if (UserType == 'Customer' || UserType == 'Consultant') {
-                    debugger;
+                   // debugger;
                     for (var i = 0; i < ids.length; i++) {
                         var a = $('#jEditButton_' + ids[i])
                         //if ($('#jEditButton_' + ids[i]).show() == false) {
                         //    alert("you got it");                            
                         //}
-                    }
-                    
-                }
+                    }                    
+                }*@
 
             }
             // set table stripped class in table style in bootsrap
@@ -766,13 +770,13 @@
 
              //var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
 
-//            function textReadOnly(cellValue, options, rowdata, action) {
-//    if (rowdata.stateId == 4) {
-//        return "<input value='"+ rowdata.stateId +"' readonly='true'></input>";
-//    } else {
-//        return "<input value='"+ rowdata.stateId +"'></input>";
-//    }
-//}
+            //            function textReadOnly(cellValue, options, rowdata, action) {
+            //    if (rowdata.stateId == 4) {
+            //        return "<input value='"+ rowdata.stateId +"' readonly='true'></input>";
+            //    } else {
+            //        return "<input value='"+ rowdata.stateId +"'></input>";
+            //    }
+            //}
             //if (UserType == 'Project Manager')
             //{
             //    //var WIP_Status=false;
@@ -864,6 +868,7 @@
 
    
     function Show_HideEdit() {
+        // debugger;
         var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
         var User = '@Session["UserType"]';
         var loginid = '@Session["loginid"]';
@@ -900,7 +905,46 @@
              var Actual_St_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Actual_St_Date');
                  Actual_St_Date.editable = false;
             var Actual_En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Actual_En_Date');
-                Actual_En_Date.editable = false;   
+            Actual_En_Date.editable = false;   
+              var Message;
+           for (var i = 0; i < ids.length; i++) {
+               if ($('#jSaveButton_' + ids[i]).is(":visible") == true) {
+                    Notiflix.Confirm.Show('ProAcc Info. Confirm..!',
+                    Message, 'Yes', 'No',
+                    function () {
+                        @*$.ajax({
+                                 type: "POST",
+                                 url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor",new { Phase_ID= ViewBag.PhaseID})',
+                                 data: {
+                                        'Id': "" + Id + "",
+                                        'StatusId': StatusId,
+                                        'Task_Other_Environment': Task_Other_Environment,
+                                         'Dependency': Dependency,
+                                         'Pending': Pending,
+                                         'Delay_occurred': Delay_occurred,
+                                         'EST_hours': EST_hours,
+                                         'Actual_St_hours': Actual_St_hours,
+                                         'Planed__St_Date': Planed__St_Date,
+                                         'Planed__En_Date': Planed__En_Date,
+                                         'Actual_St_Date': Actual_St_Date,
+                                         'Actual_En_Date': Actual_En_Date,
+                                         'Notes': Notes
+                                        },
+                                success: function (Result) {
+                                                 $('#jqGrid').trigger('reloadGrid');
+                                               
+                                            }
+                                                
+                                        });*@
+                        // Yes button callbackalert('Thank you.');
+                    }, function () {
+                        // No button callbackalert('If you say so...');
+                    });
+                   //$('#jEditButton_' + ids[i]).is(":disabled");
+                   $('#jCancelButton_' + ids[i]).click();
+               }
+           }
+            
         }
         else {
             var EST_hours = jQuery("#jqGrid").jqGrid('getColProp', 'EST_hours');
@@ -913,8 +957,7 @@
                
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
                 if (Status_Id == 1|| Status_Id == 2) {
-                    j = i;
-                    //break;
+                    j = i;                   
                 }
                 $('#jEditButton_' + ids[i]).hide();
             }
@@ -961,6 +1004,7 @@
                 }
             }
         }
+
     }
 
 
