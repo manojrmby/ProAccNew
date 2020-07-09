@@ -10,35 +10,53 @@
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
 <a class="card-title">Audit List</a>
 <hr />
-<table class="table" id="tblAudit">
-    <thead>
-        <tr>
-            <th>UserID</th>
-            <th>TABLE_NAME</th>
-            <th>SUMMARY</th>
-            <th>ACTION</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <a class="txtG" value="@item.UserID">@item.UserID</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.TABLE_NAME">@item.TABLE_NAME</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.SUMMARY">@item.SUMMARY</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.ACTION">@item.ACTION</a>
-                </td>
-            </tr>
-         }
-    </tbody>
-</table>
+
+<div class="row instanceRow" style="padding: 1em;">
+    <div class="col-lg-12 ">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="position-relative form-group">
+                    <label for="exampleEmail" class="">Start Date</label>
+                    <input type="text" id="StartDate" class="form-control" Value = "" />
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="position-relative form-group">
+                    <label for="exampleEmail" class="">End Date</label>
+                    <input type="text" id="EndDate" class="form-control" Value = "" />
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <label for="exampleEmail" class="">Action</label>
+                @Html.DropDownList("Actiondropdown", new List<SelectListItem>
+                 {
+                   new SelectListItem { Text = "Insert", Value = "Insert"},
+                   new SelectListItem { Text = "Update", Value = "Update"},
+                   new SelectListItem { Text = "Delete", Value = "Delete"}
+                   }, "- Select -",new { @class = "form-control" })
+            </div>
+
+            <div class="col-md-2">
+                <label for="exampleEmail" class="">Table Name</label>
+                <input type="text" id="tablename" class="form-control"/>
+            </div>
+
+            <div class="col-md-2">
+                <label for="exampleEmail" class="">.</label>
+                <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitSearch">
+                    Search
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divAuditIndex">
+
+</div>
 
 <script type="text/javascript">
 
@@ -47,6 +65,89 @@
         $("#tblAudit").dataTable({
             
         });
+        loadAuditReport();
     });
 
+    $("#StartDate").datepicker({
+        //DateTime now = DateTime.Now,
+        //starDate = new DateTime(now.Year, now.Month, 1),
+        //val:starDate,
+        dateFormat: "dd-M-yy",
+     });
+     $('#EndDate').datepicker({         
+         dateFormat: "dd-M-yy",
+            //minDate: 0,
+            //onSelect: function (date) {
+            //    var dt2 = $('#StartDate');
+            //    var startDate = $(this).datepicker('getDate');
+            //    var minDate = $('#StartDate').datepicker('getDate');
+            //    //dt2.datepicker('setDate', minDate);
+            //    startDate.setDate(startDate.getDate() + 30);
+            //    //sets dt2 maxDate to the last day of 30 days window
+            //    dt2.datepicker('option', 'minDate', startDate);
+            //    dt2.datepicker('option', 'minDate', minDate);
+            //    $(this).datepicker('option', 'minDate', minDate);
+            //}
+     });   
+
+    function loadAuditReport() {
+        debugger;
+         var startdate =$("#StartDate").val().trim();
+        var enddate =$("#EndDate").val().trim();
+        var ActionID =$("#Actiondropdown").val().trim();
+        var tablename = $("#tablename").val().trim();
+
+        model = {
+            startdate: startdate,
+            enddate: enddate,
+            ActionID: ActionID,
+            TABLE_NAME: tablename 
+        }
+        $.ajax({
+            type: "GET",
+            //data: null,
+             data: model,
+            url: '@Url.Action("GetAuditDatas","Report")',
+            success: function (response) {
+            $("#divAuditIndex").html(response);
+            },
+            failure: function (response) {
+            alert(response.responseText);
+            },
+            error: function (response) {
+            alert(response.responseText);
+            }
+         });
+    }
+
+    $("#SubmitSearch").click(function () {
+        debugger;
+         loadAuditReport()
+        @*var startdate =$("#StartDate").val().trim();
+        var enddate =$("#EndDate").val().trim();
+        var ActionID =$("#Actiondropdown").val().trim();
+        var tablename = $("#tablename").val().trim();
+
+        model = {
+            startdate: startdate,
+            enddate: enddate,
+            ActionID: ActionID,
+            TABLE_NAME: tablename 
+        }
+        $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetAuditDatas","Report")',
+                data: model,
+                    success: function (response) {
+                        $("#divAuditIndex").html(response);
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+         });*@
+             
+    });
 </script>

@@ -1,0 +1,50 @@
+﻿
+@model IEnumerable<ProAcc.BL.Model.AuditReport.ProjectMonitorModel>
+
+
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+
+
+<table class="table" id="tblAudit">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>TABLE NAME</th>
+            <th>SUMMARY</th>
+            <th>ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.NAME">@item.NAME</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.TABLE_NAME">@item.TABLE_NAME</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.SUMMARY">@item.SUMMARY</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.ACTION">@item.ACTION</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#tblAudit").dataTable({
+
+        });
+    });
+
+       
+</script>

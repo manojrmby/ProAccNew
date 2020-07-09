@@ -141,10 +141,20 @@ namespace ProAcc.Controllers
 
         public ActionResult AuditReports()
         {
-            List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditDatas();
-            var obj = new { data = PM };
-            return View(PM);
+            //List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditDatas();
+            //var obj = new { data = PM };
+            //return View(PM);
+            return View();
         }
+
+        [HttpGet]
+        public ActionResult GetAuditDatas(AuditReport.ProjectMonitorModel model)
+        {
+            List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditDatas(model);
+            var obj = new { data = PM };
+            return PartialView("_AuditReportIndex", PM);
+        }
+
         public ActionResult GetAduitData()
         {
             List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditData();

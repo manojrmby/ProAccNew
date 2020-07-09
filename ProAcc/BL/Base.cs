@@ -1856,13 +1856,25 @@ namespace ProAcc.BL
                 return AR;
         }
 
-        public List<AuditReport.ProjectMonitorModel> Sp_GetAuditDatas()
+        public List<AuditReport.ProjectMonitorModel> Sp_GetAuditDatas(AuditReport.ProjectMonitorModel model)
         {
             DataTable dt = new DataTable();
             AuditReport A = new AuditReport();
             List<AuditReport.ProjectMonitorModel> AR = new List<AuditReport.ProjectMonitorModel>();
             DBHelper dB = new DBHelper("SP_Audit", CommandType.StoredProcedure);
-            dB.addIn("@Type", "AuditReport");
+            if(model.ActionID==null)
+            {
+                dB.addIn("@Type", "AuditReport");
+            }
+            else
+            {
+                dB.addIn("@Type", "AuditReportsearch");
+                dB.addIn("@Startdate", model.startdate);
+                dB.addIn("@enddate", model.enddate);
+                dB.addIn("@Action", model.ActionID);
+                dB.addIn("@Tablename", model.TABLE_NAME);
+            }            
+          
             dt = dB.ExecuteDataTable();
             if (dt.Rows.Count > 0)
             {
@@ -1870,7 +1882,7 @@ namespace ProAcc.BL
                 {
                     AuditReport.ProjectMonitorModel A_PM = new AuditReport.ProjectMonitorModel();
                     A_PM.Id = Convert.ToInt32(dr["AUDIT_ID"].ToString());
-                    A_PM.UserID= Guid.Parse(dr["UserID"].ToString());
+                    A_PM.NAME= dr["NAME"].ToString();
                     A_PM.TABLE_NAME= dr["TABLE_NAME"].ToString();
                     A_PM.SUMMARY = dr["SUMMARY"].ToString();
                     A_PM.ACTION = dr["ACTION"].ToString();

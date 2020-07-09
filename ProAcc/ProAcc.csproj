@@ -667,6 +667,7 @@
     <Content Include="Views\ProjectMonitor\ConvertionMonitor.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <Content Include="Views\Report\AuditReports.cshtml" />
+    <Content Include="Views\Report\_AuditReportIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

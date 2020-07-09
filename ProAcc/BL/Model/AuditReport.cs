@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -20,7 +21,16 @@ namespace ProAcc.BL.Model
 			public DateTime OperationAt { get; set; }
 
 			public string By { get; set; }
+			public string ActionID { get; set; }
+			[DataType(DataType.Date)]
+			[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+			public DateTime startdate { get; set; }
 
+			[DataType(DataType.Date)]
+			[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+			public DateTime enddate { get; set; }
+
+			public string NAME { get; set; }
 			public string TABLE_NAME { get; set; }
 			public string SUMMARY { get; set; }
 			public string ACTION { get; set; }
@@ -59,6 +69,7 @@ namespace ProAcc.BL.Model
 			public DateTime Modified_On { get; set; }
 			public Guid Modified_by { get; set; }
 
+			public virtual ProACC_DB.UserMaster UserMaster { get; set; }
 		}
 	}
 }
