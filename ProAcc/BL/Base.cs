@@ -1869,12 +1869,11 @@ namespace ProAcc.BL
             else
             {
                 dB.addIn("@Type", "AuditReportsearch");
-                dB.addIn("@Startdate", model.startdate);
-                dB.addIn("@enddate", model.enddate);
                 dB.addIn("@Action", model.ActionID);
                 dB.addIn("@Tablename", model.TABLE_NAME);
-            }            
-          
+            }
+            dB.addIn("@Startdate", model.startdate);
+            dB.addIn("@enddate", model.enddate);
             dt = dB.ExecuteDataTable();
             if (dt.Rows.Count > 0)
             {

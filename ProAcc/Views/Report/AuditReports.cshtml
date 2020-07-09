@@ -61,6 +61,40 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        //function DateToDDMMYY(Date) {
+        //    var today = Date; 
+        ////el_up.innerHTML = today; 
+        //var dd = today.getDate(); 
+        //var mm = today.getMonth() + 1; 
+  
+        //var yyyy = today.getFullYear(); 
+        //if (dd < 10) { 
+        //    dd = '0' + dd; 
+        //} 
+        //if (mm < 10) { 
+        //    mm = '0' + mm; 
+        //} 
+        //    var today = dd + '-' + mm + '-' + yyyy;
+        //    return today;
+        //}
+        function ddMonyy(Date) {
+            const date = Date;
+            const formattedDate = date.toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'short', year: 'numeric'
+            }).replace(/ /g, '-');
+            return formattedDate;
+        }
+        
+        var currentTime = new Date();
+        // First Date Of the month 
+        var startDateFrom = new Date(currentTime.getFullYear(),currentTime.getMonth(),1);
+        // Last Date Of the Month 
+        var startDateTo = new Date(currentTime.getFullYear(),currentTime.getMonth() +1,0);
+        
+        var FromDt = ddMonyy(startDateFrom);
+        var ToDt = ddMonyy(startDateTo);
+        $("#StartDate").val(FromDt);
+        $("#EndDate").val(ToDt);
 
         $("#tblAudit").dataTable({
             
@@ -91,9 +125,10 @@
      });   
 
     function loadAuditReport() {
-        debugger;
-         var startdate =$("#StartDate").val().trim();
-        var enddate =$("#EndDate").val().trim();
+
+        
+        var startdate = $("#StartDate").val();
+        var enddate = $("#EndDate").val();
         var ActionID =$("#Actiondropdown").val().trim();
         var tablename = $("#tablename").val().trim();
 
@@ -121,7 +156,7 @@
     }
 
     $("#SubmitSearch").click(function () {
-        debugger;
+       // debugger;
          loadAuditReport()
         @*var startdate =$("#StartDate").val().trim();
         var enddate =$("#EndDate").val().trim();
