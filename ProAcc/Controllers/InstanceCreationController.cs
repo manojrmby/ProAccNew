@@ -7,9 +7,12 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using ProACC_DB;
 using System.Data.Entity;
+using ProAcc.BL;
 
 namespace ProAcc.Controllers
 {
+    [CheckSessionTimeOut]
+    [Authorize(Roles = "Admin")]
     public class InstanceCreationController : Controller
     {
         ProAccEntities db = new ProAccEntities();
@@ -79,7 +82,7 @@ namespace ProAcc.Controllers
                                 join c in db.Projects on e.Project_ID equals c.Project_Id
                                 join cu in db.Customers on c.Customer_Id equals cu.Customer_ID
                             where e.isActive == true && c.isActive == true && cu.isActive==true
-                            select e).ToList();
+                            select e).OrderByDescending(x=>x.Cre_on).ToList();
             return PartialView("_InstanceIndex", InstanceList);
         }
 
@@ -93,8 +96,8 @@ namespace ProAcc.Controllers
                 {
                     instance.Instance_id = Guid.NewGuid();
                     instance.isActive = true;
-                    instance.Cre_on = DateTime.Now.Date;
-                    instance.LastUpdated_Dt = DateTime.Now.Date;
+                    instance.Cre_on = DateTime.UtcNow;
+                    instance.LastUpdated_Dt = DateTime.UtcNow; ;
                     instance.Cre_By = Guid.Parse(Session["loginid"].ToString());
 
                     db.Instances.Add(instance);
@@ -142,8 +145,8 @@ namespace ProAcc.Controllers
             var name = db.Instances.Where(p => p.InstaceName == model.InstaceName).Where(x => x.Instance_id != model.Instance_id).Where(x => x.isActive == true).ToList();
             if (name.Count == 0)
             {
-                model.Modified_On = DateTime.Now;
-                model.LastUpdated_Dt = DateTime.Now;
+                model.Modified_On = DateTime.UtcNow;
+                model.LastUpdated_Dt = DateTime.UtcNow;
                 //model.Cre_on = DateTime.Now;
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
@@ -160,15 +163,50 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
-            Instance instance = db.Instances.Find(id);
-            if (instance.Instance_id == id)
+            bool result = false;
+
+            var del = (from a in db.Instances
+                       join b in db.ProjectMonitors
+                       on a.Instance_id equals b.InstanceID
+                       where b.InstanceID == id && a.isActive == true && b.isActive == true
+                       //select new { V = b.StatusId != 4 } ).ToList();
+                       select new { V =( b.StatusId != 2 && b.StatusId != 4 && b.StatusId != 5) }).ToList();
+
+            foreach (var i in del)
             {
-                instance.isActive = false;
-                instance.IsDeleted = true;
-                db.Entry(instance).State = EntityState.Modified;
-                db.SaveChanges();
+                if (i.V == false)
+                {
+                    result = true;
+                        break;
+                }                
             }
-            return Json("success");
+            if(result==true)
+            {
+                return Json("fail");
+            }
+            else
+            {
+                var ids = db.ProjectMonitors.Where(x=>x.InstanceID==id && x.isActive==true).ToList();
+                foreach (var pmid in ids)
+                {
+                    var task = db.ProjectMonitors.Where(p => p.InstanceID == pmid.InstanceID&& p.Id==pmid.Id).FirstOrDefault();
+                    task.isActive = false;
+                    task.IsDeleted = true;
+                    db.Entry(task).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                Instance instance = db.Instances.Find(id);
+                if (instance.Instance_id == id)
+                {
+                    instance.isActive = false;
+                    instance.IsDeleted = true;
+                    db.Entry(instance).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json("success");
+            }
+            
         }
     }
 }

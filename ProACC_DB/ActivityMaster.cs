@@ -19,7 +19,7 @@ namespace ProACC_DB
         public Nullable<System.Guid> BuildingBlock_id { get; set; }
         public int PhaseID { get; set; }
         public Nullable<int> Sequence_Num { get; set; }
-        public string ApplicationArea { get; set; }
+        public int ApplicationAreaID { get; set; }
         public int RoleID { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
@@ -28,6 +28,7 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
+        public virtual ApplicationAreaMaster ApplicationAreaMaster { get; set; }
         public virtual PhaseMaster PhaseMaster { get; set; }
         public virtual RoleMaster RoleMaster { get; set; }
     }

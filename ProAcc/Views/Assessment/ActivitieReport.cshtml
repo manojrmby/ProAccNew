@@ -80,37 +80,51 @@
 
 <div>
 	@Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
-	<div style="visibility:hidden">
-		<div id="dialog-message" title="Info">
-			<p>
-				<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
-				@ViewBag.Message
-			</p>
-		</div>
-	</div>
-
 	@if (ViewBag.Message != null)
 	{
-		<script type="text/javascript">
-			$(function () {
 
-				$("#dialog-message").dialog({
-					modal: true,
-					buttons: {
-						Ok: function () {
-							$(this).dialog("close");
-							var url = $("#RedirectTo").val();
-							location.href = url;
-						}
-					}
-				});
+		<a id="Msg" style="display:none">@ViewBag.Message</a>
+		<script type="text/javascript">
+			var info = $('#Msg').text();
+			Notiflix.Report.Info("ProAcc Info !", info, "Click", function () {
+				var url = $("#RedirectTo").val();
+				location.href = url;
 			});
 		</script>
 
 	}
+	@*<div style="visibility:hidden">
+			<div id="dialog-message" title="Info">
+				<p>
+					<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+					@ViewBag.Message
+				</p>
+			</div>
+		</div>
+
+		@if (ViewBag.Message != null)
+		{
+			<script type="text/javascript">
+				$(function () {
+
+					$("#dialog-message").dialog({
+						modal: true,
+						buttons: {
+							Ok: function () {
+								$(this).dialog("close");
+								var url = $("#RedirectTo").val();
+								location.href = url;
+							}
+						}
+					});
+				});
+			</script>
+
+		}*@
 </div>
 <script type="text/javascript" charset="utf-8">
-	function Ajax_Activities_Bar(Phase,condition) {
+    function Ajax_Activities_Bar(Phase,condition) {
+       
 		$.ajax({
 			type: "POST",
 			url: '@Url.Action("GetActivitiesReport_Bar")',
@@ -278,7 +292,7 @@
 		var Ses_InstanceId = '@Session["InstanceId"]';
         if (Ses_InstanceId != "") {
             Ajax_Activities_Bar(Phase, condition);
-			TableAjax()
+            TableAjax(Phase, condition);
         }
 		$("#Phase").change(function () {
 
@@ -287,6 +301,7 @@
 			var Ses_InstanceId = '@Session["InstanceId"]';
             if (Ses_InstanceId != "") {
                 Ajax_Activities_Bar(Phase, condition);
+				TableAjax(Phase, condition);
             }
         });
 		$("#condition").change(function () {
@@ -296,6 +311,7 @@
 			var Ses_InstanceId = '@Session["InstanceId"]';
             if (Ses_InstanceId != "") {
                 Ajax_Activities_Bar(Phase, condition);
+				TableAjax(Phase, condition);
             }
         });
 
@@ -307,11 +323,12 @@
    //     $('.dataTables_length').addClass('bs-select');
     });
 
-    function TableAjax() {
+    function TableAjax(Phase, condition) {
+        
 			$.ajax({
                 type: "POST",
                 url: '@Url.Action("ActivitiesTable")',
-                //data: '{LOB: ' + JSON.stringify(a) + '}',
+                data: '{Phase: ' + JSON.stringify(Phase) + ',condition:'+JSON.stringify(condition)+'}',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (Data) {

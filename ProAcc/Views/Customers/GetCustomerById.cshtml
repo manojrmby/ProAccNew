@@ -3,12 +3,11 @@
     ViewBag.Title = "GetCustomerById";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
-<style>
-    span{
-        color: red;
-    font-size: 14px;
-    }
-</style>
+
+<link href="~/Asset/css/intlTelInput.css" rel="stylesheet" />
+<script src="~/Asset/js/intlTelInput.js"></script>
+<script src="~/Asset/js/intlTelInput.min.js"></script>
+
 <a class="card-title">Update Customer</a>
 <hr />
 <div style="padding:1em;">
@@ -20,13 +19,13 @@
             <input type="hidden" id="pcre_By" value="@Model.Cre_By" />
 
             <div class="form-group">
-                <label class="control-label col-md-4 required">Company Name</label>
+                <label class="control-label col-md-4 required">Customer Name</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" value="@Model.Company_Name" readonly id="txtCompanyName" />
                     @*<span id="lblCompanyName" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblCompanyName">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCompanyName">&nbsp;</span>
                 </div>
             </div>
 
@@ -37,24 +36,32 @@
                         <option value="0">Select Industry</option>
                         @foreach (var item in ViewBag.IndustrySector)
                         {
-                            <option value="@item.IndustrySector_ID" selected>@item.Industry_Sector</option>
+                            if (item.IndustrySector_ID == Model.IndustrySector_ID)
+                            {
+                                <option value="@item.IndustrySector_ID" selected>@item.Industry_Sector</option>
+                            }
+                            else
+                            {
+                                <option value="@item.IndustrySector_ID">@item.Industry_Sector</option>
+                            }
+
                         }
                     </select>
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIndustrySector">&nbsp;</span>
                 </div>
             </div>
 
             @*<div class="form-group">
-                <label class="control-label col-md-4 required">Industry Sector</label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" value="@Model.IndustrySector_ID" id="txtIndustrySector" />
-                </div>
-                <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
-                </div>
-            </div>*@
+                    <label class="control-label col-md-4 required">Industry Sector</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" value="@Model.IndustrySector_ID" id="txtIndustrySector" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
+                    </div>
+                </div>*@
             <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Name</label>
                 <div class="col-md-10">
@@ -62,7 +69,7 @@
                     @*<span id="lblIndustrySector" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblContact">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblContact">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -76,7 +83,7 @@
                     @*<span id="lblCustomerEmail" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblCustomerEmail">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerEmail">&nbsp;</span>
                 </div>
             </div>
 
@@ -84,12 +91,22 @@
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" value="@Model.Phone" id="txtCustomerPhone" maxlength="10" />
-                    @*<span id="lblCustomerPhone" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblCustomerPhone">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerPhone">&nbsp;</span>
                 </div>
             </div>
+            @*<div class="form-group">
+                <label class="control-label col-md-5 required">Contact Person Phone</label>
+                <div class="col-md-10">
+                    <input type="hidden" class="form-control" value="@Model.Countrycode" id="selectedCountry">
+                    <input type="tel" class="form-control" value="@Model.Phone" id="txtCustomerPhone" style="width: 150%;">
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
+                </div>
+            </div>*@
         </div>
 
         @*<div class="form-group">
@@ -106,6 +123,7 @@
 
             <div class="col-md-offset-2 col-md-12">
                 <input type="button" value="Update" class="btn btn-info" id="btnCustomerUpdate" />
+                <a class="btn btn-success" id="btnAddCustomer"><i class="fa fa-plus"></i>Add New Customer</a>
                 <div class="col-lg-3" style="float:right;">
                     @Html.ActionLink("Back to List", "Index", "Customers")
                 </div>
@@ -120,9 +138,9 @@
 
     $(document).ready(function () {
 
-       
+
         $("#txtIndustrySector").keypress(function (event) {
-       
+
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
@@ -136,8 +154,12 @@
             }
         });
 
+        $("#btnAddCustomer").click(function () {
+            window.location.href = "@Url.Action("Create", "Customers")";
+        });
+
         $("#txtContact").keypress(function (event) {
-       
+
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
@@ -164,7 +186,7 @@
         });
 
         $("#txtCustomerPhone").blur(function () {
-            
+
             phone = $(this).val();
             phone = phone.replace(/[^0-9]/g,'');
             if (phone.length != 10) {
@@ -175,11 +197,63 @@
                 $("#lblCustomerPhone").html("").hide();
                 validatecustomer();
             }
-            
+
        });
 
+    //    var input = document.querySelector("#txtCustomerPhone"),
+    //    errorMsg = document.querySelector("#error-msg"),
+    //    validMsg = document.querySelector("#valid-msg");
+
+        
+    //    //$("#txtCustomerPhone").intlTelInput("setCountry", $("#selectedCountry").val());
+    //    //$("#txtCustomerPhone").intlTelInput("setCountry", $("#selectedCountry").val());
+    //    //$("#txtCustomerPhone").setCountry("in");
+    //    var countryData = window.intlTelInputGlobals.getCountryData(),
+    //    //input = document.querySelector("#phone");
+        
+    //    for (var i = 0; i < countryData.length; i++) {
+    //        debugger;
+    //      var country = countryData[i];
+    //      country.name = country.name.replace(/.+\((.+)\)/,"$1");
+    //    }
+
+    //// Error messages based on the code returned from getValidationError
+    //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+    //    var intl = window.intlTelInput(input, {
+    //    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+    //    //utilsScript: "~/Asset/js/utils.js"
+    //});
+
+    //var reset = function() {
+    //    input.classList.remove("error");
+    //    errorMsg.innerHTML = "";
+    //    errorMsg.classList.add("hide");
+    //    validMsg.classList.add("hide");
+    //};
+
+    //// Validate on blur event
+    //    input.addEventListener('blur', function () {
+
+    //    reset();
+    //    if(input.value.trim()){
+    //        if(intl.isValidNumber()){
+    //            validMsg.classList.remove("hide");
+    //        }else{
+    //            input.classList.add("error");
+    //            var errorCode = intl.getValidationError();
+    //            errorMsg.innerHTML = errorMap[errorCode];
+    //            errorMsg.classList.remove("hide");
+    //        }
+    //    }
+    //});
+
+    //// Reset on keyup/change event
+    //input.addEventListener('change', reset);
+    //input.addEventListener('keyup', reset);
+
         $("#txtCustomerEmail").on("blur", function (event) {
-           
+
            var str = $(this).val();
            var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
@@ -193,22 +267,22 @@
             }
         });
 
-         
+
 
         function validatecustomer() {
-            
+
            var CompanyName = $("#txtCompanyName").val().trim();
             var IndustrySector = $("#drpIndustrySector").val()
             var Contact = $("#txtContact").val().trim();
             var custphone = $("#txtCustomerPhone").val().trim();
             var custEmail = $("#txtCustomerEmail").val().trim();
 
-            var lblCompanyName = $("#lblCompanyName").text().trim(); 
+            var lblCompanyName = $("#lblCompanyName").text().trim();
             var lblIndustrySector = $("#lblIndustrySector").text().trim();
             var lblContact = $("#lblContact").text().trim();
             var lblcustphone = $("#lblCustomerPhone").text().trim();
             var lblcustEmail = $("#lblCustomerEmail").text().trim();
-        
+
 
             if (CompanyName.length > 0 && IndustrySector.length > 0 && Contact.length > 0 && custphone.length > 0 && custEmail.length > 0 &&
                 lblCompanyName == "" && lblIndustrySector == "" && lblContact == "" && lblcustphone == "" && lblcustEmail == "" ) {
@@ -223,13 +297,13 @@
     });
 
     function ValidateName(data) {
-             var letters = /^[A-Za-z, ]+$/;
+             var letters = /^[A-Za-z._, ]+$/;
             if (!letters.test(data)) {
                 return false;
             }
          }
      $("#btnCustomerUpdate").on("click", function () {
-         
+
          var id = $("#customerid").val();
         var CompanyName = $("#txtCompanyName").val().trim();
          var IndustrySector = $("#drpIndustrySector").val();
@@ -238,7 +312,7 @@
         var custEmail=$("#txtCustomerEmail").val().trim();
         var cre_on = $("#pcre_on").val();
          var cre_By = $("#pcre_By").val();
-         
+
          var model = {
              Customer_Id: id,
              Company_Name: CompanyName,
@@ -277,9 +351,28 @@
                     //dataType: "json",
                     success: function (response) {
                         if (response == "success") {
-                            alert("Customers Edited successfully!");
-                            var url = $("#RedirectToCustomerList").val();
-                            location.href = url;
+                             Notiflix.Notify.Success('Customer Updated successfully..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+                   setTimeout(Redirect, 3000);
+                            //$.alert({
+                            //    title: 'Success !',
+                            //    content: 'Customer Edited <strong>Successfully</strong>..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                            //    icon: 'fa fa-rocket',
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                $(this).remove();
+                            //               var url = $("#RedirectToCustomerList").val();
+                            //                location.href = url;
+                            //            }
+                            //        }
+                            //    }
+                            //});
+
+
                             //loadCustomer();
                             //$("#txtCompanyName").val("");
                             //$("#txtIndustrySector").val("");
@@ -299,5 +392,8 @@
 
         }
      });
-
+    function Redirect() {
+        var url = $("#RedirectToCustomerList").val();
+        location.href = url;
+    }
 </script>

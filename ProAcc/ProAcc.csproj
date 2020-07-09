@@ -81,17 +81,23 @@
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Spire.Common, Version=10.4.9.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.XLS.10.4.9\lib\net40\Spire.Common.dll</HintPath>
+    <Reference Include="slf4j-api, Version=1.7.5.4, Culture=neutral, PublicKeyToken=caeb68ac682d6c33, processorArchitecture=MSIL">
+      <HintPath>..\packages\slf4j-api.1.7.5.4\lib\net35\slf4j-api.dll</HintPath>
     </Reference>
-    <Reference Include="Spire.License, Version=1.3.8.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.XLS.10.4.9\lib\net40\Spire.License.dll</HintPath>
+    <Reference Include="slf4j-NetCommonLogging, Version=1.7.5.4, Culture=neutral, PublicKeyToken=caeb68ac682d6c33, processorArchitecture=MSIL">
+      <HintPath>..\packages\slf4j-NetCommonLogging.1.7.5.4\lib\net35\slf4j-NetCommonLogging.dll</HintPath>
     </Reference>
-    <Reference Include="Spire.Pdf, Version=6.4.9.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.XLS.10.4.9\lib\net40\Spire.Pdf.dll</HintPath>
+    <Reference Include="Spire.Doc, Version=7.11.0.41040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.Doc.7.11.0\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
-    <Reference Include="Spire.XLS, Version=10.4.9.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.XLS.10.4.9\lib\net40\Spire.XLS.dll</HintPath>
+    <Reference Include="Spire.License, Version=1.3.7.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.Doc.7.11.0\lib\net40\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=5.11.0.2040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.Doc.7.11.0\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.XLS">
+      <HintPath>obj\Release\Package\PackageTmp\bin\Spire.XLS.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -151,16 +157,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Asset\css\Activity.css" />
     <Content Include="Asset\css\bootstrap.min.css" />
+    <Content Include="Asset\css\ErrorStyle.css" />
+    <Content Include="Asset\css\intlTelInput.css" />
+    <Content Include="Asset\css\jquery-confirm.min.css" />
     <Content Include="Asset\css\LayoutStyles.css" />
+    <Content Include="Asset\css\ldbtn.min.css" />
+    <Content Include="Asset\css\loading.min.css" />
     <Content Include="Asset\css\main.css" />
     <Content Include="Asset\css\Menu.css" />
     <Content Include="Asset\css\main_Login.css" />
     <Content Include="Asset\css\style.css" />
-    <Content Include="Asset\fonts\fa-solid-900.svg" />
-    <Content Include="Asset\fonts\font-awesome-4.7.0\css\font-awesome.css" />
-    <Content Include="Asset\fonts\font-awesome-4.7.0\css\font-awesome.min.css" />
-    <Content Include="Asset\fonts\Pe-icon-7-stroke.svg" />
+    <Content Include="Asset\css\Temp.css" />
+    <Content Include="Asset\images\dribbble_1.gif" />
+    <Content Include="Asset\img\flags%402x.png" />
+    <Content Include="Asset\img\flags.png" />
+    <Content Include="Asset\Jquery\jqGrid\plugins\pdfmake.min.js" />
+    <Content Include="Asset\Jquery\jqGrid\plugins\vfs_fonts.js" />
+    <Content Include="Asset\Jquery\jquery-confirm.min.js" />
+    <Content Include="Asset\Jquery\PdfJs\pdf.js" />
+    <Content Include="Asset\Jquery\PdfJs\pdf.worker.js" />
+    <Content Include="Asset\js\intlTelInput.js" />
+    <Content Include="Asset\js\intlTelInput.min.js" />
+    <Content Include="Asset\js\utils.js" />
+    <Content Include="Asset\MailTemplate\T1.HTML" />
+    <Content Include="Asset\Notiflix\notiflix-2.3.1.min.css" />
+    <Content Include="Asset\Notiflix\notiflix-2.3.1.min.js" />
+    <Content Include="Asset\Notiflix\notiflix-aio-2.3.1.min.js" />
+    <Content Include="Content\fonts\fa-solid-900.svg" />
+    <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.css" />
+    <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.min.css" />
+    <Content Include="Content\fonts\Pe-icon-7-stroke.svg" />
     <Content Include="Asset\images\11.png" />
     <Content Include="Asset\images\1Promantus_logo.png" />
     <Content Include="Asset\images\22.png" />
@@ -219,197 +247,9 @@
     <Content Include="Asset\Scripts\JavaScript.js" />
     <Content Include="Asset\Scripts\jquery.min.js" />
     <Content Include="Asset\Scripts\main.js" />
-    <Content Include="Asset\Scripts\MultiSelect\MUl\jquery.multiselect.css" />
-    <Content Include="Asset\Scripts\MultiSelect\MUl\jquery.multiselect.js" />
     <Content Include="Asset\Scripts\Prograssbarjs.js" />
     <Content Include="Asset\Scripts\tilt.jquery.min.js" />
     <Content Include="Asset\Scripts\utils.js" />
-    <Content Include="bin\Antlr3.Runtime.dll" />
-    <Content Include="bin\EntityFramework.dll" />
-    <Content Include="bin\EntityFramework.SqlServer.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.Core.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.Core.xml" />
-    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.xml" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\ProAcc.dll" />
-    <Content Include="bin\ProAcc.pdb" />
-    <Content Include="bin\Release\Publish\Asset\css\main_Login.css" />
-    <Content Include="bin\Release\Publish\Asset\css\Menu.css" />
-    <Content Include="bin\Release\Publish\Asset\fonts\fa-solid-900.svg" />
-    <Content Include="bin\Release\Publish\Asset\fonts\font-awesome-4.7.0\css\font-awesome.css" />
-    <Content Include="bin\Release\Publish\Asset\fonts\font-awesome-4.7.0\css\font-awesome.min.css" />
-    <Content Include="bin\Release\Publish\Asset\fonts\Pe-icon-7-stroke.svg" />
-    <Content Include="bin\Release\Publish\Asset\images\1.jpg" />
-    <Content Include="bin\Release\Publish\Asset\images\11.png" />
-    <Content Include="bin\Release\Publish\Asset\images\1Promantus_logo.png" />
-    <Content Include="bin\Release\Publish\Asset\images\22.png" />
-    <Content Include="bin\Release\Publish\Asset\images\3rwerwr.jpg" />
-    <Content Include="bin\Release\Publish\Asset\images\icons\favicon.ico" />
-    <Content Include="bin\Release\Publish\Asset\images\img-01.png" />
-    <Content Include="bin\Release\Publish\Asset\images\Login_Img.png" />
-    <Content Include="bin\Release\Publish\Asset\images\Promantus_logo.png" />
-    <Content Include="bin\Release\Publish\Asset\images\Promantus_logo_.png" />
-    <Content Include="bin\Release\Publish\Asset\Scripts\Chart.js" />
-    <Content Include="bin\Release\Publish\Asset\Scripts\Chart.RadialGauge.umd.js" />
-    <Content Include="bin\Release\Publish\Asset\Scripts\main.js" />
-    <Content Include="bin\Release\Publish\Asset\Scripts\Prograssbarjs.js" />
-    <Content Include="bin\Release\Publish\Asset\Scripts\utils.js" />
-    <Content Include="bin\Release\Publish\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Release\Publish\bin\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="bin\Release\Publish\bin\ProAcc.dll" />
-    <Content Include="bin\Release\Publish\bin\ProAcc.pdb" />
-    <Content Include="bin\Release\Publish\bin\roslyn\csc.exe" />
-    <Content Include="bin\Release\Publish\bin\roslyn\csi.exe" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.CodeAnalysis.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\System.AppContext.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\System.Collections.Immutable.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\System.Diagnostics.StackTrace.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\System.IO.FileSystem.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\System.IO.FileSystem.Primitives.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\System.Reflection.Metadata.dll" />
-    <Content Include="bin\Release\Publish\bin\roslyn\vbc.exe" />
-    <Content Include="bin\Release\Publish\bin\roslyn\VBCSCompiler.exe" />
-    <Content Include="bin\Release\Publish\bin\System.Web.Helpers.dll" />
-    <Content Include="bin\Release\Publish\bin\System.Web.Mvc.dll" />
-    <Content Include="bin\Release\Publish\bin\System.Web.Razor.dll" />
-    <Content Include="bin\Release\Publish\bin\System.Web.Webpages.Deployment.dll" />
-    <Content Include="bin\Release\Publish\bin\System.Web.Webpages.dll" />
-    <Content Include="bin\Release\Publish\bin\System.Web.Webpages.Razor.dll" />
-    <Content Include="bin\Release\Publish\Content\bootstrap-grid.css" />
-    <Content Include="bin\Release\Publish\Content\bootstrap-grid.min.css" />
-    <Content Include="bin\Release\Publish\Content\bootstrap-reboot.css" />
-    <Content Include="bin\Release\Publish\Content\bootstrap-reboot.min.css" />
-    <Content Include="bin\Release\Publish\Content\bootstrap.css" />
-    <Content Include="bin\Release\Publish\Content\bootstrap.min.css" />
-    <Content Include="bin\Release\Publish\Global.asax" />
-    <Content Include="bin\Release\Publish\Scripts\bootstrap.bundle.js" />
-    <Content Include="bin\Release\Publish\Scripts\bootstrap.bundle.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\bootstrap.js" />
-    <Content Include="bin\Release\Publish\Scripts\bootstrap.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\esm\popper-utils.js" />
-    <Content Include="bin\Release\Publish\Scripts\esm\popper-utils.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\esm\popper.js" />
-    <Content Include="bin\Release\Publish\Scripts\esm\popper.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\jquery-3.4.1.js" />
-    <Content Include="bin\Release\Publish\Scripts\jquery-3.4.1.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="bin\Release\Publish\Scripts\jquery-3.4.1.slim.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\popper-utils.js" />
-    <Content Include="bin\Release\Publish\Scripts\popper-utils.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\popper.js" />
-    <Content Include="bin\Release\Publish\Scripts\popper.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\select2\select2.css" />
-    <Content Include="bin\Release\Publish\Scripts\select2\select2.js" />
-    <Content Include="bin\Release\Publish\Scripts\select2\select2.min.css" />
-    <Content Include="bin\Release\Publish\Scripts\select2\select2.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\index.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\methods\defaults.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\methods\destroy.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\methods\disableEventListeners.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\methods\enableEventListeners.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\methods\placements.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\methods\update.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\applyStyle.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\arrow.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\computeStyle.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\flip.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\hide.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\index.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\inner.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\keepTogether.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\offset.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\preventOverflow.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\modifiers\shift.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\clockwise.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\computeAutoPlacement.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\debounce.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\find.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\findCommonOffsetParent.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\findIndex.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getBordersSize.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getBoundaries.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getBoundingClientRect.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getClientRect.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getFixedPositionOffsetParent.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getOffsetParent.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getOffsetRect.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getOffsetRectRelativeToArbitraryNode.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getOppositePlacement.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getOppositeVariation.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getOuterSizes.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getParentNode.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getPopperOffsets.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getReferenceNode.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getReferenceOffsets.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getRoot.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getRoundedOffsets.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getScroll.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getScrollParent.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getStyleComputedProperty.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getSupportedPropertyName.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getViewportOffsetRectRelativeToArtbitraryNode.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getWindow.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\getWindowSizes.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\includeScroll.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\index.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\isBrowser.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\isFixed.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\isFunction.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\isIE.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\isModifierEnabled.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\isModifierRequired.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\isNumeric.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\isOffsetContainer.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\removeEventListeners.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\runModifiers.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\setAttributes.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\setStyles.js" />
-    <Content Include="bin\Release\Publish\Scripts\src\utils\setupEventListeners.js" />
-    <Content Include="bin\Release\Publish\Scripts\tilt\tilt.jquery.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper-utils.js" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper-utils.min.js" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper.js" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper.min.js" />
-    <Content Include="bin\roslyn\csc.exe" />
-    <Content Include="bin\roslyn\csi.exe" />
-    <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll" />
-    <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll" />
-    <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll" />
-    <Content Include="bin\roslyn\System.AppContext.dll" />
-    <Content Include="bin\roslyn\System.Collections.Immutable.dll" />
-    <Content Include="bin\roslyn\System.Diagnostics.StackTrace.dll" />
-    <Content Include="bin\roslyn\System.IO.FileSystem.dll" />
-    <Content Include="bin\roslyn\System.IO.FileSystem.Primitives.dll" />
-    <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
-    <Content Include="bin\roslyn\vbc.exe" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe" />
-    <Content Include="bin\System.Net.Http.Formatting.dll" />
-    <Content Include="bin\System.Web.Helpers.dll" />
-    <Content Include="bin\System.Web.Http.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.xml" />
-    <Content Include="bin\System.Web.Mvc.dll" />
-    <Content Include="bin\System.Web.Optimization.dll" />
-    <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.Webpages.Deployment.dll" />
-    <Content Include="bin\System.Web.Webpages.dll" />
-    <Content Include="bin\System.Web.Webpages.Razor.dll" />
-    <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\images\ui-bg_diagonals-medium_20_d34d17_40x40.png" />
     <Content Include="Content\Theme\images\ui-bg_gloss-wave_45_817865_500x100.png" />
@@ -428,75 +268,19 @@
     <Content Include="Content\Theme\jquery-ui.min.css" />
     <Content Include="Content\ui.jqgrid.css" />
     <Content Include="Global.asax" />
-    <Content Include="Asset\fonts\fa-solid-900.eot" />
-    <Content Include="Asset\fonts\fa-solid-900.ttf" />
-    <Content Include="Asset\fonts\fa-solid-900.woff" />
-    <Content Include="Asset\fonts\fa-solid-900.woff2" />
-    <Content Include="Asset\fonts\Pe-icon-7-stroke.eot" />
-    <Content Include="Asset\fonts\Pe-icon-7-stroke.ttf" />
-    <Content Include="Asset\fonts\Pe-icon-7-stroke.woff" />
-    <Content Include="bin\ProAcc.dll.config" />
-    <Content Include="bin\ProACC_DB.dll.config" />
-    <Content Include="bin\Release\Publish\Asset\fonts\fa-solid-900.eot" />
-    <Content Include="bin\Release\Publish\Asset\fonts\fa-solid-900.ttf" />
-    <Content Include="bin\Release\Publish\Asset\fonts\fa-solid-900.woff" />
-    <Content Include="bin\Release\Publish\Asset\fonts\fa-solid-900.woff2" />
-    <Content Include="bin\Release\Publish\Asset\fonts\Pe-icon-7-stroke.eot" />
-    <Content Include="bin\Release\Publish\Asset\fonts\Pe-icon-7-stroke.ttf" />
-    <Content Include="bin\Release\Publish\Asset\fonts\Pe-icon-7-stroke.woff" />
-    <Content Include="bin\Release\Publish\bin\roslyn\csc.exe.config" />
-    <Content Include="bin\Release\Publish\bin\roslyn\csc.rsp" />
-    <Content Include="bin\Release\Publish\bin\roslyn\csi.rsp" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.CSharp.Core.targets" />
-    <Content Include="bin\Release\Publish\bin\roslyn\Microsoft.VisualBasic.Core.targets" />
-    <Content Include="bin\Release\Publish\bin\roslyn\vbc.exe.config" />
-    <Content Include="bin\Release\Publish\bin\roslyn\vbc.rsp" />
-    <Content Include="bin\Release\Publish\bin\roslyn\VBCSCompiler.exe.config" />
-    <Content Include="bin\Release\Publish\Content\bootstrap-grid.css.map" />
-    <Content Include="bin\Release\Publish\Content\bootstrap-grid.min.css.map" />
-    <Content Include="bin\Release\Publish\Content\bootstrap-reboot.css.map" />
-    <Content Include="bin\Release\Publish\Content\bootstrap-reboot.min.css.map" />
-    <Content Include="bin\Release\Publish\Content\bootstrap.css.map" />
-    <Content Include="bin\Release\Publish\Content\bootstrap.min.css.map" />
-    <Content Include="bin\Release\Publish\Scripts\bootstrap.bundle.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\bootstrap.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\bootstrap.min.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\esm\popper-utils.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\esm\popper-utils.min.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\esm\popper.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\esm\popper.min.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\index.js.flow" />
-    <Content Include="bin\Release\Publish\Scripts\jquery-3.4.1.min.map" />
-    <Content Include="bin\Release\Publish\Scripts\jquery-3.4.1.slim.min.map" />
-    <Content Include="bin\Release\Publish\Scripts\popper-utils.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\popper-utils.min.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\popper.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\popper.min.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\README.md" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper-utils.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper-utils.min.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper.js.flow" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper.js.map" />
-    <Content Include="bin\Release\Publish\Scripts\umd\popper.min.js.map" />
-    <Content Include="bin\Release\Publish\Views\Assessment\CreateAnalysis.cshtml" />
-    <Content Include="bin\Release\Publish\Views\Home\Home.cshtml" />
-    <Content Include="bin\Release\Publish\Views\Home\PreConvertion.cshtml" />
-    <Content Include="bin\Release\Publish\Views\Login\Login.cshtml" />
-    <Content Include="bin\Release\Publish\Views\shared\_Layout.cshtml" />
-    <Content Include="bin\Release\Publish\Views\web.config" />
-    <Content Include="bin\Release\Publish\Web.config" />
-    <Content Include="bin\roslyn\csc.exe.config" />
-    <Content Include="bin\roslyn\csc.rsp" />
-    <Content Include="bin\roslyn\csi.rsp" />
-    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
-    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
-    <Content Include="bin\roslyn\vbc.exe.config" />
-    <Content Include="bin\roslyn\vbc.rsp" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
+    <Content Include="Content\fonts\fa-solid-900.eot" />
+    <Content Include="Content\fonts\fa-solid-900.ttf" />
+    <Content Include="Content\fonts\fa-solid-900.woff" />
+    <Content Include="Content\fonts\fa-solid-900.woff2" />
+    <Content Include="Content\fonts\Pe-icon-7-stroke.eot" />
+    <Content Include="Content\fonts\Pe-icon-7-stroke.ttf" />
+    <Content Include="Content\fonts\Pe-icon-7-stroke.woff" />
     <Content Include="Asset\Jquery\jqGrid\css\fonts\octicons.eot" />
     <Content Include="Asset\Jquery\jqGrid\css\fonts\octicons.ttf" />
     <Content Include="Asset\Jquery\jqGrid\css\fonts\octicons.woff2" />
+    <Content Include="Asset\css\jquery-confirm.less" />
+    <Content Include="Asset\Jquery\PdfJs\pdf.js.map" />
+    <Content Include="Asset\Jquery\PdfJs\pdf.worker.js.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Web.config" />
     <Content Include="Views\shared\_Layout.cshtml" />
@@ -507,11 +291,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BL\CheckSessionTimeOutAttribute.cs" />
+    <Compile Include="BL\CreatePDF.cs" />
     <Compile Include="BL\FileUpload.cs" />
     <Compile Include="BL\FileUpload_Pic.cs" />
     <Compile Include="BL\LogHelper.cs" />
+    <Compile Include="BL\Mail.cs" />
+    <Compile Include="BL\Model\AuditReport.cs" />
     <Compile Include="BL\Model\CreateViewModel.cs" />
     <Compile Include="BL\Model\LogedUser.cs" />
+    <Compile Include="BL\Model\MailModel.cs" />
     <Compile Include="BL\Model\PicturetoData.cs" />
     <Compile Include="BL\Model\ProjectMonitorModel.cs" />
     <Compile Include="BL\Model\ResourceAllocationModel.cs" />
@@ -520,11 +308,14 @@
     <Compile Include="BL\Model\SAPInput_CustomCode.cs" />
     <Compile Include="BL\Model\SAPInput_PreConvertion.cs" />
     <Compile Include="BL\Model\SAPInput_SimplificationReport.cs" />
+    <Compile Include="BL\Model\SP_HomeDonut_Result.cs" />
     <Compile Include="BL\Model\UserModel.cs" />
     <Compile Include="BL\Model\UserRoleProvider.cs" />
+    <Compile Include="BL\URIHandler.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\ErrorLogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstanceCreationController.cs" />
     <Compile Include="Controllers\LinkController.cs" />
@@ -532,14 +323,12 @@
     <Compile Include="BL\Base.cs" />
     <Compile Include="BL\DBHelper.cs" />
     <Compile Include="BL\Model\Common.cs" />
-    <Compile Include="Controllers\PhaseMasterController.cs" />
     <Compile Include="Controllers\PreConvertionController.cs" />
     <Compile Include="Controllers\ProjectCreationController.cs" />
     <Compile Include="Controllers\ProjectMonitorController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
-    <Compile Include="Controllers\StatusController.cs" />
-    <Compile Include="Controllers\TeamMasterController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -595,7 +384,7 @@
     <Content Include="Views\Userasdad\Edit.cshtml" />
     <Content Include="Views\Userasdad\Index.cshtml" />
     <Content Include="Views\Userasdad\_UserCreate.cshtml" />
-    <Content Include="Views\User\CreateUsers.cshtml" />
+    <Content Include="Views\User\CreateUsers_Old.cshtml" />
     <Content Include="Views\ProjectCreation\Create.cshtml" />
     <Content Include="Views\ProjectCreation\_ProjectCreationCreate.cshtml" />
     <Content Include="Views\ProjectCreation\_ProjectCreationIndex.cshtml" />
@@ -606,17 +395,32 @@
     <Content Include="Views\Activity\_ActivityCreationCreate.cshtml" />
     <Content Include="Views\Activity\_ActivityCreationIndex.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Edit_Old.cshtml" />
     <Content Include="Views\Link\ProfileLink.cshtml" />
     <Content Include="Views\User\ResourceAllocationCreate.cshtml" />
     <Content Include="Views\Customers\GetCustomerById.cshtml" />
     <Content Include="Views\Resource\ResourceAssessment.cshtml" />
-    <Content Include="Views\ProjectMonitor\AssusmentMonitor.cshtml" />
-    <Content Include="Views\Activity\Testing.cshtml" />
+    <Content Include="Views\ProjectMonitor\AssessmentMonitor.cshtml" />
     <Content Include="Views\Resource\ResourceMigration.cshtml" />
     <Content Include="Views\Resource\ResourcePostConversion.cshtml" />
     <Content Include="Views\Resource\ResourcePreConversion.cshtml" />
     <Content Include="Views\Resource\ResourceValidation.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\_RoleIndex.cshtml" />
+    <Content Include="Views\ProjectMonitor\PreConvertionMonitor.cshtml" />
+    <Content Include="Views\ProjectMonitor\PostConvertionMonitor.cshtml" />
+    <Content Include="Views\ProjectMonitor\ValidationMonitor.cshtml" />
+    <Content Include="Views\Report\OverAllTaskReport.cshtml" />
+    <Content Include="Views\User\CreateUsers.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Report\AssessmentReport.cshtml" />
+    <Content Include="Views\ErrorLog\Error404.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Report\AuditReport.cshtml" />
+    <Content Include="Views\Resource\ResourceConversion.cshtml" />
+    <Content Include="Views\ProjectMonitor\ConvertionMonitor.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <Content Include="Views\Report\AuditReports.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -626,7 +430,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Asset\UploadedFiles\Temp\" />
+    <Folder Include="Asset\UploadedFiles\Temp\Pdf\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -639,15 +443,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>8</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="VBIDE">
       <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>5</VersionMajor>

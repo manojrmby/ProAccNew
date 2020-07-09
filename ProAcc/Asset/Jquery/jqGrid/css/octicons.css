@@ -12,8 +12,8 @@
 }*/
 @font-face {
     font-family: "Octicons";
-    src: url("../css/fonts/octicons.eot?ef21c39f0ca9b1b5116e5eb7ac5eabe6");
-    src: url("../css/fonts/octicons.eot?#iefix") format("embedded-opentype"), url("../css/fonts/octicons.woff2?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("woff2"), url("../css/fonts/octicons.woff?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("woff"), url("../css/fonts/octicons.ttf?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("truetype");/*, url("https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.svg?ef21c39f0ca9b1b5116e5eb7ac5eabe6#octicons") format("svg");*/
+    src: url("../../Asset/jquery/jqGrid/css/fonts/octicons.eot?ef21c39f0ca9b1b5116e5eb7ac5eabe6");
+    src: url("../../Asset/jquery/jqGrid/css/fonts/octicons.eot?#iefix") format("embedded-opentype"), url("../../Asset/jquery/jqGrid/css/fonts/octicons.woff2?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("woff2"), url("../../Asset/jquery/jqGrid/css/fonts/octicons.woff?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("woff"), url("../../Asset/jquery/jqGrid/css/fonts/octicons.ttf?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("truetype"); /*, url("https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.svg?ef21c39f0ca9b1b5116e5eb7ac5eabe6#octicons") format("svg");*/
     /*src: url("https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.eot?#iefix") format("embedded-opentype"), url("https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.woff2?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("woff2"), url("https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.woff?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("woff"), url("https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.ttf?ef21c39f0ca9b1b5116e5eb7ac5eabe6") format("truetype"), url("https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.svg?ef21c39f0ca9b1b5116e5eb7ac5eabe6#octicons") format("svg");*/
     font-weight: normal;
     font-style: normal;

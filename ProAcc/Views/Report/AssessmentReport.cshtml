@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "AssessmentReport";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+<script src="~/Asset/Jquery/PdfJs/pdf.js"></script>
+<div>
+    <iframe id="pdf-js-viewer" src="~/Asset/UploadedFiles/Temp/678bda2f-c281-48c1-b565-64f3773d3b1f.pdf" title="webviewer" frameborder="0"></iframe>
+</div>
+@Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
+@if (ViewBag.Message != null)
+{
+
+    <a id="Msg" style="display:none">@ViewBag.Message</a>
+    <script type="text/javascript">
+        $('#pdf-js-viewer').hide();
+        var info = $('#Msg').text();
+        Notiflix.Report.Info("ProAcc Info !", info, "Click", function () {
+            var url = $("#RedirectTo").val();
+            location.href = url;
+        });
+    </script>
+
+}
+
+@if (ViewBag.Status)
+{ }
+else
+{
+    <a id="MsgStatus" style="display:none">Sorry File Not Found Kindly Contact Admin..!</a>
+<script type="text/javascript">
+    $('#pdf-js-viewer').hide();
+    var info = $('#MsgStatus').text();
+    Notiflix.Report.Info("ProAcc Info !", info, "Click", function () {
+        var url = $("#RedirectTo").val();
+        location.href = url;
+    });
+</script>
+}
+<script>
+    $(document).ready(function () {
+        var Path ="@ViewBag.PDFfileName";
+        Path = Path.replace("~/", "../");
+    $('#pdf-js-viewer').attr('src', Path);
+        dimention();
+        $(window).resize(function () {
+            dimention();
+        });
+        function dimention() {
+            var newHeight = $(".app-main__inner").height()-10;
+            var Width = $(".app-main__inner").width();
+            $("iframe").height(newHeight);
+            $("iframe").width(Width);
+        }
+    });
+</script>

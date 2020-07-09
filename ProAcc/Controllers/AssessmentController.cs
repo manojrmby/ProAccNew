@@ -13,7 +13,7 @@ using static ProAcc.BL.Model.Common;
 namespace ProAcc.Controllers
 {
     [CheckSessionTimeOut]
-    [Authorize(Roles = "Admin,Consultant,Customer")]
+    [Authorize(Roles = "Consultant,Customer,Project Manager")]
     public class AssessmentController : Controller
     {
        
@@ -22,10 +22,19 @@ namespace ProAcc.Controllers
         Base _Base = new Base();
         private Guid InstanceId = Guid.Empty;
         // GET: Assessment
-        [Authorize(Roles = "Admin,Consultant")]
+        [Authorize(Roles = "Consultant")]
         public ActionResult CreateAnalysis()
         {
+            InstanceId = Guid.Parse(Session["InstanceId"].ToString());
+            if (InstanceId == Guid.Empty)
+            {
+                ViewBag.Message = String.Format("Hello {0},\n Kindly Select Instance", Session["UserName"].ToString());
+                //return RedirectToAction("Home", "Home");
+            }
+            else
+            {
 
+            }
 
             int userType = 0;
             if (User.IsInRole("Admin"))
@@ -147,18 +156,38 @@ namespace ProAcc.Controllers
 
             List<SelectListItem> Project = new List<SelectListItem>();
 
-            //if (User.IsInRole("Customer"))
-            //{
+            if (User.IsInRole("Customer"))
+            {
                 Guid customerId = Guid.Parse(Session["loginid"].ToString());
-                var query = from u in db.Projects where (u.Customer_Id == customerId && u.isActive == true) select u;
-                if (query.Count() > 0)
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == customerId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
                 {
-                    foreach (var v in query)
+                    foreach (var v in Data)
                     {
                         Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
                     }
+
                 }
-            //}
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
             //else
             //{
 
@@ -227,8 +256,8 @@ namespace ProAcc.Controllers
             Tuple<List<Lis>, List<Lis>> sP_ = _Base.sp_GetActivitiesReportDropdown(InstanceId);
             ViewBag.Condition = new SelectList(sP_.Item2, "Value", "Name");
             ViewBag.Phase = new SelectList(sP_.Item1, "Value", "Name");
-            List<BL.Model.SAPInput_Activities> AR = _Base.GetActivitiesReport_Table(InstanceId);
-            ViewBag.ARReport = AR;
+            //List<BL.Model.SAPInput_Activities> AR = _Base.GetActivitiesReport_Table(InstanceId);
+            //ViewBag.ARReport = AR;
             return View();
         }
 
@@ -244,8 +273,8 @@ namespace ProAcc.Controllers
             }
             GeneralList sP_ = _Base.sp_GetFioriAppsReportDropdown(InstanceId);
             ViewBag.Roles = new SelectList(sP_._List, "_Value", "Name");
-            List<SAPFioriAppsModel> FiR = _Base.sp_GetSAPFioriAppsTable(InstanceId);
-            ViewBag.FiRReport = FiR;
+            //List<SAPFioriAppsModel> FiR = _Base.sp_GetSAPFioriAppsTable(InstanceId);
+            //ViewBag.FiRReport = FiR;
             return View();
         }
 
@@ -258,10 +287,10 @@ namespace ProAcc.Controllers
             
             return Json(SR, JsonRequestBehavior.AllowGet);
         } 
-        public ActionResult ActivitiesTable()
+        public ActionResult ActivitiesTable(string Phase, string condition)
         {
             InstanceId = Guid.Parse(Session["InstanceId"].ToString());
-            List<BL.Model.SAPInput_Activities> AC = _Base.GetActivitiesReport_Table(InstanceId);
+            List<BL.Model.SAPInput_Activities> AC = _Base.GetActivitiesReport_Table(Phase, condition,InstanceId);
             
             return Json(AC, JsonRequestBehavior.AllowGet);
         } 
@@ -273,10 +302,10 @@ namespace ProAcc.Controllers
             return Json(CC, JsonRequestBehavior.AllowGet);
         } 
         
-        public ActionResult FioriAppsTable()
+        public ActionResult FioriAppsTable(string Input)
         {
             InstanceId = Guid.Parse(Session["InstanceId"].ToString());
-            List<SAPFioriAppsModel> AC = _Base.sp_GetSAPFioriAppsTable(InstanceId);
+            List<SAPFioriAppsModel> AC = _Base.sp_GetSAPFioriAppsTable(Input,InstanceId);
             
             return Json(AC, JsonRequestBehavior.AllowGet);
         } 
@@ -290,17 +319,17 @@ namespace ProAcc.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Consultant")]
+        [Authorize(Roles = "Consultant")]
         public ActionResult Upload()
         {
             //string Cust_ID = Request.Params["Cust_ID"].ToString();
             string IDProject = Request.Params["IDProject"].ToString();
             string InstanceName = Request.Params["InstanceID"].ToString();
 
-            if (IDProject != null)
+            if (IDProject != null && Request.Files.Count == 7)
             {
-                if (Request.Files.Count > 0)
-                {
+                //if (Request.Files.Count ==7)
+                //{
                     try
                     {
                         bool Result_Process_Activities = false, Result_Process_Bwextractors = false,
@@ -365,8 +394,6 @@ namespace ProAcc.Controllers
                             {
                                 Result_Process_SAPReadinessCheck = _Base.Upload_SAPReadinessCheck(NewID, Instance_ID, User_Id);
                             }
-
-
                         }
 
                         //if (Result_Process_Bwextractors & Result_Process_Bwextractors &
@@ -379,6 +406,7 @@ namespace ProAcc.Controllers
 
                         //    return Json("File Uploaded Successfully!");
                         //}
+                        Session["IsCreateAnalysisDone"] = true;
                         return Json("File Uploaded Successfully!");
                         // Returns message that successfully uploaded  
 
@@ -417,15 +445,15 @@ namespace ProAcc.Controllers
                         }
                         return Json("Error occurred. Error details: " + ex.Message);
                     }
-                }
-                else
-                {
-                    return Json("Select ProjectID");
-                }
+                //}
+                //else
+                //{
+                //    return Json("Please upload all Files");
+                //}
             }
             else
             {
-                return Json("No files selected.");
+                return Json("Please Upload all files.");
             }
 
 
@@ -457,11 +485,76 @@ namespace ProAcc.Controllers
         {
             GeneralList sP_ = _Base.GetInstanceDropdown(ProjectId);
             SelectList items = new SelectList(sP_._List, "Value", "Name");
+            //List<SelectListItem> Instance = new List<SelectListItem>();
+            //foreach (var a in items)
+            //{
+            //    Guid instanceid = Guid.Parse(a.Value.ToString());
+            //    Guid Project_Id = Guid.Parse(ProjectId.ToString());
+            //    var b = (from i in db.Instances
+            //             join pm in db.ProjectMonitors on i.Instance_id equals pm.InstanceID
+            //             where pm.PhaseId == 1 && pm.StatusId != 1 && pm.StatusId != 3 && i.Instance_id == instanceid && i.Project_ID == Project_Id
+            //             select i);
+            //    
+            //    if (b.Count() == 0)
+            //    {
+            //        foreach (var v in b)
+            //        {
+            //            Instance.Add(new SelectListItem { Text = v.InstaceName, Value = v.Instance_id.ToString() });
+            //        }
+            //    }
+            //}
+
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
 
+        [HttpPost]
+        public JsonResult LoadCreateAnalysisInstance(string ProjectId)
+        {
+            GeneralList sP_ = _Base.GetInstanceDropdown(ProjectId);
+            List<Lis> Result = new List<Lis>();
 
-        
+            for (int i = 0; i < sP_._List.Count; i++)
+            {
+                var A = Guid.Parse(sP_._List[i].Value);
+                Boolean S= GetInstanceStatus(A);
+                if (S)
+                {
+
+                    Lis List = new Lis();
+                    List.Name = sP_._List[i].Name.ToString();
+                    List.Value = sP_._List[i].Value.ToString();
+
+                    Result.Add(List);
+                }
+            }
+            SelectList items = new SelectList(Result, "Value", "Name");
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult UploadRevert()
+        {
+            string InstanceName = Request.Params["InstanceID"].ToString();
+            Guid Instance_ID = Guid.Parse(InstanceName);
+            Guid User_Id = Guid.Parse(Session["loginid"].ToString());
+            bool upload_revert = _Base.GetUploadRevert(Instance_ID, User_Id);
+            return Json("Reverted the Upload");
+        }
+
+        private Boolean GetInstanceStatus(Guid InstanceId)
+        {
+            Boolean Status = true;
+            //var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) orderby u.InstaceName select u;
+
+            var Query = from u in db.ProjectMonitors where (u.InstanceID == InstanceId && u.PhaseId == 1 && u.StatusId!=1 && u.StatusId!=3)  select u;
+            if (Query.Count()>0)
+            {
+                Status = false;
+            }
+
+            return Status;
+
+        }
     }
 }

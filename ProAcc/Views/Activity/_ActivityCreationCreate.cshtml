@@ -1,18 +1,19 @@
 ﻿
 
-
 @{
     ViewBag.Title = "Create Activity";
 }
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+@*<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">*@
+<link href="~/Asset/css/Activity.css" rel="stylesheet" />
 
 <style>
-    span {
+    /*span {
         color: red;
         font-size: 14px;
-    }
+    }*/
 </style>
-<a class="card-title">Create Activity</a>
+<a class="card-title" id="activityCreation">Activity Creation</a>
+<a class="card-title" style="display:none" id="activityUpdation">Activity Updation</a>
 <hr />
 <div style="padding:1em;">
     <div class="row">
@@ -21,6 +22,7 @@
             <input type="hidden" id="activityrid" />
             <input type="hidden" id="actcre_on" />
             <input type="hidden" id="actcre_By" />
+            <input type="hidden" id="txtSequence" />
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">Task</label>
@@ -29,28 +31,36 @@
                     @*<span id="lblTask" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblTask">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
                 </div>
             </div>
 
             @*<div class="form-group">
-                <label class="control-label col-md-4 required">Sequence</label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtSequence" />
-                </div>
-                <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblSequence">&nbsp;</span>
-                </div>
-            </div>*@
-            <div class="form-group">
                 <label class="control-label col-md-6 required">Application Area</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="txtApplicationArea" />
-                    <input type="hidden" id="hiddenActivityId"/>
-                    @*<span id="lblApplicationArea" style="color:red" />*@
+                    <input type="hidden" id="hiddenActivityId" />
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblApplicationArea">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblApplicationArea">&nbsp;</span>
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Application Area</label>
+                <div class="col-md-10">
+                    <input id="drphiddenApplicationArea" type="hidden" />
+                    <select class="form-control" id="drpApplicationArea">
+                        <option value="0">Select Application Area</option>
+                        @foreach (var item in ViewBag.ApplicationArea)
+                        {
+                            <option value="@item.Id">@item.ApplicationArea</option>
+                        }
+                    </select>
+                    <input type="hidden" id="hiddenActivityId" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblApplicationArea">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -60,7 +70,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Phase</label>
                 <div class="col-md-10">
-                    <input id="drphiddenPhase" type="hidden"/>
+                    <input id="drphiddenPhase" type="hidden" />
                     <select class="form-control" id="drpPhase">
                         <option value="0">Select Phase</option>
                         @foreach (var item in ViewBag.Phase)
@@ -72,14 +82,14 @@
                     @*<span id="lblPhase" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblPhase">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhase">&nbsp;</span>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">Role</label>
                 <div class="col-md-10">
-                    <input id="drphiddenRole" type="hidden"/>
+                    <input id="drphiddenRole" type="hidden" />
                     <select class="form-control" id="drpRole">
                         <option value="0">Select Role</option>
                         @foreach (var item in ViewBag.Role)
@@ -91,28 +101,28 @@
                     @*<span id="lblRole" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblRole">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblRole">&nbsp;</span>
                 </div>
             </div>
         </div>
         @*<div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label col-md-4 required">Application Area</label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtApplicationArea" />
-                    <input type="hidden" id="hiddenActivityId"/>
+                <div class="form-group">
+                    <label class="control-label col-md-4 required">Application Area</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="txtApplicationArea" />
+                        <input type="hidden" id="hiddenActivityId"/>
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span id="lblApplicationArea">&nbsp;</span>
+                    </div>
                 </div>
-                <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblApplicationArea">&nbsp;</span>
-                </div>
-            </div>
-        </div>*@
+            </div>*@
         <div class="col-10">
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" value="Create" class="btn btn-primary" id="btnActivityCreCreate" />
                     <input type="button" value="Update" class="btn btn-info" id="btntivityCreUpdate" style="display:none" />
-                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Add New</a>
+                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Create Activity</a>
                 </div>
             </div>
         </div>
@@ -120,17 +130,12 @@
 
 </div>
 <div class="w3-container">
-    @*<h2>W3.CSS Modal</h2>*@
-   @* <button onclick="document.getElementById('id01').style.display='block'">Open Modal</button>*@
-
-    <div id="id01" class="w3-modal">
+       <div id="id01" class="w3-modal">
         <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:20%;">
             <div class="w3-container" style="margin:0 auto !important;">
-
                 <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                @*<label style="margin-bottom:10px !important;">Select Task</label>*@
                 <div class="row" style="margin-top:3%;">
-                    <div class="col-10" >
+                    <div class="col-10">
                         <select class="form-control" id="drpTsk">
                         </select>
                     </div>
@@ -138,7 +143,7 @@
                         <button type="button" id="btnSeq" class="btn btn-primary" style="margin-bottom:50px !important;">Save</button>
                     </div>
                 </div>
-                
+
 
             </div>
         </div>
@@ -151,24 +156,14 @@
 
     $(document).ready(function () {
         $("#btnActivityCreCreate").prop('disabled', true);
-
+        
         var id = $("#activityrid").val().trim();
         if (id != "") {
             //$("#txtSequence").prop("readonly", true);
-            //$('#drpPhase').attr("disabled", true); 
+            //$('#drpPhase').attr("disabled", true);
             //$("#drpPhase").prop("readonly", true);
             $("#drpRole").prop("readonly", true);
         }
-        $("#txtTask").keypress(function (event) {
-
-            var inputValue = event.which;
-            // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-                    event.preventDefault();
-                    $("#lblTask").html("Not Allowed").show().fadeOut(2000);
-        }
-        $("#btnActivityCreCreate").prop('disabled', false);
-        });
 
 
         $('#txtTask').on('focusout', function () {
@@ -176,116 +171,131 @@
             var Task = $("#txtTask").val().trim();
             var id = $("#activityrid").val();
             if (Task == "") {
-                $("#lblTask").html("Please Enter Task").show().fadeOut(2000);
+                $("#lblTask").html("Please Enter Task").show().fadeOut(5000);
+                ValidateActivity();
             }
             else {
-                $.ajax({
+
+             $.ajax({
                 url: '@Url.Action("CheckTaskAvailability", "Activity")',
                 type: "GET",
                 data: { namedata: Task,id:id },
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblTask").html("This Task is already in use").show().fadeOut(3000);
-                        $("#btnActivityCreCreate").prop('disabled', true);
-                        $("#btntivityCreUpdate").prop('disabled', true);
+                        $("#lblTask").html("This Task is already in use").show().fadeOut(5000);
+                        ValidateActivity();
+
                     }
                     else {
                         $("#lblTask").html("").hide();
-                        $("#btnActivityCreCreate").prop('disabled', false);
-                        $("#btntivityCreUpdate").prop('disabled', false);
+                        ValidateActivity();
                     }
                 },
                 error: function (err) {
                     alert("Please Enter proper details");
-                     $("#btnActivityCreCreate").prop('disabled', true);
-                     $("#btntivityCreUpdate").prop('disabled', true);
+                     ValidateActivity();
                 }
-            });
+             });
             }
 
         });
 
 
-         $("#txtSequence").keypress(function (e) {
-             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                 event.preventDefault();
-                 $("#lblSequence").html("Numbers Only").show().fadeOut(2000);
-             }
-             else {
-                 $("#btnActivityCreCreate").prop('disabled', false);
-             }
-         });
+        //$("#txtApplicationArea").keypress(function (event) {
 
-        $("#txtApplicationArea").keypress(function (event) {
+        //    var inputValue = event.which;
+        //    // allow letters and whitespaces only.
+        //    if (!(inputValue >= 65 && inputValue <= 122 || inputValue <= 45) && (inputValue != 32 && inputValue != 0)) {
+        //        event.preventDefault();
+        //        $("#lblApplicationArea").html("Not Allowed").show().fadeOut(5000);
+        //        ValidateActivity();
+        //    }
+        //    else {
+        //        $("#lblApplicationArea").html("")
+        //        ValidateActivity();
+        //    }
+        //});
 
-            var inputValue = event.which;
-            // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-                    event.preventDefault();
-                    $("#lblApplicationArea").html("Not Allowed").show().fadeOut(2000);
-        }
-        $("#btnActivityCreCreate").prop('disabled', false);
-        });
 
-        $('#drpPhase').change(function () {
+        $('#drpPhase,#drpRole,#drpApplicationArea').change(function () {
              var Task = $("#txtTask").val();
             var sequence = $("#txtSequence").val();
-            var ApplicationArea = $("#txtApplicationArea").val();
-            var Role = $('#drpRole').val();
-            if (Task != "" && sequence != "" && ApplicationArea != "" && Role != 0) {
-                $("#btnActivityCreCreate").prop("disabled", false);
-            }
-        });
-
-        $('#drpRole').change(function () {
-             var Task = $("#txtTask").val();
-            var sequence = $("#txtSequence").val();
-            var ApplicationArea = $("#txtApplicationArea").val();
+           // var ApplicationArea = $("#txtApplicationArea").val();
             var Phase = $('#drpPhase').val();
-            if (Task != "" && sequence != "" && ApplicationArea != "" && Phase != 0) {
-                $("#btnActivityCreCreate").prop("disabled", false);
+            var Role = $('#drpRole').val();
+            var ApplicationArea = $('#drpApplicationArea').val();
+
+            if (Task != "" && sequence != "" && Phase != 0&& Role!=0 && ApplicationArea!=0) {
+                ValidateActivity();
+            }
+            else {
+                ValidateActivity();
             }
         });
 
     });
 
-
-    $("#btnActivityCreCreate").on("click", function () {
+    function ValidateActivity() {
         
         var Task = $("#txtTask").val();
+        var ApplicationArea = $("#drpApplicationArea").val();
+        var Phase = $('#drpPhase').val();
+        var Role = $('#drpRole').val();
+
+        var lblTask = $("#lblTask").text().trim();
+        var lblApplicationArea = $("#lblApplicationArea").text().trim();
+        var lblPhase = $('#lblPhase').text().trim();
+        var lblRole = $('#lblRole').text().trim();
+
+        if (Task.length > 0 && ApplicationArea != 0 && Phase != 0 && Role != 0 &&
+            lblTask == "" && lblApplicationArea=="" &&  lblPhase == "" && lblRole == "") {
+
+             $("#btnActivityCreCreate").prop("disabled", false);
+             $("#btntivityCreUpdate").prop("disabled", false);
+        }
+         else {
+             $("#btnActivityCreCreate").prop("disabled", true);
+             $("#btntivityCreUpdate").prop("disabled", true);
+        }
+    }
+
+    $("#btnActivityCreCreate").on("click", function () {
+        debugger;
+        var Task = $("#txtTask").val();
        // var sequence = $("#txtSequence").val();
-        var ApplicationArea = $("#txtApplicationArea").val();
+        //var ApplicationArea = $("#txtApplicationArea").val();
+        var ApplicationArea = $("#drpApplicationArea").val();
         var Phase = $('#drpPhase').val();
         var Role = $('#drpRole').val();
         var model = {
             Task: Task,
             PhaseID: Phase,
             //Sequence_Num: sequence,
-            ApplicationArea: ApplicationArea,
+            ApplicationAreaID: ApplicationArea,
             RoleID:Role
         }
         if (Task == "") {
-            $("#lblTask").html("Please enter the Task").show().fadeOut(3000);
+            $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
+            ValidateActivity();
         }
-        //else if (sequence =="")
-        //{
-        //    $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
-        //}
-        else if (ApplicationArea=="")
+        else if (ApplicationArea==0)
         {
-            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(3000);
+            $("#lblApplicationArea").html("Please select the ApplicationArea").show().fadeOut(5000);
+            ValidateActivity();
         }
         else if (Phase==0)
         {
-            $("#lblPhase").html("Please select the Phase").show().fadeOut(3000);
+            $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
+            ValidateActivity();
         }
         else if (Role == 0)
         {
-            $("#lblRole").html("Please select the Role").show().fadeOut(3000);
+            $("#lblRole").html("Please select the Role").show().fadeOut(5000);
+            ValidateActivity();
         }
 
-        else {       
+        else {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Create","Activity")',
@@ -320,7 +330,7 @@
                                 });
                             }
                                      document.getElementById('id01').style.display = 'block';
-                            
+
                         }
                     },
                     failure: function (response) {
@@ -337,29 +347,28 @@
     });
 
     $("#btnSeq").on("click", function () {
-        //debugger;
+        debugger;
         var LatestTaskId = $("#hiddenActivityId").val();
         var LastTaskId = $("#drpTsk").val();
         var type = $("#drpPhase").val();
         $.ajax({
             type: "POST",
-            url: '@Url.Action("SaveAccordingToSequence","Activity")', 
+            url: '@Url.Action("SaveAccordingToSequence","Activity")',
             data: { LatestTaskId: LatestTaskId, LastTaskId: LastTaskId,type:type },
             success: function (response) {
                 if (response == "success") {
-                    alert("activity Saved successfully!");
+                    Notiflix.Notify.Success('Activity Saved Successfully..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
                     document.getElementById('id01').style.display = 'none';
                     loadActivityCreation();
                     $("#txtTask").val("");
-                    //$("#txtSequence").val("");
-                    $("#txtApplicationArea").val("");
+                    $("#drpApplicationArea").val(0);
                     $('#drpPhase').val(0);
                     $('#drpRole').val(0);
                     $("#btnActivityCreCreate").show()
                     $("#btntivityCreUpdate").hide()
                     $("#btnAddNew").hide()
                     $('#drpPhase').attr("disabled", false);
-                    $('#drpRole').attr("disabled", false); 
+                    $('#drpRole').attr("disabled", false);
                 }
                 else {
                     alert("something went wrong");
@@ -372,11 +381,12 @@
     });
 
     $("#btntivityCreUpdate").on("click", function () {
-        //debugger;
+
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
-        //var sequence = $("#txtSequence").val();
-        var ApplicationArea = $("#txtApplicationArea").val();
+        var sequence = $("#txtSequence").val();
+        //var ApplicationArea = $("#txtApplicationArea").val();
+        var ApplicationArea = $("#drpApplicationArea").val();
         var Phase = $('#drphiddenPhase').val();
         var Role = $('#drphiddenRole').val();
         var cre_on = $("#actcre_on").val();
@@ -386,30 +396,30 @@
              Activity_ID:id,
             Task: Task,
             PhaseID: Phase,
-            //Sequence_Num: sequence,
-            ApplicationArea: ApplicationArea,
+            Sequence_Num: sequence,
+            ApplicationAreaID: ApplicationArea,
             RoleID:Role,
             Cre_on: cre_on,
             Cre_By: cre_By
          }
        if (Task == "") {
-            $("#lblTask").html("Please enter the Task").show().fadeOut(3000);
+           $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
+           ValidateActivity();
         }
-        //else if (sequence =="")
-        //{
-        //    $("#lblSequence").html("Please enter the sequence").show().fadeOut(3000);
-        //}
-        else if (ApplicationArea=="")
+        else if (ApplicationArea==0)
         {
-            $("#lblApplicationArea").html("Please enter the ApplicationArea").show().fadeOut(3000);
+           $("#lblApplicationArea").html("Please select the Application Area").show().fadeOut(5000);
+           ValidateActivity();
         }
         else if (Phase==0)
         {
-            $("#lblPhase").html("Please select the Phase").show().fadeOut(3000);
+           $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
+           ValidateActivity();
         }
         else if (Role == 0)
         {
-            $("#lblRole").html("Please select the Role").show().fadeOut(3000);
+           $("#lblRole").html("Please select the Role").show().fadeOut(5000);
+           ValidateActivity();
         }
         else {
 
@@ -418,7 +428,7 @@
                     url: '@Url.Action("Edit","Activity")',
                     data: { model : model},
                 success: function (response) {
-                   // debugger;
+
                          if (response > 0) {
                             $("#hiddenActivityId").val(response);
                             $("#drpTsk").empty();
@@ -431,12 +441,14 @@
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (response) {
-                                        //debugger;
+
                                         if (response != null) {
                                             $('#drpTsk').append($("<option value='0'>Please Select Last Task</option>"));
                                             $.each(response, function (index, item) {
                                                 var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
                                                 $('#drpTsk').append(option);
+                                                $("#activityCreation").show();
+                                                $("#activityUpdation").hide();
                                             });
                                         }
                                     },
@@ -449,24 +461,9 @@
                                 });
                             }
                                      document.getElementById('id01').style.display = 'block';
-                            
+
                         }
 
-                        //if (response == "success") {
-                        //    alert("Activity Edited successfully!");
-                        //    loadActivityCreation();
-                        //     $("#txtTask").val("");
-                        //    $("#activityrid").val("");
-                        //    $("#actcre_on").val("");
-                        //    $("#actcre_By").val("");
-                        //    $("#txtSequence").val("");
-                        //    $("#txtApplicationArea").val("");
-                        //    $('#drpPhase').val(0);
-                        //    $('#drpRole').val(0);
-                        //    $("#btnActivityCreCreate").show()
-                        //    $("#btntivityCreUpdate").hide()
-                        //    $("#btnAddNew").hide()
-                        //}
                     },
                     failure: function (response) {
                        alert(response.responseText);

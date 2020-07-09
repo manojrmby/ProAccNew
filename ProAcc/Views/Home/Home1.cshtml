@@ -1,0 +1,336 @@
+﻿
+@{
+    ViewBag.Title = "Home1";
+    Layout = "~/Views/shared/_Layout.cshtml";
+   
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>PROACCELERATE</title>
+    <!-- Favicon-->
+    <link rel="icon" href="Favicon.jpg" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet"
+          type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Morris Chart Css-->
+    <link href="plugins/morrisjs/morris.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    @*<link href="css/style.css" rel="stylesheet">*@
+    <link href="~/css/style.css" rel="stylesheet" />
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="css/themes/all-themes.css" rel="stylesheet" />
+
+    <!-- Donut code start-->
+
+    <script>
+        function preconversion() {
+            location.href = "preconversion-tasks.html"
+        }
+
+    </script>
+
+    <script>
+        function migration() {
+            location.href = "migration-tasks.html"
+        }
+
+    </script>
+
+    <script>
+        function postconversion() {
+            location.href = "postconversion-tasks.html"
+        }
+
+    </script>
+
+    <script>
+        function validation() {
+            location.href = "validation-tasks.html"
+        }
+
+    </script>
+
+    <script>
+        function Assessment() {
+            location.href = "AssessmentInfo.html"
+        }
+
+    </script>
+
+    <!-- Donut code End-->
+    <style>
+        .container {
+            width: 100%;
+        }
+
+
+
+        .progressbar li {
+            list-style-type: none;
+            float: left;
+            width: 25%;
+            position: relative;
+            text-align: center;
+        }
+
+            .progressbar li:before {
+                content: "";
+                width: 30px;
+                height: 30px;
+                line-height: 20px;
+                border: 1px solid #ddd;
+                display: block;
+                text-align: center;
+                margin: 0 auto 10px auto;
+                border-radius: 50%;
+                background-color: green;
+            }
+
+            .progressbar li:after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 5px;
+                background-color: red;
+                top: 15px;
+                left: -50%;
+                z-index: -5;
+            }
+
+            .progressbar li:first-child:after {
+                content: none;
+            }
+
+            .progressbar li.active {
+                color: green;
+            }
+
+                .progressbar li.active:before {
+                    border-color: green;
+                }
+
+                .progressbar li.active + li:after {
+                    background-color: green;
+                }
+    </style>
+
+    <script>
+        window.onload = function () {
+            var donut = new Morris.Donut({
+                element: 'graph',
+                data: [
+                    { value: 100, label: 'Assessment' },
+
+                ],
+                formatter: function (x) { return x + "%" }
+            }).on('click', function (i, row) {
+                console.log(i, row);
+            });
+        }
+
+    </script>
+</head>
+
+<body class="theme-black">
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+  
+    <section>
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2 style="color:000;font-weight: bold;">Project Dashboard</h2>
+            </div>
+
+            <!-- Widgets -->
+            <div class="card">
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="Assessment()">
+                        <div class="info-box-3 bg-pink hover-expand-effect" style="margin:12px;">
+                            <div class="icon">
+                                <i class="material-icons">equalizer</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">ASSESSMENT</div>
+                                <div class="number">100%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="row clearfix">
+                    <div class="body" style="min-height: 200px;width: 250%">
+                        <div class="row clearfix">
+                            <div class="col-md-12">
+                                <p style="float:left;width: 200px;"><b>S/4 HANA System Conversion</b></p>
+                                <p style="padding-left: 200px;float:left;"><b>Status : </b>Active</p>
+                                <p style="padding-left: 700px;"><b>Started On :</b> Nov 23,2019</p><hr>
+                                <div id="nouislider_range_example" class="noUi-target noUi-ltr noUi-horizontal" style="margin-top: 25px;">
+                                    <div class="noUi-base">
+                                        <div class="noUi-origin noUi-connect" style="left: 20%;">
+                                            <div class="noUi-handle noUi-handle-lower">
+                                                <br>
+                                                <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PRE MIGRATION</p>
+                                            </div>
+                                        </div>
+                                        <div class="noUi-origin noUi-background1" style="left: 40%;">
+                                            <div class="noUi-handle noUi-handle-upper">
+                                                <br>
+                                                <p style="width: 200px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;PULL & PUSH</p>
+                                            </div>
+                                        </div>
+                                        <div class="noUi-origin noUi-background1" style="left: 60%;">
+                                            <div class="noUi-handle noUi-handle-upper">
+                                                <br>
+                                                <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;POST MIGRATION</p>
+                                            </div>
+                                        </div>
+                                        <div class="noUi-origin noUi-background" style="left: 80%;background-color: white !important;">
+                                            <div class="noUi-handle noUi-handle-upper">
+                                                <br>
+                                                <p style="width: 300px !important;margin-left: -35px;margin-top: 5px;"> &nbsp;VALIDATION</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="myProgress"
+                             style="width: 700px; text-align: center; right: 155px; position: absolute; background-color: rgb(221, 221, 221);margin-top: 50px;">
+
+                            <div id="myBar"
+                                 style="width: 250px; height: 20px; text-align: center; color: white; background-color:#46a626;">
+                                35%
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="card">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="preconversion()">
+                        <div class="info-box-3 bg-teal hover-expand-effect" style="margin:12px;">
+                            <div class="icon">
+                                <i class="material-icons">equalizer</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">PRE CONVERSION</div>
+                                <div class="number">100%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="migration()">
+                        <div class="info-box-3 bg-light-green hover-expand-effect" style="margin:12px;">
+                            <div class="icon">
+                                <i class="material-icons">loop</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">DATA MIGRATION</div>
+                                <div class="number">60%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="postconversion()">
+                        <div class="info-box-3 bg-orange hover-expand-effect" style="margin:12px;">
+                            <div class="icon">
+                                <i class="material-icons">brightness_low</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">POST CONVERSION</div>
+                                <div class="number">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="validation()">
+                        <div class="info-box-3 bg-cyan hover-expand-effect" style="margin:12px;">
+                            <div class="icon">
+                                <i class="material-icons">gps_fixed</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">VALIDATION</div>
+                                <div class="number">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+    
+    <!-- Jquery Core Js -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="plugins/node-waves/waves.js"></script>
+
+    <!-- Jquery CountTo Plugin Js -->
+    <script src="plugins/jquery-countto/jquery.countTo.js"></script>
+
+    <!-- Morris Plugin Js -->
+    <script src="plugins/raphael/raphael.min.js"></script>
+    <script src="plugins/morrisjs/morris.js"></script>
+
+    <!-- ChartJs -->
+    <script src="plugins/chartjs/Chart.bundle.js"></script>
+
+    <!-- Flot Charts Plugin Js -->
+    <script src="plugins/flot-charts/jquery.flot.js"></script>
+    <script src="plugins/flot-charts/jquery.flot.resize.js"></script>
+    <script src="plugins/flot-charts/jquery.flot.pie.js"></script>
+    <script src="plugins/flot-charts/jquery.flot.categories.js"></script>
+    <script src="plugins/flot-charts/jquery.flot.time.js"></script>
+
+    <!-- Sparkline Chart Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+
+    <!-- Custom Js -->
+    <script src="js/admin.js"></script>
+    <script src="js/pages/index.js"></script>
+
+    <!-- Demo Js -->
+    <script src="js/demo.js"></script>
+</body>
+
+</html>

@@ -27,19 +27,19 @@ namespace ProACC_DB
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<HanaStatu> HanaStatus { get; set; }
         public virtual DbSet<Instance> Instances { get; set; }
         public virtual DbSet<PhaseMaster> PhaseMasters { get; set; }
         public virtual DbSet<ProjectMonitor> ProjectMonitors { get; set; }
-        public virtual DbSet<ResourceAllocation> ResourceAllocations { get; set; }
         public virtual DbSet<StatusMaster> StatusMasters { get; set; }
         public virtual DbSet<IndustrySector> IndustrySectors { get; set; }
         public virtual DbSet<RoleMaster> RoleMasters { get; set; }
         public virtual DbSet<User_Type> User_Type { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<UserMaster> UserMasters { get; set; }
+        public virtual DbSet<FileUploadMaster> FileUploadMasters { get; set; }
+        public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
+        public virtual DbSet<ApplicationAreaMaster> ApplicationAreaMasters { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {

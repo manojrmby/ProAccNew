@@ -1,17 +1,27 @@
 ﻿
+//using DocumentFormat.OpenXml;
+//using DocumentFormat.OpenXml.Packaging;
+//using DocumentFormat.OpenXml.Wordprocessing;
 using ProAcc.BL.Model;
 using ProACC_DB;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using static ProAcc.BL.Model.Common;
 
+
+
+//using A = DocumentFormat.OpenXml.Drawing;
+//using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+//using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+
 namespace ProAcc.BL
 {
-    public class Base:Common
+    public class Base : Common
     {
         private ProAccEntities db = new ProAccEntities();
         //private LogHelper _Log = new LogHelper();
@@ -26,7 +36,7 @@ namespace ProAcc.BL
             dB.addIn("@Password", user.Password);
             ds = dB.ExecuteDataSet();
             DataTable dt = new DataTable();
-            if (ds.Tables.Count!=0)
+            if (ds.Tables.Count != 0)
             {
                 //DataTable dt1 = new DataTable();
                 dt = ds.Tables[0];
@@ -334,6 +344,65 @@ namespace ProAcc.BL
             }
             return GetRelevant;
         }
+
+        public List<SP_HomeDonut_Result> SAP_Home_Donut(Guid InstanceId)
+        {
+
+            List<SP_HomeDonut_Result> LS = new List<SP_HomeDonut_Result>();
+            DataSet dS = new DataSet();
+            DBHelper dB = new DBHelper("SP_Home_Donut", CommandType.StoredProcedure);
+            dB.addIn("@Type", "Simple_Donut");
+            dB.addIn("@InstanceId", InstanceId);
+            dS = dB.ExecuteDataSet();
+            if (dS.Tables.Count > 0)
+            {
+                for (int i = 0; i < dS.Tables.Count; i++)
+                {
+                    DataTable dt = new DataTable();
+                    dt = dS.Tables[i];
+                    SP_HomeDonut_Result GetResult = new SP_HomeDonut_Result();
+                    GetResult.COMPLETE = Convert.ToInt32(dt.Rows[0]["COMPLETE"]);
+                    GetResult.WIP = Convert.ToInt32(dt.Rows[0]["WIP"]);
+                    GetResult.ONHOLD = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
+                    GetResult.YetToStart = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
+                    GetResult.NA = Convert.ToInt32(dt.Rows[0]["NA"]);
+                    GetResult.UploadStatus = Convert.ToInt32(dt.Rows[0]["UploadStatus"]);
+                    LS.Add(GetResult);
+                }
+
+
+            }
+
+
+            //if (dt.Rows.Count == 1)
+            //{
+            //    //var a = Convert.ToInt32(dt.Rows[0]["COMPLETE"]);
+            //    //var b = Convert.ToInt32(dt.Rows[0]["WIP"]);
+            //    //var c = Convert.ToInt32(dt.Rows[0]["ONHOLD"]);
+            //    //var d = Convert.ToInt32(dt.Rows[0]["YetToStart"]);
+
+            //    //var e = a + b + c + d;
+
+            //    //int T1 = (int)Math.Round((double)(100 * a) / e);  
+            //    //int T2 = (int)Math.Round((double)(100 * b) / e);  
+            //    //int T3 = (int)Math.Round((double)(100 * c) / e); 
+            //    //int T4 = (int)Math.Round((double)(100 * d) / e); 
+
+            //    //GetRelevant.COMPLETE = T1; // Convert.ToInt32(T1);//Convert.ToInt32(dt.Rows[0]["COMPLETE"].ToString());
+            //    //GetRelevant.WIP = T2; // Convert.ToInt32(T2.ToString()); //Convert.ToInt32(dt.Rows[0]["WIP"].ToString());
+            //    //GetRelevant.ONHOLD = T3; // Convert.ToInt32(T3.ToString()); //Convert.ToInt32(dt.Rows[0]["ONHOLD"].ToString());
+            //    //GetRelevant.YetToStart = T4+"%"; // Convert.ToInt32(T4.ToString());//Convert.ToInt32(dt.Rows[0]["YetToStart"].ToString());
+
+            //    GetRelevant.COMPLETE = Convert.ToInt32(dt.Rows[0]["As_COMPLETE"]);
+            //    GetRelevant.WIP = Convert.ToInt32(dt.Rows[0]["As_WIP"]);
+            //    GetRelevant.ONHOLD = Convert.ToInt32(dt.Rows[0]["As_ONHOLD"]);
+            //    GetRelevant.YetToStart = Convert.ToInt32(dt.Rows[0]["As_YetToStart"]);
+            //    GetRelevant.NA = Convert.ToInt32(dt.Rows[0]["As_NA"]);
+            //    GetRelevant.UploadStatus = Convert.ToInt32(dt.Rows[0]["As_UploadStatus"]);
+
+            //}
+            return LS;
+        }
         public GeneralList sP_SimplificationReport(Guid InstanceId)
         {
             GeneralList sP_ = new GeneralList();
@@ -355,14 +424,14 @@ namespace ProAcc.BL
             return sP_;
         }
 
-        public List<SAPInput_SimplificationReport> SAPInput_Simplification(Guid InstanceId,string LOB)
+        public List<SAPInput_SimplificationReport> SAPInput_Simplification(Guid InstanceId, string LOB)
         {
             List<SAPInput_SimplificationReport> SR = new List<SAPInput_SimplificationReport>();
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_SimplificationReport", CommandType.StoredProcedure);
-           
+
             dB.addIn("@InstanceId", InstanceId);
-            if (LOB== "ALL")
+            if (LOB == "ALL")
             {
                 dB.addIn("@Type", "SR_Table_All");
             }
@@ -425,13 +494,15 @@ namespace ProAcc.BL
             return CR;
         }
 
-        public List<Model.SAPInput_Activities> GetActivitiesReport_Table(Guid InstanceId)
+        public List<Model.SAPInput_Activities> GetActivitiesReport_Table(string Phase, string condition, Guid InstanceId)
         {
             List<Model.SAPInput_Activities> AR = new List<Model.SAPInput_Activities>();
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_ActivitiesReport", CommandType.StoredProcedure);
             dB.addIn("@Type", "ACT_Table");
             dB.addIn("@InstanceId", InstanceId);
+            dB.addIn("@Phase", Phase);
+            dB.addIn("@condition", condition);
             dt = dB.ExecuteDataTable();
             //  List<DataRow> list = new List<DataRow>(dt.Select());
             int i = 0;
@@ -453,13 +524,23 @@ namespace ProAcc.BL
             }
             return AR;
         }
-        public List<SAPFioriAppsModel> sp_GetSAPFioriAppsTable(Guid InstanceId)
+        public List<SAPFioriAppsModel> sp_GetSAPFioriAppsTable(String Input, Guid InstanceId)
         {
             List<SAPFioriAppsModel> FiR = new List<SAPFioriAppsModel>();
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_FioriAppsReport", CommandType.StoredProcedure);
-            dB.addIn("@Type", "FioriApps_Table");
+            //dB.addIn("@Type", "FioriApps_Table");
             dB.addIn("@InstanceId", InstanceId);
+            if (Input == "ALL")
+            {
+                dB.addIn("@Type", "FioriApps_Table");
+            }
+            else
+            {
+                dB.addIn("@Type", "FioriApps_Table_Single");
+                dB.addIn("@Input", Input);
+
+            }
             dt = dB.ExecuteDataTable();
             //  List<DataRow> list = new List<DataRow>(dt.Select());
             int i = 0;
@@ -495,14 +576,14 @@ namespace ProAcc.BL
             dt1 = DS.Tables[0];
             dt2 = DS.Tables[1];
             List<PicturetoData> Pic = new List<PicturetoData>();
-            if (dt2.Rows.Count>0)
+            if (dt2.Rows.Count > 0)
             {
                 foreach (DataRow dr in dt2.Rows)
                 {
                     PicturetoData P = new PicturetoData();
                     P.ID = Convert.ToInt32(dr["Id"].ToString());
                     P.PictureName = dr["PictureName"].ToString();
-                    P.GivenName= dr["GivenName"].ToString();
+                    P.GivenName = dr["GivenName"].ToString();
                     Pic.Add(P);
                 }
             }
@@ -514,7 +595,7 @@ namespace ProAcc.BL
                     //string Re_Result="";
                     //string Re_Possible="";
                     SAPInput_PreConvertion data = new SAPInput_PreConvertion();
-                    
+
                     //foreach (var item in Pic)
                     //{
                     //    var Result = dr["Last Consistency Result"].ToString();
@@ -530,7 +611,7 @@ namespace ProAcc.BL
 
                     //}
 
-                    
+
                     //if (Result== Empty)
                     //{Result = RE_Empty;}
                     //else if(Result== Error)
@@ -576,7 +657,7 @@ namespace ProAcc.BL
         #endregion
 
         #region FileUpload
-        public Boolean Upload_Activities(DataTable CustomTable, string fileName, Guid Instance_ID,Guid User_ID)
+        public Boolean Upload_Activities(DataTable CustomTable, string fileName, Guid Instance_ID, Guid User_ID)
         {
             Boolean status = false;
 
@@ -734,11 +815,24 @@ namespace ProAcc.BL
             dB.addIn("@fileName", fileName);
             dB.addIn("@Createdby", User_ID);
 
-            var a=dB.ExecuteScalar();
+            var a = dB.ExecuteScalar();
             status = true;
             return status;
 
 
+        }
+
+        public Boolean GetUploadRevert(Guid Instance_ID, Guid User_Id)
+        {
+            Boolean status = false;
+
+            DBHelper dB = new DBHelper("SP_CreateAnalysis_UploadRevert", CommandType.StoredProcedure);
+            dB.addIn("@LOGINID", User_Id);
+            dB.addIn("@InstanceID", Instance_ID);
+
+            var a = dB.ExecuteScalar();
+            status = true;
+            return status;
         }
 
         #endregion
@@ -847,7 +941,25 @@ namespace ProAcc.BL
             sP_._List = _Lob;
             return sP_;
         }
+        public Lis SpConvertionStatus(string Instance)
+        {
+            Lis Status = new Lis();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_ConvertionStatus", CommandType.StoredProcedure);
+            dB.addIn("@Type", "Status");
+            dB.addIn("@Instance", Instance);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Status.Value = dr[0].ToString();
 
+                }
+            }
+
+            return Status;
+        }
         public GeneralList sP_AnalysisDropdownProject()
         {
             GeneralList sP_ = new GeneralList();
@@ -1018,7 +1130,7 @@ namespace ProAcc.BL
 
         public List<PicturetoData> Sp_GetPicturetoDatas()
         {
-            
+
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_PictureTodata", CommandType.StoredProcedure);
             dB.addIn("@Type", "DropDown");
@@ -1027,7 +1139,7 @@ namespace ProAcc.BL
             List<PicturetoData> Pic = new List<PicturetoData>();
             if (dt.Rows.Count > 0)
             {
-                
+
                 foreach (DataRow dr in dt.Rows)
                 {
                     PicturetoData P = new PicturetoData();
@@ -1060,13 +1172,13 @@ namespace ProAcc.BL
                         {
                             Name = dr["FullName"].ToString(),
                             Value = dr["UserId"].ToString(),
-                            linkID=dr["RoleName"].ToString()
+                            linkID = dr["RoleName"].ToString()
                         });
 
                     }
                 }
             }
-                return Tuple.Create(list1);
+            return Tuple.Create(list1);
         }
         #endregion
 
@@ -1087,7 +1199,7 @@ namespace ProAcc.BL
         #endregion
 
         #region Masters
-        public List<PhaseMaster>GetPhaseMasters()
+        public List<PhaseMaster> GetPhaseMasters()
         {
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
@@ -1107,6 +1219,26 @@ namespace ProAcc.BL
             }
 
             return PM;
+        }
+        public List<ApplicationAreaMaster> GetApplicationAreaMasters()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetApplicationArea");
+            dt = dB.ExecuteDataTable();
+            List<ApplicationAreaMaster> AA = new List<ApplicationAreaMaster>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ApplicationAreaMaster P = new ApplicationAreaMaster();
+                    P.Id = Convert.ToInt32(dr["Id"].ToString());
+                    P.ApplicationArea = dr["ApplicationArea"].ToString();
+                    AA.Add(P);
+                }
+            }
+
+            return AA;
         }
 
         //public List<PendingMaster> GetPendingMasters()
@@ -1167,11 +1299,11 @@ namespace ProAcc.BL
                     P.UserId = Guid.Parse(dr["UserId"].ToString());
                     P.Name = dr["Name"].ToString();
                     P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
-                    if (dr["Customer_Id"].ToString()!="")
+                    if (dr["Customer_Id"].ToString() != "")
                     {
                         P.Customer_Id = Guid.Parse(dr["Customer_Id"].ToString());
                     }
-                    
+
                     L.Add(P);
                 }
             }
@@ -1218,7 +1350,7 @@ namespace ProAcc.BL
 
 
 
-        public void SendExcepToDB(string ExceptionMsg,string ExceptionType,string ExceptionURL,string ExceptionSource)
+        public void SendExcepToDB(string ExceptionMsg, string ExceptionType, string ExceptionURL, string ExceptionSource)
         {
             DBHelper dB = new DBHelper("Sp_ExceptionLogging", CommandType.StoredProcedure);
             dB.addIn("@ExceptionMsg", ExceptionMsg);
@@ -1229,75 +1361,96 @@ namespace ProAcc.BL
         }
 
 
-        public List<ProjectMonitorModel> Sp_GetProjectMonitorEdit(Guid InstanceId,string LoginID,int PhaseId)
+        public List<ProjectMonitorModel> Sp_GetProjectMonitorEdit(Guid InstanceId, string LoginID, int PhaseId)
         {
             DataTable dt = new DataTable();
-            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
-            dB.addIn("@Type", "PullData");
-            dB.addIn("@InstunceID", InstanceId);
-            dB.addIn("@PhaseId", PhaseId);
-            dB.addIn("@Cre_By", LoginID);
-            dt = dB.ExecuteDataTable();
-            List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
-            if (dt.Rows.Count > 0)
+            bool Status = false;
+            if (PhaseId != 1)
             {
-                //int count = 1;
-                var myLocalDateTime = DateTime.UtcNow;
-                foreach (DataRow dr in dt.Rows)
+                DBHelper dB1 = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+                dB1.addIn("@Type", "CheckPreviousPhase");
+                dB1.addIn("@InstunceID", InstanceId);
+                dB1.addIn("@PhaseId", PhaseId);
+                dB1.addIn("@Cre_By", LoginID);
+                dt = dB1.ExecuteDataTable();
+                if (dt.Rows.Count == 0)
                 {
-                    
-                    ProjectMonitorModel P = new ProjectMonitorModel();
-                    P.Id = Guid.Parse(dr["id"].ToString());
-                    P.ActivityID = Convert.ToInt32(dr["ActivityID"].ToString());
-                    P.Instance = Guid.Parse(dr["InstanceID"].ToString());
-                    P.Task = dr["Task"].ToString();
-                    P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
-                    P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
-                    P.ApplicationArea= dr["ApplicationArea"].ToString();
-                    P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
-                    P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
-                    P.Pending = dr["Pending"].ToString();
-                    P.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
-                    P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
-                    P.UserID = Guid.Parse(dr["UserID"].ToString());
-                    P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
-
-                    P.EST_hours = float.Parse(dr["EST_hours"].ToString());
-                    P.Actual_St_hours = float.Parse(dr["Actual_St_hours"].ToString());
-
-                    P.Planed__St_Date=Convert.ToDateTime(dr["Planed__St_Date"].ToString());
-                    P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
-                    P.Planed__En_Date = Convert.ToDateTime(dr["Planed__En_Date"].ToString());
-                    P.Actual_En_Date = Convert.ToDateTime(dr["Actual_En_Date"].ToString());
-                    P.Notes = dr["Notes"].ToString();
-
-                    //P.Task_Other_Environment = false;
-                    //P.Dependency = false;
-                    //P.Pending = "";
-                    //P.Delay_occurred = false;
-                    //P.ConsultantID=
-                    //P.StatusId = 0;
-                    //P.EST_hours = 0;
-                    //P.Actual_St_hours = 0;
-                    //P.Planed__St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Actual_St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Planed__En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Actual_En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Notes = "";
-
-
-
-
-                    //P.ID = Convert.ToInt32(dr["Id"].ToString());
-                    //P.PictureName = dr["PictureName"].ToString();
-                    //P.GivenName = dr["GivenName"].ToString();
-                    PM.Add(P);
+                    Status = true;
                 }
             }
-           
+            else
+            {
+                Status = true;
+            }
+            List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
+            if (Status)
+            {
+                DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+                dB.addIn("@Type", "PullData");
+                dB.addIn("@InstunceID", InstanceId);
+                dB.addIn("@PhaseId", PhaseId);
+                dB.addIn("@Cre_By", LoginID);
+                dt = dB.ExecuteDataTable();
+
+                if (dt.Rows.Count > 0)
+                {
+                    //int count = 1;
+                    var myLocalDateTime = DateTime.UtcNow;
+                    foreach (DataRow dr in dt.Rows)
+                    {
+
+                        ProjectMonitorModel P = new ProjectMonitorModel();
+                        P.Id = Guid.Parse(dr["id"].ToString());
+                        P.ActivityID = Convert.ToInt32(dr["ActivityID"].ToString());
+                        P.Instance = Guid.Parse(dr["InstanceID"].ToString());
+                        P.Task = dr["Task"].ToString();
+                        P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
+                        P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
+                        P.ApplicationAreaID = Convert.ToInt32(dr["ApplicationAreaID"].ToString());  //dr["ApplicationAreaID"].ToString();
+                        P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
+                        P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
+                        P.Pending = dr["Pending"].ToString();
+                        P.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
+                        P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
+                        P.UserID = Guid.Parse(dr["UserID"].ToString());
+                        P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
+
+                        P.EST_hours = float.Parse(dr["EST_hours"].ToString());
+                        P.Actual_St_hours = float.Parse(dr["Actual_St_hours"].ToString());
+
+                        P.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
+                        P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
+                        P.Planed__En_Date = Convert.ToDateTime(dr["Planed__En_Date"].ToString());
+                        P.Actual_En_Date = Convert.ToDateTime(dr["Actual_En_Date"].ToString());
+                        P.Notes = dr["Notes"].ToString();
+
+                        //P.Task_Other_Environment = false;
+                        //P.Dependency = false;
+                        //P.Pending = "";
+                        //P.Delay_occurred = false;
+                        //P.ConsultantID=
+                        //P.StatusId = 0;
+                        //P.EST_hours = 0;
+                        //P.Actual_St_hours = 0;
+                        //P.Planed__St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                        //P.Actual_St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                        //P.Planed__En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                        //P.Actual_En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                        //P.Notes = "";
+
+
+
+
+                        //P.ID = Convert.ToInt32(dr["Id"].ToString());
+                        //P.PictureName = dr["PictureName"].ToString();
+                        //P.GivenName = dr["GivenName"].ToString();
+                        PM.Add(P);
+                    }
+                }
+            }
             return PM;
         }
-        public List<ProjectMonitorModel> Sp_GetProjectMonitor(Guid InstanceId, string LoginID,int PhaseId)
+        public List<ProjectMonitorModel> Sp_GetProjectMonitor(Guid InstanceId, string LoginID, int PhaseId)
         {
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
@@ -1317,31 +1470,12 @@ namespace ProAcc.BL
                     ProjectMonitorModel P = new ProjectMonitorModel();
                     P.Id = Guid.Parse(dr["id"].ToString());
                     P.UserID = Guid.Parse(dr["UserID"].ToString());
-                    //P.Instance = InstanceId;
                     P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                     P.Task = dr["Task"].ToString();
                     P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
-                    //P.Task_Other_Environment = false;
-                    //P.Dependency = false;
-                    //P.Pending = "";
-                    //P.Delay_occurred = false;
                     P.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
-                    //P.ConsultantID=
-                    //P.StatusId = 0;
-                    //P.EST_hours = 0;
-                    //P.Actual_St_hours = 0;
-                    //P.Planed__St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Actual_St_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Planed__En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
-                    //P.Actual_En_Date = TimeZone.CurrentTimeZone.ToUniversalTime(myLocalDateTime);
+                    P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
                     P.Notes = "";
-
-
-
-
-                    //P.ID = Convert.ToInt32(dr["Id"].ToString());
-                    //P.PictureName = dr["PictureName"].ToString();
-                    //P.GivenName = dr["GivenName"].ToString();
                     PM.Add(P);
                 }
             }
@@ -1382,7 +1516,7 @@ namespace ProAcc.BL
 
         }
 
-        public bool Sp_UpdateMonitor(ProjectMonitorModel PM)
+        public bool Sp_UpdateMonitor(ProjectMonitorModel PM, int PhaseId)
         {
             bool Status = false;
             LogHelper _log = new LogHelper();
@@ -1391,14 +1525,12 @@ namespace ProAcc.BL
                 _log.createLog((PM.Planed__St_Date).ToString());
                 DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
                 dB.addIn("@Type", "UpdateTask");
-                dB.addIn("@ApplicationArea", PM.ApplicationArea);
+                dB.addIn("@ApplicationArea", PM.ApplicationAreaID);
                 dB.addIn("@Task_Other_Environment", PM.Task_Other_Environment);
                 dB.addIn("@Dependency", PM.Dependency);
                 dB.addIn("@Pending", PM.Pending);
                 dB.addIn("@Delay_occurred", PM.Delay_occurred);
 
-                //dB.addIn("@DelayedReason", PM.Delayed_Reas);
-                //dB.addIn("@UserID", PM.UserID);
                 dB.addIn("@StatusId", PM.StatusId);
                 dB.addIn("@EST_hours", PM.EST_hours);
                 dB.addIn("@Actual_St_hours", PM.Actual_St_hours);
@@ -1413,18 +1545,45 @@ namespace ProAcc.BL
                 dB.addIn("@Id", PM.Id);
 
                 dB.ExecuteScalar();
+
+                DBHelper Db1 = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+                Db1.addIn("@Type", "ProjectMonitor");
+                Db1.addIn("@PhaseID", PhaseId);
+                Db1.addIn("@InstanceID", PM.Instance);
+                Db1.addIn("@PM_ID", PM.Id);
+                Db1.addIn("@Cre_By", PM.Cre_By);
+                // Db1.ExecuteScalar();
+                DataTable dt = new DataTable();
+                dt = Db1.ExecuteDataTable();
+
+                //if(dt.Rows.Count>0)
+                //{
+
+                //        foreach (DataRow dr in dt.Rows)
+                //    {
+                //        String ToMailId = dr["To"].ToString();
+                //        bool mail = false;
+                //        Mail _mail = new Mail();
+                //        mail = _mail.SendEmail(ToMailId);
+                //    }
+
+
+
+                //}
+
+                Status = true;
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
 
-                _log.createLog(ex,"");
+                _log.createLog(ex, "");
             }
-            
+
             return Status;
 
         }
 
-        public Boolean SP_SubmitResource(String IDS,Guid ProjectID,Guid LoginID)
+        public Boolean SP_SubmitResource(String IDS, Guid ProjectID, Guid LoginID)
         {
             bool Result = false;
 
@@ -1541,7 +1700,7 @@ namespace ProAcc.BL
             dB.addIn("@InstunceID", InstanceId);
             dB.addIn("@PhaseId", PhaseId);
 
-           // dB.addIn("@Cre_By", LoginID);
+            // dB.addIn("@Cre_By", LoginID);
             dt = dB.ExecuteDataTable();
             List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
             if (dt.Rows.Count > 0)
@@ -1556,7 +1715,7 @@ namespace ProAcc.BL
                     //Guid.Parse(dr["id"].ToString());
                     //P.UserID = Guid.Parse(dr["UserID"].ToString());
                     //P.Instance = InstanceId;
-                    
+
                     P.Task = dr["Task"].ToString();
                     P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                     P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
@@ -1588,7 +1747,7 @@ namespace ProAcc.BL
             return PM;
         }
 
-        public Boolean Sp_AddResource(Guid InstanceId, int Activity_ID,string LoginID)
+        public Boolean Sp_AddResource(Guid InstanceId, int Activity_ID, string LoginID)
         {
             Boolean Result = false;
             DataTable dt = new DataTable();
@@ -1613,6 +1772,341 @@ namespace ProAcc.BL
         //private string RE_NotApplicable = "Not Applicable";
         //private string RE_Success = "Success";
 
+        public List<ProjectMonitorModel> Sp_GetReportData(Guid InstanceId, string LoginID)
+        {
+            DataTable dt = new DataTable();
+
+            List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
+
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetReportData");
+            dB.addIn("@InstunceID", InstanceId);
+            dt = dB.ExecuteDataTable();
+
+            if (dt.Rows.Count > 0)
+            {
+                //int count = 1;
+                var myLocalDateTime = DateTime.UtcNow;
+                foreach (DataRow dr in dt.Rows)
+                {
+
+                    ProjectMonitorModel P = new ProjectMonitorModel();
+                    P.Id = Guid.Parse(dr["id"].ToString());
+                    P.ActivityID = Convert.ToInt32(dr["ActivityID"].ToString());
+                    P.Instance = Guid.Parse(dr["InstanceID"].ToString());
+                    P.Task = dr["Task"].ToString();
+                    P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
+                    P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
+                    P.ApplicationAreaID = Convert.ToInt32(dr["ApplicationAreaID"].ToString());  //dr["ApplicationArea"].ToString();
+                    P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
+                    P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
+                    P.Pending = dr["Pending"].ToString();
+                    P.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
+                    P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
+                    P.UserID = Guid.Parse(dr["UserID"].ToString());
+                    P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
+
+                    P.EST_hours = float.Parse(dr["EST_hours"].ToString());
+                    P.Actual_St_hours = float.Parse(dr["Actual_St_hours"].ToString());
+
+                    P.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
+                    P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
+                    P.Planed__En_Date = Convert.ToDateTime(dr["Planed__En_Date"].ToString());
+                    P.Actual_En_Date = Convert.ToDateTime(dr["Actual_En_Date"].ToString());
+                    P.Notes = dr["Notes"].ToString();
+
+                    PM.Add(P);
+                }
+            }
+
+            return PM;
+        }
+
+
+        public List<AuditReport.ProjectMonitorModel> Sp_GetAuditData()
+        {
+            DataTable dt = new DataTable();
+            AuditReport A = new AuditReport();
+            List<AuditReport.ProjectMonitorModel> AR = new List<AuditReport.ProjectMonitorModel>();
+            DBHelper dB = new DBHelper("SP_Audit", CommandType.StoredProcedure);
+            dB.addIn("@Type", "OverAllReport");
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    AuditReport.ProjectMonitorModel A_PM = new AuditReport.ProjectMonitorModel();
+                    A_PM.Id = Convert.ToInt32(dr["Change_id"].ToString());
+                    A_PM.InstaceName = dr["InstaceName"].ToString();
+                    A_PM.Task = dr["Task"].ToString();
+                    A_PM.PhaseName = dr["PhaseName"].ToString();
+                    A_PM.RoleName = dr["RoleName"].ToString();
+
+                    A_PM.Operation = dr["Operation"].ToString();
+                    A_PM.OperationAt = Convert.ToDateTime(dr["OperationAt"].ToString());
+
+                    A_PM.By = dr["By"].ToString();
+
+                    AR.Add(A_PM);
+
+                }
+            }
+
+            return AR;
+        }
+
+        public List<AuditReport.ProjectMonitorModel> Sp_GetAuditDatas()
+        {
+            DataTable dt = new DataTable();
+            AuditReport A = new AuditReport();
+            List<AuditReport.ProjectMonitorModel> AR = new List<AuditReport.ProjectMonitorModel>();
+            DBHelper dB = new DBHelper("SP_Audit", CommandType.StoredProcedure);
+            dB.addIn("@Type", "AuditReport");
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    AuditReport.ProjectMonitorModel A_PM = new AuditReport.ProjectMonitorModel();
+                    A_PM.Id = Convert.ToInt32(dr["AUDIT_ID"].ToString());
+                    A_PM.UserID= Guid.Parse(dr["UserID"].ToString());
+                    A_PM.TABLE_NAME= dr["TABLE_NAME"].ToString();
+                    A_PM.SUMMARY = dr["SUMMARY"].ToString();
+                    A_PM.ACTION = dr["ACTION"].ToString();
+                    
+                    AR.Add(A_PM);
+
+                }
+            }
+
+            return AR;
+        }
+
+        public List<MailModel> GetMailList()
+        {
+            List<MailModel> ListM = new List<MailModel>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+            dB.addIn("@Type", "MailList");
+            //dB.addIn("@InstunceID", InstanceId);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    MailModel M = new MailModel();
+                    M.Name = dr["Name"].ToString();
+                    M.Running_ID = Convert.ToInt32(dr["Running_ID"].ToString());
+                    M.To = Convert.ToString(dr["TO"].ToString());
+                    M.Subject = dr["Subject"].ToString();
+                    M.TemplateName = dr["FileName"].ToString();
+                    ListM.Add(M);
+                }
+            }
+            return ListM;
+        }
+
+        public Boolean UpdateMailList(int ID)
+        {
+            Boolean Result = false;
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+            dB.addIn("@Type", "UpdateMailList");
+            dB.addIn("@Running_ID", ID);
+            dB.ExecuteScalar();
+            Result = true;
+            return Result;
+        }
+
+        //public Boolean Proceess_WordAddImage()
+        //{
+        //    string document = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
+        //    string fileName = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
+        //    InsertAPicture(document, fileName);
+
+
+        //    return true;
+        //}
+        //public static void InsertAPicture(string document, string fileName)
+        //{
+        //    Document doc = new Document(document);
+        //    Section section = doc.Sections[0];
+        //   Documents.Paragraph para = section.AddParagraph();
+        //    para.AppendPicture(Image.FromFile(fileName));
+        //    doc.SaveToFile(document, FileFormat.Docx);
+        //}
+
+        //public Boolean Proceess_WordAddImage()
+        //{
+        //    string filePath = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
+
+        //    // WordprocessingDocument WP =
+        //    //WordprocessingDocument.Open(filePath, true);
+
+        //    // using (WordprocessingDocument wordprocessingDocument =
+        //    //WordprocessingDocument.Open(filePath, true))
+        //    // {
+        //    //     // Insert other code here.
+
+        //    // }
+        //    // AddGraph(WP, filePath);
+        //    // MainDocumentPart mainPart = WordprocessingDocument.MainDocumentPart;
+        //    // ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+
+        //    // using (FileStream stream = new FileStream(filePath, FileMode.Open))
+        //    // {
+        //    //     imagePart.FeedData(stream);
+        //    // }
+
+        //    //using (WordprocessingDocument doc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+
+        //    //{
+
+        //    //    //// Creates the MainDocumentPart and add it to the document (doc)
+
+        //    //    MainDocumentPart mainPart = doc.AddMainDocumentPart();
+
+        //    //    mainPart.Document = new Document(
+
+        //    //        new Body(
+
+        //    //            new Paragraph(
+
+        //    //                new Run(
+
+        //    //                    new Text("Hello World!!!!!")))));
+
+        //    //}
+
+
+        //    WordprocessingDocument wordprocessingDocument =
+        //WordprocessingDocument.Open(filePath, true);
+
+        //    MainDocumentPart mainPart = wordprocessingDocument.MainDocumentPart;
+        //    ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+        //    string Imagepath = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
+        //    //using (FileStream stream = new FileStream(Imagepath, FileMode.Open))
+        //    //{
+        //    //    imagePart.FeedData(stream);
+        //    //}
+
+        //    Bitmap image = new Bitmap(Imagepath);
+        //    SdtElement controlBlock = doc.MainDocumentPart.HeaderParts.First().Header.Descendants<SdtElement>().Where
+        //                                    (r => r.SdtProperties.GetFirstChild<Tag>().Val == tagName).SingleOrDefault();
+        //    //find the Blip element of the content control
+        //    Blip blip = controlBlock.Descendants<Blip>().FirstOrDefault();
+
+        //    //add image and change embeded id
+        //    ImagePart imagePart = doc.MainDocumentPart.AddImagePart(ImagePartType.Jpeg);
+        //    using (MemoryStream stream = new MemoryStream())
+        //    {
+        //        image.Save(stream, ImageFormat.Jpeg);
+        //        stream.Position = 0;
+        //        imagePart.FeedData(stream);
+        //    }
+        //    blip.Embed = doc.MainDocumentPart.GetIdOfPart(imagePart);
+
+
+        //    //AddImageToBody(wordprocessingDocument, mainPart.GetIdOfPart(imagePart));
+
+        //    wordprocessingDocument.Close();
+
+
+
+
+
+        //    return true;
+        //}
+        //private static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId)
+        //{
+        //    // Define the reference of the image.
+        //    var element =
+        //         new Drawing(
+        //             new DW.Inline(
+        //                 new DW.Extent() { Cx = 990000L, Cy = 792000L },
+        //                 new DW.EffectExtent()
+        //                 {
+        //                     LeftEdge = 0L,
+        //                     TopEdge = 0L,
+        //                     RightEdge = 0L,
+        //                     BottomEdge = 0L
+        //                 },
+        //                 new DW.DocProperties()
+        //                 {
+        //                     Id = (UInt32Value)1U,
+        //                     Name = "Picture 1"
+        //                 },
+        //                 new DW.NonVisualGraphicFrameDrawingProperties(
+        //                     new A.GraphicFrameLocks() { NoChangeAspect = true }),
+        //                 new A.Graphic(
+        //                     new A.GraphicData(
+        //                         new PIC.Picture(
+        //                             new PIC.NonVisualPictureProperties(
+        //                                 new PIC.NonVisualDrawingProperties()
+        //                                 {
+        //                                     Id = (UInt32Value)0U,
+        //                                     Name = "New Bitmap Image.jpg"
+        //                                 },
+        //                                 new PIC.NonVisualPictureDrawingProperties()),
+        //                             new PIC.BlipFill(
+        //                                 new A.Blip(
+        //                                     new A.BlipExtensionList(
+        //                                         new A.BlipExtension()
+        //                                         {
+        //                                             Uri =
+        //                                                "{28A0092B-C50C-407E-A947-70E740481C1C}"
+        //                                         })
+        //                                 )
+        //                                 {
+        //                                     Embed = relationshipId,
+        //                                     CompressionState =
+        //                                     A.BlipCompressionValues.Print
+        //                                 },
+        //                                 new A.Stretch(
+        //                                     new A.FillRectangle())),
+        //                             new PIC.ShapeProperties(
+        //                                 new A.Transform2D(
+        //                                     new A.Offset() { X = 0L, Y = 0L },
+        //                                     new A.Extents() { Cx = 990000L, Cy = 792000L }),
+        //                                 new A.PresetGeometry(
+        //                                     new A.AdjustValueList()
+        //                                 )
+        //                                 { Preset = A.ShapeTypeValues.Rectangle }))
+        //                     )
+        //                     { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
+        //             )
+        //             {
+        //                 DistanceFromTop = (UInt32Value)0U,
+        //                 DistanceFromBottom = (UInt32Value)0U,
+        //                 DistanceFromLeft = (UInt32Value)0U,
+        //                 DistanceFromRight = (UInt32Value)0U,
+        //                 EditId = "50D07946"
+        //             });
+
+        //    // Append the reference to body, the element should be in a Run.
+        //    wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
+        //}
+        //private string AddGraph(WordprocessingDocument wpd, string filepath)
+        //{
+        //    ImagePart ip = wpd.MainDocumentPart.AddImagePart(ImagePartType.Jpeg);
+        //    string Imagepath= @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\images\resizeimage.png";
+        //    using (FileStream fs = new FileStream(Imagepath, FileMode.Open))
+        //    {
+        //        if (fs.Length == 0) return string.Empty;
+        //        ip.FeedData(fs);
+        //    }
+
+        //    return wpd.MainDocumentPart.GetIdOfPart(ip);
+        //}
+
+
+        public string Phase_Assessment = "Assessment";
+        public string Phase_PreConversion = "Pre Conversion";
+        public string Phase_Conversion = "Conversion";
+        public string Phase_PostConversion = "Post Conversion";
+        public string Phase_Validation = "Validation Testing";
+        public string SAPReportFileName = "SAPReadinessCheck";
 
     }
 }
