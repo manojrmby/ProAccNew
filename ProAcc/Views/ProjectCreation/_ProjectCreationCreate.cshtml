@@ -2,13 +2,9 @@
     ViewBag.Title = "Create Project Creation";
 }
 
-<style>
-    span{
-        color: red;
-    font-size: 14px;
-    }
-</style>
-<a class="card-title">Project Creation</a>
+
+<a class="card-title" id="prjtCreate">Project Creation</a>
+<a class="card-title" id="prjtUpdate" style="display:none">Project Updation</a>
 <hr />
 <div style="padding:1em;">
     <div class="row">
@@ -25,7 +21,7 @@
                     @*<span id="lblProjectName" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblProjectName">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblProjectName">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -45,7 +41,7 @@
                     @*<span id="lblCustomerName" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblCustomerName">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerName">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -59,7 +55,7 @@
                     @*<span id="lblDescription" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblDescription">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblDescription">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -79,7 +75,7 @@
                     @*<span id="lblCustomerName" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblProjectManager">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblProjectManager">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -89,7 +85,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" value="Create" class="btn btn-primary" id="btnProjectCreate" />
                     <input type="button" value="Update" class="btn btn-info" id="btnProjectUpdate" style="display:none" />
-                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>Add New</a>
+                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>New Project</a>
                 </div>
             </div>
         </div>
@@ -107,14 +103,23 @@
         var Description = $("#txtDescription").val();
 
         $("#txtProjectName").keypress(function (event) {
-
+            
             var inputValue = event.which;
             // allow letters and whitespaces only.
-            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0 && inputValue !=95)) {
                 event.preventDefault();
                 $("#lblProjectName").html("Not Allowed").show().fadeOut(3000);
+                ValidateProject();
             }
-            $("#btnProjectCreate").prop('disabled', false);
+            else if (inputValue==95) {
+                event.preventDefault();
+                $("#lblProjectName").html("Not Allowed").show().fadeOut(3000);
+                ValidateProject();
+            }
+            else {
+                ValidateProject();
+            }
+            
         });
 
         $('#txtProjectName').on('focusout', function () {
@@ -122,7 +127,8 @@
             var ProjName = $("#txtProjectName").val().trim();
             var id=$("#proj_id").val();
             if (ProjName == "") {
-                $("#lblProjectName").html("Please Enter valid Project name").show().fadeOut(3000);
+                $("#lblProjectName").html("Please Enter valid Project name").show().fadeOut(5000);
+                ValidateProject();
             }
             else {
                 $.ajax({
@@ -133,13 +139,11 @@
                 success: function (data) {
                     if (data != "success") {
                         $("#lblProjectName").html("This project Name is already in use").show();
-                        $("#btnProjectCreate").prop('disabled', true);
-                        $("#btnProjectUpdate").prop('disabled', true);
+                       ValidateProject();
                     }
                     else {
                         $("#lblProjectName").html("").hide();
-                        $("#btnProjectCreate").prop('disabled', false);
-                        $("#btnProjectUpdate").prop('disabled', false);
+                        ValidateProject();
                     }
                 },
                     error: function (err) {
@@ -149,7 +153,8 @@
             }            
         });
 
-        $('#drpCustomer').change(function () {                        var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            if (projectName != "" && Customerid != 0) {                $("#btnProjectCreate").prop("disabled", false);            }        });
+        $('#drpCustomer,#drpProjectManager').change(function () {             var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            var PMID=$("#drpProjectManager").val();            if (projectName != "" && Customerid != 0 && PMID != 0) {                $("#lblCustomerName").html("");                $("#lblProjectManager").html("");                ValidateProject();            }            else {                 ValidateProject();
+            }        });
 
     });
 
@@ -158,7 +163,30 @@
             if (!letters.test(data)) {
                 return false;
             }
-         }
+    }
+
+    function ValidateProject() {
+       
+         var projectName = $("#txtProjectName").val().trim();
+        var Customerid = $("#drpCustomer").val();
+        var PMID = $("#drpProjectManager").val();
+
+        var lblprojectName = $("#lblProjectName").text().trim();
+        var lblCustomerid = $("#lblCustomerName").text().trim();
+        var lblPMID = $("#lblProjectManager").text().trim();
+
+         if (projectName.length > 0 && Customerid != 0 && PMID != 0 &&
+            lblprojectName == "" &&  lblCustomerid == "" && lblPMID == "") {
+
+             $("#btnProjectCreate").prop("disabled", false);
+             $("#btnProjectUpdate").prop("disabled", false);
+        }
+         else {
+             $("#btnProjectCreate").prop("disabled", true);
+             $("#btnProjectUpdate").prop("disabled", true);
+        }
+
+    }
     $("#btnProjectCreate").on("click", function () {
        
         var projectName = $("#txtProjectName").val().trim();
@@ -167,15 +195,18 @@
         var PMID=$("#drpProjectManager").val();
 
         if (projectName == ""|| ValidateName(projectName) == false) {
-            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
+            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(5000);
+            ValidateProject();
         }
         else if (Customerid == 0)
         {
-            $("#lblCustomerName").html("Please Select the Customer Name").show().fadeOut(3000);
+            $("#lblCustomerName").html("Please Select the Customer Name").show().fadeOut(5000);
+            ValidateProject();
         }    
         else if (PMID == 0)
         {
-            $("#lblProjectManager").html("Please Select the Customer Name").show().fadeOut(3000);
+            $("#lblProjectManager").html("Please Select the Project Manager").show().fadeOut(5000);
+            ValidateProject();
         }    
         else {
             $.ajax({
@@ -184,12 +215,13 @@
                 data: { project_Name: projectName, Customer_Id: Customerid, Description: Description,ProjectManager_Id: PMID },
                     success: function (response) {
                         if (response == "success") {
-                            alert("Project Saved successfully!");
+                            Notiflix.Notify.Success('Project Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             loadProjectCreation();
-                            $("#txtProjectName").val("")
-                            $("#drpCustomer").val(0)
-                            $("#txtDescription").val("")
-                            $("#btnProjectCreate").show();
+                                            $("#txtProjectName").val("")
+                                            $("#drpCustomer").val(0)
+                                            $("#txtDescription").val("")
+                                            $("#btnProjectCreate").show();
+                            
                         }
                     },
                     failure: function (response) {
@@ -219,20 +251,24 @@
              Project_Id: id,
              Project_Name: projectName,
              Customer_Id: Customerid,
+             ProjectManager_Id: PMID,
              Description: Description,
              Cre_on: cre_on,
              Cre_By: cre_By
          }
        if (projectName == ""|| ValidateName(projectName) == false) {
-            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(3000);
+           $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(5000);
+           ValidateProject();
         }
         else if (Customerid == 0 || Customerid == undefined)
         {
-            $("#lblCustomerName").html("Please enter the Customer Name").show().fadeOut(3000);
+           $("#lblCustomerName").html("Please enter the Customer Name").show().fadeOut(5000);
+           ValidateProject();
        }
             else if (PMID == 0)
         {
-            $("#lblProjectManager").html("Please Select the Customer Name").show().fadeOut(3000);
+           $("#lblProjectManager").html("Please Select the Project Manager").show().fadeOut(5000);
+           ValidateProject();
         }    
         else {
 
@@ -243,14 +279,55 @@
                     //dataType: "json",
                     success: function (response) {
                         if (response == "success") {
-                            alert("Project Edited successfully!");
-                           loadProjectCreation();
-                            $("#txtProjectName").val("")
-                            $("#drpCustomer").val(0)
-                            $("#txtDescription").val("")
-                            $("#btnAddNew").hide();
-                            $("#btnProjectUpdate").hide();
-                            $("#btnProjectCreate").show();
+                            Notiflix.Notify.Success('Project <Strong>Update </strong>successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            loadProjectCreation();
+                                            $("#txtProjectName").val("")
+                                            $("#drpCustomer").val(0)
+                                            $("#drpProjectManager").val(0);
+                                            $("#txtDescription").val("")
+                                            $("#btnAddNew").hide();
+                                            $("#btnProjectUpdate").hide();
+                                            $("#btnProjectCreate").show();
+                                            $("#prjtCreate").show();
+                                            $("#prjtUpdate").hide();
+                            // $.alert({
+                            //    title: 'Sucess !',
+                            //    content: 'Project Edited <strong>successfully</strong>..!',
+                            //     icon: 'fa fa-rocket',
+                            //    //position: ['center', [-0.42, 0]],
+                            //     //resizable: false,
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                loadProjectCreation();
+                            //                $("#txtProjectName").val("")
+                            //                $("#drpCustomer").val(0)
+                            //                $("#drpProjectManager").val(0);
+                            //                $("#txtDescription").val("")
+                            //                $("#btnAddNew").hide();
+                            //                $("#btnProjectUpdate").hide();
+                            //                $("#btnProjectCreate").show();
+                            //                $("#prjtCreate").show();
+                            //                $("#prjtUpdate").hide();
+                            //            }
+                            //        }
+                            //    }
+                            //});
+                           // alert("Project Edited successfully!");
+                           //loadProjectCreation();
+                           // $("#txtProjectName").val("")
+                           // $("#drpCustomer").val(0)
+                           // $("#drpProjectManager").val(0);
+                           // $("#txtDescription").val("")
+                           // $("#btnAddNew").hide();
+                           // $("#btnProjectUpdate").hide();
+                           // $("#btnProjectCreate").show();
+                           // $("#prjtCreate").show();
+                           // $("#prjtUpdate").hide();
                         }
                     },
                     failure: function (response) {

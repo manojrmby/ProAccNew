@@ -60,7 +60,7 @@
 <div class="row">
     <div class="col-lg-12 card" style="padding:0px;">
 
-        <div class="tableFixHead outer table-striped table-hover" style="font-size:12px;">
+        <div class="tableFixHead outer table-striped table-hover">
             @*<table>*@
             <table class="mb-0 table table-striped table-hover">
                 <thead class="thead-light">
@@ -107,34 +107,47 @@
 
 <div>
     @Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
-    <div style="visibility:hidden">
-        <div id="dialog-message" title="Info">
-            <p>
-                <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
-                @ViewBag.Message
-            </p>
-        </div>
-    </div>
-
     @if (ViewBag.Message != null)
     {
-        <script type="text/javascript">
-            $(function () {
 
-                $("#dialog-message").dialog({
-                    modal: true,
-                    buttons: {
-                        Ok: function () {
-                            $(this).dialog("close");
-                            var url = $("#RedirectTo").val();
-                            location.href = url;
-                        }
-                    }
-                });
+        <a id="Msg" style="display:none">@ViewBag.Message</a>
+        <script type="text/javascript">
+            var info = $('#Msg').text();
+            Notiflix.Report.Info("ProAcc Info !", info, "Click", function () {
+                var url = $("#RedirectTo").val();
+                location.href = url;
             });
         </script>
 
     }
+    @*<div style="visibility:hidden">
+            <div id="dialog-message" title="Info">
+                <p>
+                    <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+                    @ViewBag.Message
+                </p>
+            </div>
+        </div>
+
+        @if (ViewBag.Message != null)
+        {
+            <script type="text/javascript">
+                $(function () {
+
+                    $("#dialog-message").dialog({
+                        modal: true,
+                        buttons: {
+                            Ok: function () {
+                                $(this).dialog("close");
+                                var url = $("#RedirectTo").val();
+                                location.href = url;
+                            }
+                        }
+                    });
+                });
+            </script>
+
+        }*@
 </div>
 
 <script type="text/javascript" charset="utf-8">
@@ -222,8 +235,7 @@
 	//	window.myRadialGauge = new Chart(ctx, config);
 
 	//}
-	function Ajax_Call(a) {
-
+    function Ajax_Call(a) {
 		$.ajax({
 			type: "POST",
 			url: '@Url.Action("GetFioriAppsReportt_Bar")',
@@ -242,13 +254,16 @@
 				labels = inpName;
 				data_ = inpVal;
                 //renderChart(data_, labels, backColor);
-                renderChart2(data_,labels,backColor);
+                renderChart2(data_, labels, backColor);
+
+                
 
 			},
 			error: function () {
 				alert("Error while inserting data");
 			}
-		}).done(function (response) {
+        }).done(function (response) {
+            
 			//chart.data = response;
 
 		});
@@ -258,7 +273,12 @@
 		var Ses_InstanceId = '@Session["InstanceId"]';
         if (Ses_InstanceId != "") {
             Ajax_Call(a);
-        }
+    }
+
+    $(document).ajaxComplete(function () {
+      $('.chartAreaWrapper').scrollTop($('.chartAreaWrapper')[0].scrollHeight);
+    });
+
 	$("#IDRoles").change(function () {
 
 		var a = $('#IDRoles option:selected').text();
@@ -283,7 +303,12 @@
         //    }
         //    return chartData;
         //}
-
+    
+    //function scrollToBottom() {
+    //    var div = document.getElementsByClassName(".chartAreaWrapper");
+    //    debugger;
+    //    div.scrollTop = div.scrollHeight - div.clientHeight;
+    //}
     function addData(numData, chart) {
 
             for (var i = 0; i < numData; i++) {
@@ -304,7 +329,8 @@
                 $('.chartAreaWrapper2').height("200px")
                 }
 
-            }
+        }
+         
         }
 
         //var chartData = {
@@ -439,18 +465,20 @@
                }
             });
             addData(data.length, chartTest);
+            
         }
         //});
 
     function TableAjax(a) {
+        $("#load").css("display", "block");
 			$.ajax({
                 type: "POST",
                 url: '@Url.Action("FioriAppsTable")',
-               // data: '{LOB: ' + JSON.stringify(a) + '}',
+                data: '{Input: ' + JSON.stringify(a) + '}',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (Data) {
-                     $("#Table_Body").empty();
+                    $("#Table_Body").empty();
                     $(Data).each(function (index, value) {
                         var Result = "";
                         if (value.SAP_Notes != null) {
@@ -467,19 +495,23 @@
                             '</td><td>' + value.Description
                             + '</td></tr>';
                         $('#Table_Body').append( table );
-                        });
+                    });
+                    
                 },
-				 error: function () {
-                    alert("Error while inserting data");
+                error: function () {
+                      $("#load").css("display", "hide");
+                     alert("Error while inserting data");
+
                 }
             }).done(function (response) {
                 //chart.data = response;
-
+                 $("#load").css("display", "hide");
             });
+         $("#load").css("display", "hide");
     }
 
     jQuery(document).ready(function ($) {
-
+        $('.chartAreaWrapper').scrollTop($('.chartAreaWrapper')[0].scrollHeight);
         var a = $('#IDRoles option:selected').text();
 		var Ses_InstanceId = '@Session["InstanceId"]';
        if (Ses_InstanceId != "") {

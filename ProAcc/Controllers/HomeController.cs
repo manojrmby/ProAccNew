@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using ProAcc.BL.Model;
 using static ProAcc.BL.Model.Common;
+using System.Dynamic;
 //using static ProAcc.BL.Model.Common;
 
 namespace ProAcc.Controllers
@@ -15,22 +16,20 @@ namespace ProAcc.Controllers
     [Authorize(Roles = "Admin,Consultant,Customer,Project Manager")]
     public class HomeController : Controller
     {
+        private Guid InstanceId = Guid.Empty;
         Base _Base = new Base();
         private ProAccEntities db = new ProAccEntities();
         // GET: Home
         public ActionResult Home()
         {
-            int j = 0;
-            var stat = db.HanaStatus.ToList();
-            for (int i = 0; i < stat.Count(); i++)
+            
+             
+            int Count = 1;
+            if (Session["loginid"].ToString()!=null)
             {
-                if (stat[i].IsActive == true)
-                {
-                    j = j + 1;
-                }
+                Lis Status = _Base.SpConvertionStatus(Session["InstanceId"].ToString());
+                Count = Convert.ToInt32(Status.Value);
             }
-            ViewBag.count = j;
-
             int userType = 0;
             if (User.IsInRole("Admin"))
             {
@@ -50,7 +49,7 @@ namespace ProAcc.Controllers
             int inst = 0;
             if (InstanceID!=Guid.Empty)
             {
-                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus==true) select u;
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus==true) orderby u.InstaceName select u;
                 if (q.Count() > 0)
                 {
                     inst = 1;
@@ -66,7 +65,8 @@ namespace ProAcc.Controllers
                 Guid LoginId = Guid.Parse(Session["loginid"].ToString());
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.Customer_Id equals b.Customer_Id
-                            where a.UserId == LoginId 
+                            where a.UserId == LoginId && b.isActive == true 
+                            orderby b.Project_Name 
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count()>0)
                 {
@@ -77,12 +77,69 @@ namespace ProAcc.Controllers
 
                 }
             }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
            
+            var task = (from u in db.ProjectMonitors
+                        join v in db.ActivityMasters on u.ActivityID equals v.Activity_ID
+                        join w in db.StatusMasters on u.StatusId equals w.Id
+                        join x in db.UserMasters on u.UserID equals x.UserId
+                        join P in db.PhaseMasters on u.PhaseId equals P.Id
+                        where u.InstanceID == InstanceID
+                        orderby u.Modified_On descending
+                        select new { v.Task, x.Name,P.PhaseName, w.StatusName, u.Planed__En_Date }).ToList().Take(5);
+            dynamic output = new List<dynamic>();
 
-
+            foreach (var inputAttribute in task)
+            {
+                dynamic row = new ExpandoObject();
+                row.Task = inputAttribute.Task;
+                row.Name = inputAttribute.Name;
+                row.StatusName = inputAttribute.StatusName;
+                row.Planed__En_Date = inputAttribute.Planed__En_Date;
+                row.PhaseName = inputAttribute.PhaseName;
+                output.Add(row);
+            }
+            ViewBag.count = Count;
+            ViewBag.Taskdetails = output;
             ViewBag.Project = Project;
+
+            //Mail m = new Mail();
+            //m.SendEmail();
             return View();
         }
+
+        //public ActionResult Home1()
+        //{
+        //    return View();
+        //}
+        [HttpPost]
+        public JsonResult GetHomeDonut()
+        {
+            InstanceId = Guid.Parse(Session["InstanceId"].ToString());
+
+            List<SP_HomeDonut_Result> GetRelevant = _Base.SAP_Home_Donut(InstanceId); 
+            return Json(GetRelevant, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
         public ActionResult Test()
         {
             //List<Customer> cust = db.Customers.Where(a => a.isActive == true).ToList();
@@ -101,6 +158,14 @@ namespace ProAcc.Controllers
             Session["Instance_Name"] = db.Instances.FirstOrDefault(x => x.Instance_id == IDInstanceID).InstaceName;
             ProjectID = db.Instances.FirstOrDefault(y => y.Instance_id == IDInstanceID).Project_ID;
             Session["Project_Name"] = db.Projects.FirstOrDefault(x => x.Project_Id == ProjectID).Project_Name;
+            //var d = db.FileUploadMasters.FirstOrDefault(x => x.InstanceID == IDInstanceID).Id;
+            bool Res = false;
+            var data = db.FileUploadMasters.Count(x => x.InstanceID == IDInstanceID);
+            if (data!=0)
+            {
+                Res = true;
+            }
+            Session["IsCreateAnalysisDone"] = Res;
             return Json(IDInstance, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -111,7 +176,7 @@ namespace ProAcc.Controllers
             if (!String.IsNullOrEmpty(ProjectId)&& ProjectId !="0")
             {
                 var ID = Guid.Parse(ProjectId);
-                var query = from u in db.Instances where u.Project_ID == ID  select u;
+                var query = from u in db.Instances where u.Project_ID == ID && u.isActive == true orderby u.InstaceName select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)
@@ -132,7 +197,7 @@ namespace ProAcc.Controllers
                 if (!string.IsNullOrEmpty(CustomerId))
                 {
                     Guid IDCustomer = Guid.Parse(CustomerId);
-                    var query = from u in db.Projects where (u.Customer_Id == IDCustomer && u.isActive == true) select u;
+                    var query = from u in db.Projects where (u.Customer_Id == IDCustomer && u.isActive == true) orderby u.Project_Name select u;
                     if (query.Count() > 0)
                     {
                         foreach (var v in query)
@@ -172,7 +237,7 @@ namespace ProAcc.Controllers
             if (!String.IsNullOrEmpty(ProjectId) && ProjectId != "0")
             {
                 var ID = Guid.Parse(ProjectId);
-                var query = from u in db.Instances where u.Project_ID == ID  select u;
+                var query = from u in db.Instances where u.Project_ID == ID && u.isActive == true orderby u.InstaceName select u;
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)
@@ -206,6 +271,8 @@ namespace ProAcc.Controllers
         //    }
         //    return Json(Instance, JsonRequestBehavior.AllowGet);
         //}
+
+
 
     }
 }

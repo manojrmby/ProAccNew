@@ -18,7 +18,6 @@ namespace ProACC_DB
         public Project()
         {
             this.Instances = new HashSet<Instance>();
-            this.ResourceAllocations = new HashSet<ResourceAllocation>();
         }
     
         public System.Guid Project_Id { get; set; }
@@ -33,11 +32,9 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Instance> Instances { get; set; }
         public virtual UserMaster UserMaster { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ResourceAllocation> ResourceAllocations { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

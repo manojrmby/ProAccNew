@@ -4,6 +4,11 @@
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+@*<style>
+    input[aria-controls=tblProjectCreation] {
+ border: 1px solid #ced4da !important;
+}
+</style>*@
 
 <table class="table" id="tblActivityCreation">
     <thead>
@@ -15,7 +20,7 @@
             @*<th>Cre_on</th>*@
             <th>Phase</th>
             <th>Role</th>
-            <th>ApplicationArea</th>
+            <th>Application Area</th>
             <th>Sequence</th>
             <th>Actions</th>
         </tr>
@@ -44,14 +49,14 @@
                 <a class="txtG" value="@item.RoleID">@item.RoleMaster.RoleName</a>
             </td>
             <td>
-                <a class="txtG" value="@item.ApplicationArea">@item.ApplicationArea</a>
+                <a class="txtG" value="@item.ApplicationAreaID">@item.ApplicationAreaMaster.ApplicationArea</a>
             </td>
             <td>
                 <a class="txtG" value="@item.Sequence_Num">@item.Sequence_Num</a>
             </td>
 
             <td>
-                <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" /> |
+                <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" /> 
                 <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Activity_ID" />
             </td>
         </tr>
@@ -79,14 +84,14 @@
     });
 
     $(".editActivityCreation").on("click", function () {
-        debugger;
+        
         var id = $(this).next().val();
         $.ajax({
             url: '@Url.Action("GetActivityCreationById","Activity")',
             type: "GET",
             data: { id: id },
             success: function (result) {
-                debugger;
+                
                   $("#activityrid").val(result.Activity_ID);
                     $("#txtTask").val(result.Task);
                     $("#txtSequence").val(result.Sequence_Num);
@@ -96,12 +101,14 @@
                     $("#drpRole").val(result.RoleID);
                     $('#drpRole').attr("disabled", true); 
                     $("#drphiddenRole").val(result.RoleID);
-                    $("#txtApplicationArea").val(result.ApplicationArea);
+                    $("#drpApplicationArea").val(result.ApplicationAreaID);
                     $("#actcre_on").val(result.Cre_on);
                     $("#actcre_By").val(result.Cre_By);
                     $("#btntivityCreUpdate").show();
                     $("#btnAddNew").show();
                     $("#btnActivityCreCreate").hide();
+                    $("#activityCreation").hide();
+                    $("#activityUpdation").show();
 
                  //$.each(result, function (index, item) {
                  //    $("#activityrid").val(item.Activity_ID);
@@ -124,10 +131,123 @@
             }
         });
     });
+     function Redirect() {
+        location.reload();
+    }
+  
 
     $(".btnActivityDelete").on("click", function () {
         var id = $(this).next().val();
-       var retVal = confirm("Do you want to delete ?");
+         Notiflix.Confirm.Show(
+                'Confirm',
+                'Do you want to delete ?',
+                'Yes', 'No',
+                function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Delete","Activity")',
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response == "success") {
+                                Notiflix.Notify.Success('Activity deleted Successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                setTimeout(Redirect, 3000);
+                            }
+                        }
+                    });
+                }, function () {
+                    //location.reload();
+                    // No button callback
+                    //alert('If you say so...');
+                }
+            )
+
+
+
+        @*$.confirm({
+                            title: 'Delete !',
+                            content: 'Do you want to delete ?',
+                            icon: 'fa fa-trash-o',
+                            animation: 'scale',
+                            closeAnimation: 'scale',
+                            opacity: 0.5,
+                            buttons: {
+                                'confirm': {
+                                    text: 'Yes',
+                                    btnClass: 'btn-blue',
+                                    action: function () {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: '@Url.Action("Delete","Activity")',
+                                            data: { id: id },
+                                            dataType: "json",
+                                            success: function (response) {
+                                                if (response == "success") {
+                                                    Notiflix.Notify.Success('Activity deleted Successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                                    setTimeout(Redirect, 3000);
+                                                    $.alert({
+                                                        title: 'Alert !',
+                                                        content: 'Activity deleted successfully!..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                                        icon: 'fa fa-rocket',
+                                                        animation: 'scale',
+                                                        closeAnimation: 'scale',
+                                                        buttons: {
+                                                            okay: {
+                                                                text: 'Okay',
+                                                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                                                action: function (event, ui) {
+                                                                    $(this).remove();
+                                                                    loadActivityCreation();
+                                                                    location.reload();
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+                                                    //alert("");
+
+                                                }
+                                            },
+                                            failure: function (response) {
+                                                alert(response.responseText);
+                                            },
+                                            error: function (response) {
+                                                alert(response.responseText);
+                                            }
+                                        });
+                                        //$.confirm({
+                                        //    title: 'This maybe critical',
+                                        //    content: 'Critical actions can have multiple confirmations like this one.',
+                                        //    icon: 'fa fa-warning',
+                                        //    animation: 'scale',
+                                        //    closeAnimation: 'zoom',
+                                        //    buttons: {
+                                        //        confirm: {
+                                        //            text: 'Yes, sure!',
+                                        //            btnClass: 'btn-orange',
+                                        //            action: function(){
+                                        //                $.alert('A very critical action <strong>triggered!</strong>');
+                                        //            }
+                                        //        },
+                                        //        cancel: function(){
+                                        //            $.alert('you clicked on <strong>cancel</strong>');
+                                        //        }
+                                        //    }
+                                        //});
+                                    }
+                                },
+                                cancel: function(){
+                                    $.alert('You clicked on <strong>cancel</strong>');
+                                },
+                                //moreButtons: {
+                                //    text: 'something else',
+                                //    action: function(){
+                                //        $.alert('you clicked on <strong>something else</strong>');
+                                //    }
+                                //},
+                            }
+                        });*@
+
+       @*var retVal = confirm("Do you want to delete ?");
                if( retVal == true ) {
                 $.ajax({
                 type: "POST",
@@ -136,8 +256,26 @@
                 dataType: "json",
                 success: function (response) {
                     if (response == "success") {
-                        alert("Activity deleted successfully!");
-                        loadActivityCreation();
+                        $.alert({
+                        title: 'Alert !',
+                        content: 'Activity deleted successfully!..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                        icon: 'fa fa-rocket',
+                        animation: 'scale',
+                        closeAnimation: 'scale',
+                        buttons: {
+                            okay: {
+                                text: 'Okay',
+                                btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                action: function (event, ui) {
+                                    $(this).remove();
+                                     loadActivityCreation();
+                                     location.reload();
+                                }
+                            }
+                        }
+                    });
+                        //alert("");
+                       
                     }
                 },
                 failure: function (response) {
@@ -150,6 +288,6 @@
                   return true;
                } else {
                   return false;
-               }
+               }*@
     });
 </script>

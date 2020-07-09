@@ -23,9 +23,10 @@
         position: absolute;
     }
 </style>
-<script src="~/Asset/Scripts/Chart.js"></script>
-<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
-<link href="~/Asset/css/jBox.all.css" rel="stylesheet" />
+@*@Scripts.Render("~/bundles/Scripts/ChartJS")*@
+@*<script src="~/Asset/Scripts/Chart.js"></script>
+<script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>*@
+@*<link href="~/Asset/css/jBox.all.css" rel="stylesheet" />*@
 
 <a class="card-title">Create Analysis</a>
 <div style="padding: 1em;">
@@ -53,9 +54,9 @@
             <hr />
             <div class="form-row">
                 @*<div class="position-relative form-group">
-            <label for="exampleEmail" class="">Customer Name</label>
-            @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "- SELECT-", new { id = "IDCustomer", @class = "form-control" })
-        </div>*@
+                        <label for="exampleEmail" class="">Customer Name</label>
+                        @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "- SELECT-", new { id = "IDCustomer", @class = "form-control" })
+                    </div>*@
                 @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
                 {
                     <div class="col-md-4">
@@ -88,197 +89,233 @@
                 <br />
                 <br />
             </div>
-                @*<div class="row">
-                        <div class="col-6">
+            @*<div class="row">
+                    <div class="col-6">
 
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">Activities</div>
-                                <div>
-                                    <input type="file" name="files" id="FileUpload1" />
-                                </div>
-
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">Activities</div>
+                            <div>
+                                <input type="file" name="files" id="FileUpload1" />
                             </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">Bwextractors</div>
-                                <div>
-                                    <input type="file" name="files" id="FileUpload2" />
-                                </div>
 
-                            </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">CustomCode</div>
-                                <div>
-                                    <input type="file" name="files" id="FileUpload3" />
-                                </div>
-
-                            </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">HanaDatabaseTables</div>
-                                <div>
-                                    <input type="file" name="files" id="FileUpload4" />
-                                </div>
-
-                            </div>
                         </div>
-                        <div class="col-6">
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">RecommendedFioriApps</div><br />
-                                <input type="file" name="files" id="FileUpload5" />
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">Bwextractors</div>
+                            <div>
+                                <input type="file" name="files" id="FileUpload2" />
                             </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">RelevantSimplificationItems</div><br />
-                                <input type="file" name="files" id="FileUpload6" />
-                            </div>
-                            <div class="position-relative form-group">
-                                <div class="mb-2 mr-2 badge badge-primary">SAP Readiness Check</div><br />
-                                <input type="file" name="files" id="FileUpload7" />
-                            </div>
+
                         </div>
-
-
-                    </div>*@
-                <div class="row" style="text-align:left !important;margin:auto !important;">
-                    <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="mb-0 table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th> SAP READINESS CHECK FILES</th>
-                                            <th>UPLOAD</th>
-                                        </tr>
-                                    </thead>
-                                    <tr>
-                                        <td>
-                                            1.
-                                        </td>
-                                        <td>
-                                            Activities
-                                        </td>
-                                        <td>
-                                            <input class="mb-2 mr-2 btn btn-info" type="file" name="files" id="FileUpload1" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            2.
-                                        </td>
-                                        <td>
-                                            BW Extractors
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload2" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            3.
-                                        </td>
-                                        <td>
-                                            Custom Code Analysis
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload3" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            4.
-                                        </td>
-                                        <td>
-                                            HANA Database Tables
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload4" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            5.
-                                        </td>
-                                        <td>
-                                            Recommended Fiori Apps
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload5" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            6.
-                                        </td>
-                                        <td>
-                                            Relevant Simplification Items
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload6" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            7.
-                                        </td>
-                                        <td>
-                                            SAP Readiness Check
-                                        </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload7" />
-                                        </td>
-                                    </tr>
-                                </table>
-
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">CustomCode</div>
+                            <div>
+                                <input type="file" name="files" id="FileUpload3" />
                             </div>
+
+                        </div>
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">HanaDatabaseTables</div>
+                            <div>
+                                <input type="file" name="files" id="FileUpload4" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">RecommendedFioriApps</div><br />
+                            <input type="file" name="files" id="FileUpload5" />
+                        </div>
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">RelevantSimplificationItems</div><br />
+                            <input type="file" name="files" id="FileUpload6" />
+                        </div>
+                        <div class="position-relative form-group">
+                            <div class="mb-2 mr-2 badge badge-primary">SAP Readiness Check</div><br />
+                            <input type="file" name="files" id="FileUpload7" />
+                        </div>
+                    </div>
+
+
+                </div>*@
+            <div class="row" style="text-align:left !important;margin:auto !important;">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="mb-0 table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th> SAP READINESS CHECK FILES</th>
+                                        <th>UPLOAD FILES</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>
+                                        1.
+                                    </td>
+                                    <td>
+                                        Activities
+                                    </td>
+                                    <td>
+                                        <input class="mb-2 mr-2 btn btn-info" type="file" name="files" id="FileUpload1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        2.
+                                    </td>
+                                    <td>
+                                        BW Extractors
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload2" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        3.
+                                    </td>
+                                    <td>
+                                        Custom Code Analysis
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload3" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        4.
+                                    </td>
+                                    <td>
+                                        HANA Database Tables
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload4" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        5.
+                                    </td>
+                                    <td>
+                                        Recommended Fiori Apps
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload5" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        6.
+                                    </td>
+                                    <td>
+                                        Relevant Simplification Items
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload6" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        7.
+                                    </td>
+                                    <td>
+                                        SAP Readiness Check
+                                    </td>
+                                    <td>
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload7" />
+                                    </td>
+                                </tr>
+                            </table>
+
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <br />
-                <div class="row">
-                    <div class="col-12">
-                        <div class="position-relative form-group">
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <div class="position-relative form-group">
 
-                            <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;padding-left:81px;">
-                                <input type="checkbox" id="chkReadiness" class="custom-control-input">
-                                <label class="custom-control-label " for="chkReadiness">
-                                    I have read the SAP Readiness check Disclaimer and SAP readiness check term of use
-                                </label>
-                            </div>
-                            <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;max-width:930px;padding-left:81px;">
-                                <input type="checkbox" id="chkAcknowldge" class="custom-control-input">
-                                <label class="custom-control-label" for="chkAcknowldge">
-                                    I acknowldge all SAP employees may access and use the SAP Readiness check results for SAP business purposes like support services and marketing
-                                </label>
-                            </div>
-                            <br />
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div id="progressbar-5">
-                                        <div class="progress-label">
-                                        </div>
+                        <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;padding-left:81px;">
+                            <input type="checkbox" id="chkReadiness" class="custom-control-input">
+                            <label class="custom-control-label " for="chkReadiness">
+                                I have read the SAP Readiness check Disclaimer and SAP readiness check term of use
+                            </label>
+                        </div>
+                        <div class="custom-checkbox custom-control text-md-left" style="font-size:15px;max-width:930px;padding-left:81px;">
+                            <input type="checkbox" id="chkAcknowldge" class="custom-control-input">
+                            <label class="custom-control-label" for="chkAcknowldge">
+                                I acknowledge all SAP employees may access and use the SAP Readiness check results for SAP business purposes like support services and marketing
+                            </label>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div id="progressbar-5">
+                                    <div class="progress-label">
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-center">
-                                <button class="btn-wide mb-2 mr-2 btn btn-primary" id="btnUpload">
-                                    Start Analysis
-                                </button>
-                            </div>
-                            
                         </div>
+                        <div class="text-center">
+                            <button class="btn-wide mb-2 mr-2 btn btn-primary" id="btnUpload">
+                                Start Analysis
+                            </button>
+                        </div>
+
                     </div>
                 </div>
-
-            
+            </div>
         </div>
     </div>
+    @*<div style="visibility:hidden">
+            <div id="dialog-message" title="Info">
+                <p>
+                    <span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 50px 0;"></span>
+                    <h6>@ViewBag.Message</h6>
+                </p>
+            </div>
+            @if (ViewBag.Message != null)
+            {
+                <script type="text/javascript">
+                    $(function () {
+
+                        $("#dialog-message").dialog({
+                            modal: true,
+                            buttons: {
+                                Ok: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    });
+                </script>
+
+            }
+        </div>*@
+    @if (ViewBag.Message != null)
+    {
+
+        <a id="Msg" style="display:none">@ViewBag.Message</a>
+        <script type="text/javascript">
+            var a = $('#Msg').text();
+            //debugger;
+            Notiflix.Report.Info("ProAcc Info !", a);
+        </script>
+
+    }
 </div>
 @Html.Hidden("RedirectTo", Url.Action("ReadinessReport", "Assessment"))
 <script>
-  
+
     $(document).ready(function () {
+
+
         $('#btnUpload').click(function () {
-    var RedirectTo = $("#RedirectTo").val();
+            var RedirectTo = $("#RedirectTo").val();
             var ProjectID = $("#IDProject").val();
             var InstanceId = $("#IDInstance").val();
             var n = $( "input:checked" ).length;
@@ -328,23 +365,45 @@
                     data: fileData,
                     //async: false,
                     success: function (result) {
-                        alert(result);
-                        location.href = RedirectTo;
-                        //location.reload();
-                        //debugger;
-                        //if (result != "") {
-                        //    //$('#FileBrowse').find("*").prop("disabled", true);
-                        //    LoadProgressBar(result); //calling LoadProgressBar function to load the progress bar.
-                        //}
+
+                        if (result == 'File Uploaded Successfully!') {
+                            Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            location.href = RedirectTo;
+                        }
+                        else if (result=='Please Upload all files.')
+                        {
+                            Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        }
+                        else {
+                            Notiflix.Report.Info("ProAcc Info !", result, "Click", function () {
+                               
+                                $.ajax({
+                                url: '@Url.Action("UploadRevert", "Assessment")',
+                                type: "POST",
+                                contentType: false, // Not to set any content header
+                                processData: false, // Not to process data
+                                data: fileData,
+                                success: function (result) {
+                                    Notiflix.Notify.Failure(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                    //alert(result);
+                                }
+                                });
+
+                            });
+                           // Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+
+                        }
                     },
                     error: function (err) {
-                        alert(err.statusText);
+                        Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //alert(err.statusText);
                     }
                 });
 
             }
             else {
-                alert("Kindly check input values");
+                Notiflix.Notify.Info("Kindly check input values", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                //alert("Kindly check input values");
             }
 
 
@@ -421,7 +480,7 @@
                     }));
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("LoadInstance","Assessment")',
+                url: '@Url.Action("LoadCreateAnalysisInstance","Assessment")',
                 data: { 'ProjectId' : id},
                 success: function (data) {
                     var select = $("#IDInstance");
@@ -441,7 +500,8 @@
                 },
                 error: function (a) {
                     debugger;
-                    alert(a);
+                    Notiflix.Notify.Failure(a, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    //alert(a);
                 }
 
 
@@ -479,7 +539,8 @@
                 },
                 error: function (a) {
                     debugger;
-                    alert(a);
+                    Notiflix.Notify.Failure(a, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    //alert(a);
                 }
 
 
@@ -730,11 +791,22 @@
 
 
     $(document).ready(function () {
+        var fileUpload;
+        var files;
         $("#FileUpload1").on('blur', function () {
-
-            if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+            if (this.files.length > 0) {               
+                fileUpload = $("#FileUpload1").get(0);  
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "Activities.xlsx") {
+                        Notiflix.Notify.Failure("Enter Activities file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        $("#FileUpload1").val('');
+                    }
+                    else {
+                         $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active')
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -743,8 +815,19 @@
         });
         $("#FileUpload2").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                
+                fileUpload = $("#FileUpload2").get(0);  
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "Bwextractors.xlsx") {
+                        Notiflix.Notify.Failure("Enter Bwextractors file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        $("#FileUpload2").val('');
+                    }
+                    else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -753,8 +836,18 @@
         });
         $("#FileUpload3").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                fileUpload = $("#FileUpload3").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "CustomCode.xlsx") {
+                        Notiflix.Notify.Failure("Enter CustomCode file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                       $("#FileUpload3").val('');
+                    }
+                     else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -763,8 +856,18 @@
         });
         $("#FileUpload4").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                fileUpload = $("#FileUpload4").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "HanaDatabaseTables.xlsx") {
+                        Notiflix.Notify.Failure("Enter HanaDatabaseTables file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                       $("#FileUpload4").val('');
+                    }
+                     else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -773,8 +876,18 @@
         });
         $("#FileUpload5").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                fileUpload = $("#FileUpload5").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "RecommendedFioriApps.xlsx") {
+                        Notiflix.Notify.Failure("Enter RecommendedFioriApps file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                       $("#FileUpload5").val('');
+                    }
+                     else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -783,28 +896,49 @@
         });
         $("#FileUpload6").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                fileUpload = $("#FileUpload6").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "RelevantSimplificationItems.xlsx") {
+                        Notiflix.Notify.Failure("Enter RelevantSimplificationItems file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                       $("#FileUpload6").val('');
+                    }
+                    else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
                 $(this).css("background-color", "#0090e2");
             }
         });
-        $("#FileUpload6").on('blur', function () {
-            if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
-            }
-            else {
-                $(this).removeClass('active');
-                $(this).css("background-color", "#0090e2");
-            }
-        });
+        //$("#FileUpload6").on('blur', function () {
+        //    if (this.files.length > 0) {
+        //        $(this).css("background-color", "#3ac47d");
+        //        $(this).addClass('active')
+        //        fileUpload = $("#FileUpload7").get(0);
+        //    }
+        //    else {
+        //        $(this).removeClass('active');
+        //        $(this).css("background-color", "#0090e2");
+        //    }
+        //});
         $("#FileUpload7").on('blur', function () {
             if (this.files.length > 0) {
-                $(this).css("background-color", "#3ac47d");
-                $(this).addClass('active')
+                fileUpload = $("#FileUpload7").get(0);
+                files = fileUpload.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[0].name != "SAP Readiness Check.docx") {
+                        Notiflix.Notify.Failure("Enter Readiness Check file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                       $("#FileUpload7").val('');
+                    }
+                    else {
+                        $(this).css("background-color", "#3ac47d");
+                        $(this).addClass('active');
+                    }
+                }
             }
             else {
                 $(this).removeClass('active');
@@ -812,6 +946,7 @@
             }
         });
 
+        
     });
 
     //function OnFileuploadChange(Comp) {

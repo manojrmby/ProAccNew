@@ -4,12 +4,7 @@
     ViewBag.Title = "Create Instance";
 }
 
-<style>
-    span{
-        color: red;
-    font-size: 14px;
-    }
-</style>
+
 <a class="card-title">Create Instance</a>
 <hr />
 <div style="padding:1em;">
@@ -27,7 +22,7 @@
                     @*<span id="lblInstanceName" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblInstanceName">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblInstanceName">&nbsp;</span>
                 </div>
             </div>
 
@@ -44,7 +39,7 @@
                     @*<span id="lblProject" style="color:red" />*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span id="lblProject">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblProject">&nbsp;</span>
                 </div>
             </div>
 
@@ -163,10 +158,28 @@
                 data: { InstaceName: InstanceName, Project_ID: Project },
                     success: function (response) {
                         if (response == "success") {
-                            alert("Instance Saved successfully!");
+                            Notiflix.Notify.Success('Instance Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             loadInstanceTable();
-                            $("#txtInstanceName").val("")
-                            $("#drpProject").val(0)
+                                            $("#txtInstanceName").val("")
+                                            $("#drpProject").val(0)
+                            //$.alert({
+                            //    title: 'Success !',
+                            //    content: 'Instance Saved successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                            //    icon: 'fa fa-rocket',
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                loadInstanceTable();
+                            //                $("#txtInstanceName").val("")
+                            //                $("#drpProject").val(0)
+                            //            }
+                            //        }
+                            //    }
+                            //});
                         }
                         else {
                             $("#lblInstanceName").html("This Instance Name is already in use for this project").show().fadeOut(5000);
@@ -216,12 +229,39 @@
                     data: { model : model},
                     success: function (response) {
                         if (response == "success") {
-                            alert("Instance Edited successfully!");
+                             Notiflix.Notify.Success('Instance Update successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             loadInstanceTable();
-                            $("#txtInstanceName").val("")
-                            $("#drpProject").val(0)
-                            $("#btnInstanceUpdate").hide();
-                            $("#btnInstanceCreate").show();
+                                            $("#txtInstanceName").val("")
+                                            $("#drpProject").val(0)
+                                            $("#btnInstanceUpdate").hide();
+                                            $("#btnInstanceCreate").show();
+
+                            //$.alert({
+                            //    title: 'Success !',
+                            //    content: 'Instance Edited successfully..!',
+                            //    icon: 'fa fa-rocket',
+                            //    animation: 'scale',
+                            //    closeAnimation: 'scale',
+                            //    buttons: {
+                            //        okay: {
+                            //            text: 'Okay',
+                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //            action: function (event, ui) {
+                            //                loadInstanceTable();
+                            //                $("#txtInstanceName").val("")
+                            //                $("#drpProject").val(0)
+                            //                $("#btnInstanceUpdate").hide();
+                            //                $("#btnInstanceCreate").show();
+                            //            }
+                            //        }
+                            //    }
+                            //});
+                            //alert("Instance Edited successfully!");
+                            //loadInstanceTable();
+                            //$("#txtInstanceName").val("")
+                            //$("#drpProject").val(0)
+                            //$("#btnInstanceUpdate").hide();
+                            //$("#btnInstanceCreate").show();
                         }
                     },
                     failure: function (response) {

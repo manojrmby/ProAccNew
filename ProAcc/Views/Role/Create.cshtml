@@ -1,0 +1,244 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<a class="card-title" id="RoleCreation">Role Creation</a>
+<a class="card-title" id="RoleUpdation" style="display:none">Role Updation</a>
+<hr />
+<div style="padding:1em;">
+    <div class="row">
+        <div class="col-6">
+            <input type="hidden" id="RoleId" />
+            <input type="hidden" id="Rcre_on" />
+            <input type="hidden" id="Rcre_By" />
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Role Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtRoleName" />
+                    @*<span id="lblTeamName" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span id="lblRoleName" style="color:red;font-size:14px;">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Create" class="btn btn-primary" id="btnRoleCreate" />
+                    <input type="button" value="Update" class="btn btn-info" id="btnRoleUpdate" style="display:none" />
+                    <a class="btn btn-success" id="btnAddRole" onclick="resetRole();" style="display:none"><i class="fa fa-plus" onclick="resetRole();"></i>Add New</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divRolesList">
+
+</div>
+
+<script>
+     $(document).ready(function () {
+         loadRole()
+
+     })
+    $("#txtRoleName").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+            $("#lblRoleName").html("Not Allowed").show().fadeOut(5000);
+             $("#btnRoleCreate").prop('disabled', true);
+        }
+        else {
+             $("#btnRoleCreate").prop('disabled', false);
+        }
+    });
+
+    function validateRolename(data) {
+        var letters = /^[A-Za-z, ]+$/;
+        if (!letters.test(data)) {
+            return false;
+        }
+    }
+
+    $("#btnRoleCreate").on("click", function () {
+        
+        var RoleName = $("#txtRoleName").val().trim();
+        if (RoleName == "" || validateRolename(RoleName) == false) {
+            $("#lblRoleName").html("Please enter the Valid Role").show().fadeOut(5000);
+            //alert("Please enter the Team Name")
+        }
+        else {
+            
+            $.ajax({
+                url: '@Url.Action("CheckRole","Role")',
+                type: "GET",
+                data: { name: RoleName, id: null },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblRoleName").html("This Role name is already in use").show().fadeOut(5000);
+                        //$("#txtTeamName").val("");
+                    }
+                    else {
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("Create","Role")',
+                            data: { RoleName: RoleName },
+                            success: function (response) {
+                                if (response == "success") {
+                                    Notiflix.Notify.Success('Role Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                    resetRole();
+                                    loadRole();
+                                    //$.alert({
+                                    //    title: 'Success !',
+                                    //    content: 'Role Saved successfully..!',
+                                    //    icon: 'fa fa-rocket',
+                                    //    animation: 'scale',
+                                    //    closeAnimation: 'scale',
+                                    //    buttons: {
+                                    //        okay: {
+                                    //            text: 'Okay',
+                                    //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                    //            action: function (event, ui) {
+                                    //                resetRole();
+                                    //                loadRole();
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //});                                    
+                                }
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            }
+                        })
+
+                    }
+                }
+            });
+        }
+    });
+
+    $("#btnRoleUpdate").on("click", function () {
+
+         var id = $("#RoleId").val();
+        var RoleName = $("#txtRoleName").val().trim();
+        var cre_on = $("#Rcre_on").val();
+        var cre_By = $("#Rcre_By").val();
+
+         var model = {
+             RoleId: id,
+             RoleName: RoleName,
+             Cre_on: cre_on,
+             Cre_By: cre_By
+        }
+        if (RoleName == "" || validateRolename(RoleName) == false) {
+            //alert("Please enter the Team Name")
+            $("#lblRoleName").html("Please enter the Role").show().fadeOut(5000);
+        }
+        else {
+            
+            $.ajax({
+              url: '@Url.Action("CheckRole","Role")',
+              type: "GET",
+              data: { name: RoleName, id:id },
+              dataType: "json",
+              success: function (data) {
+                  if (data != "success") {
+                      $("#lblRoleName").html("This Role name is already in use").show().fadeOut(5000);
+                  }
+                  else {
+                      
+                      $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit","Role")',
+                    data: { model : model},
+                    success: function (response) {
+                        if (response == "success") {
+                             Notiflix.Notify.Success('Role Updated successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                    resetRole();
+                            loadRole();
+                            $("#RoleCreation").show();
+                                            $("#RoleUpdation").hide();
+                            //$.alert({
+                            //   title: 'Success !',
+                            //   content: 'Role Edited successfully..!',
+                            //   icon: 'fa fa-rocket',
+                            //   animation: 'scale',
+                            //   closeAnimation: 'scale',
+                            //   buttons: {
+                            //      okay: {
+                            //         text: 'Okay',
+                            //          btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                            //           action: function (event, ui) {
+                            //              resetRole();
+                            //               loadRole();
+                            //               $("#RoleCreation").show();
+                            //                $("#RoleUpdation").hide();
+                            //           }
+                            //      }
+                            //   }
+                            //});  
+
+                            //alert("Role Edited successfully!");
+                            //resetRole();
+                            //loadRole();
+                            // $("#RoleCreation").show();
+                            // $("#RoleUpdation").hide();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+                  }
+              },
+              error: function (err) {
+
+                     alert(err);
+               }
+            });
+        }
+    });
+
+    function resetRole() {
+        $("#RoleId").val("");
+        $("#txtRoleName").val("");
+        $("#Rcre_on").val("");
+        $("#Rcre_By").val("");
+        $("#btnRoleCreate").show();
+        $("#btnRoleUpdate").hide();
+        $("#btnAddRole").hide();
+        $("#RoleCreation").show();
+        $("#RoleUpdation").hide();
+    }
+    function loadRole() {
+
+       $.ajax({
+           type: "GET",
+           url: '@Url.Action("GetRolesList", "Role")',
+
+           success: function (response) {
+           $("#divRolesList").html(response);
+           },
+           failure: function (response) {
+            alert(response.responseText);
+           },
+           error: function (response) {
+            alert(response.responseText);
+           }
+       });
+    }
+</script>

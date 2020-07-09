@@ -7,603 +7,642 @@
     <link rel="icon" type="image/png" href="~/Asset/images/icons/favicon.ico" />
 
 
-    <link href="~/Asset/css/main.css" rel="stylesheet" />
-    <link href="~/Asset/css/LayoutStyles.css" rel="stylesheet" />
-    <link href="~/Asset/Jquery/jquery-ui.css" rel="stylesheet" />
+    @*<link href="~/Asset/css/main.css" rel="stylesheet" />
+        <link href="~/Asset/css/LayoutStyles.css" rel="stylesheet" />
+        <link href="~/Asset/Jquery/jquery-ui.css" rel="stylesheet" />
 
-    <script src="~/Asset/Scripts/jquery.min.js"></script>
-    <script type="text/javascript" src="~/Asset/scripts/main.js"></script>
-    <script src="~/Asset/Scripts/bootstrap.min.js"></script>
-    <script src="~/Asset/Jquery/jquery-ui.js"></script>
+        <script src="~/Asset/Scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="~/Asset/scripts/main.js"></script>
+        <script src="~/Asset/Scripts/bootstrap.min.js"></script>
+        <script src="~/Asset/Jquery/jquery-ui.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="~/Asset/css/Menu.css" />
+        <link rel="stylesheet" type="text/css" href="~/Asset/css/Menu.css" />*@
+    <link rel="stylesheet" type="text/css" href="~/Asset/css/loading.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Asset/css/ldbtn.min.css" />
+    @Styles.Render("~/Content/css/Layout")
+    @Scripts.Render("~/bundles/Scripts/Layout")
+    @Scripts.Render("~/bundles/Scripts/jquery-ui")
+    <link href="~/Asset/css/jquery-confirm.min.css" rel="stylesheet" />
+    <link href="~/Asset/css/jquery-confirm.less" rel="stylesheet/less" />
+
+
+    <script src="~/Asset/Jquery/jquery-confirm.min.js"></script>
+
+    <link href="~/Asset/Notiflix/notiflix-2.3.1.min.css" rel="stylesheet" />
+    <script src="~/Asset/Notiflix/notiflix-2.3.1.min.js"></script>
+    <script src="~/Asset/Notiflix/notiflix-aio-2.3.1.min.js"></script>
+
+    <script>
+        Notiflix.Notify.Init({
+            width: '280px',
+            position: 'left-bottom',
+            opacity: 1,
+            fontFamily: "sans-serif",
+            fontSize: "15px",
+            distance: "2px",
+            borderRadius: "10px",
+           
+            //backOverlayColor:"rgba(0,0,0,0,5)",
+        });
+
+        //Notiflix.Report.Init({ backOverlayColor: "rgba(248,248,248,0.5)" });
+    </script>
+    <style>
+        .Class_span {
+            color: red;
+            font-size: 14px;
+        }
+
+        .instanceRow {
+            max-width: 100%;
+        }
+
+        ._search {
+            border: 1px solid #ced4da !important;
+        }
+
+        .LoaderMasterClass {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: 9999;
+            text-align: center;
+            background: rgba(0,0,0,0.25);
+            display: none;
+        }
+
+        .slideBefore {
+            transition: 1s;
+            left: 0;
+            margin-left: 0;
+            margin-left: -305px;
+        }
+
+        .slide {
+            transition: 1s;
+            left: 0;
+            margin-left: 0;
+        }
+        .ui-jqgrid .ui-jqgrid-labels th.ui-th-column {
+    /*background-color: orange;
+    background-image: none*/
+    background-color:#00b2ed;
+
+   /*//background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);*/
+}
+    </style>
+    <style>
+        /* ScrollBar */
+        /* width */
+        ::-webkit-scrollbar {
+            opacity: 0;
+            width: 12px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            /*background: rgba(255,0,0,0.8);*/
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+        }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                opacity: 1;
+                /*background: rgba(255,0,0,0.4);*/
+            }
+    </style>
+    @*<link href="~/Asset/css/Loader.css" rel="stylesheet" />*@
+
 </head>
 <body>
+    <div id="load" class="LoaderMasterClass">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin-top: 10%;
+            margin-left: 50%; background: none; display: block; shape-rendering: crispedges; animation-play-state: running; animation-delay: 0s;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                    <g transform="translate(50 42)" style="animation-play-state: running; animation-delay: 0s;">
+                        <g transform="scale(0.8)" style="animation-play-state: running; animation-delay: 0s;">
+                            <g transform="translate(-50 -50)" style="animation-play-state: running; animation-delay: 0s;">
+                                <polygon fill="#dfa800" points="72.5 50 50 11 27.5 50 50 50" style="animation-play-state: running; animation-delay: 0s;" transform="rotate(122.36 50 38.5)">
+                                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.8518518518518516s" values="0 50 38.5;360 50 38.5" keyTimes="0;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+                                </polygon>
+                                <polygon fill="#d96c21" points="5 89 50 89 27.5 50" style="animation-play-state: running;animation-delay: 0s;"transform="rotate(122.36 27.5 77.5)">
+                                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.8518518518518516s" values="0 27.5 77.5;360 27.5 77.5" keyTimes="0;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+                                </polygon>
+                                <polygon fill="#35599b" points="72.5 50 50 89 95 89" style="animation-play-state: running; animation-delay: 0s;" transform="rotate(122.36 72.3301 77.5)">
+                                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.8518518518518516s" values="0 72.5 77.5;360 72 77.5" keyTimes="0;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+                                </polygon>
+                            </g>
+                        </g>
+                    </g>
+                 </svg>
+    </div>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
-        <div class="app-header header-shadow  sidebar-text-dark " style="background-color:white!important;">
-            <div class="app-header__logo ">
-                <div class="logo-src">
-                    <img src="~/Asset/images/ProACCTool.png" style="width:250px;height:100px;" />
-                </div>
-                <div class="header__pane ml-auto ">
-                    <div>
-                        <button type="button"
-                                class="hamburger close-sidebar-btn hamburger--elastic"
-                                data-class="closed-sidebar">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner" style="color:green;"></span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="app-header__mobile-menu  ">
-                <div>
-                    <button type="button"
-                            class="hamburger hamburger--elastic mobile-toggle-nav">
-                        <span class="hamburger-box">
-                            <span class="hamburger-inner"></span>
-                        </span>
-                    </button>
-                </div>
-            </div>
-            <div class="app-header__menu ">
-                <span>
-                    <button type="button"
-                            class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
-                        <span class="btn-icon-wrapper">
-                            <i class="fa fa-ellipsis-v fa-w-6"></i>
-                        </span>
-                    </button>
-                </span>
-            </div>
-            <div class="app-header__content header-text-dark ">
-                @*<div class="app-header-left">
-                        <div class="search-wrapper">
-                            <div class="input-holder">
-                                <input type="text"
-                                       class="search-input"
-                                       placeholder="Type to search" />
-                                <button class="search-icon"><span></span></button>
-                            </div>
-                            <button class="close"></button>
-                        </div>
-
-                    </div>*@
-                <div class="app-header-right">
-                    <a href="javascript:void(0);" class="nav-link">
-                        <i class="nav-link-icon fa fa-envelope-square"></i>
-                    </a>
-                    <a href="javascript:void(0);" class="nav-link">
-                        <i class="nav-link-icon fa fa-bell"></i>
-                    </a>
-
-                    <div class="header-btn-lg pr-0">
-                        <div class="widget-content p-0">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                    <div class="btn-group">
-                                        <a data-toggle="dropdown"
-                                           aria-haspopup="true"
-                                           aria-expanded="false"
-                                           class="p-0 btn">
-                                            @*<img width="30"
-                                                class="rounded-circle"
-                                                src="~/Asset/images/ManojPass.jpg"
-                                                alt="" />*@
-                                            @if (Session["UserName"] != null)
-                                            {
-                                                <i id="UserName">@Session["UserName"].ToString() (@Session["UserType"].ToString())</i>
-                                            }
-                                            @*else
-                                                {
-                                                    Html.Action("Logout","Login");
-                                                }*@
-                                            <i class="fa fa-angle-down ml-2 opacity-8"></i>
-                                        </a>
-                                        <div tabindex="-1"
-                                             role="menu"
-                                             aria-hidden="true"
-                                             class="dropdown-menu dropdown-menu-right">
-                                            @*<button type="button"
-                                                        tabindex="0"
-                                                        class="dropdown-item" style="font-weight:bold;color:blue;">
-                                                    @DashboardName
-
-                                                </button>*@
-                                            @*<button type="button"
-                                                        tabindex="0"
-                                                        class="dropdown-item">
-                                                    User Account
-                                                </button>
-                                                <button type="button"
-                                                        tabindex="0"
-                                                        class="dropdown-item">
-                                                    Settings
-                                                </button>
-                                                <h6 tabindex="-1" class="dropdown-header">Header</h6>
-                                                <button type="button"
-                                                        tabindex="0"
-                                                        class="dropdown-item">
-                                                    Actions
-                                                </button>*@
-                                            <div tabindex="-1" class="dropdown-divider"></div>
-                                            @*<button type="button"
-                                                        tabindex="0"
-                                                        class="dropdown-item">
-                                                    LogOut
-                                                </button>*@
-                                            @Html.ActionLink("LogOut", "Logout", "login", new { area = "" }, new { @class = "dropdown-item" })
-                                        </div>
-                                    </div>
-                                </div>
-                                @*<div class="widget-content-left ml-3 header-user-info">
-                                        <div class="widget-heading">
-                                            Alina Mclourd
-                                        </div>
-                                        <div class="widget-subheading">
-                                            VP People Manager
-                                        </div>
-                                    </div>*@
-                                @*<div class="widget-content-right header-user-info ml-3">
-                                        <button type="button"
-                                                class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
-                                            <i class="fa text-white fa-calendar pr-1 pl-1"></i>
-                                        </button>
-                                    </div>*@
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui-theme-settings">
-            @*<button type="button" id="TooltipDemo" class="btn-open-options btn btn-warning">
-                    <i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i>
-                </button>*@
-            <div class="theme-settings__inner">
-                <div class="scrollbar-container">
-                    <div class="theme-settings__options-wrapper">
-                        <h3 class="themeoptions-heading">
-                            Layout Options
-                        </h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="app-main" style="padding-top:110px !important;">
-            <div class="app-sidebar sidebar-shadow">
-                <div class="app-header__logo">
-                    <div class="logo-src"></div>
-                    <div class="header__pane ml-auto">
+            <div class="app-header header-shadow  sidebar-text-dark " style="background-color:white!important;">
+                <div class="app-header__logo ">
+                    <div class="header__pane ml-auto ">
                         <div>
-                            <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                            <button type="button"
+                                    class="hamburger close-sidebar-btn hamburger--elastic"
+                                    data-class="closed-sidebar">
                                 <span class="hamburger-box">
-                                    <span class="hamburger-inner"></span>
+                                    <span class="hamburger-inner" style="color: green;"></span>
                                 </span>
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="app-header__mobile-menu">
+                <div class="app-header__mobile-menu  ">
                     <div>
-                        <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <button type="button"
+                                class="hamburger hamburger--elastic mobile-toggle-nav">
                             <span class="hamburger-box">
                                 <span class="hamburger-inner"></span>
                             </span>
                         </button>
                     </div>
                 </div>
-                <div class="app-header__menu">
+                <div class="app-header__menu ">
                     <span>
-                        <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <button type="button"
+                                class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
                             <span class="btn-icon-wrapper">
                                 <i class="fa fa-ellipsis-v fa-w-6"></i>
                             </span>
                         </button>
                     </span>
                 </div>
-                <div class="scrollbar-sidebar">
-                    <div class="app-sidebar__inner">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                        <ul class="vertical-nav-menu">
+                <div class="app-header__content header-text-dark ">
+                    
+                    <div class="app-header-left">
+                        <div class="logicon slideBefore">
+                            <img src="~/Asset/images/ProACCTool.png" style="width:230px;height:80px;" />
+                        </div>
+                        <p style="font-family: -webkit-body;font-size: x-large;margin-left: 155px;font-weight: 600;color: #0e0e0e;">
+                        Accelerator for S/4HANA Transformation</p>
+                    </div>
+                    <div class="app-header-right">
+                        <a href="javascript:void(0);" class="nav-link">
+                            <i class="nav-link-icon fa fa-envelope-square"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="nav-link">
+                            <i class="nav-link-icon fa fa-bell"></i>
+                        </a>
 
-                            <li class="app-sidebar__heading"></li>
-                            <li>
-
-                                <a href="@Url.Action("Home", "Home")">
-                                    <!-- <i class="metismenu-icon pe-7s-home"></i> -->
-                                    <i class="metismenu-icon fa fa-home"></i>
-                                    Dashboard
-                                </a>
-                            </li>
-                            <!-- <li class="app-sidebar__heading"></li> -->
-                            <li>
-                                <a>
-                                    <!-- <i class="metismenu-icon pe-7s-hourglass"></i> -->
-                                    <i class="metismenu-icon fa fa-cogs"></i>
-                                    Assessment
-                                    <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                </a>
-
-                                <ul>
-                                    @if ( User.IsInRole("Admin"))
+                        <div class="header-btn-lg pr-0">
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="btn-group">
+                                            <a data-toggle="dropdown"
+                                               aria-haspopup="true"
+                                               aria-expanded="false"
+                                               class="p-0 btn">
+                                                @*<img width="30"
+                                    class="rounded-circle"
+                                    src="~/Asset/images/ManojPass.jpg"
+                                    alt="" />*@
+                                                @if (Session["UserName"] != null)
+                                                {
+                                                    <i id="UserName" style="color:black !important;">@Session["UserName"].ToString() (@Session["UserType"].ToString())</i>
+                                                }
+                                                @*else
                                     {
-                                        <li>
-                                            @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
-                                            <a href="@Url.Action("ResourceAssessment", "Resource")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Resource Allocation
+                                        Html.Action("Logout","Login");
+                                    }*@
+                                                <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                             </a>
-                                        </li>
+                                            <div tabindex="-1"
+                                                 role="menu"
+                                                 aria-hidden="true"
+                                                 class="dropdown-menu dropdown-menu-right">
+                                                @*<button type="button"
+                                            tabindex="0"
+                                            class="dropdown-item" style="font-weight:bold;color:blue;">
+                                        @DashboardName
+
+                                    </button>*@
+                                                @*<button type="button"
+                                            tabindex="0"
+                                            class="dropdown-item">
+                                        User Account
+                                    </button>
+                                    <button type="button"
+                                            tabindex="0"
+                                            class="dropdown-item">
+                                        Settings
+                                    </button>
+                                    <h6 tabindex="-1" class="dropdown-header">Header</h6>
+                                    <button type="button"
+                                            tabindex="0"
+                                            class="dropdown-item">
+                                        Actions
+                                    </button>*@
+                                                <div tabindex="-1" class="dropdown-divider"></div>
+                                                @*<button type="button"
+                                            tabindex="0"
+                                            class="dropdown-item">
+                                        LogOut
+                                    </button>*@
+                                                @Html.ActionLink("LogOut", "Logout", "login", new { area = "" }, new { @class = "dropdown-item" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="widget-content-left ml-3 header-user-info">
+                            <div class="widget-heading">
+                                Alina Mclourd
+                            </div>
+                            <div class="widget-subheading">
+                                VP People Manager
+                            </div>
+                        </div>*@
+                                    @*<div class="widget-content-right header-user-info ml-3">
+                            <button type="button"
+                                    class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
+                                <i class="fa text-white fa-calendar pr-1 pl-1"></i>
+                            </button>
+                        </div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-theme-settings">
+                @*<button type="button" id="TooltipDemo" class="btn-open-options btn btn-warning">
+                        <i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i>
+                    </button>*@
+                <div class="theme-settings__inner">
+                    <div class="scrollbar-container">
+                        <div class="theme-settings__options-wrapper">
+                            <h3 class="themeoptions-heading">
+                                Layout Options
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-main">
+                <div class="app-sidebar sidebar-shadow">
+                    <div class="app-header__logo">
+                        <div class="logo-src"></div>
+                        <div class="header__pane ml-auto">
+                            <div>
+                                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                                    <span class="hamburger-box">
+                                        <span class="hamburger-inner"></span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-header__mobile-menu">
+                        <div>
+                            <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="app-header__menu">
+                        <span>
+                            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                                <span class="btn-icon-wrapper">
+                                    <i class="fa fa-ellipsis-v fa-w-6"></i>
+                                </span>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="scrollbar-sidebar">
+                        <div class="app-sidebar__inner">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                            <ul class="vertical-nav-menu">
+
+                                <li class="app-sidebar__heading"></li>
+                                <li>
+
+                                    <a href="@Url.Action("Home", "Home")">
+                                        <!-- <i class="metismenu-icon pe-7s-home"></i> -->
+                                        <i class="metismenu-icon fa fa-home"></i>
+                                        Dashboard
+                                    </a>
+                                </li>
+                                <!-- <li class="app-sidebar__heading"></li> -->
+                                @*Assessment*@
+                                <li>
+
+                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                    {
+                                        <a>
+                                            <!-- <i class="metismenu-icon pe-7s-hourglass"></i> -->
+                                            <i class="metismenu-icon fa fa-cogs"></i>
+                                            Assessment
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
+                                        </a>
+
+                                        <ul>
+                                            @if (User.IsInRole("Project Manager"))
+                                            {
+                                                <li>
+                                                    @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                                    <a href="@Url.Action("ResourceAssessment", "Resource")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Resource Allocation
+                                                    </a>
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("AssessmentMonitor", "ProjectMonitor")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Assessment Monitor
+                                                    </a>
+                                                </li>
+                                            }
+
+                                            @if (User.IsInRole("Consultant"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("CreateAnalysis", "Assessment")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Create Analysis
+                                                    </a>
+                                                </li>
+                                            }
+                                            <li>
+                                                <a href="#">
+                                                    <i class="metismenu-icon pe-7s-car"></i>
+                                                    Readiness Check
+                                                    <!-- <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i> -->
+                                                    <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
+                                                </a>
+                                                <ul>
+                                                    <li>
+                                                        <a href="@Url.Action("ReadinessReport", "Assessment")">
+                                                            <i class="metismenu-icon"> </i> Readiness Report
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@Url.Action("SimplificationReport", "Assessment")">
+                                                            <i class="metismenu-icon"> </i>Simplification Report
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@Url.Action("ActivitieReport", "Assessment")">
+                                                            <i class="metismenu-icon"> </i>Activities Report
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@Url.Action("CustomReport", "Assessment")">
+                                                            <i class="metismenu-icon"> </i>Custom Code Analysis
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@Url.Action("FioriAppsReport", "Assessment")">
+                                                            <i class="metismenu-icon"> </i>FioriApps Report
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@Url.Action("AssessmentReport", "Report")">
+                                                            <i class="metismenu-icon"> </i>Assessment Report
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
                                     }
-                                        @*@if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                                        {*@
-                                            <li>
-                                                <a href="@Url.Action("AssusmentMonitor", "ProjectMonitor")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Assessment Monitor
-                                                </a>
-                                            </li>
-
-                                        
-                                        @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                                        {
-                                            <li>
-                                                <a href="@Url.Action("CreateAnalysis", "Assessment")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Create Analysis
-                                                </a>
-                                            </li>
-                                        }
-                                        <li>
-                                            <a href="#">
-                                                <i class="metismenu-icon pe-7s-car"></i>
-                                                Assessment Reports
-                                                <!-- <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i> -->
-                                                <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                            </a>
-                                            <ul>
-                                                <li>
-                                                    <a href="@Url.Action("ReadinessReport", "Assessment")">
-                                                        <i class="metismenu-icon"> </i> Readiness Report
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="@Url.Action("SimplificationReport", "Assessment")">
-                                                        <i class="metismenu-icon"> </i>Simplification Report
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="@Url.Action("ActivitieReport", "Assessment")">
-                                                        <i class="metismenu-icon"> </i>Activities Report
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="@Url.Action("CustomReport", "Assessment")">
-                                                        <i class="metismenu-icon"> </i>Custom code Analysis
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="@Url.Action("FioriAppsReport", "Assessment")">
-                                                        <i class="metismenu-icon"> </i>FioriApps Report
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-
-
-                                    </ul>
-                            </li>
-                            @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                            {
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon fa fa-desktop"></i>
-                                        Pre-Conversion
-                                        <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                                        {
-                                            <li>
-                                                @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
-                                                <a href="@Url.Action("ResourcePreConversion", "Resource")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Resource Allocation
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("CommingSoon", "Test")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    PreConvertion Monitor
-                                                </a>
-                                            </li>
-
-                                        }
-
-                                        <li>
-                                            <a href="@Url.Action("PreConvertion_Upload", "PreConvertion")">
-                                                <i class="metismenu-icon"></i>
-                                                PreConvertion Upload
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="@Url.Action("Index", "PreConvertion")">
-                                                <i class="metismenu-icon"></i>
-                                                PreConvertion
-                                            </a>
-                                        </li>
-                                        @*<li>
-                        <a href="@Url.Action("EditTable", "PreConvertion")">
-                            <i class="metismenu-icon"></i>
-                            Consistency Report
-                        </a>
-                    </li>*@
-
-                                    </ul>
                                 </li>
-                            }
-                            @*<li>
-            @if (User.IsInRole("Admin"))
-            {
-            <a href="#">
-                <i class="metismenu-icon fa fa-dot-circle"></i>
-                Project Monitor
-                <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-            </a>
-            <ul>
-
-                <li>
-                    <a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">
-                        <i class="metismenu-icon"></i>
-                        Add Project Monitor
-                    </a>
-                </li>
-            </ul>
-            }
-        </li>*@
-                            @*@if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                            {
+                                @*Pre-Conversion*@
                                 <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon fa fa-dot-circle"></i>
-                                        Migration
-                                        <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                                        {
-                                            <li>
-                                                <a href="@Url.Action("ResourceMigration", "Resource")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Resource Allocation
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("CommingSoon", "Test")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Migration Monitor
-                                                </a>
-                                            </li>
 
-                                        }
-
-                                    </ul>
-                                </li>
-                            }*@
-
-                            @*<li>
-            <a href="#">
-                <i class="metismenu-icon fa fa-dot-circle"></i>
-                Migration
-            </a>
-            <ul>
-                @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                {
-                    <li>
-
-                        <a href="@Url.Action("CommingSoon", "Test")">
-                            <i class="metismenu-icon pe-7s-diamond"></i>
-                            Resource Allocation
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("CommingSoon", "Test")">
-                            <i class="metismenu-icon pe-7s-diamond"></i>
-                            Migration Monitor
-                        </a>
-                    </li>
-
-                }
-            </ul>
-        </li>*@
-                            @*<li>
-            <a href="@Url.Action("CommingSoon", "Test")">
-                <i class="metismenu-icon fa fa-fighter-jet"></i>
-                Post-Conversion
-            </a>
-        </li>*@
-                            @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                            {
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon fa fa-fighter-jet"></i>
-                                        Post-Conversion
-                                        <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                                        {
-                                            <li>
-                                                @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
-                                                <a href="@Url.Action("ResourcePostConversion", "Resource")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Resource Allocation
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("CommingSoon", "Test")">
-                                                    <i class="metismenu-icon pe-7s-diamond"></i>
-                                                    Post-Conversion Monitor
-                                                </a>
-                                            </li>
-
-                                        }
-
-                                    </ul>
-                                </li>
-                            }
-                        <li>
-                            @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-                            {
-                                <a href="@Url.Action("CommingSoon", "Test")">
-                                    <i class="metismenu-icon fa fa-gavel"></i>
-                                    Validation
-                                    <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                </a>
-                                <ul>
-
-                                    <li>
-                                        @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
-                                        <a href="@Url.Action("ResourceValidation", "Resource")">
-                                            <i class="metismenu-icon pe-7s-diamond"></i>
-                                            Resource Allocation
+                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                    {
+                                        <a href="#">
+                                            <i class="metismenu-icon fa fa-desktop"></i>
+                                            Pre-Conversion
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                         </a>
-                                    </li>
-                                    <li>
+                                        <ul>
+                                            @if (User.IsInRole("Project Manager"))
+                                            {
+                                                <li>
+                                                    @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                                    <a href="@Url.Action("ResourcePreConversion", "Resource")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Resource Allocation
+                                                    </a>
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("PreConvertionMonitor", "ProjectMonitor")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Pre-Conversion Monitor
+                                                    </a>
+                                                </li>
+
+                                            }
+
+                                            @*<li>
+                                                <a href="@Url.Action("PreConvertion_Upload", "PreConvertion")">
+                                                    <i class="metismenu-icon"></i>
+                                                    Pre-Conversion Upload
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="@Url.Action("Index", "PreConvertion")">
+                                                    <i class="metismenu-icon"></i>
+                                                    Pre-Conversion
+                                                </a>
+                                            </li>*@
+                                        </ul>
+                                    }
+                                </li>
+
+                                @*Conversion*@
+                                <li>
+
+                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                    {
+                                        <a href="#">
+                                            <i class="metismenu-icon fas fa-globe"></i>
+                                            Conversion
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
+                                        </a>
+                                        <ul>
+                                            @if (User.IsInRole("Project Manager"))
+                                            {
+                                                <li>
+                                                    @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                                    <a href="@Url.Action("ResourceConversion", "Resource")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Resource Allocation
+                                                    </a>
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("ConvertionMonitor", "ProjectMonitor")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Conversion Monitor
+                                                    </a>
+                                                </li>
+
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+
+                                @*Post-Conversion*@
+                                <li>
+                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                    {
+                                        <a href="#">
+                                            <i class="metismenu-icon fa fa-fighter-jet"></i>
+                                            Post-Conversion
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
+                                        </a>
+                                        <ul>
+                                            @if (User.IsInRole("Project Manager"))
+                                            {
+                                                <li>
+                                                    @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                                    <a href="@Url.Action("ResourcePostConversion", "Resource")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Resource Allocation
+                                                    </a>
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("PostConvertionMonitor", "ProjectMonitor")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Post-Conversion Monitor
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+                                @*Validation*@
+                                <li>
+                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager")|| User.IsInRole("Customer"))
+                                    {
                                         <a href="@Url.Action("CommingSoon", "Test")">
-                                            <i class="metismenu-icon pe-7s-diamond"></i>
-                                            Validation Monitor
+                                            <i class="metismenu-icon fa fa-gavel"></i>
+                                            Validation
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                         </a>
-                                    </li>
-
-                                    
-                                </ul>
-                            }
-                            </li>
-                            
-
-                            @if (User.IsInRole("Admin"))
-                            {
-                        <li>
-                            @*<a href="dashboard-boxes.html">
-            <i class="metismenu-icon fa fa-user"></i>
-            Profile Settings
-            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-        </a>*@
-                            <a href="#">
-                                <i class="metismenu-icon fa fa-user-cog"></i>
-                                User Settings
-                                <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                            </a>
-                            <ul>
-
-                                <li>
-                                    <a href="@Url.Action("ProfileLink", "Link")">
-                                        <i class="metismenu-icon pe-7s-diamond"></i>
-                                        Add New User / Customers
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("Index", "Customers")">
-                                        <i class="metismenu-icon pe-7s-diamond"></i>
-                                        View Customers
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("Index", "User")">
-                                        <i class="metismenu-icon pe-7s-diamond"></i>
-                                        User's List
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                            }
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon fa fa-briefcase"></i>
-                                        Configuration
-                                        <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="@Url.Action("Create", "ProjectCreation")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Project Creation
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="@Url.Action("Create", "InstanceCreation")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Instance Creation
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="@Url.Action("Create", "Activity")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Activity Creation
-                                            </a>
-                                        </li>
-
-                                        @*<li>
-                        <a href="@Url.Action("Create", "CustomerProjectConfigs")">
-                            <i class="metismenu-icon pe-7s-diamond"></i>
-                            Add Project to Customer
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Create", "ProjectInstanceConfigs")">
-                            <i class="metismenu-icon pe-7s-diamond"></i>
-                            Add Instance to Project
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "CustomerProjectConfigs")">
-                            <i class="metismenu-icon pe-7s-diamond"></i>
-                            View Project List
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "ProjectInstanceConfigs")">
-                            <i class="metismenu-icon pe-7s-diamond"></i>
-                            View Instance List
-                        </a>
-                    </li>*@
-                                        @*<li>
-                        <a href="@Url.Action("Index", "PhaseMaster")">
-                            <i class="metismenu-icon pe-7s-diamond"></i>
-                            Master
-                        </a>
-                    </li>*@
-                                    </ul>
+                                        <ul>
+                                            @if (User.IsInRole("Project Manager"))
+                                            {
+                                                <li>
+                                                    @*<a href="@Url.Action("PMAdminCreate", "ProjectMonitor")">*@
+                                                    <a href="@Url.Action("ResourceValidation", "Resource")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Resource Allocation
+                                                    </a>
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("ValidationMonitor", "ProjectMonitor")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Validation Monitor
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
                                 </li>
 
-                                @*<li>
-                                    <a href="#">
-                                        <i class="metismenu-icon fa fa-user-cog"></i>
-                                        User Settings
-                                        <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="@Url.Action("CommingSoon", "Test")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Create Login
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="@Url.Action("CommingSoon", "Test")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                View Login
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>*@
+                                @*User Settings*@
+                                <li>
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a href="#">
+                                            <i class="metismenu-icon fa fa-user-cog"></i>
+                                            User Settings
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
+                                        </a>
+                                        <ul>
+
+                                            <li>
+                                                <a href="@Url.Action("ProfileLink", "Link")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Add New User / Customer
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Index", "Customers")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Customer List
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Index", "User")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    User List
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    }
+                                </li>
+                                @*Config*@
+                                <li>
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a href="#">
+                                            <i class="metismenu-icon fa fa-briefcase"></i>
+                                            Configuration
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="@Url.Action("Create", "ProjectCreation")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Project Creation
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Create", "InstanceCreation")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Instance Creation
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Create", "Activity")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Activity Creation
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Create", "Role")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Role Creation
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    }
+                                </li>
+                                @*Reports*@
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon fa fa-flag-checkered"></i>
@@ -611,67 +650,91 @@
                                         <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                     </a>
                                     <ul>
-                                        <li>
-                                            <a href="@Url.Action("CommingSoon", "Test")">
+                                        @*<li>
+                                            <a href="@Url.Action("OverAllTaskReport", "Report")">
                                                 <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Customer Report
+                                                Detailed Task Report
+                                            </a>
+                                        </li>*@
+
+                                        <li>
+                                            <a href="@Url.Action("AuditReports", "Report")">
+                                                <i class="metismenu-icon pe-7s-diamond"></i>
+                                                Audit Report
                                             </a>
                                         </li>
-
                                     </ul>
                                 </li>
 
+                            </ul>
                             }
-
-                        </ul>
-                        }
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="app-main__outer">
-                <div class="app-main__inner">
-                    @RenderBody()
-                    @RenderSection("scripts", required: false)
-                </div>
-                <div class="app-wrapper-footer">
-                    <div class="app-footer">
-                        <div class="app-footer__inner">
-                            <div class="app-footer-left">
-                                <img src="~/Asset/images/resizeimage.png" style="width: 150px;" /><br />
-                                <footer style="text-indent: 1em;"><a style="color:gray !important;">©Copyright 2020 Promantus Inc.,All Rights Reserved</a></footer>
-                            </div>
-                            <div class="app-footer-right">
+                <div class="app-main__outer" style="overflow:auto;height:535px;">
+                    <div class="app-main__inner">
+                        <hr />
+                            @RenderBody()
+                            @RenderSection("scripts", required: false)
+                    </div>
+                    <div class="app-wrapper-footer">
+                        <div class="app-footer">
+                            <div class="app-footer__inner">
+                                <div class="app-footer-left">
+                                    <img src="~/Asset/images/resizeimage.png" style="width: 150px;" /><br />
+                                    <footer style="text-indent: 1em;"><a style="color:gray !important;">©Copyright 2020 Promantus Inc,All Rights Reserved</a></footer>
+                                </div>
+                                <div class="app-footer-right">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-               
             </div>
 
         </div>
-        
-    </div>
-    <div id="load"><img class="Load_img my-auto" src="~/Asset/images/loading.gif"></div>
-   
     <script>
-        $(document).ready(function () {
-            $(document).ajaxStart(function () {
-                $("#load").css("display", "block");
-            });
-            $(document).ajaxComplete(function () {
-                $("#load").css("display", "none");
-            });
-        });
-        $(".vertical-nav-menu a").each(function () {
+            $(document).ready(function () {
+                // $(".header__pane").remove();
+                $(".header__pane").click(function e() {
 
-            if ((window.location.pathname.indexOf($(this).attr('href'))) > -1) {
-                $(this).addClass('mm-active');
-                $(this).parent().addClass('mm-active');
-            }
-        });
-       $("#btnAddNew").on("click", function () {
-        location.reload();
-        });
-    </script>
+                    if ($('.logicon').hasClass('slideBefore')) {
+                        $('.logicon').switchClass('slideBefore', 'slide');
+                    } else {
+                        $('.logicon').switchClass('slide', 'slideBefore');
+                    }
+
+                    
+                   
+                })
+                $(document).ajaxStart(function () {
+                    $("#load").css("display", "block");
+                });
+                $(document).ajaxComplete(function () {
+                    $("#load").css("display", "none");
+                });
+            });
+            $(".vertical-nav-menu a").each(function () {
+
+                if ((window.location.pathname.indexOf($(this).attr('href'))) > -1) {
+                    $(this).addClass('mm-active');
+                    $(this).parent().addClass('mm-active');
+                }
+            });
+            $("#btnAddNew").on("click", function () {
+                location.reload();
+            });
+    
+      window.onload = function(){
+               // debugger;
+    $("#load").css("display", "block");
+
+    setTimeout(function () {
+       $("#load").css("display", "none");  
+    }, 1500);
+
+};
+
+        </script>
 </body>
 </html>

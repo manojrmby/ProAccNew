@@ -10,13 +10,21 @@
             <div class="col-lg-6">
                 <div class="mb-3 text-left card card-body">
                     <h5 class="card-title">Customer</h5>Click to go Customer Creation Page.
-                    <button class="btn btn-outline-focus" id="Me_customer"><b>Create New Customer</b> </button>
+                    <button class="btn btn-outline-focus ld-ext-top" onclick="this.classList.toggle('running')" id="Me_customer">
+                        <b>
+                            Create New Customer
+                        </b>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </button>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="mb-3 text-left card card-body">
                     <h5 class="card-title">User Creation</h5>Click to go User Creation Page.
-                    <button class="btn btn-outline-focus" id="Me_User"><b>Create New User</b></button>
+                    <button id="Me_User" class="btn btn-outline-focus ld-ext-top"  onclick="this.classList.toggle('running')">
+                        <b>Create New User</b>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -105,3 +113,4 @@ var url = $("#RedirectToCustomer").val();
     //});
 
 </script>
+

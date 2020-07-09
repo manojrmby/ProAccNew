@@ -34,7 +34,7 @@ namespace ProAcc.Controllers
             var Projlist = (from e in db.Projects
                             join c in db.Customers on e.Customer_Id equals c.Customer_ID
                          where e.isActive == true && c.isActive==true
-                         select e).ToList();
+                         select e).OrderByDescending(x => x.Cre_on).ToList();
             return PartialView("_ProjectCreationIndex", Projlist);
         }
 
@@ -108,7 +108,7 @@ namespace ProAcc.Controllers
             }
             //var Project = db.Projects.Find(id);
             var Project = db.Projects.Where(x => x.isActive == true && x.Project_Id == id).Select(p => new { p.Project_Id, p.Project_Name, p.Description, p.Customer_Id,p.ProjectManager_Id, p.Cre_on, p.Cre_By}).FirstOrDefault();
-            
+            //TempData["Cre_On"] = project.Cre_on;
             return Json(Project, JsonRequestBehavior.AllowGet);
             //var list = JsonConvert.SerializeObject(Project, Formatting.None,
             //new JsonSerializerSettings()
@@ -125,8 +125,8 @@ namespace ProAcc.Controllers
             var name = db.Projects.Where(p => p.Project_Name == model.Project_Name).Where(x => x.Project_Id != model.Project_Id).Where(x => x.isActive == true).ToList();
             if (name.Count == 0)
             {
-                model.Modified_On = DateTime.Now;
-                model.Cre_on = DateTime.Now;
+                model.Modified_On = DateTime.UtcNow;
+                model.Cre_on = DateTime.UtcNow; 
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
                 db.Entry(model).State = EntityState.Modified;
@@ -143,15 +143,29 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
-            Project project = db.Projects.Find(id);
-            if (project.Project_Id == id)
+            var del = (from a in db.Projects
+                       join b in db.Instances
+                       on a.Project_Id equals b.Project_ID
+                       where a.Project_Id == id && a.isActive == true && b.isActive == true
+                       select b
+                     ).ToList();
+            if(del.Count!=0)
             {
-                project.isActive = false;
-                project.IsDeleted = true;
-                db.Entry(project).State = EntityState.Modified;
-                db.SaveChanges();
+                return Json("fail");
             }
-            return Json("success");
+            else
+            {
+                Project project = db.Projects.Find(id);
+                if (project.Project_Id == id)
+                {
+                    project.isActive = false;
+                    project.IsDeleted = true;
+                    db.Entry(project).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json("success");
+            }
+           
         }
     }
 }

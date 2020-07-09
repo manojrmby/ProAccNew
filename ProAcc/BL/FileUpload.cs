@@ -7,7 +7,6 @@ using System.Linq;
 using System.Web;
 using ClosedXML.Attributes;
 using ProAcc.BL.Model;
-
 namespace ProAcc.BL
 {
     public class FileUpload
@@ -464,5 +463,7 @@ namespace ProAcc.BL
         }
         #endregion
 
+
+        
     }
 }

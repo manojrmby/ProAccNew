@@ -25,6 +25,7 @@ namespace ProACC_DB
         public string Company_Name { get; set; }
         public int IndustrySector_ID { get; set; }
         public string Contact { get; set; }
+        public string Countrycode { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public bool isActive { get; set; }

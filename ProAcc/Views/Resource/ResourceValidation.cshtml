@@ -1,14 +1,17 @@
 ﻿
 @{
-    ViewBag.Title = "ResourceValidation";
+    ViewBag.Title = "Resource Allocation";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
-<script src="~/Asset/Jquery/jqGrid/grid.locale-en.js"></script>
-<script src="~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"></script>
-<link href="~/Asset/Jquery/jqGrid/css/octicons.css" rel="stylesheet" />
-<link href="~/Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css" rel="stylesheet" />
+@*<script src="~/Asset/Jquery/jqGrid/grid.locale-en.js"></script>
+    <script src="~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"></script>
+    <link href="~/Asset/Jquery/jqGrid/css/octicons.css" rel="stylesheet" />
+    <link href="~/Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css" rel="stylesheet" />*@
 
+@Styles.Render("~/Content/css/jqGrid")
+@Scripts.Render("~/bundles/Scripts/jqGrid")
+<a class="card-title">Resource Allocation</a>
 <script>
     //$.jgrid.defaults.width =1000;
     $.jgrid.defaults.responsive = true;
@@ -16,7 +19,7 @@
     $.jgrid.defaults.iconSet = "Octicons";
 </script>
 <style>
-    .ui-jqgrid {
+    /*.ui-jqgrid {
         font-size: 0.8rem
     }
 
@@ -32,15 +35,29 @@
 
     .ui-jqgrid .ui-jqgrid-bdiv {
         overflow-y: scroll
-    }
+    }*/
 
     #jqGridPager_center {
         visibility: hidden;
     }
 </style>
+<style>
+    .wrapColumnText {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+    }
+    /*div.centered {
+        position: fixed;
+        top: 40%!important;
+        left: 50%!important;
+        margin-top: -50px;
+        margin-left: -100px;
+    }*/
+</style>
 
-<div class="row">
-    <div class="col-lg-12 card" style="margin-bottom:20px !important;">
+<div class="row" style="padding: 1em;">
+    <div class="col-lg-12 card">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
             {
@@ -54,7 +71,7 @@
             }
             <div class="col-md-4">
                 <label class="">Project Name</label>
-                @if (User.IsInRole("Customer"))
+                @if (User.IsInRole("Customer") || User.IsInRole("Project Manager"))
                 {
                     @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
                 }
@@ -79,14 +96,19 @@
     </div>
 </div>
 
-<div style="margin-left:20px;margin-top:20px">
+<div>
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
 <script>
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
-            $('#SubmitInstance').prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+
+         $(window).on("resize", function () {
+        var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
+             $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
+         });
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);
@@ -136,7 +158,7 @@
                     }));
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("LoadInstance","Home")',
+                url: '@Url.Action("LoadInstanceforResource","Home")',
                 data: { 'ProjectId' : id},
                 success: function (data) {
                     var select = $("#IDInstance");
@@ -174,24 +196,43 @@
             });
     $('#SubmitInstance').click(function () {
         var IDInstance = $("#IDInstance").val();
-         $.ajax({
-                    //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
-                 url: '@Url.Action("SubmitInstance", "Home")',
-                 type: "POST",
-                 data: { 'IDInstance': IDInstance },
-                 success: function (result) {
-                     alert("New Live Instance updated");
-                     LoadTable(IDInstance);
-                     //location.reload();
-                 }
-                });
+        $.ajax({
+            //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+            url: '@Url.Action("SubmitInstance", "Home")',
+            type: "POST",
+            data: { 'IDInstance': IDInstance },
+            success: function (result) {
+                 Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                 LoadTable(IDInstance);
+                 $('#jqGrid').trigger('reloadGrid');
+                //$.alert({
+                //    title: 'Alert !',
+                //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                //    icon: 'fa fa-rocket',
+                //    animation: 'scale',
+                //    closeAnimation: 'scale',
+                //    buttons: {
+                //        okay: {
+                //            text: 'Okay',
+                //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                //            action: function (event, ui) {
+                //                $(this).remove();
+                //            }
+                //        }
+                //    }
+
+                //});
+
+
+            }
+        });
     });
 </script>
 
 <script>
     function LoadTable(Instance) {
         // altrows are set with table striped class for Boostrap
-        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered table-striped";
+        $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
         var lastSelection;
         var editParameters = {
             keys: true,
@@ -280,9 +321,14 @@
             }
         };
 
+         var rowEdit = function (row) {
+            debugger;
+            if (row == 0)
+                return false;
+        }
 
         $("#jqGrid").jqGrid({
-            url: "@Url.Action("GetDataValidation","Resource")",
+            url: "@Url.Action("GetData","Resource",new { Phase_ID= ViewBag.PhaseID})",
             datatype: "json",
             editurl: "@Url.Action("UpdateResource","Resource")",
             colModel: [
@@ -293,17 +339,17 @@
                 },
                 {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                    sortable: false, align: 'center', editable: true, edittype: 'custom',
+                    sortable: false, align: 'Left', editable: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetPhaseDropDown()
 
                     }
                 },
-                { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true },
-                { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true },
+                { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: true,classes: 'wrapColumnText' },
+                { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: true ,hidden: true},
                 {
-                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'center', editable: true,
+                    label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'left', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetRoleDropDown(),
@@ -317,30 +363,40 @@
                     },
 
                 },
-                //{
-                //    label: 'Named Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: true, align: 'center', editable: true,
-                //    cellEdit: true, edittype: 'select', formatter: 'select',
-                //    editoptions: {
-                //        value: GetUserDropDown()
-                //    }
-                //},
 
-
-                //Add Only
                 {
-                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'center', editable: true, hidden: true,
-                    cellEdit: true, edittype: 'select', formatter: 'select',
-                    editoptions: {
-                        value: GetMasterAddAssessment()
+                    label: 'Select Task', name: 'ActivityID', index: 'ActivityID', width: 70, sortable: false, align: 'left', editable: true, hidden: true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',//Add Only
+                     editoptions: {
+                        dataUrl: '@Url.Action("MasterAddValidation","Resource")',
+                        buildSelect: buildSelectFromJson
                     }
                 },
+                {
+                    label: 'Status', name: 'StatusId', index: 'StatusId', width: 70,  align: 'Left', editable: true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetStatusDropDown()
+                    },
+                },
+
+                {
+                    label: 'Owner of Task', name: 'UserID', index: 'UserID', width: 70, sortable: false, align: 'center', editable: true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetUserDropDown()
+                    }
+                },
+
+
+
 
             ],
             loadonce: false,
             altRows: true,
             //rownumbers : true,
             //multiselect : true,
-            width: 900,
+            width: 950,
             colMenu: false,
             menubar: false,
             viewrecords: true,
@@ -348,14 +404,14 @@
             // height: 'auto',
             height: 400,
             rowNum: 1000,
-            caption: 'Resource Allocation',
+            caption: '',
             sortable: false,
             grouping: false,
             pager: "#jqGridPager",
             rownumbers: true,
             reload: true,
-            sortname: 'SequenceNum',
-            sortorder: 'desc',
+            //sortname: 'SequenceNum',
+            //sortorder: 'desc',
             afterSubmit: function () {
                 //debugger;
                 //location.reload(true);
@@ -369,7 +425,7 @@
 
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
-            { edit: true, add: true, del: true, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
+            { edit: true, add: true, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
                 editCaption: "The Edit Dialog",
@@ -377,17 +433,52 @@
                 checkOnUpdate: true,
                 checkOnSubmit: true,
                 closeAfterEdit: true,
+                beforeInitData: function (form) {
+                    var id = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');
+                    var celValue = jQuery("#jqGrid").jqGrid('getCell', id, 'StatusId');
+                    if (celValue == 3 || celValue == 1) {
+                        $.alert({
+                            title: 'Alert !',
+                            content: 'You\'r  not allowed to edit task Which are already closed..! ',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                            icon: 'fa fa-rocket',
+                            animation: 'scale',
+                            closeAnimation: 'scale',
+                            buttons: {
+                                okay: {
+                                    text: 'Okay',
+                                    btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control'
+                                    //action: function (event, ui) {
+                                    //    $(this).remove();
+                                    //    LoadTable(IDInstance);
+                                    //    $('#jqGrid').trigger('reloadGrid');
+                                    //}
+                                }
+                            }
+
+                        });
+
+                        return false;
+                    }
+                    //var Status=$("#" + id + "_StatusId").val();
+                    //alert(id);
+                },
                 beforeShowForm: function (form) {
                     //$("#PhaseId").attr("disabled", "disabled");
+
+                    $("#editmodjqGrid").addClass("centered");
+                    $(".navButton").hide();
                     $("#tr_PhaseId").hide();
                     $("#tr_SequenceNum").hide();
+                    $("#tr_StatusId").hide();
 
                     $("#Task").attr("disabled", "disabled");
+                     $("#RoleID").attr("disabled", "disabled");
                     //$("#RoleID").attr("disabled", "disabled");
                     UpdateUserByRole($("#RoleID").val());
                     //debugger;
                     //needDisable=true;
                 },
+                reloadAfterSubmit: true,
                 // afterShowForm: populateUser,
                 errorTextFormat: function (data) {
                     alert("in" + data.responseText);
@@ -400,10 +491,13 @@
                 closeAfterAdd: true,
                 recreateForm: true,
                 beforeShowForm: function (form) {
+                    $("#editmodjqGrid").addClass("centered");
                     $("#tr_PhaseId").hide();
                     $("#tr_SequenceNum").hide();
+                     $("#tr_StatusId").hide();
                     $("#tr_Task").hide();
                     $("#tr_RoleID").hide();
+                     $("#tr_UserID").hide();
                     //debugger;
                     //alert("In");
                     $("#tr_ActivityID").show();
@@ -427,8 +521,30 @@
                         success: function (Data) {
 
                             if (Data) {
+
+                                $.alert({
+                                    title: 'Delete !',
+                                    content: 'Deleted Sussfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                    icon: 'fa fa-trfa-trash-o',
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                        okay: {
+                                            text: 'Okay',
+                                            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                            action: function (event, ui) {
+                                                $(this).remove();
+                                                //LoadTable(IDInstance);
+                                                $('#jqGrid').trigger('reloadGrid');
+                                            }
+                                        }
+                                    }
+
+                                });
+
+
                                 //debugger;
-                                alert("Deleted Sussfully..!");
+                                //alert("");
                             }
                             //for (var i = 0; i < Data.length; i++) {
                             //    var obj = {};
@@ -458,6 +574,39 @@
                 showQuery: false
             }
         );
+    }
+    var buildSelectFromJson = function (response) {
+        var html = '<select>', d = JSON.parse(response), length = d.length, i = 0, item;
+        for (; i < length; i++) {
+            item = d[i];
+            html += '<option value=' + item.ActivityID + '>' + item.Task + '</option>';
+        }
+        html += '</select>';
+        return html;
+    };
+     function GetStatusDropDown() {
+        var Parameters = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetStatus","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+                //debugger;
+                for (var i = 0; i < Data.length; i++) {
+                    //var obj = {};
+                    var StatusName = Data[i].StatusName;
+                    var key = "" + Data[i].Id;
+                    Parameters[key] = StatusName;
+                }
+            },
+            error: function (data) {
+                alert("GetStatus fail");
+            }
+        });
+        return Parameters;
     }
     function GetPhaseDropDown() {
         var Parameters = {};
@@ -517,18 +666,23 @@
          $("#UserID")
             .html("<option value=''>Loading User...</option>")
             .attr("disabled", "disabled");
+
         $.ajax({
             url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
            // data: '{RoleID: ' + JSON.stringify(RoleID)+'}',
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
             success: function (res) {
+                //debugger;
                 $("#UserID")
                     .removeAttr("disabled");
                  $('#UserID').empty()
                 $.each(res, function (data, value) {
+                    var d = "00000000-0000-0000-0000-000000000000"
+                    if (value.UserId!=d) {
+                         $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
+                    }
 
-                    $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
                 })
             }
                     //.html(citiesHtml);
@@ -537,7 +691,7 @@
 
     }
     $("#RoleID").change(function () {
-        debugger;
+       // debugger;
         var RoleID = $("#RoleID").val();
         UpdateUserByRole(RoleID)
     });
@@ -565,14 +719,14 @@
     });
 	return Parameters;
     }
-    function GetMasterAddAssessment() {
+    function GetMasterAddValidation() {
 	var Parameters = {};
     $.ajax({
         type: "POST",
-        url: '@Url.Action("MasterAddAssessment","Resource")',
+        url: '@Url.Action("MasterAddValidation","Resource")',
         //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
         dataType: "json",
-		async: false,
+        async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data) {
             //debugger;
