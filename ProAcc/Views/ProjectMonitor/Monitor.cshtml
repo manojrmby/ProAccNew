@@ -411,7 +411,7 @@
                     function () {
                         $.ajax({
                                             type: "POST",
-                                            url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor",new { Phase_ID= ViewBag.PhaseID})',
+                                            url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor",new { Phase_ID= TempData["PhaseID"]})',
                                             data: {
                                                 'Id': "" + Id + "",
                                                 'StatusId': StatusId,
