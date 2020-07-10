@@ -232,7 +232,6 @@
     <Content Include="Asset\Jquery\jquery-1.12.4.js" />
     <Content Include="Asset\Jquery\jquery-ui.css" />
     <Content Include="Asset\Jquery\jquery-ui.js" />
-    <Content Include="Asset\Log\04-28-2020.txt" />
     <Content Include="Asset\Scripts\bootstrap.min.js" />
     <Content Include="Asset\Scripts\Chart.RadialGauge.umd.js" />
     <Content Include="Asset\Scripts\Chart.js" />
@@ -678,6 +677,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Asset\Log\" />
     <Folder Include="Asset\UploadedFiles\Temp\Pdf\" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -18,6 +19,7 @@ namespace ProAcc.BL
     {
         Base _Base = new Base();
         LogHelper _Log = new LogHelper();
+        private string _TemplatePath = System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Mail_FolderPath"].ToString());
         internal void StartMailSend()
         {
             StartTimer();
@@ -46,22 +48,39 @@ namespace ProAcc.BL
             try
             {
                 string subject, body;
-                Boolean priority = false;
-                subject = "TEstt";
-                body = "Test";
+                Boolean priority = false,MailTestEnable=true;
+                string TestToId = "";
+                subject = "";
+                body = "";
                 List<MailModel> MailS = _Base.GetMailList();
+                MailTestEnable = Convert.ToBoolean(ConfigurationManager.AppSettings["Mail_EnableTest"].ToString());
+                TestToId = ConfigurationManager.AppSettings["Mail_TestToID"].ToString();
 
                 foreach (var item in MailS)
                 {
-                    MailAddress toAddress = new MailAddress("manojrmby@gmail.com", "Manoj");
+                    subject = item.Subject;
+                    body =PopulateBody(item.TemplateName);
 
+                    string To="",Name="";
+                    if (MailTestEnable)
+                    {
+                        To = TestToId;
+                        Name = "Test";
+
+                    }
+                    else
+                    {
+                        To = item.To.ToString();
+                        Name = item.Name.ToString();
+                    }
+                    MailAddress toAddress = new MailAddress(To,Name);
                     await Task.Run(() => this.Send(toAddress, subject, body, priority,item.Running_ID));
                 }
                 _Log.createLog("All Mail Sent");
             }
             catch (Exception EX)
             {
-                _Log.createLog("Mail Started" + EX);
+                _Log.createLog("Mail Started -->SendAsyncMail" + EX);
                 throw;
             }
             
@@ -75,41 +94,74 @@ namespace ProAcc.BL
 
         private void SendEmail(MailAddress toAddress, string subject, string body, bool priority,int ID)
         {
-            MailAddress fromAddress = new MailAddress(WebConfigurationManager.AppSettings["Mail_UserName"]);
-            string serverName = WebConfigurationManager.AppSettings["Mail_Client"];
-            int port = Convert.ToInt32(WebConfigurationManager.AppSettings["Mail_Port"]);
-            string userName = WebConfigurationManager.AppSettings["Mail_UserName"];
-            string password = WebConfigurationManager.AppSettings["Mail_Password"];
+            try
+            {
+                MailAddress fromAddress = new MailAddress(WebConfigurationManager.AppSettings["Mail_UserName"]);
+                string serverName = WebConfigurationManager.AppSettings["Mail_Client"];
+                int port = Convert.ToInt32(WebConfigurationManager.AppSettings["Mail_Port"]);
+                string userName = WebConfigurationManager.AppSettings["Mail_UserName"];
+                string password = WebConfigurationManager.AppSettings["Mail_Password"];
 
-            var message = new MailMessage(fromAddress, toAddress);
+                var message = new MailMessage(fromAddress, toAddress);
 
-            message.Subject = subject;
-            message.Body = body;
-            message.IsBodyHtml = true;
-            message.HeadersEncoding = Encoding.UTF8;
-            message.SubjectEncoding = Encoding.UTF8;
-            message.BodyEncoding = Encoding.UTF8;
-            if (priority) message.Priority = MailPriority.High;
+                message.Subject = subject;
+                message.Body = body;
+                message.IsBodyHtml = true;
+                message.HeadersEncoding = Encoding.UTF8;
+                message.SubjectEncoding = Encoding.UTF8;
+                message.BodyEncoding = Encoding.UTF8;
+                if (priority) message.Priority = MailPriority.High;
 
-            Thread.Sleep(1000);
+                Thread.Sleep(1000);
 
-            SmtpClient client = new SmtpClient(serverName, port);
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.EnableSsl = true;
-            //Convert.ToBoolean(WebConfigurationManager.AppSettings["SmtpSsl"]);
-            client.UseDefaultCredentials = false;
+                SmtpClient client = new SmtpClient(serverName, port);
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = true;
+                //Convert.ToBoolean(WebConfigurationManager.AppSettings["SmtpSsl"]);
+                client.UseDefaultCredentials = false;
 
-            NetworkCredential smtpUserInfo = new NetworkCredential(userName, password);
-            client.Credentials = smtpUserInfo;
+                NetworkCredential smtpUserInfo = new NetworkCredential(userName, password);
+                client.Credentials = smtpUserInfo;
 
-            //client.Send(message);
-            _Log.createLog(ID+"--->"+toAddress.ToString());
-            client.Dispose();
-            message.Dispose();
+                client.Send(message);
+                _Log.createLog(ID + "--->" + toAddress.ToString());
+                _Base.UpdateMailList(ID);
+                client.Dispose();
+                message.Dispose();
+            }
+            catch (Exception Ex)
+            {
+
+                _Log.createLog("Mail Errorr --->" + Ex.ToString());
+                //throw;
+            }
+            
         }
 
-        
 
+        //private string PopulateBody(string userName, string title, string url, string description, string TemplateName)
+        private string PopulateBody(string TemplateName)
+        {
+            string body = string.Empty;
+            try
+            {
+                using (StreamReader reader = new StreamReader(_TemplatePath+ TemplateName.Trim()+".html"))
+                {
+                    body = reader.ReadToEnd();
+                }
+                //body = body.Replace("{UserName}", userName);
+                //body = body.Replace("{Title}", title);
+                //body = body.Replace("{Url}", url);
+                //body = body.Replace("{Description}", description);
+            }
+            catch (Exception Ex)
+            {
+
+                throw;
+            }
+            
+            return body;
+        }
 
         //private void SendEmail(String ToMailId)
         //{
