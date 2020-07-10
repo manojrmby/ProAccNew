@@ -19,10 +19,12 @@ namespace ProAcc.BL
     {
         Base _Base = new Base();
         LogHelper _Log = new LogHelper();
+        GetQuestionary GQ = new GetQuestionary();
         private string _TemplatePath = System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Mail_FolderPath"].ToString());
         internal void StartMailSend()
         {
-            StartTimer();
+            //StartTimer();
+            GQ.StartGQPULL();
         }
         public async Task StartTimer()
         {

@@ -19,7 +19,7 @@ namespace ProAcc
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             GlobalFilters.Filters.Add(new AuthorizeAttribute());
             Mail mail = new Mail();
-            //mail.StartMailSend();
+            mail.StartMailSend();
         }
          protected void Application_Error()
         {
