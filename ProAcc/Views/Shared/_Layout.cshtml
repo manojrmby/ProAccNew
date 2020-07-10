@@ -455,18 +455,18 @@
                                             }
 
                                             @*<li>
-                                                <a href="@Url.Action("PreConvertion_Upload", "PreConvertion")">
-                                                    <i class="metismenu-icon"></i>
-                                                    Pre-Conversion Upload
-                                                </a>
-                                            </li>
+                        <a href="@Url.Action("PreConvertion_Upload", "PreConvertion")">
+                            <i class="metismenu-icon"></i>
+                            Pre-Conversion Upload
+                        </a>
+                    </li>
 
-                                            <li>
-                                                <a href="@Url.Action("Index", "PreConvertion")">
-                                                    <i class="metismenu-icon"></i>
-                                                    Pre-Conversion
-                                                </a>
-                                            </li>*@
+                    <li>
+                        <a href="@Url.Action("Index", "PreConvertion")">
+                            <i class="metismenu-icon"></i>
+                            Pre-Conversion
+                        </a>
+                    </li>*@
                                         </ul>
                                     }
                                 </li>
@@ -540,7 +540,7 @@
                                 </li>
                                 @*Validation*@
                                 <li>
-                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager")|| User.IsInRole("Customer"))
+                                    @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
                                     {
                                         <a href="@Url.Action("CommingSoon", "Test")">
                                             <i class="metismenu-icon fa fa-gavel"></i>
@@ -643,30 +643,34 @@
                                     }
                                 </li>
                                 @*Reports*@
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon fa fa-flag-checkered"></i>
-                                        Reports
-                                        <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        @*<li>
-                                            <a href="@Url.Action("OverAllTaskReport", "Report")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Detailed Task Report
-                                            </a>
-                                        </li>*@
+                                
+                               <li>
+                                        <a href="#">
+                                            <i class="metismenu-icon fa fa-flag-checkered"></i>
+                                            Reports
+                                            <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
+                                        </a>
+                                        <ul>
+                                            @*<li>
+                                                <a href="@Url.Action("OverAllTaskReport", "Report")">
+                                                    <i class="metismenu-icon pe-7s-diamond"></i>
+                                                    Detailed Task Report
+                                                </a>
+                                            </li>*@
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("AuditReports", "Report")">
+                                                        <i class="metismenu-icon pe-7s-diamond"></i>
+                                                        Audit Report
+                                                    </a>
+                                                </li>
+                                            }
+                                            </ul>
+                                    </li>
+                                
 
-                                        <li>
-                                            <a href="@Url.Action("AuditReports", "Report")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Audit Report
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                            </ul>
+                                </ul>
                             }
                         </div>
                     </div>

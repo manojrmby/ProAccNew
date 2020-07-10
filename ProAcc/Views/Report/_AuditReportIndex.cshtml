@@ -10,19 +10,18 @@
 <table class="table" id="tblAudit">
     <thead>
         <tr>
-            <th>User</th>
-            <th>TABLE NAME</th>
-            <th>SUMMARY</th>
-            <th>ACTION</th>
+            <th>Table</th>
+            <th>Summary</th>
+            <th>Action</th>
+            <th>Action on</th>
+            <th>Action BY</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    <a class="txtG" value="@item.NAME">@item.NAME</a>
-                </td>
+                
                 <td>
                     <a class="txtG" value="@item.TABLE_NAME">@item.TABLE_NAME</a>
                 </td>
@@ -31,6 +30,12 @@
                 </td>
                 <td>
                     <a class="txtG" value="@item.ACTION">@item.ACTION</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.CREATED_DATE">@item.CREATED_DATE</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.NAME">@item.NAME</a>
                 </td>
             </tr>
         }
