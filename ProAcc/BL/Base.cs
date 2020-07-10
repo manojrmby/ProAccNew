@@ -1906,14 +1906,27 @@ namespace ProAcc.BL
                 foreach (DataRow dr in dt.Rows)
                 {
                     MailModel M = new MailModel();
-                    M.To = Convert.ToString(dr["TO"].ToString());
+                    M.Name = dr["Name"].ToString();
                     M.Running_ID = Convert.ToInt32(dr["Running_ID"].ToString());
+                    M.To = Convert.ToString(dr["TO"].ToString());
+                    M.Subject= dr["Subject"].ToString();
+                    M.TemplateName = dr["FileName"].ToString();
+
                     ListM.Add(M);
                 }
             }
             return ListM;
         }
-
+        public Boolean UpdateMailList(int ID)
+        {
+            Boolean Res = false;
+            DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+            dB.addIn("@Type", "UpdateMailList");
+            dB.addIn("@Running_ID", ID);
+            dB.ExecuteScalar();
+            Res = true;
+            return Res;
+        }
         //public Boolean Proceess_WordAddImage()
         //{
         //    string document = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
@@ -2103,5 +2116,7 @@ namespace ProAcc.BL
         public string Phase_Validation = "Validation Testing";
         public string SAPReportFileName = "SAPReadinessCheck";
 
+
+        
     }
 }

@@ -629,6 +629,7 @@ namespace ProAcc.BL
             lock (this)
             {
                 CloseFile();
+                _Base.CreateIfMissing(FileLocation);
                 MyWriter = new StreamWriter(FileLocation + "/" + FileName, FileAppend);
             }
         }
