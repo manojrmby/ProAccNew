@@ -668,6 +668,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <Content Include="Views\Report\AuditReports.cshtml" />
     <Content Include="Views\Report\_AuditReportIndex.cshtml" />
+    <Content Include="Views\ProjectMonitor\Monitor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

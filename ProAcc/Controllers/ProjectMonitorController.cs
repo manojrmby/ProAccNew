@@ -271,7 +271,11 @@ namespace ProAcc.Controllers
 
         #endregion
 
-        
+        [ChildActionOnly]
+        public PartialViewResult Monitor()
+        {
+            return PartialView("Monitor");
+        }
 
         #region Assessment
         public ActionResult AssessmentMonitor()
@@ -291,7 +295,8 @@ namespace ProAcc.Controllers
             }
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
-            ViewBag.PhaseID= (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            TempData["PhaseID"]= (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            //ViewBag.PhaseID= (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)

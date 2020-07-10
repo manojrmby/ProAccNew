@@ -1833,7 +1833,6 @@ namespace ProAcc.BL
             dt = dB.ExecuteDataTable();
             if (dt.Rows.Count > 0)
             {
-
                 foreach (DataRow dr in dt.Rows)
                 {
                     AuditReport.ProjectMonitorModel A_PM = new AuditReport.ProjectMonitorModel();
@@ -1890,7 +1889,6 @@ namespace ProAcc.BL
 
                 }
             }
-
             return AR;
         }
 
