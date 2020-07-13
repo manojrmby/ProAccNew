@@ -294,6 +294,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Asset/Log/04-28-2020.txt">
       <publishTime>04/28/2020 10:17:38</publishTime>
     </File>
+    <File Include="Asset/MailTemplate/T1.HTML">
+      <publishTime>07/11/2020 12:31:20</publishTime>
+    </File>
+    <File Include="Asset/MailTemplate/T2.HTML">
+      <publishTime>07/11/2020 22:03:25</publishTime>
+    </File>
     <File Include="Asset/Microsoft.Office.Interop.Word.dll">
       <publishTime>06/19/2020 15:42:12</publishTime>
     </File>
@@ -375,6 +381,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Antlr3.Runtime.pdb">
       <publishTime>02/22/2013 08:43:40</publishTime>
     </File>
+    <File Include="bin/BouncyCastle.Crypto.dll">
+      <publishTime>08/11/2018 10:03:48</publishTime>
+    </File>
     <File Include="bin/ClosedXML.dll">
       <publishTime>04/15/2020 19:37:16</publishTime>
     </File>
@@ -392,6 +401,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/ExcelNumberFormat.dll">
       <publishTime>03/13/2020 09:36:50</publishTime>
+    </File>
+    <File Include="bin/Google.Protobuf.dll">
+      <publishTime>08/10/2018 18:51:54</publishTime>
+    </File>
+    <File Include="bin/K4os.Compression.LZ4.dll">
+      <publishTime>07/03/2019 22:59:30</publishTime>
+    </File>
+    <File Include="bin/K4os.Compression.LZ4.Streams.dll">
+      <publishTime>07/03/2019 22:59:32</publishTime>
+    </File>
+    <File Include="bin/K4os.Hash.xxHash.dll">
+      <publishTime>07/03/2019 20:39:02</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
       <publishTime>04/18/2020 18:23:04</publishTime>
@@ -414,6 +435,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>04/18/2020 18:23:04</publishTime>
     </File>
+    <File Include="bin/MySql.Data.dll">
+      <publishTime>03/17/2020 10:36:28</publishTime>
+    </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>11/09/2019 00:56:44</publishTime>
     </File>
@@ -424,13 +448,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>07/10/2020 15:40:37</publishTime>
+      <publishTime>07/11/2020 22:31:48</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
-      <publishTime>07/08/2020 17:45:29</publishTime>
+      <publishTime>07/11/2020 20:29:30</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>07/10/2020 15:40:37</publishTime>
+      <publishTime>07/11/2020 22:31:48</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
       <publishTime>07/10/2020 14:31:46</publishTime>
@@ -1020,6 +1044,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Release/Publish/Web.config">
       <publishTime>04/18/2020 18:23:04</publishTime>
     </File>
+    <File Include="bin/Renci.SshNet.dll">
+      <publishTime>10/16/2017 20:53:06</publishTime>
+    </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/27/2016 21:50:24</publishTime>
     </File>
@@ -1119,8 +1146,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Spire.XLS.dll">
       <publishTime>05/20/2020 08:46:50</publishTime>
     </File>
+    <File Include="bin/System.Buffers.dll">
+      <publishTime>05/15/2018 13:29:34</publishTime>
+    </File>
+    <File Include="bin/System.Memory.dll">
+      <publishTime>04/17/2019 16:24:34</publishTime>
+    </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>04/18/2020 18:23:04</publishTime>
+    </File>
+    <File Include="bin/System.Runtime.CompilerServices.Unsafe.dll">
+      <publishTime>09/13/2019 02:39:50</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>04/18/2020 18:23:04</publishTime>
@@ -1152,11 +1188,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/System.Web.Webpages.Razor.dll">
       <publishTime>04/18/2020 18:23:04</publishTime>
     </File>
+    <File Include="bin/Ubiety.Dns.Core.dll">
+      <publishTime>03/17/2020 10:35:10</publishTime>
+    </File>
     <File Include="bin/Web.Optimization.dll">
       <publishTime>11/14/2013 22:21:38</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>07/17/2013 17:03:52</publishTime>
+    </File>
+    <File Include="bin/Zstandard.Net.dll">
+      <publishTime>03/17/2020 10:35:10</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.css">
       <publishTime>04/18/2020 18:23:02</publishTime>
@@ -1930,7 +1972,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/05/2020 17:38:24</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/10/2020 15:40:38</publishTime>
+      <publishTime>07/11/2020 22:06:20</publishTime>
     </File>
   </ItemGroup>
 </Project>

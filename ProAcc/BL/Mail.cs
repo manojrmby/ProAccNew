@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -24,7 +25,7 @@ namespace ProAcc.BL
         internal void StartMailSend()
         {
             //StartTimer();
-            GQ.StartGQPULL();
+            //GQ.StartGQPULL();
         }
         public async Task StartTimer()
         {
@@ -49,11 +50,12 @@ namespace ProAcc.BL
         {
             try
             {
-                string subject, body;
+                string subject, body,Template;
                 Boolean priority = false,MailTestEnable=true;
                 string TestToId = "";
                 subject = "";
                 body = "";
+                Template = "";
                 List<MailModel> MailS = _Base.GetMailList();
                 MailTestEnable = Convert.ToBoolean(ConfigurationManager.AppSettings["Mail_EnableTest"].ToString());
                 TestToId = ConfigurationManager.AppSettings["Mail_TestToID"].ToString();
@@ -61,7 +63,7 @@ namespace ProAcc.BL
                 foreach (var item in MailS)
                 {
                     subject = item.Subject;
-                    body =PopulateBody(item.TemplateName);
+                    body = PopulateBody(item.TemplateName,item.Body,item.Name);
 
                     string To="",Name="";
                     if (MailTestEnable)
@@ -72,7 +74,7 @@ namespace ProAcc.BL
                     }
                     else
                     {
-                        To = item.To.ToString();
+                        //To = item.To.ToString();
                         Name = item.Name.ToString();
                     }
                     MailAddress toAddress = new MailAddress(To,Name);
@@ -142,18 +144,31 @@ namespace ProAcc.BL
 
 
         //private string PopulateBody(string userName, string title, string url, string description, string TemplateName)
-        private string PopulateBody(string TemplateName)
+        private string PopulateBody(string TemplateName,string Body,string Name)
         {
             string body = string.Empty;
             try
             {
+
+                string pattern = "(,)";
+                string input = Body;
+                string Task="",Phase="";
+
+                // Split on hyphens from 15th character on
+                Regex regex = new Regex(pattern);
+                // Split on hyphens from 15th character on
+                string[] substrings = regex.Split(input);
+                Task = substrings[0].ToString();
+                Phase = substrings[2].ToString();
+
                 using (StreamReader reader = new StreamReader(_TemplatePath+ TemplateName.Trim()+".html"))
                 {
                     body = reader.ReadToEnd();
                 }
-                //body = body.Replace("{UserName}", userName);
-                //body = body.Replace("{Title}", title);
-                //body = body.Replace("{Url}", url);
+
+                body = body.Replace("{ManagerName}", Name);
+                body = body.Replace("{TaskName}", Task);
+                body = body.Replace("{PhaseName}", Phase);
                 //body = body.Replace("{Description}", description);
             }
             catch (Exception Ex)

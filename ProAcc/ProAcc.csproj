@@ -222,6 +222,8 @@
     <Content Include="Asset\js\intlTelInput.js" />
     <Content Include="Asset\js\intlTelInput.min.js" />
     <Content Include="Asset\js\utils.js" />
+    <Content Include="Asset\MailTemplate\T1.HTML" />
+    <Content Include="Asset\MailTemplate\T2.HTML" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.css" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.js" />
     <Content Include="Asset\Notiflix\notiflix-aio-2.3.1.min.js" />

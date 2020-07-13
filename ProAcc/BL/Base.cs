@@ -1909,6 +1909,7 @@ namespace ProAcc.BL
                     M.Running_ID = Convert.ToInt32(dr["Running_ID"].ToString());
                     M.To = Convert.ToString(dr["TO"].ToString());
                     M.Subject= dr["Subject"].ToString();
+                    M.Body = dr["Body"].ToString();
                     M.TemplateName = dr["FileName"].ToString();
 
                     ListM.Add(M);
