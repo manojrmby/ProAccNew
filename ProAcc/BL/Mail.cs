@@ -24,7 +24,7 @@ namespace ProAcc.BL
         internal void StartMailSend()
         {
             //StartTimer();
-            GQ.StartGQPULL();
+            //GQ.StartGQPULL();
         }
         public async Task StartTimer()
         {
