@@ -281,15 +281,15 @@ namespace ProAcc.Controllers
         public ActionResult ResourceAllocationCreate()
         {
             int j = 0;
-            var stat = db.HanaStatus.ToList();
-            for (int i = 0; i < stat.Count(); i++)
-            {
-                if (stat[i].IsActive == true)
-                {
-                    j = j + 1;
-                }
-            }
-            ViewBag.count = j;
+            //var stat = db.HanaStatus.ToList();
+            //for (int i = 0; i < stat.Count(); i++)
+            //{
+            //    if (stat[i].IsActive == true)
+            //    {
+            //        j = j + 1;
+            //    }
+            //}
+            //ViewBag.count = j;
 
             int userType = 0;
             if (User.IsInRole("Admin"))

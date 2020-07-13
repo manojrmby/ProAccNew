@@ -53,20 +53,10 @@
                 </div>
             </div>
 
-            @*<div class="form-group">
-                    <label class="control-label col-md-4 required">Industry Sector</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" value="@Model.IndustrySector_ID" id="txtIndustrySector" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span id="lblIndustrySector">&nbsp;</span>
-                    </div>
-                </div>*@
             <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Name</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" value="@Model.Contact" id="txtContact" />
-                    @*<span id="lblIndustrySector" style="color:red" />*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblContact">&nbsp;</span>
@@ -80,14 +70,13 @@
                 <label class="control-label col-md-5 required">Contact Person Email</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" value="@Model.Email" id="txtCustomerEmail" />
-                    @*<span id="lblCustomerEmail" style="color:red" />*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerEmail">&nbsp;</span>
                 </div>
             </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" value="@Model.Phone" id="txtCustomerPhone" maxlength="10" />
@@ -95,8 +84,8 @@
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCustomerPhone">&nbsp;</span>
                 </div>
-            </div>
-            @*<div class="form-group">
+            </div>*@
+            <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="hidden" class="form-control" value="@Model.Countrycode" id="selectedCountry">
@@ -106,7 +95,7 @@
                     &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
                     &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
-            </div>*@
+            </div>
         </div>
 
         @*<div class="form-group">
@@ -185,72 +174,72 @@
             }
         });
 
-        $("#txtCustomerPhone").blur(function () {
+       // $("#txtCustomerPhone").blur(function () {
 
-            phone = $(this).val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(5000);
-                validatecustomer();
-            }
-            else {
-                $("#lblCustomerPhone").html("").hide();
-                validatecustomer();
-            }
+       //     phone = $(this).val();
+       //     phone = phone.replace(/[^0-9]/g,'');
+       //     if (phone.length != 10) {
+       //         $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(5000);
+       //         validatecustomer();
+       //     }
+       //     else {
+       //         $("#lblCustomerPhone").html("").hide();
+       //         validatecustomer();
+       //     }
 
-       });
+       //});
 
-    //    var input = document.querySelector("#txtCustomerPhone"),
-    //    errorMsg = document.querySelector("#error-msg"),
-    //    validMsg = document.querySelector("#valid-msg");
-
+        var input = document.querySelector("#txtCustomerPhone"),
+        errorMsg = document.querySelector("#error-msg"),
+        validMsg = document.querySelector("#valid-msg");
         
-    //    //$("#txtCustomerPhone").intlTelInput("setCountry", $("#selectedCountry").val());
-    //    //$("#txtCustomerPhone").intlTelInput("setCountry", $("#selectedCountry").val());
-    //    //$("#txtCustomerPhone").setCountry("in");
-    //    var countryData = window.intlTelInputGlobals.getCountryData(),
-    //    //input = document.querySelector("#phone");
-        
-    //    for (var i = 0; i < countryData.length; i++) {
-    //        debugger;
-    //      var country = countryData[i];
-    //      country.name = country.name.replace(/.+\((.+)\)/,"$1");
-    //    }
+    // Error messages based on the code returned from getValidationError
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        //input.setCountry("gb");
+        var intl = window.intlTelInput(input, {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+        //utilsScript: "~/Asset/js/utils.js"
+    });
 
-    //// Error messages based on the code returned from getValidationError
-    //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+    var reset = function() {
+        input.classList.remove("error");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+        validMsg.classList.add("hide");
+    };
 
-    //    var intl = window.intlTelInput(input, {
-    //    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
-    //    //utilsScript: "~/Asset/js/utils.js"
-    //});
+        var iti = window.intlTelInputGlobals.getInstance(input);
+        //iti.setCountry("in");
+        var a = $("#selectedCountry").val();
+        iti.setCountry(a);
 
-    //var reset = function() {
-    //    input.classList.remove("error");
-    //    errorMsg.innerHTML = "";
-    //    errorMsg.classList.add("hide");
-    //    validMsg.classList.add("hide");
-    //};
+         var countryCode;
+        input.addEventListener('countrychange', function () {
+            countryCode = intl.getSelectedCountryData().iso2;
+            $("#selectedCountry").val(countryCode);
+           //alert(countryCode)
+        })
+        // Validate on blur event   
+        input.addEventListener('blur', function () {
 
-    //// Validate on blur event
-    //    input.addEventListener('blur', function () {
+        reset();
+        if(input.value.trim()){
+            if(intl.isValidNumber()){
+                validMsg.classList.remove("hide");
+            }else{
+                input.classList.add("error");
+                var errorCode = intl.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
+            }
+        }
+    });
 
-    //    reset();
-    //    if(input.value.trim()){
-    //        if(intl.isValidNumber()){
-    //            validMsg.classList.remove("hide");
-    //        }else{
-    //            input.classList.add("error");
-    //            var errorCode = intl.getValidationError();
-    //            errorMsg.innerHTML = errorMap[errorCode];
-    //            errorMsg.classList.remove("hide");
-    //        }
-    //    }
-    //});
+    // Reset on keyup/change event
+    input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
 
-    //// Reset on keyup/change event
-    //input.addEventListener('change', reset);
-    //input.addEventListener('keyup', reset);
+
 
         $("#txtCustomerEmail").on("blur", function (event) {
 
@@ -308,6 +297,7 @@
         var CompanyName = $("#txtCompanyName").val().trim();
          var IndustrySector = $("#drpIndustrySector").val();
          var Contact = $('#txtContact').val().trim();
+         var SelectedCountrycode= $("#selectedCountry").val();
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();
         var cre_on = $("#pcre_on").val();
@@ -317,6 +307,7 @@
              Customer_Id: id,
              Company_Name: CompanyName,
              IndustrySector_ID: IndustrySector,
+             Countrycode: SelectedCountrycode,
              Phone: custphone,
              Email: custEmail,
              Contact:Contact,

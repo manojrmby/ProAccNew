@@ -34,7 +34,9 @@ namespace ProAcc.BL.Model
 			public string TABLE_NAME { get; set; }
 			public string SUMMARY { get; set; }
 			public string ACTION { get; set; }
-					   
+			[DataType(DataType.Date)]
+			[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+			public DateTime CREATED_DATE { get; set; }
 
 			public int ActivityID { get; set; }
 			public Guid Instance { get; set; }

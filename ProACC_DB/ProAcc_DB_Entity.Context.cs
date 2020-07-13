@@ -27,7 +27,6 @@ namespace ProACC_DB
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<HanaStatu> HanaStatus { get; set; }
         public virtual DbSet<Instance> Instances { get; set; }
         public virtual DbSet<PhaseMaster> PhaseMasters { get; set; }
         public virtual DbSet<ProjectMonitor> ProjectMonitors { get; set; }

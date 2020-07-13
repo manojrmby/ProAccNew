@@ -1861,7 +1861,7 @@ namespace ProAcc.BL
             AuditReport A = new AuditReport();
             List<AuditReport.ProjectMonitorModel> AR = new List<AuditReport.ProjectMonitorModel>();
             DBHelper dB = new DBHelper("SP_Audit", CommandType.StoredProcedure);
-            if(model.ActionID==null)
+            if(model.ActionID==null && model.TABLE_NAME==null)
             {
                 dB.addIn("@Type", "AuditReport");
             }
@@ -1884,6 +1884,7 @@ namespace ProAcc.BL
                     A_PM.TABLE_NAME= dr["TABLE_NAME"].ToString();
                     A_PM.SUMMARY = dr["SUMMARY"].ToString();
                     A_PM.ACTION = dr["ACTION"].ToString();
+                    A_PM.CREATED_DATE = Convert.ToDateTime(dr["CREATED_DATE"].ToString());
                     
                     AR.Add(A_PM);
 

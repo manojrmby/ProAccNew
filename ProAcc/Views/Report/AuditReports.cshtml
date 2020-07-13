@@ -61,22 +61,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        //function DateToDDMMYY(Date) {
-        //    var today = Date; 
-        ////el_up.innerHTML = today; 
-        //var dd = today.getDate(); 
-        //var mm = today.getMonth() + 1; 
-  
-        //var yyyy = today.getFullYear(); 
-        //if (dd < 10) { 
-        //    dd = '0' + dd; 
-        //} 
-        //if (mm < 10) { 
-        //    mm = '0' + mm; 
-        //} 
-        //    var today = dd + '-' + mm + '-' + yyyy;
-        //    return today;
-        //}
+       
         function ddMonyy(Date) {
             const date = Date;
             const formattedDate = date.toLocaleDateString('en-GB', {
@@ -103,25 +88,10 @@
     });
 
     $("#StartDate").datepicker({
-        //DateTime now = DateTime.Now,
-        //starDate = new DateTime(now.Year, now.Month, 1),
-        //val:starDate,
         dateFormat: "dd-M-yy",
      });
      $('#EndDate').datepicker({         
          dateFormat: "dd-M-yy",
-            //minDate: 0,
-            //onSelect: function (date) {
-            //    var dt2 = $('#StartDate');
-            //    var startDate = $(this).datepicker('getDate');
-            //    var minDate = $('#StartDate').datepicker('getDate');
-            //    //dt2.datepicker('setDate', minDate);
-            //    startDate.setDate(startDate.getDate() + 30);
-            //    //sets dt2 maxDate to the last day of 30 days window
-            //    dt2.datepicker('option', 'minDate', startDate);
-            //    dt2.datepicker('option', 'minDate', minDate);
-            //    $(this).datepicker('option', 'minDate', minDate);
-            //}
      });   
 
     function loadAuditReport() {
