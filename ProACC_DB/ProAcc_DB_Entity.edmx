@@ -61,7 +61,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="InstanceID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="File_Type" Type="nvarchar" MaxLength="50" />
-          <Property Name="_FileName" Type="nvarchar(max)" />
+          <Property Name="_FileName" Type="nvarchar" MaxLength="50" />
           <Property Name="FileType" Type="int" Nullable="false" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="Cre_on" Type="datetime" Nullable="false" />
@@ -69,14 +69,6 @@
           <Property Name="Modified_On" Type="datetime" />
           <Property Name="Modified_by" Type="uniqueidentifier" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="HanaStatus">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="HanaStatus" Type="varchar" MaxLength="50" />
-          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="IndustrySector">
           <Key>
@@ -213,6 +205,7 @@
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EMail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Countrycode" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LoginId" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="20" Nullable="false" />
@@ -364,7 +357,6 @@
           <EntitySet Name="ApplicationAreaMaster" EntityType="Self.ApplicationAreaMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileUploadMaster" EntityType="Self.FileUploadMaster" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="HanaStatus" EntityType="Self.HanaStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IndustrySector" EntityType="Self.IndustrySector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Instance" EntityType="Self.Instance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhaseMaster" EntityType="Self.PhaseMaster" Schema="dbo" store:Type="Tables" />
@@ -436,7 +428,6 @@
           <FunctionImport Name="SP_CreateAnalysis" ReturnType="Collection(ProAccModel.SP_CreateAnalysis_Result)">
           <Parameter Name="Type" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="HanaStatus" EntityType="ProAccModel.HanaStatu" />
           <EntitySet Name="Instances" EntityType="ProAccModel.Instance" />
           <EntitySet Name="PhaseMasters" EntityType="ProAccModel.PhaseMaster" />
           <EntitySet Name="ProjectMonitors" EntityType="ProAccModel.ProjectMonitor" />
@@ -506,14 +497,6 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Company" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="HanaStatu">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HanaStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsActive" Type="Boolean" />
-        </EntityType>
         <EntityType Name="Instance">
           <Key>
             <PropertyRef Name="Instance_id" />
@@ -674,6 +657,7 @@
           <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_UserMaster_RoleMaster" FromRole="UserMaster" ToRole="RoleMaster" />
           <NavigationProperty Name="User_Type" Relationship="ProAccModel.FK_UserMaster_User_Type" FromRole="UserMaster" ToRole="User_Type" />
           <NavigationProperty Name="Customer" Relationship="ProAccModel.FK_UserMaster_Customer" FromRole="UserMaster" ToRole="Customer" />
+          <Property Name="Countrycode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Instance_Project">
           <End Type="ProAccModel.Project" Role="Project" Multiplicity="1" />
@@ -730,7 +714,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="InstanceID" Type="Guid" Nullable="false" />
           <Property Name="File_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="C_FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="C_FileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FileType" Type="Int32" Nullable="false" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
@@ -892,15 +876,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="HanaStatus">
-            <EntityTypeMapping TypeName="ProAccModel.HanaStatu">
-              <MappingFragment StoreEntitySet="HanaStatus">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="HanaStatus" ColumnName="HanaStatus" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Instances">
             <EntityTypeMapping TypeName="ProAccModel.Instance">
               <MappingFragment StoreEntitySet="Instance">
@@ -1040,6 +1015,7 @@
           <EntitySetMapping Name="UserMasters">
             <EntityTypeMapping TypeName="ProAccModel.UserMaster">
               <MappingFragment StoreEntitySet="UserMaster">
+                <ScalarProperty Name="Countrycode" ColumnName="Countrycode" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
                 <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />

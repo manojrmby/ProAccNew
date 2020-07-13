@@ -35,6 +35,7 @@ namespace ProACC_DB
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
+        public string Countrycode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }

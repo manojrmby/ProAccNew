@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<ProACC_DB.Project>
 @*@{
-    var projdetails = ViewBag.Projdetails;
-}*@
+        var projdetails = ViewBag.Projdetails;
+    }*@
 
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
-    <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
 
 <table class="table" id="tblProjectCreation">
     <thead>
@@ -21,28 +21,28 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                <a class="txtG" value="@item.Project_Name">@item.Project_Name</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Customer_Id">@item.Customer.Company_Name</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.ProjectManager_Id">@item.UserMaster.Name</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Description">@item.Description</a>
-            </td>
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.Project_Name">@item.Project_Name</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Customer_Id">@item.Customer.Company_Name</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.ProjectManager_Id">@item.UserMaster.Name</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Description">@item.Description</a>
+                </td>
 
-            <td>
-                <a href="#" id="btnprjtEdit" class="editProjectCreation fa fa-edit"></a><input type="hidden" value="@item.Project_Id" /> |
-                <a href="#" class="btnProjCreationDelete fa fa-trash"></a><input type="hidden" value="@item.Project_Id" />
-            </td>
-        </tr>
+                <td>
+                    <a href="#" id="btnprjtEdit" class="editProjectCreation fa fa-edit"></a><input type="hidden" value="@item.Project_Id" /> |
+                    <a href="#" class="btnProjCreationDelete fa fa-trash"></a><input type="hidden" value="@item.Project_Id" />
+                </td>
+            </tr>
         }
     </tbody>
 </table>
@@ -92,6 +92,7 @@
                 alert(err.responseText);
             }
         });
+         window.scrollTo(0, 0);
     });
 
     @*$(".btnProjCreationDelete").on("click", function () {
