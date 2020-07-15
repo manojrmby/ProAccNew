@@ -413,7 +413,6 @@ namespace ProAcc.Controllers
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
             int inst = 0;
             if (InstanceID != Guid.Empty)
             {
@@ -426,16 +425,42 @@ namespace ProAcc.Controllers
 
             }
             ViewBag.Instance = inst;
+            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
             List<SelectListItem> Project = new List<SelectListItem>();
 
-            var query = from u in db.Projects where (u.isActive == true) select u;
-            if (query.Count() > 0)
+            if (User.IsInRole("Customer"))
             {
-                foreach (var v in query)
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
                 {
-                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
                 }
             }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+
             ViewBag.Project = Project;
             return View();
         }
@@ -488,7 +513,6 @@ namespace ProAcc.Controllers
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
             int inst = 0;
             if (InstanceID != Guid.Empty)
             {
@@ -501,16 +525,42 @@ namespace ProAcc.Controllers
 
             }
             ViewBag.Instance = inst;
+            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
             List<SelectListItem> Project = new List<SelectListItem>();
 
-            var query = from u in db.Projects where (u.isActive == true) select u;
-            if (query.Count() > 0)
+            if (User.IsInRole("Customer"))
             {
-                foreach (var v in query)
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
                 {
-                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
                 }
             }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+
             ViewBag.Project = Project;
             return View();
         }

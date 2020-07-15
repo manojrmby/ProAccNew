@@ -10,7 +10,7 @@ using static ProAcc.BL.Model.Common;
 namespace ProAcc.Controllers
 {
     [CheckSessionTimeOut]
-    [Authorize(Roles = "Consultant,Customer,Project Manager")]
+    [Authorize(Roles = "Admin,Consultant,Customer,Project Manager")]
 
     public class ProjectMonitorController : Controller
     {

@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -114,14 +115,19 @@ namespace ProAcc.BL
 
             //string MyConnectionstring = "Server= 127.0.0.1;Database=survey;User name=root;password ="; //Uid=sql12353260;Pwd= qHCWfvIhS7;
             //string MyConnectionstring = "Server=127.0.0.1;user id = root;password = ;database = survey";
-            string MyConnectionstring = "Server= 123.176.34.15;Port=8021;Database=survey;Uid=root;Pwd=;";
+            //string MyConnectionstring = "Driver={MySQL ODBC 5.1 Driver};server= 123.176.34.15;port=8021;Database=survey;Uid=survey;Pwd=Admin1!;option3";
+            //string MyConnectionstring = "Server=123.176.34.15,8021;user id = survey;password = Admin1!;database = survey";
             //string MyConnectionstring = "Server= sql12.freemysqlhosting.net;Database=sql12353260;Uid=sql12353260;Pwd= qHCWfvIhS7;";
+
+            //string MyConnectionstring = "Data Source = 123.176.34.15;port=8021;Integrated Security=False; Initial Catalog = survey; User ID = survey; Password = Admin1!;";
+            string constr = ConfigurationManager.ConnectionStrings["mysql"].ConnectionString;
             try
             {
                 while (true)
                 {
-                    using (MySqlConnection conn = new MySqlConnection(MyConnectionstring))
+                    using (MySqlConnection conn = new MySqlConnection(constr))
                     {
+
                         MySqlDataAdapter ad = new MySqlDataAdapter("SELECT * FROM question", conn);
                         DataTable dt = new DataTable();
                         ad.Fill(dt);
@@ -133,7 +139,7 @@ namespace ProAcc.BL
                             p.User_ID = Convert.ToInt32(dr["User_ID"].ToString());
                             p.la_q1 = dr["la_q1"].ToString();
                             p.la_q2 = dr["la_q2"].ToString();
-                            p.la_q3= dr["la_q3"].ToString();
+                            p.la_q3 = dr["la_q3"].ToString();
                             p.la_q4 = dr["la_q4"].ToString();
                             p.la_q5 = dr["la_q5"].ToString();
                             p.la_q6 = dr["la_q6"].ToString();
@@ -147,23 +153,19 @@ namespace ProAcc.BL
                             p.fq2 = dr["fq2"].ToString();
                             p.fq3 = dr["fq3"].ToString();
                             p.submitted = Convert.ToInt32(dr["submitted"].ToString());
-                            
+
                             SqlInsertion(p);
                             //Console.WriteLine("Id" + "\t|" + "Name" + "\t|" + "Customer_Type" + "\t|" + " Address" + "\t|" + " Phone_Number");
                         }
                         Console.WriteLine("\n\t SQL DATA INSERTION FROM MYSQL");
-                        await Task.Delay(5 * 60);
+                        await Task.Delay(5 * 60 * 1000);
                     }
                 }
             }
-
-
-
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
-            Console.Read();
         }
 
 

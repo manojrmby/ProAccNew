@@ -82,6 +82,8 @@
 </style>
 
 <div class="row instanceRow">
+    <input type="hidden" id="hdnSessionProject_Name" value="@Session["Project_Name"]" />
+    <input type="hidden" id="hdnSessionInstance_Name" value="@Session["Instance_Name"]" />
     <div class="col-lg-12 card" style="margin-bottom:20px !important;">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
@@ -217,7 +219,7 @@
 					$('#SubmitInstance').prop("disabled", false);
                 }
             });
-   $('#SubmitInstance').click(function () {
+    $('#SubmitInstance').click(function () {
         var IDInstance = $("#IDInstance").val();
         $.ajax({
             //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
@@ -451,7 +453,8 @@
                     label: 'Owner', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
-                        value: GetUserDropDown()
+                        value: GetUserDropDown(),
+                       
                     }
                 },
                 {
@@ -657,6 +660,7 @@
 
             loadComplete: function () {
                 //alert("mm");
+                               
 
             },
             gridComplete: function () {
@@ -673,9 +677,7 @@
                     $("#jqGrid").jqGrid('setGridState', 'visible');
                 }
                 //Show_HideEdit();
-
-
-
+                
             }
             // set table stripped class in table style in bootsrap
         });
@@ -1088,13 +1090,17 @@
         }
         return Result;
     }
-
+  
     $("#export").on("click", function () {
+        debugger;
+        var sessionValueProject_Name = $("#hdnSessionProject_Name").val();
+        var sessionValueInstance_Name = $("#hdnSessionInstance_Name").val();
+        var description = 'Project Name :' + sessionValueProject_Name + ' && Instance Name :' + sessionValueInstance_Name;
         $("#jqGrid").jqGrid("exportToPdf", {
             title: 'PDF Export',
             orientation: 'landscape',
             pageSize: 'A3',
-            description: 'description of the exported document',
+            description: description,
             customSettings: null,
             download: 'download',
             includeLabels: true,
