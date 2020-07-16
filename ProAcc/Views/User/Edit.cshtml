@@ -489,7 +489,8 @@
         var Password = $("#txtPassword").val().trim();
 
         var lblName = $("#lblName1").text().trim();
-        var lblMobile = $("#lblMobile").text().trim();
+        //var lblMobile = $("#lblMobile").text().trim();
+        var lblMobile = $("#error-msg").text().trim();
         var lblEmail = $("#lblUserEmail").text().trim();
         var lblPassword = $("#lblPassword").text().trim();
         var lblCnfmPassword = $("#lblCnfmPassword").text().trim();
@@ -543,7 +544,8 @@
         }
          else if (Mobile =="")
         {
-            $("#lblMobile").html("Please enter the Mobile Number").show().fadeOut(5000);
+            //$("#lblMobile").html("Please enter the Mobile Number").show().fadeOut(5000);
+            $("#error-msg").html("Please enter the Mobile Number").show().fadeOut(5000);
         }
         else if (Email == "")
         {

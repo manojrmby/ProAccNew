@@ -152,7 +152,7 @@ namespace ProAcc.BL
 
                 string pattern = "(,)";
                 string input = Body;
-                string Task="",Phase="";
+                string Task="",Phase="",projectName="",Instance="";
 
                 // Split on hyphens from 15th character on
                 Regex regex = new Regex(pattern);
@@ -160,7 +160,10 @@ namespace ProAcc.BL
                 string[] substrings = regex.Split(input);
                 Task = substrings[0].ToString();
                 Phase = substrings[2].ToString();
+                Instance = substrings[4].ToString();
+                projectName = substrings[6].ToString();
 
+                
                 using (StreamReader reader = new StreamReader(_TemplatePath+ TemplateName.Trim()+".html"))
                 {
                     body = reader.ReadToEnd();
@@ -169,6 +172,8 @@ namespace ProAcc.BL
                 body = body.Replace("{ManagerName}", Name);
                 body = body.Replace("{TaskName}", Task);
                 body = body.Replace("{PhaseName}", Phase);
+                body = body.Replace("{projectName}", projectName);
+                body = body.Replace("{InstanceName}", Instance);
                 //body = body.Replace("{Description}", description);
             }
             catch (Exception Ex)

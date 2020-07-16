@@ -253,9 +253,9 @@
             //if the letter is not digit then display error and don't type anything
              if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                  e.preventDefault();
-                 $("#lblMob1").html("Numbers Only").show().fadeOut("slow");
-                 SubmitConsultant();
-            }
+                // $("#lblMob1").html("Numbers Only").show().fadeOut("slow");
+             }
+             SubmitConsultant();
          });
 
         //$("#txtMob").blur(function () {
@@ -419,7 +419,8 @@
         var Customer_Id = $("#Customer_Id").val().trim();
 
         var lblName1 = $("#lblName1").text().trim();
-        var lblMob1 = $("#lblMob1").text().trim();
+        //var lblMob1 = $("#lblMob1").text().trim();
+        var lblMob1 = $("#error-msg").text().trim();
         var lblEmail1 = $("#lblEmail1").text().trim();
         var Status1 = $("#StatusConsultant").text().trim();
         var lblAltConsPwd = $("#lblAltConsPwd").text().trim();
@@ -460,7 +461,8 @@
         }
          else if (Mob =="")
         {
-            $("#lblMob1").html("Please enter the Mobile Number").show().fadeOut(5000);
+            //$("#lblMob1").html("Please enter the Mobile Number").show().fadeOut(5000);
+            $("#error-msg").html("Please enter the Mobile Number").show().fadeOut(5000);
         }
         else if (Email1 == "")
         {

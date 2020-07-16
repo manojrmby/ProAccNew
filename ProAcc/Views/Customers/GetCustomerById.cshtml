@@ -165,11 +165,11 @@
         $("#txtCustomerPhone").keypress(function (e) {
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 event.preventDefault();
-                $("#lblCustomerPhone").html("Numbers Only").show().fadeOut(5000);
+                //$("#lblCustomerPhone").html("Numbers Only").show().fadeOut(5000);
                 validatecustomer();
             }
             else {
-                $("#lblCustomerPhone").html("").hide();
+                //$("#lblCustomerPhone").html("").hide();
                 validatecustomer();
             }
         });
@@ -259,7 +259,7 @@
 
 
         function validatecustomer() {
-
+            debugger;
            var CompanyName = $("#txtCompanyName").val().trim();
             var IndustrySector = $("#drpIndustrySector").val()
             var Contact = $("#txtContact").val().trim();
@@ -269,7 +269,8 @@
             var lblCompanyName = $("#lblCompanyName").text().trim();
             var lblIndustrySector = $("#lblIndustrySector").text().trim();
             var lblContact = $("#lblContact").text().trim();
-            var lblcustphone = $("#lblCustomerPhone").text().trim();
+            //var lblcustphone = $("#lblCustomerPhone").text().trim();
+             var lblcustphone = $("#error-msg").text().trim();
             var lblcustEmail = $("#lblCustomerEmail").text().trim();
 
 
@@ -326,8 +327,9 @@
             $("#lblContact").html("Please enter the Contact Person Name").show().fadeOut(2000);
         }
         else if (custphone=="")
-        {
-            $("#lblCustomerPhone").html("Please enter the Customer Phone").show().fadeOut(2000);
+         {
+             $("#error-msg").html("Please enter the Customer Phone").show().fadeOut(2000);
+            //$("#lblCustomerPhone").html("Please enter the Customer Phone").show().fadeOut(2000);
         }
         else if (custEmail=="")
         {

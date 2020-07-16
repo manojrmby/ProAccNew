@@ -453,8 +453,8 @@
                     label: 'Owner', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
-                        value: GetUserDropDown(),
-                       
+                        //defaultValue: 'N',
+                        value: GetUserDropDown()
                     }
                 },
                 {
@@ -1092,7 +1092,7 @@
     }
   
     $("#export").on("click", function () {
-        debugger;
+        //debugger;
         var sessionValueProject_Name = $("#hdnSessionProject_Name").val();
         var sessionValueInstance_Name = $("#hdnSessionInstance_Name").val();
         var description = 'Project Name :' + sessionValueProject_Name + ' && Instance Name :' + sessionValueInstance_Name;
@@ -1107,6 +1107,7 @@
             includeGroupHeader: true,
             includeFooter: true,
             fileName: "OverAllReportExport.pdf"
+            //header_logo: "~/Asset/images/ProACCTool.png",            
         })
     })
 </script>

@@ -464,6 +464,8 @@
 
                 if (isNaN(recs) || recs == 0) {
                     $("#jqGrid").jqGrid('setGridState', 'hidden');
+                     var msg = 'one or more previous phase task\'s are not completed ,Please complete the task\'s and try..!';
+                    Notiflix.Report.Info("ProAcc Info !", msg);
                 }
                 else {
                     $("#jqGrid").jqGrid('setGridState', 'visible');
@@ -760,9 +762,12 @@
             if ($('#jEditButton_' + ids[i]).is(":visible")) {a = a + 1;}
         }
         //debugger;
-        if (a==0) {
-            Notiflix.Report.Info("ProAcc Info !", "You dont have any Task to Perform");
+        if (UserType != 'Project Manager') {
+             if (a==0) {
+                Notiflix.Report.Info("ProAcc Info !", "You dont have any Task to Perform");
+             }
         }
+       
     }
 
 
