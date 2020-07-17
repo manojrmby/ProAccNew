@@ -112,39 +112,37 @@
     });
 
    
-    @*$(".userDelete").on("click", function () {
-        
+   $(".userDelete").on("click", function () {
         var id = $(this).next().val();
-       var retVal = confirm("Do you want to delete ?");
-               if( retVal == true ) {
-                $.ajax({
-                type: "POST",
-                url: '@Url.Action("Delete","User")',
-                data: { id:id },
-                dataType: "json",
-                success: function (response) {
-                    if (response == "success") {
-                        alert("User deleted successfully!");
-                        location.reload();
-                    }
-                    else {
-                         alert("User Holding some task!");
-                    }
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
+         Notiflix.Confirm.Show(
+                'Confirm',
+                'Do you want to delete ?',
+                'Yes', 'No',
+                function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Delete","User")',
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response == "success") {
+                                Notiflix.Notify.Success('User deleted Successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                setTimeout(Redirect, 3000);
+                            }
+                            else {
+                                 Notiflix.Notify.Success('User holding some task..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            }
+                        }
+                    });
+                }, function () {
+                    //location.reload();
+                    // No button callback
+                    //alert('If you say so...');
                 }
-            });
-                  return true;
-               } else {
-                  return false;
-               }
-    });*@
+            )
+    });
 
-    $(".userDelete").on("click", function () {
+    @*$(".userDelete").on("click", function () {
         var id = $(this).next().val();
         $.confirm({
               title: 'Delete !',
@@ -216,5 +214,5 @@
                  },
               }
          });
-    });
+    });*@
 </script>

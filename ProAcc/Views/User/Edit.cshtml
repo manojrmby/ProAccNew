@@ -71,17 +71,17 @@
                 </div>
             </div>
 
-            @*<div class="form-group">
-                    <label class="control-label col-md-4 required">Phone</label>
+            <div class="form-group">
+                    <label class="control-label col-md-4 required">Contact Person Phone</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" maxlength="10" id="txtMobile" value="@Model.Phone" />
                     </div>
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMobile">&nbsp;</span>
                     </div>
-            </div>*@
+            </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="hidden" class="form-control" value="@Model.Countrycode" id="selectedCountry">
@@ -91,7 +91,7 @@
                     &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
                     &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
-            </div>
+            </div>*@
 
         </div>
 
@@ -299,70 +299,70 @@
          ValidateUser()
      });
 
-    //$("#txtMobile").blur(function () {
+    $("#txtMobile").blur(function () {
 
-    //        phone = $(this).val();
-    //        phone = phone.replace(/[^0-9]/g,'');
-    //        if (phone.length != 10) {
-    //            $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
-    //             ValidateUser();
-    //        }
-    //        else {
-    //            $("#lblMobile").html("").hide();
-    //             ValidateUser();
-    //        }
-    //        ValidateUser();
-    // });
-
-    var input = document.querySelector("#txtMobile"),
-        errorMsg = document.querySelector("#error-msg"),
-        validMsg = document.querySelector("#valid-msg");
-        
-    // Error messages based on the code returned from getValidationError
-    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-        //input.setCountry("gb");
-        var intl = window.intlTelInput(input, {
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
-        //utilsScript: "~/Asset/js/utils.js"
-    });
-
-    var reset = function() {
-        input.classList.remove("error");
-        errorMsg.innerHTML = "";
-        errorMsg.classList.add("hide");
-        validMsg.classList.add("hide");
-    };
-         
-        var iti = window.intlTelInputGlobals.getInstance(input);
-        //iti.setCountry("in");
-        var a = $("#selectedCountry").val();
-        iti.setCountry(a);
-
-         var countryCode;
-        input.addEventListener('countrychange', function () {
-            countryCode = intl.getSelectedCountryData().iso2;
-            $("#selectedCountry").val(countryCode);
-           //alert(countryCode)
-        })
-        // Validate on blur event   
-        input.addEventListener('blur', function () {
-
-        reset();
-        if(input.value.trim()){
-            if(intl.isValidNumber()){
-                validMsg.classList.remove("hide");
-            }else{
-                input.classList.add("error");
-                var errorCode = intl.getValidationError();
-                errorMsg.innerHTML = errorMap[errorCode];
-                errorMsg.classList.remove("hide");
+            phone = $(this).val();
+            phone = phone.replace(/[^0-9]/g,'');
+            if (phone.length != 10) {
+                $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
+                 ValidateUser();
             }
-        }
-    });
+            else {
+                $("#lblMobile").html("").hide();
+                 ValidateUser();
+            }
+            ValidateUser();
+     });
 
-    // Reset on keyup/change event
-    input.addEventListener('change', reset);
-        input.addEventListener('keyup', reset);
+    //var input = document.querySelector("#txtMobile"),
+    //    errorMsg = document.querySelector("#error-msg"),
+    //    validMsg = document.querySelector("#valid-msg");
+        
+    //// Error messages based on the code returned from getValidationError
+    //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+    //    //input.setCountry("gb");
+    //    var intl = window.intlTelInput(input, {
+    //    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+    //    //utilsScript: "~/Asset/js/utils.js"
+    //});
+
+    //var reset = function() {
+    //    input.classList.remove("error");
+    //    errorMsg.innerHTML = "";
+    //    errorMsg.classList.add("hide");
+    //    validMsg.classList.add("hide");
+    //};
+         
+    //    var iti = window.intlTelInputGlobals.getInstance(input);
+    //    //iti.setCountry("in");
+    //    var a = $("#selectedCountry").val();
+    //    iti.setCountry(a);
+
+    //     var countryCode;
+    //    input.addEventListener('countrychange', function () {
+    //        countryCode = intl.getSelectedCountryData().iso2;
+    //        $("#selectedCountry").val(countryCode);
+    //       //alert(countryCode)
+    //    })
+    //    // Validate on blur event   
+    //    input.addEventListener('blur', function () {
+
+    //    reset();
+    //    if(input.value.trim()){
+    //        if(intl.isValidNumber()){
+    //            validMsg.classList.remove("hide");
+    //        }else{
+    //            input.classList.add("error");
+    //            var errorCode = intl.getValidationError();
+    //            errorMsg.innerHTML = errorMap[errorCode];
+    //            errorMsg.classList.remove("hide");
+    //        }
+    //    }
+    //});
+
+    //// Reset on keyup/change event
+    //input.addEventListener('change', reset);
+    //    input.addEventListener('keyup', reset);
 
     $("#txtUserEmail").on("blur", function (event) {
 
