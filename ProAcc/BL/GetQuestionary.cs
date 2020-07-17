@@ -186,7 +186,8 @@ namespace ProAcc.BL
 
                     if (numrecord == 0)
                     {
-                        string myQuery = "Insert into  question (Id,User_ID,la_q1,la_q2.la_q3,la_q4,la_q5,la_q6,la_q7,la_q8,la_q9,la_q10,la_q11,la_q12,fq1,fq2,fq3,submitted) Values('" + p.id + "','" + p.User_ID + "','" + p.la_q1 + "','" + p.la_q2 + "','" + p.la_q3 + "','" + p.la_q4 + "','" + p.la_q5 + "','" + p.la_q6 + "','" + p.la_q7 + "','" + p.la_q8 + "','" + p.la_q9 + "','" + p.la_q10 + "','" + p.la_q11 + "','" + p.la_q12 + "','" + p.fq1 + "','" + p.fq2 + "','" + p.fq3 + "','" + p.submitted + "')";
+                        string myQuery = "Insert into  question (Id,User_ID,la_q1,la_q2,la_q3,la_q4,la_q5,la_q6,la_q7,la_q8,la_q9,la_q10,la_q11,la_q12,fq1,fq2,fq3,submitted) " +
+                            "Values('" + p.id + "','" + p.User_ID + "','" + p.la_q1 + "','" + p.la_q2 + "','" + p.la_q3 + "','" + p.la_q4 + "','" + p.la_q5 + "','" + p.la_q6 + "','" + p.la_q7 + "','" + p.la_q8 + "','" + p.la_q9 + "','" + p.la_q10 + "','" + p.la_q11 + "','" + p.la_q12 + "','" + p.fq1 + "','" + p.fq2 + "','" + p.fq3 + "','" + p.submitted + "')";
                         SqlCommand cmd2 = new SqlCommand(myQuery, con);
                         cmd2.ExecuteNonQuery();
                         con.Close();

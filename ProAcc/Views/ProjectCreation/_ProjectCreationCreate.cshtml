@@ -6,7 +6,7 @@
 <a class="card-title" id="prjtCreate">Project Creation</a>
 <a class="card-title" id="prjtUpdate" style="display:none">Project Updation</a>
 <hr />
-<div style="padding:1em;">
+<div style="padding:1em;" id="Prjt-Create">
     <div class="row">
 
         <div class="col-6">
@@ -122,7 +122,53 @@
             
         });
 
-        $('#txtProjectName').on('focusout', function () {
+        var typingTimer;                //timer identifier
+        var doneTypingInterval = 2000;  //time in ms, 2 second for example
+
+       // on keyup, start the countdown
+         $('#txtProjectName').on('keyup', function () {
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(ProjectNameCheck, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown 
+         $('#txtProjectName').on('keydown', function () {
+          clearTimeout(typingTimer);
+        });
+
+
+        function ProjectNameCheck() {
+           
+             var ProjName = $("#txtProjectName").val().trim();
+            var id=$("#proj_id").val();
+            if (ProjName == "") {
+                $("#lblProjectName").html("Please Enter valid Project name").show().fadeOut(5000);
+                ValidateProject();
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckProjectNameAvailability", "ProjectCreation")',
+                type: "GET",
+                data: { namedata: ProjName, id: id },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblProjectName").html("This project Name is already in use").show();
+                       ValidateProject();
+                    }
+                    else {
+                        $("#lblProjectName").html("").hide();
+                        ValidateProject();
+                    }
+                },
+                    error: function (err) {
+                        alert(err);
+                }
+            });
+            }     
+        }
+
+        @*$('#txtProjectName').on('focusout', function () {
             
             var ProjName = $("#txtProjectName").val().trim();
             var id=$("#proj_id").val();
@@ -151,7 +197,7 @@
                 }
             });
             }            
-        });
+        });*@
 
         $('#drpCustomer,#drpProjectManager').change(function () {             var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            var PMID=$("#drpProjectManager").val();            if (projectName != "" && Customerid != 0 && PMID != 0) {                $("#lblCustomerName").html("");                $("#lblProjectManager").html("");                ValidateProject();            }            else {                 ValidateProject();
             }        });

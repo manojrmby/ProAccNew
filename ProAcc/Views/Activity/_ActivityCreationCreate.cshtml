@@ -184,8 +184,57 @@
             $("#drpRole").prop("readonly", true);
         }
 
+        var typingTimer;                //timer identifier
+        var doneTypingInterval = 2000;  //time in ms, 2 second for example
 
-        $('#txtTask').on('focusout', function () {
+       // on keyup, start the countdown
+         $('#txtTask').on('keyup', function () {
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(TaskCheck, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown 
+         $('#txtTask').on('keydown', function () {
+          clearTimeout(typingTimer);
+        });
+
+
+        function TaskCheck() {
+           
+            var Task = $("#txtTask").val().trim();
+            var id = $("#activityrid").val();
+            if (Task == "") {
+                $("#lblTask").html("Please Enter Task").show().fadeOut(5000);
+                ValidateActivity();
+            }
+            else {
+
+             $.ajax({
+                url: '@Url.Action("CheckTaskAvailability", "Activity")',
+                type: "GET",
+                data: { namedata: Task,id:id },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblTask").html("This Task is already in use").show().fadeOut(5000);
+                        ValidateActivity();
+
+                    }
+                    else {
+                        $("#lblTask").html("").hide();
+                        ValidateActivity();
+                    }
+                },
+                error: function (err) {
+                    alert("Please Enter proper details");
+                     ValidateActivity();
+                }
+             });
+            }
+        }
+
+
+        @*$('#txtTask').on('focusout', function () {
 
             var Task = $("#txtTask").val().trim();
             var id = $("#activityrid").val();
@@ -218,7 +267,7 @@
              });
             }
 
-        });
+        });*@
 
 
         //$("#txtApplicationArea").keypress(function (event) {
