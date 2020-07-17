@@ -6,7 +6,12 @@
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
-
+<style>
+     .chartAreaWrapper {
+        /*width: 50%!important;*/
+        overflow-x: scroll;
+    }
+</style>
 <table class="table" id="tblProjectCreation">
     <thead>
         <tr>
@@ -64,6 +69,7 @@
     });
 
     $(".editProjectCreation").on("click", function () {
+        //debugger;
         // $('html, body').animate({scrollTop:0}, 'slow');
         var id = $(this).next().val();
         $.ajax({
@@ -86,13 +92,15 @@
                 $("#btnProjectCreate").hide();
                 $("#prjtCreate").hide();
                 $("#prjtUpdate").show();
-
+                 $('html, body').animate({scrollTop: $("#Prjt-Create").offset().top}, 1000);
             },
             error: function (err) {
                 alert(err.responseText);
             }
         });
-         window.scrollTo(0, 0);
+        //window.scrollTo(0, 0);
+       // $('.chartAreaWrapper').scrollTop($('.chartAreaWrapper')[0].scrollHeight);
+       
     });
 
     @*$(".btnProjCreationDelete").on("click", function () {

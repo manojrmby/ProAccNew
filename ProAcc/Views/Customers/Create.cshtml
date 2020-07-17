@@ -6,20 +6,13 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
-
-@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>*@
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput-jquery.js"></script>
+@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput-jquery.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput-jquery.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet" />*@
 
 <link href="~/Asset/css/intlTelInput.css" rel="stylesheet" />
 <script src="~/Asset/js/intlTelInput.js"></script>
 <script src="~/Asset/js/intlTelInput.min.js"></script>
-
-
 
 <a class="card-title">Create Customer</a>
 <hr />
@@ -231,7 +224,8 @@
                 validatecustomer()
             }
             else {
-
+                 $("#lblContact").html("").show().fadeOut(5000);
+                validatecustomer()
             }
 
         });
@@ -328,7 +322,7 @@
         });
 
         function validatecustomer() {
-
+           
            var CompanyName = $("#txtCompanyName").val().trim();
             var IndustrySector = $("#drpIndustrySector").val();
             var Contact=$("#txtContact").val().trim();
