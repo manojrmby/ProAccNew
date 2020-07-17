@@ -91,13 +91,13 @@
             type: "GET",
             data: { id: id },
             success: function (result) {
-                
                   $("#activityrid").val(result.Activity_ID);
                     $("#txtTask").val(result.Task);
                     $("#txtSequence").val(result.Sequence_Num);
                     $("#drpPhase").val(result.PhaseID);
                     $('#drpPhase').attr("disabled", true); 
-                    $("#drphiddenPhase").val(result.PhaseID);
+                $("#drphiddenPhase").val(result.PhaseID);
+                 $("#drpBlock").val(result.BuildingBlock_id);
                     $("#drpRole").val(result.RoleID);
                     $('#drpRole').attr("disabled", true); 
                     $("#drphiddenRole").val(result.RoleID);

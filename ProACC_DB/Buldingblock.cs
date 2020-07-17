@@ -12,15 +12,16 @@ namespace ProACC_DB
     using System;
     using System.Collections.Generic;
     
-    public partial class ActivityMaster
+    public partial class Buldingblock
     {
-        public int Activity_ID { get; set; }
-        public string Task { get; set; }
-        public int BuildingBlock_id { get; set; }
-        public int PhaseID { get; set; }
-        public Nullable<int> Sequence_Num { get; set; }
-        public int ApplicationAreaID { get; set; }
-        public int RoleID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Buldingblock()
+        {
+            this.ActivityMasters = new HashSet<ActivityMaster>();
+        }
+    
+        public int block_ID { get; set; }
+        public string Block_Name { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }
@@ -28,9 +29,7 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual ApplicationAreaMaster ApplicationAreaMaster { get; set; }
-        public virtual Buldingblock Buldingblock { get; set; }
-        public virtual PhaseMaster PhaseMaster { get; set; }
-        public virtual RoleMaster RoleMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ActivityMaster> ActivityMasters { get; set; }
     }
 }

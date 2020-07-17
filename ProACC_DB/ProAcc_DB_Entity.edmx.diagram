@@ -19,16 +19,18 @@
         <AssociationConnector Association="ProAccModel.FK_UserMaster_RoleMaster" />
         <AssociationConnector Association="ProAccModel.FK_UserMaster_User_Type" />
         <EntityTypeShape EntityType="ProAccModel.FileUploadMaster" Width="1.5" PointX="10.375" PointY="9.75" />
-        <EntityTypeShape EntityType="ProAccModel.ActivityMaster" Width="1.5" PointX="8" PointY="0.75" />
         <EntityTypeShape EntityType="ProAccModel.ApplicationAreaMaster" Width="1.5" PointX="5.75" PointY="16.375" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_ApplicationAreaMaster" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_PhaseMaster" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_RoleMaster" />
         <EntityTypeShape EntityType="ProAccModel.Customer" Width="1.5" PointX="3" PointY="12.625" />
         <AssociationConnector Association="ProAccModel.FK_Customer_IndustrySector" />
         <AssociationConnector Association="ProAccModel.FK_Project_Customer" />
         <AssociationConnector Association="ProAccModel.FK_UserMaster_Customer" />
-      </Diagram>
+        <EntityTypeShape EntityType="ProAccModel.ActivityMaster" Width="1.5" PointX="13" PointY="7.125" />
+        <EntityTypeShape EntityType="ProAccModel.Buldingblock" Width="1.5" PointX="10.75" PointY="14" />
+        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_ApplicationAreaMaster" />
+        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_Buldingblock" />
+        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_PhaseMaster" />
+        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_RoleMaster" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

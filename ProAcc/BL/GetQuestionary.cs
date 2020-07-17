@@ -119,13 +119,13 @@ namespace ProAcc.BL
             //string MyConnectionstring = "Server=123.176.34.15,8021;user id = survey;password = Admin1!;database = survey";
             //string MyConnectionstring = "Server= sql12.freemysqlhosting.net;Database=sql12353260;Uid=sql12353260;Pwd= qHCWfvIhS7;";
 
-            //string MyConnectionstring = "Data Source = 123.176.34.15;port=8021;Integrated Security=False; Initial Catalog = survey; User ID = survey; Password = Admin1!;";
-            string constr = ConfigurationManager.ConnectionStrings["mysql"].ConnectionString;
+            string MyConnectionstring = "Data Source = 123.176.34.15;port=8021;Integrated Security=False; Initial Catalog = survey; User ID = survey; Password = Admin1!;";
+            //string constr = ConfigurationManager.ConnectionStrings["mysql"].ConnectionString;
             try
             {
                 while (true)
                 {
-                    using (MySqlConnection conn = new MySqlConnection(constr))
+                    using (MySqlConnection conn = new MySqlConnection(MyConnectionstring))
                     {
 
                         MySqlDataAdapter ad = new MySqlDataAdapter("SELECT * FROM question", conn);
