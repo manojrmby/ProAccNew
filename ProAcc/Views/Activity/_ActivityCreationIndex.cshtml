@@ -18,6 +18,7 @@
             </th>*@
             <th>Task</th>
             @*<th>Cre_on</th>*@
+            <th>Building Blocks</th>
             <th>Phase</th>
             <th>Role</th>
             <th>Application Area</th>
@@ -41,7 +42,9 @@
             @*<td>
             <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
         </td>*@
-
+            <td>
+                <a class="txtG" value="@item.BuildingBlock_id">@item.Buldingblock.Block_Name</a>
+            </td>
             <td>
                 <a class="txtG" value="@item.PhaseID">@item.PhaseMaster.PhaseName</a>
             </td>
@@ -76,7 +79,7 @@
              ],
             "columnDefs": [
                 {
-                    "targets": [4],
+                    "targets": [5],
                     "visible": false
                 }
             ]
