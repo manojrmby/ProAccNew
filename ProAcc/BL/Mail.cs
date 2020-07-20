@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
+using ProACC_DB;
 
 namespace ProAcc.BL
 {
@@ -39,6 +40,7 @@ namespace ProAcc.BL
                     _Log.createLog("Mail Started");
                     _ = SendAsyncMail();
                     await Task.Delay(T);
+                    Thread.Sleep(100000);
                     //, cancellationToken);
                     //if (cancellationToken.IsCancellationRequested)
                     //break;
@@ -74,7 +76,7 @@ namespace ProAcc.BL
                     }
                     else
                     {
-                        //To = item.To.ToString();
+                        To = item.To.ToString();
                         Name = item.Name.ToString();
                     }
                     MailAddress toAddress = new MailAddress(To,Name);
@@ -126,12 +128,19 @@ namespace ProAcc.BL
 
                 NetworkCredential smtpUserInfo = new NetworkCredential(userName, password);
                 client.Credentials = smtpUserInfo;
-
-                client.Send(message);
-                _Log.createLog(ID + "--->" + toAddress.ToString());
-                _Base.UpdateMailList(ID);
+                ProAccEntities db = new ProAccEntities();
+                client.Credentials = smtpUserInfo;
+                var mm = db.MailMasters.Where(x => x.Running_ID == ID).FirstOrDefault().MailStatus;
+                                                                                                   
+                if (mm == false)
+                {
+                    client.Send(message);
+                    _Log.createLog(ID + "--->" + toAddress.ToString());
+                    _Base.UpdateMailList(ID);
+                }
                 client.Dispose();
                 message.Dispose();
+
             }
             catch (Exception Ex)
             {

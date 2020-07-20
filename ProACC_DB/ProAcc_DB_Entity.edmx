@@ -113,6 +113,26 @@
           <Property Name="Modified_by" Type="uniqueidentifier" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="MailMaster">
+          <Key>
+            <PropertyRef Name="Running_ID" />
+          </Key>
+          <Property Name="Running_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="uniqueidentifier" />
+          <Property Name="To" Type="varchar" MaxLength="50" />
+          <Property Name="Subject" Type="varchar" MaxLength="100" />
+          <Property Name="Body" Type="varchar(max)" />
+          <Property Name="MailStatus" Type="bit" />
+          <Property Name="Type" Type="varchar" MaxLength="100" />
+          <Property Name="LineID" Type="uniqueidentifier" />
+          <Property Name="TemplateID" Type="int" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="PhaseMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -385,6 +405,7 @@
           <EntitySet Name="FileUploadMaster" EntityType="Self.FileUploadMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IndustrySector" EntityType="Self.IndustrySector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Instance" EntityType="Self.Instance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MailMaster" EntityType="Self.MailMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhaseMaster" EntityType="Self.PhaseMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectMonitor" EntityType="Self.ProjectMonitor" Schema="dbo" store:Type="Tables" />
@@ -516,6 +537,7 @@
             <End Role="RoleMaster" EntitySet="RoleMasters" />
             <End Role="ActivityMaster" EntitySet="ActivityMasters" />
           </AssociationSet>
+          <EntitySet Name="MailMasters" EntityType="ProAccModel.MailMaster" />
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
           <Property Type="Int32" Name="RC" Nullable="true" />
@@ -913,6 +935,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MailMaster">
+          <Key>
+            <PropertyRef Name="Running_ID" />
+          </Key>
+          <Property Name="Running_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Guid" />
+          <Property Name="To" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Subject" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MailStatus" Type="Boolean" />
+          <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LineID" Type="Guid" />
+          <Property Name="TemplateID" Type="Int32" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1176,6 +1218,27 @@
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="Block_Name" ColumnName="Block_Name" />
                 <ScalarProperty Name="block_ID" ColumnName="block_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MailMasters">
+            <EntityTypeMapping TypeName="ProAccModel.MailMaster">
+              <MappingFragment StoreEntitySet="MailMaster">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="TemplateID" ColumnName="TemplateID" />
+                <ScalarProperty Name="LineID" ColumnName="LineID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="MailStatus" ColumnName="MailStatus" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Running_ID" ColumnName="Running_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

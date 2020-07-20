@@ -71,6 +71,9 @@
     <Compile Include="Instance.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
+    <Compile Include="MailMaster.cs">
+      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
+    </Compile>
     <Compile Include="PhaseMaster.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>

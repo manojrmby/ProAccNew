@@ -41,6 +41,7 @@ namespace ProACC_DB
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
         public virtual DbSet<Buldingblock> Buldingblocks { get; set; }
+        public virtual DbSet<MailMaster> MailMasters { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {

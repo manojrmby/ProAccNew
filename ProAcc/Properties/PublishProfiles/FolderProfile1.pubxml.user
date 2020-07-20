@@ -238,7 +238,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/15/2020 17:13:18</publishTime>
     </File>
     <File Include="Asset/MailTemplate/T2.HTML">
-      <publishTime>07/17/2020 15:55:24</publishTime>
+      <publishTime>07/18/2020 15:49:47</publishTime>
     </File>
     <File Include="Asset/Notiflix/notiflix-2.3.1.min.css">
       <publishTime>01/07/2020 11:08:14</publishTime>
@@ -370,22 +370,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>07/18/2020 13:15:21</publishTime>
+      <publishTime>07/19/2020 13:54:38</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
-      <publishTime>07/18/2020 12:58:01</publishTime>
+      <publishTime>07/19/2020 13:25:55</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>07/18/2020 13:15:21</publishTime>
+      <publishTime>07/19/2020 13:54:38</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
-      <publishTime>07/18/2020 13:15:19</publishTime>
+      <publishTime>07/19/2020 13:54:37</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll.config">
-      <publishTime>05/18/2020 10:26:12</publishTime>
+      <publishTime>07/19/2020 13:10:27</publishTime>
     </File>
     <File Include="bin/ProACC_DB.pdb">
-      <publishTime>07/18/2020 13:15:19</publishTime>
+      <publishTime>07/19/2020 13:54:37</publishTime>
     </File>
     <File Include="bin/Release/Publish/Asset/css/main_Login.css">
       <publishTime>05/12/2020 18:37:12</publishTime>
@@ -1378,7 +1378,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/17/2020 15:55:24</publishTime>
     </File>
     <File Include="Views/Report/_AuditReportIndex.cshtml">
-      <publishTime>07/17/2020 15:55:24</publishTime>
+      <publishTime>07/18/2020 16:37:31</publishTime>
     </File>
     <File Include="Views/Resource/ResourceAssessment.cshtml">
       <publishTime>03/07/2020 15:18:36</publishTime>
@@ -1450,7 +1450,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/07/2020 10:50:03</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/18/2020 13:15:24</publishTime>
+      <publishTime>07/19/2020 13:54:40</publishTime>
     </File>
   </ItemGroup>
 </Project>
