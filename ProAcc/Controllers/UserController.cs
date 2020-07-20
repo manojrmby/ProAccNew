@@ -125,6 +125,7 @@ namespace ProAcc.Controllers
         
         [HttpPost]
         //[ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create(UserMaster con)
         {
             if (ModelState.IsValid)

@@ -87,6 +87,8 @@ namespace ProAcc.Controllers
             var latestTask = db.ActivityMasters.Where(p => p.Activity_ID == LatestTaskId).FirstOrDefault();
             latestTask.Sequence_Num = nextSeqNumber;
             latestTask.isActive = true;
+            latestTask.Modified_On= DateTime.UtcNow;
+            latestTask.Modified_by= Guid.Parse(Session["loginid"].ToString());
             db.Entry(latestTask).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             var ids = db.ActivityMasters.Where(p => p.Activity_ID > LastTaskId && p.Activity_ID != LatestTaskId && p.PhaseID == type).OrderBy(p=>p.Sequence_Num).ToList();
@@ -96,6 +98,8 @@ namespace ProAcc.Controllers
                 var task = db.ActivityMasters.Where(p => p.Activity_ID == id.Activity_ID).FirstOrDefault();
                 task.Sequence_Num = tid + 1;
                 tid = Convert.ToInt32(task.Sequence_Num);
+                task.Modified_On = DateTime.UtcNow;
+                task.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 db.Entry(task).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -250,6 +254,8 @@ namespace ProAcc.Controllers
             {
                 activity.isActive = false;
                 activity.IsDeleted = true;
+                activity.Modified_On = DateTime.UtcNow;
+                activity.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
             }

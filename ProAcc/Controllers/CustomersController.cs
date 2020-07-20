@@ -227,6 +227,8 @@ namespace ProAcc.Controllers
                 {
                     customer.isActive = false;
                     customer.IsDeleted = true;
+                    customer.Modified_On = DateTime.UtcNow;
+                    customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
                     db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
                 }

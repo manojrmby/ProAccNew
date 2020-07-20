@@ -344,6 +344,15 @@
 
                 },
                 {
+                    label: 'Building Block', name: 'BlockId', index: 'BlockId', width: 70,
+                    sortable: false, align: 'Left', editable: true, edittype: 'custom',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetBlockIdDropDown()
+
+                    }
+                },
+                {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
                     sortable: false, align: 'Left', editable: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
@@ -713,6 +722,30 @@
         return Parameters;
 
     }
+    @*function GetBlockIdDropDown() {
+        var Pa = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetBlocks","ProjectMonitor")',
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+                //for (var i = 0; i < Data.length; i++) {
+                //    var obj = {};
+                //    var Block_Name = Data[i].Block_Name;
+                //    var key = "" + Data[i].block_ID;
+                //    Pa[key] = Block_Name;
+                //}
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+        return Pa;
+    }*@
+
+
     function UpdateUserByRole(RoleID) {
          //$("#RoleID").attr("disabled", "disabled");
          $("#UserID")

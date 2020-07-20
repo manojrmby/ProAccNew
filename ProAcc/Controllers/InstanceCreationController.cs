@@ -201,6 +201,8 @@ namespace ProAcc.Controllers
                 {
                     instance.isActive = false;
                     instance.IsDeleted = true;
+                    instance.Modified_On = DateTime.UtcNow;
+                    instance.Modified_by = Guid.Parse(Session["loginid"].ToString());
                     db.Entry(instance).State = EntityState.Modified;
                     db.SaveChanges();
                 }

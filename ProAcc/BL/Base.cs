@@ -1283,6 +1283,27 @@ namespace ProAcc.BL
 
             return TM;
         }
+        public List<Buldingblock> GetBuldingblock()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetBuldingblock");
+            dt = dB.ExecuteDataTable();
+            List<Buldingblock> TM = new List<Buldingblock>();
+            if (dt.Rows.Count > 0)
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Buldingblock P = new Buldingblock();
+                    P.block_ID = Convert.ToInt32(dr["block_ID"].ToString());
+                    P.Block_Name = dr["Block_Name"].ToString();
+                    TM.Add(P);
+                }
+            }
+
+            return TM;
+        }
         public List<UserMaster> GetUser()
         {
             DataTable dt = new DataTable();
