@@ -25,6 +25,7 @@ namespace ProAcc.Controllers
             
              
             int Count = 1;
+            int Sce = 0;
             if (Session["loginid"].ToString()!=null)
             {
                 Lis Status = _Base.SpConvertionStatus(Session["InstanceId"].ToString());
@@ -49,7 +50,11 @@ namespace ProAcc.Controllers
             int inst = 0;
             if (InstanceID!=Guid.Empty)
             {
+                var ProId = db.Instances.Where(x => x.Instance_id == InstanceID).FirstOrDefault().Project_ID;
+
+                Sce = db.Projects.Where(x => x.isActive == true && x.Project_Id==ProId).FirstOrDefault().ScenarioId;
                 var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus==true) orderby u.InstaceName select u;
+                
                 if (q.Count() > 0)
                 {
                     inst = 1;
@@ -118,6 +123,7 @@ namespace ProAcc.Controllers
             ViewBag.count = Count;
             ViewBag.Taskdetails = output;
             ViewBag.Project = Project;
+            ViewBag.Scen= Sce;
 
             //Mail m = new Mail();
             //m.SendEmail();

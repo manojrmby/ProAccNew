@@ -211,7 +211,18 @@
     <Content Include="Asset\css\main_Login.css" />
     <Content Include="Asset\css\style.css" />
     <Content Include="Asset\css\Temp.css" />
+    <Content Include="Asset\images\Carve-Out.png" />
+    <Content Include="Asset\images\Carve-Out1.png" />
     <Content Include="Asset\images\dribbble_1.gif" />
+    <Content Include="Asset\images\MERGE.png" />
+    <Content Include="Asset\images\MERGE1.png" />
+    <Content Include="Asset\images\MOVE.png" />
+    <Content Include="Asset\images\MOVE1.png" />
+    <Content Include="Asset\images\POC.png" />
+    <Content Include="Asset\images\Standardize.png" />
+    <Content Include="Asset\images\Standardize1.png" />
+    <Content Include="Asset\images\Streamline.png" />
+    <Content Include="Asset\images\Streamline1.png" />
     <Content Include="Asset\img\flags%402x.png" />
     <Content Include="Asset\img\flags.png" />
     <Content Include="Asset\Jquery\jqGrid\plugins\pdfmake.min.js" />
@@ -225,6 +236,7 @@
     <Content Include="Asset\MailTemplate\T1.HTML" />
     <Content Include="Asset\MailTemplate\T2.HTML" />
     <Content Include="Asset\MailTemplate\T3.HTML" />
+    <Content Include="Asset\MailTemplate\T4.HTML" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.css" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.js" />
     <Content Include="Asset\Notiflix\notiflix-aio-2.3.1.min.js" />
