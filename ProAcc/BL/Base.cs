@@ -1423,6 +1423,7 @@ namespace ProAcc.BL
                         ProjectMonitorModel P = new ProjectMonitorModel();
                         P.Id = Guid.Parse(dr["id"].ToString());
                         P.ActivityID = Convert.ToInt32(dr["ActivityID"].ToString());
+                        P.BuldingBlockID= Convert.ToInt32(dr["BuildingBlock_ID"].ToString());
                         P.Instance = Guid.Parse(dr["InstanceID"].ToString());
                         P.Task = dr["Task"].ToString();
                         P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
@@ -1490,6 +1491,7 @@ namespace ProAcc.BL
 
                     ProjectMonitorModel P = new ProjectMonitorModel();
                     P.Id = Guid.Parse(dr["id"].ToString());
+                    P.BuldingBlockID= Convert.ToInt32(dr["BuildingBlock_ID"].ToString());
                     P.UserID = Guid.Parse(dr["UserID"].ToString());
                     P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                     P.Task = dr["Task"].ToString();
@@ -1948,6 +1950,29 @@ namespace ProAcc.BL
             dB.ExecuteScalar();
             Res = true;
             return Res;
+        }
+
+
+        public List<Buldingblock> GetBlock()
+        {
+            List<Buldingblock> ListM = new List<Buldingblock>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetBuldingblock");
+            //dB.addIn("@InstunceID", InstanceId);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Buldingblock M = new Buldingblock();
+                    M.Block_Name = dr["Block_Name"].ToString();
+                    M.block_ID = Convert.ToInt32(dr["block_ID"].ToString());
+
+                    ListM.Add(M);
+                }
+            }
+            return ListM;
         }
         //public Boolean Proceess_WordAddImage()
         //{

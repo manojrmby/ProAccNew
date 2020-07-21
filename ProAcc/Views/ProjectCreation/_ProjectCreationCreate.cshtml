@@ -46,19 +46,10 @@
             </div>
         </div>
 
-        <div class="col-6">
-            <div class="form-group">
-                <label class="control-label col-md-4">Description</label>
 
-                <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtDescription" />
-                    @*<span id="lblDescription" style="color:red" />*@
-                </div>
-                <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblDescription">&nbsp;</span>
-                </div>
-            </div>
-        </div>
+
+
+
         <div class="col-6">
             <div class="form-group">
                 <label class="control-label col-md-4 required">Project Manager</label>
@@ -79,6 +70,40 @@
                 </div>
             </div>
         </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Scenario </label>
+
+                <div class="col-md-10">
+                    <select class="form-control" id="drpScenario">
+                        <option value="0">Select Scenario </option>
+                        @foreach (var item in ViewBag.Scenario)
+                        {
+                            <option value="@item.ScenarioId">@item.ScenarioName</option>
+                        }
+                    </select>
+                    @*<input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />*@
+                    @*<span id="lblCustomerName" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblScenario">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4">Description</label>
+
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtDescription" />
+                    @*<span id="lblDescription" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblDescription">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+
 
         <div class="col-12">
             <div class="form-group">
@@ -100,6 +125,7 @@
 
         var projectName = $("#txtProjectName").val().trim();
         var Customerid = $("#drpCustomer").val();
+        var sceID = $("#drpScenario").val();
         var Description = $("#txtDescription").val();
 
         $("#txtProjectName").keypress(function (event) {
@@ -199,7 +225,7 @@
             }            
         });*@
 
-        $('#drpCustomer,#drpProjectManager').change(function () {             var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            var PMID=$("#drpProjectManager").val();            if (projectName != "" && Customerid != 0 && PMID != 0) {                $("#lblCustomerName").html("");                $("#lblProjectManager").html("");                ValidateProject();            }            else {                 ValidateProject();
+        $('#drpCustomer,#drpProjectManager').change(function () {             var projectName = $("#txtProjectName").val().trim();            var Customerid = $("#drpCustomer").val();            var PMID = $("#drpProjectManager").val();            var sceID = $("#drpScenario").val();            if (projectName != "" && Customerid != 0 && PMID != 0 && sceID!=0) {                $("#lblCustomerName").html("");                $("#lblProjectManager").html("");                ValidateProject();            }            else {                 ValidateProject();
             }        });
 
     });
@@ -216,13 +242,15 @@
          var projectName = $("#txtProjectName").val().trim();
         var Customerid = $("#drpCustomer").val();
         var PMID = $("#drpProjectManager").val();
+        var sceID = $("#drpScenario").val();
 
         var lblprojectName = $("#lblProjectName").text().trim();
         var lblCustomerid = $("#lblCustomerName").text().trim();
         var lblPMID = $("#lblProjectManager").text().trim();
+        var lblsce= $("#lblScenario").text().trim();
 
-         if (projectName.length > 0 && Customerid != 0 && PMID != 0 &&
-            lblprojectName == "" &&  lblCustomerid == "" && lblPMID == "") {
+         if (projectName.length > 0 && Customerid != 0 && PMID != 0 && sceID!=0&&
+            lblprojectName == "" &&  lblCustomerid == "" && lblPMID == "" && lblsce=="") {
 
              $("#btnProjectCreate").prop("disabled", false);
              $("#btnProjectUpdate").prop("disabled", false);
@@ -238,7 +266,8 @@
         var projectName = $("#txtProjectName").val().trim();
         var Customerid = $("#drpCustomer").val();
         var Description = $("#txtDescription").val();
-        var PMID=$("#drpProjectManager").val();
+        var PMID = $("#drpProjectManager").val();
+        var sceID = $("#drpScenario").val();
 
         if (projectName == ""|| ValidateName(projectName) == false) {
             $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(5000);
@@ -254,20 +283,28 @@
             $("#lblProjectManager").html("Please Select the Project Manager").show().fadeOut(5000);
             ValidateProject();
         }    
+            else if (sceID == 0)
+        {
+            $("#lblScenario").html("Please Select the Scenario").show().fadeOut(5000);
+            ValidateProject();
+        }  
         else {
             $.ajax({
                     type: "POST",
                 url: '@Url.Action("Create","ProjectCreation")',
-                data: { project_Name: projectName, Customer_Id: Customerid, Description: Description,ProjectManager_Id: PMID },
+                data: {
+                    project_Name: projectName,
+                    Customer_Id: Customerid,
+                    Description: Description,
+                    ProjectManager_Id: PMID,
+                    ScenarioId:sceID
+                },
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('Project Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             loadProjectCreation();
-                                            $("#txtProjectName").val("")
-                                            $("#drpCustomer").val(0)
-                                            $("#txtDescription").val("")
-                                            $("#btnProjectCreate").show();
-                            
+                            Reset();
+                            $("#btnProjectCreate").show();
                         }
                     },
                     failure: function (response) {
@@ -285,23 +322,25 @@
 
     $("#btnProjectUpdate").on("click", function () {
         
-         var id = $("#proj_id").val();
+        var id = $("#proj_id").val();
         var projectName = $("#txtProjectName").val().trim();
         var Customerid = $("#drpCustomer").val();
-        var PMID=$("#drpProjectManager").val();
+        var PMID = $("#drpProjectManager").val();
+        var sceID = $("#drpScenario").val();
         var Description = $("#txtDescription").val();
         var cre_on = $("#projcre_on").val();
         var cre_By = $("#projcre_By").val();
 
-         var model = {
-             Project_Id: id,
-             Project_Name: projectName,
-             Customer_Id: Customerid,
-             ProjectManager_Id: PMID,
-             Description: Description,
-             Cre_on: cre_on,
-             Cre_By: cre_By
-         }
+        var model = {
+            Project_Id: id,
+            Project_Name: projectName,
+            Customer_Id: Customerid,
+            ProjectManager_Id: PMID,
+            ScenarioId: sceID,
+            Description: Description,
+            Cre_on: cre_on,
+            Cre_By: cre_By
+        }
        if (projectName == ""|| ValidateName(projectName) == false) {
            $("#lblProjectName").html("Please enter the Project Name").show().fadeOut(5000);
            ValidateProject();
@@ -315,7 +354,12 @@
         {
            $("#lblProjectManager").html("Please Select the Project Manager").show().fadeOut(5000);
            ValidateProject();
-        }    
+       }  
+            else if (sceID == 0)
+        {
+            $("#lblScenario").html("Please Select the Scenario").show().fadeOut(5000);
+            ValidateProject();
+        }  
         else {
 
             $.ajax({
@@ -327,15 +371,13 @@
                         if (response == "success") {
                             Notiflix.Notify.Success('Project <Strong>Update </strong>successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             loadProjectCreation();
-                                            $("#txtProjectName").val("")
-                                            $("#drpCustomer").val(0)
-                                            $("#drpProjectManager").val(0);
-                                            $("#txtDescription").val("")
-                                            $("#btnAddNew").hide();
-                                            $("#btnProjectUpdate").hide();
-                                            $("#btnProjectCreate").show();
-                                            $("#prjtCreate").show();
-                                            $("#prjtUpdate").hide();
+                            Reset();
+                                            
+                            $("#btnAddNew").hide();
+                            $("#btnProjectUpdate").hide();
+                            $("#btnProjectCreate").show();
+                            $("#prjtCreate").show();
+                            $("#prjtUpdate").hide();
                             // $.alert({
                             //    title: 'Sucess !',
                             //    content: 'Project Edited <strong>successfully</strong>..!',
@@ -385,6 +427,14 @@
             });
 
         }
-     });
+    });
+    function Reset() {
+            $("#txtProjectName").val("")
+            $("#drpScenario").val(0);
+        $("#drpCustomer").val(0);
+        $("#drpProjectManager").val(0);
+            $("#txtDescription").val("")
+            
+    }
      
 </script>
