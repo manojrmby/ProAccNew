@@ -23,7 +23,9 @@ namespace ProAcc.Controllers
         {
             ViewBag.Customer = db.Customers.Where(x => x.isActive == true).ToList();
             ViewBag.Projdetails = db.Projects.Where(x => x.isActive == true).ToList();
+            ViewBag.Scenario = db.ScenarioMasters.Where(x => x.isActive == true).ToList();
             ViewBag.ProjectManager = db.UserMasters.Where(x => x.UserTypeID == 4 && x.isActive == true).ToList();
+            
             return View();
         }
 
@@ -107,7 +109,16 @@ namespace ProAcc.Controllers
                 return HttpNotFound();
             }
             //var Project = db.Projects.Find(id);
-            var Project = db.Projects.Where(x => x.isActive == true && x.Project_Id == id).Select(p => new { p.Project_Id, p.Project_Name, p.Description, p.Customer_Id,p.ProjectManager_Id, p.Cre_on, p.Cre_By}).FirstOrDefault();
+            var Project = db.Projects.Where(x => x.isActive == true && x.Project_Id == id).Select(
+                p => new { 
+                    p.Project_Id,
+                    p.Project_Name,
+                    p.Description,
+                    p.Customer_Id,
+                    p.ProjectManager_Id, 
+                    p.ScenarioId,
+                    p.Cre_on, 
+                    p.Cre_By}).FirstOrDefault();
             //TempData["Cre_On"] = project.Cre_on;
             return Json(Project, JsonRequestBehavior.AllowGet);
             //var list = JsonConvert.SerializeObject(Project, Formatting.None,

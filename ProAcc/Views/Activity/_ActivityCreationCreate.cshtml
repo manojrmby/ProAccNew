@@ -198,10 +198,18 @@
           clearTimeout(typingTimer);
         });
 
+        $('#txtTask').on('keypress', function (e) {
+            if (e.which === 44) {
+                 e.preventDefault();
+                $("#lblTask").html("Not Allowed").show().fadeOut(5000);
+            }
+               
+        });
 
         function TaskCheck() {
            
             var Task = $("#txtTask").val().trim();
+            Task = Task.replace(",", " ");
             var id = $("#activityrid").val();
             if (Task == "") {
                 $("#lblTask").html("Please Enter Task").show().fadeOut(5000);
@@ -332,6 +340,7 @@
     $("#btnActivityCreCreate").on("click", function () {
        // debugger;
         var Task = $("#txtTask").val();
+        Task = Task.replace(",", " ");
        // var sequence = $("#txtSequence").val();
         //var ApplicationArea = $("#txtApplicationArea").val();
         var ApplicationArea = $("#drpApplicationArea").val();

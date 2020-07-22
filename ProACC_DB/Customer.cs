@@ -17,8 +17,8 @@ namespace ProACC_DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
-            this.Projects = new HashSet<Project>();
             this.UserMasters = new HashSet<UserMaster>();
+            this.Projects = new HashSet<Project>();
         }
     
         public System.Guid Customer_ID { get; set; }
@@ -37,8 +37,8 @@ namespace ProACC_DB
     
         public virtual IndustrySector IndustrySector { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Project> Projects { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserMaster> UserMasters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

@@ -211,7 +211,18 @@
     <Content Include="Asset\css\main_Login.css" />
     <Content Include="Asset\css\style.css" />
     <Content Include="Asset\css\Temp.css" />
+    <Content Include="Asset\images\Carve-Out.png" />
+    <Content Include="Asset\images\Carve-Out1.png" />
     <Content Include="Asset\images\dribbble_1.gif" />
+    <Content Include="Asset\images\MERGE.png" />
+    <Content Include="Asset\images\MERGE1.png" />
+    <Content Include="Asset\images\MOVE.png" />
+    <Content Include="Asset\images\MOVE1.png" />
+    <Content Include="Asset\images\POC.png" />
+    <Content Include="Asset\images\Standardize.png" />
+    <Content Include="Asset\images\Standardize1.png" />
+    <Content Include="Asset\images\Streamline.png" />
+    <Content Include="Asset\images\Streamline1.png" />
     <Content Include="Asset\img\flags%402x.png" />
     <Content Include="Asset\img\flags.png" />
     <Content Include="Asset\Jquery\jqGrid\plugins\pdfmake.min.js" />
@@ -224,9 +235,17 @@
     <Content Include="Asset\js\utils.js" />
     <Content Include="Asset\MailTemplate\T1.HTML" />
     <Content Include="Asset\MailTemplate\T2.HTML" />
+    <Content Include="Asset\MailTemplate\T3.HTML" />
+    <Content Include="Asset\MailTemplate\T4.HTML" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.css" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.js" />
     <Content Include="Asset\Notiflix\notiflix-aio-2.3.1.min.js" />
+    <Content Include="Content\css\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\fonts\fa-solid-900.svg" />
     <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.css" />
     <Content Include="Content\fonts\font-awesome-4.7.0\css\font-awesome.min.css" />
@@ -712,6 +731,7 @@
     <Content Include="Views\Report\AuditReports.cshtml" />
     <Content Include="Views\Report\_AuditReportIndex.cshtml" />
     <Content Include="Views\ProjectMonitor\Monitor.cshtml" />
+    <Content Include="Views\Resource\ResourceAllocation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

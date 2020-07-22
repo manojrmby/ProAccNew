@@ -166,6 +166,14 @@ namespace ProAcc.Controllers
             return Json(P, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult GetBlocks()
+        {
+            List<Buldingblock> B = new List<Buldingblock>();
+           B = _Base.GetBuldingblock();
+            return Json(B, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult GetUser(string RoleID)
         {
             List<UserMaster> P = _Base.GetUser();

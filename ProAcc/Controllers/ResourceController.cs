@@ -17,78 +17,6 @@ namespace ProAcc.Controllers
         Base _Base = new Base();
         private ProAccEntities db = new ProAccEntities();
         // GET: Resource
-        public ActionResult ResourceAssessment()
-        {
-            int userType = 0;
-            if (User.IsInRole("Admin"))
-            {
-                userType = 1;
-            }
-            else if (User.IsInRole("Consultant"))
-            {
-                userType = 2;
-            }
-            else if (User.IsInRole("Customer"))
-            {
-                userType = 3;
-            }
-            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
-            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
-            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            int inst = 0;
-            if (InstanceID != Guid.Empty)
-            {
-                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true && u.isActive == true) select u;
-                if (q.Count() > 0)
-                {
-                    inst = 1;
-                }
-                else { inst = 0; }
-
-            }
-            ViewBag.Instance = inst;
-            List<SelectListItem> Project = new List<SelectListItem>();
-
-            if (User.IsInRole("Customer"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
-                {
-                    foreach (var v in Data)
-                    {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
-
-                }
-            }
-            else if (User.IsInRole("Project Manager"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
-                {
-                    foreach (var v in Data)
-                    {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
-
-                }
-            }
-
-
-
-            ViewBag.Project = Project;
-            return View();
-        }
-
         public ActionResult GetData(int Phase_ID)
         {
             int PhaseId = Phase_ID;
@@ -114,11 +42,11 @@ namespace ProAcc.Controllers
             Data.Instance = Guid.Parse(Session["InstanceId"].ToString());
             Data.Modified_by = Guid.Parse(Session["loginid"].ToString());
             Data.Modified_On = DateTime.UtcNow;
-            if (Data.Id!=Guid.Empty)
+            if (Data.Id != Guid.Empty)
             {
                 bool s = _Base.Sp_UpdateResourceTask(Data);
             }
-            
+
             return Json("", JsonRequestBehavior.AllowGet);
         }
         public ActionResult DeleteResource(String ID)
@@ -132,93 +60,12 @@ namespace ProAcc.Controllers
             return Json(s, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult MasterAddAssessment()
-        {
-            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
-            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
-            //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
-            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
-            Result = _Base.Sp_GetMasterAdd(Instance, PhaseId);
-
-            return Json(Result, JsonRequestBehavior.AllowGet);
-        }
-
         public ActionResult AddResource(ProjectMonitorModel Data)
         {
             Boolean Result = false;
             Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
-            Result = _Base.Sp_AddResource(Instance,Data.ActivityID, Session["loginid"].ToString());
+            Result = _Base.Sp_AddResource(Instance, Data.ActivityID, Session["loginid"].ToString());
             return Json(Result, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult ResourceConversion()
-        {
-            int userType = 0;
-            if (User.IsInRole("Admin"))
-            {
-                userType = 1;
-            }
-            else if (User.IsInRole("Consultant"))
-            {
-                userType = 2;
-            }
-            else if (User.IsInRole("Customer"))
-            {
-                userType = 3;
-            }
-            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
-            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            int inst = 0;
-            if (InstanceID != Guid.Empty)
-            {
-                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
-                if (q.Count() > 0)
-                {
-                    inst = 1;
-                }
-                else { inst = 0; }
-
-            }
-            ViewBag.Instance = inst;
-            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
-            List<SelectListItem> Project = new List<SelectListItem>();
-
-            if (User.IsInRole("Customer"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
-                {
-                    foreach (var v in Data)
-                    {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
-
-                }
-            }
-            else if (User.IsInRole("Project Manager"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
-                {
-                    foreach (var v in Data)
-                    {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
-
-                }
-            }
-
-            ViewBag.Project = Project;
-            return View();
         }
 
         public ActionResult MasterAddConversion()
@@ -231,75 +78,7 @@ namespace ProAcc.Controllers
 
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ResourcePreConversion()
-        {
-            int userType = 0;
-            if (User.IsInRole("Admin"))
-            {
-                userType = 1;
-            }
-            else if (User.IsInRole("Consultant"))
-            {
-                userType = 2;
-            }
-            else if (User.IsInRole("Customer"))
-            {
-                userType = 3;
-            }
-            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
-            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            int inst = 0;
-            if (InstanceID != Guid.Empty)
-            {
-                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
-                if (q.Count() > 0)
-                {
-                    inst = 1;
-                }
-                else { inst = 0; }
 
-            }
-            ViewBag.Instance = inst;
-            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
-            List<SelectListItem> Project = new List<SelectListItem>();
-
-            if (User.IsInRole("Customer"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
-                {
-                    foreach (var v in Data)
-                    {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
-
-                }
-            }
-            else if (User.IsInRole("Project Manager"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
-                {
-                    foreach (var v in Data)
-                    {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
-
-                }
-            }
-
-            ViewBag.Project = Project;
-            return View();
-        }
 
         //public ActionResult GetDataPreConversion()
         //{
@@ -395,75 +174,7 @@ namespace ProAcc.Controllers
 
         //    return Json(Result, JsonRequestBehavior.AllowGet);
         //}
-        public ActionResult ResourcePostConversion()
-        {
-            int userType = 0;
-            if (User.IsInRole("Admin"))
-            {
-                userType = 1;
-            }
-            else if (User.IsInRole("Consultant"))
-            {
-                userType = 2;
-            }
-            else if (User.IsInRole("Customer"))
-            {
-                userType = 3;
-            }
-            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
-            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            int inst = 0;
-            if (InstanceID != Guid.Empty)
-            {
-                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
-                if (q.Count() > 0)
-                {
-                    inst = 1;
-                }
-                else { inst = 0; }
 
-            }
-            ViewBag.Instance = inst;
-            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
-            List<SelectListItem> Project = new List<SelectListItem>();
-
-            if (User.IsInRole("Customer"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
-                {
-                    foreach (var v in Data)
-                    {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
-
-                }
-            }
-            else if (User.IsInRole("Project Manager"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
-                {
-                    foreach (var v in Data)
-                    {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
-
-                }
-            }
-
-            ViewBag.Project = Project;
-            return View();
-        }
 
         //public ActionResult GetDataPostConversion()
         //{
@@ -495,7 +206,114 @@ namespace ProAcc.Controllers
 
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ResourceValidation()
+
+
+        //public ActionResult GetDataValidation()
+        //{
+        //    int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
+        //    Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+        //    string LoginID = Session["loginid"].ToString();
+        //    List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
+        //    List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+        //    for (int i = 0; i < PM.Count; i++)
+        //    {
+        //        if (PM[i].PhaseId == PhaseId)
+        //        {
+        //            ProjectMonitorModel projM = new ProjectMonitorModel();
+        //            projM = PM[i];
+        //            Result.Add(projM);
+        //        }
+        //    }
+
+        //    return Json(Result, JsonRequestBehavior.AllowGet);
+        //}
+
+        public ActionResult MasterAddValidation()
+        {
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
+            //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
+            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
+            Result = _Base.Sp_GetMasterAdd(Instance, PhaseId);
+
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+
+        #region ResourcePages
+        public ActionResult ResourceAssessment()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true && u.isActive == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
+
+            }
+            ViewBag.Instance = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            if (User.IsInRole("Customer"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+
+
+
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        public ActionResult ResourcePreConversion()
         {
             int userType = 0;
             if (User.IsInRole("Admin"))
@@ -525,7 +343,77 @@ namespace ProAcc.Controllers
 
             }
             ViewBag.Instance = inst;
-            ViewBag.PhaseID = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
+
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            if (User.IsInRole("Customer"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+
+            ViewBag.Project = Project;
+            return View();
+        }
+        public ActionResult ResourceConversion()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
+
+            }
+            ViewBag.Instance = inst;
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
             List<SelectListItem> Project = new List<SelectListItem>();
 
             if (User.IsInRole("Customer"))
@@ -565,35 +453,170 @@ namespace ProAcc.Controllers
             return View();
         }
 
-        //public ActionResult GetDataValidation()
-        //{
-        //    int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
-        //    Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-        //    string LoginID = Session["loginid"].ToString();
-        //    List<ProjectMonitorModel> PM = _Base.Sp_GetProjectMonitor(InstanceID, LoginID, PhaseId);
-        //    List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
-        //    for (int i = 0; i < PM.Count; i++)
-        //    {
-        //        if (PM[i].PhaseId == PhaseId)
-        //        {
-        //            ProjectMonitorModel projM = new ProjectMonitorModel();
-        //            projM = PM[i];
-        //            Result.Add(projM);
-        //        }
-        //    }
+        public ActionResult ResourcePostConversion()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
 
-        //    return Json(Result, JsonRequestBehavior.AllowGet);
-        //}
+            }
+            ViewBag.Instance = inst;
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
+            List<SelectListItem> Project = new List<SelectListItem>();
 
-        public ActionResult MasterAddValidation()
+            if (User.IsInRole("Customer"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        public ActionResult ResourceValidation()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
+
+            }
+            ViewBag.Instance = inst;
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            if (User.IsInRole("Customer"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+
+            ViewBag.Project = Project;
+            return View();
+        }
+        #endregion
+
+
+
+        [ChildActionOnly]
+        public ActionResult ResourceAllocation()
+        {
+            return PartialView("ResourceAllocation");
+        }
+
+        public ActionResult MasterAdd(int Phase_ID)
         {
             Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
             List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
             //Result = db.ActivityMastersWhere(x => x.isActive == true).OrderBy(a => a.Sequence_Num)
-            int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
-            Result = _Base.Sp_GetMasterAdd(Instance, PhaseId);
+            //int PhaseId = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            Result = _Base.Sp_GetMasterAdd(Instance, Phase_ID);
 
             return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetBlock()
+        {
+            List<Buldingblock> B= _Base.GetBlock();
+            return Json(B, JsonRequestBehavior.AllowGet);
         }
     }
 }

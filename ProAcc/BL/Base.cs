@@ -1285,6 +1285,27 @@ namespace ProAcc.BL
 
             return TM;
         }
+        public List<Buldingblock> GetBuldingblock()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetBuldingblock");
+            dt = dB.ExecuteDataTable();
+            List<Buldingblock> TM = new List<Buldingblock>();
+            if (dt.Rows.Count > 0)
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Buldingblock P = new Buldingblock();
+                    P.block_ID = Convert.ToInt32(dr["block_ID"].ToString());
+                    P.Block_Name = dr["Block_Name"].ToString();
+                    TM.Add(P);
+                }
+            }
+
+            return TM;
+        }
         public List<UserMaster> GetUser()
         {
             DataTable dt = new DataTable();
@@ -1404,6 +1425,7 @@ namespace ProAcc.BL
                         ProjectMonitorModel P = new ProjectMonitorModel();
                         P.Id = Guid.Parse(dr["id"].ToString());
                         P.ActivityID = Convert.ToInt32(dr["ActivityID"].ToString());
+                        P.BuldingBlockID= Convert.ToInt32(dr["BuildingBlock_ID"].ToString());
                         P.Instance = Guid.Parse(dr["InstanceID"].ToString());
                         P.Task = dr["Task"].ToString();
                         P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
@@ -1471,6 +1493,7 @@ namespace ProAcc.BL
 
                     ProjectMonitorModel P = new ProjectMonitorModel();
                     P.Id = Guid.Parse(dr["id"].ToString());
+                    P.BuldingBlockID= Convert.ToInt32(dr["BuildingBlock_ID"].ToString());
                     P.UserID = Guid.Parse(dr["UserID"].ToString());
                     P.PhaseId = Convert.ToInt32(dr["PhaseId"].ToString());
                     P.Task = dr["Task"].ToString();
@@ -1930,46 +1953,6 @@ namespace ProAcc.BL
             Res = true;
             return Res;
         }
-
-        public question Downloadppt()
-        {
-            //List<GetQuestionary.question> ListQuestion = new List<GetQuestionary.question>();
-            DataTable dt = new DataTable();
-            DBHelper dB = new DBHelper("SP_Question", CommandType.StoredProcedure);
-            dB.addIn("@Type", "QuestionList");
-            //dB.addIn("@Id", id);
-            dt = dB.ExecuteDataTable();
-            question p = new question();
-            if (dt.Rows.Count > 0)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    p.id = Convert.ToInt32(dr["Id"].ToString());
-                    p.User_ID = Convert.ToInt32(dr["User_ID"].ToString());
-                    p.la_q1 = dr["la_q1"].ToString();
-                    p.la_q2 = dr["la_q2"].ToString();
-                    p.la_q3 = dr["la_q3"].ToString();
-                    p.la_q4 = dr["la_q4"].ToString();
-                    p.la_q5 = dr["la_q5"].ToString();
-                    p.la_q6 = dr["la_q6"].ToString();
-                    p.la_q7 = dr["la_q7"].ToString();
-                    p.la_q8 = dr["la_q8"].ToString();
-                    p.la_q9 = dr["la_q9"].ToString();
-                    p.la_q10 = dr["la_q10"].ToString();
-                    p.la_q11 = dr["la_q11"].ToString();
-                    p.la_q12 = dr["la_q12"].ToString();
-                    p.fq1 = dr["fq1"].ToString();
-                    p.fq2 = dr["fq2"].ToString();
-                    p.fq3 = dr["fq3"].ToString();
-                    p.submitted = Convert.ToInt32(dr["submitted"].ToString());
-                    //ListQuestion.Add(p);
-                }
-            }
-           
-            return p;
-        }
-
-       
         //public Boolean Proceess_WordAddImage()
         //{
         //    string document = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";

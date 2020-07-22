@@ -128,9 +128,16 @@
             datatype: "json",
            // editurl: "@Url.Action("SubmitProjectMonitor","ProjectMonitor")",
             colModel: [
-                {
+                 {
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
                      align: 'center', editable: true, hidden: true,
+                },
+                {
+                    label: 'Building Block', name: 'BuldingBlockID', index: 'BuldingBlockID', width: 100, editable: false, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                   editoptions: {
+                        value: GetBlock()
+                    }
                 },
                 {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
@@ -139,7 +146,7 @@
                     editrules: {
                         required: true,
                         edithidden: true
-                    },
+                    }, 
                     editoptions: {
                         value: GetPhaseDropDown()
                     }
@@ -873,6 +880,30 @@
 		'true': 'Yes', 'false': 'False'
 	};
 	return Status;
+    }
+
+    function GetBlock() {
+    var Parameters = {};
+    $.ajax({
+        type: "POST",
+       url: '@Url.Action("GetBlock","Resource")',
+        //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+        dataType: "json",
+		async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (Data) {
+				for (var i = 0; i < Data.length; i++) {
+                var obj = {};
+                var Name = Data[i].Block_Name;
+                var key = "" + Data[i].block_ID;
+                Parameters[key] = Name;
+            }
+        },
+        error: function (data) {
+            alert("GetAllUser fail");
+        }
+    });
+	return Parameters;
     }
 
     function GetUserDropDown() {

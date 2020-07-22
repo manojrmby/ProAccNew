@@ -52,12 +52,11 @@ namespace ProAcc.BL
         {
             try
             {
-                string subject, body,Template;
+                string subject, body;
                 Boolean priority = false,MailTestEnable=true;
                 string TestToId = "";
                 subject = "";
                 body = "";
-                Template = "";
                 List<MailModel> MailS = _Base.GetMailList();
                 MailTestEnable = Convert.ToBoolean(ConfigurationManager.AppSettings["Mail_EnableTest"].ToString());
                 TestToId = ConfigurationManager.AppSettings["Mail_TestToID"].ToString();
