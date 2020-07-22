@@ -22,7 +22,7 @@ namespace ProAcc.Controllers
         public ActionResult Index()
         {
             List<UserMaster> u = new List<UserMaster>();
-            var users = db.UserMasters.Where(x => x.isActive == true && x.LoginId!= "Admin").OrderByDescending(x=>x.Cre_on).ToList();
+            var users = db.UserMasters.Where(x => x.LoginId!= "Admin").OrderByDescending(x=>x.Cre_on).ToList();
             users.ForEach(p => {
                 if (p.UserTypeID == 3 )
                 {
@@ -249,7 +249,7 @@ namespace ProAcc.Controllers
             var del = (from a in db.UserMasters
                        join b in db.ProjectMonitors
                        on a.UserId equals b.UserID
-                       where a.UserId == id && a.isActive == true && b.isActive == true
+                       where a.UserId == id && (b.StatusId!=1&& b.StatusId != 3) && b.isActive == true 
                        select b).ToList();
             var delpm = (from a in db.UserMasters
                          join b in db.Projects

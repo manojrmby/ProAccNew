@@ -46,9 +46,10 @@
                 <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
             </td>
             <td>
-                &nbsp;&nbsp;<a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetCustomerById","Customers", new { id = item.Customer_ID })"></a> &nbsp;&nbsp;
+                &nbsp;&nbsp;<a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetCustomerById","Customers", new { id = item.Customer_ID })"></a>
                 @*<a href="#" id="btnEdit" class="editCustomer fa fa-edit"></a><input type="hidden" value="@item.Customer_ID" /> |*@
                 <a href="#" class="btnDelete fa fa-trash"></a><input type="hidden" value="@item.Customer_ID" />
+                <a href="#" class="btnDownload fa fa-download"></a><input type="hidden" value="@item.Customer_ID" />
             </td>
         </tr>
         }
@@ -71,7 +72,26 @@
             ]
         });
     });
-   
+
+    $(".btnDownload").on("click", function () {
+        
+        var id = $(this).next().val();
+        $.ajax({            
+            data: { id: id },
+            url: '@Url.Action("Downloadppt","Customers")',          
+            //dataType: "json",
+            success: function (response) {                
+              window.location = '@Url.Action("DownloadAttachment", "Customers")';
+
+            },
+            failure: function (response) {
+               alert(response.responseText);
+             },
+             error: function (response) {
+               alert(response.responseText);
+             }
+        })
+    });
     $(".editCustomer").on("click", function () {
         debugger;
         var id = $(this).next().val();

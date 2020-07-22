@@ -11,6 +11,12 @@ using ProACC_DB;
 using PagedList;
 using PagedList.Mvc;
 using ProAcc.BL;
+using static ProAcc.BL.GetQuestionary;
+using Spire.Presentation;
+using System.Text.RegularExpressions;
+using System.Configuration;
+using System.IO;
+
 
 namespace ProAcc.Controllers
 {
@@ -20,7 +26,7 @@ namespace ProAcc.Controllers
     {
         private ProAccEntities db = new ProAccEntities();
         LogHelper _Log = new LogHelper();
-
+        Base _Base = new Base();
         // GET: Customers
 
         public ActionResult LinkPage()
@@ -243,6 +249,102 @@ namespace ProAcc.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult Downloadppt(Guid id)
+        {
+            
+            question p = _Base.Downloadppt();
+
+            //question p = new question();
+            string pattern = "(\")";
+            string input = p.la_q2;
+            string la_q2_1 = "", la_q2_2 = "", la_q2_3 = "", la_q2_4 = "", la_q2_5 = "", la_q2_6 = "";
+
+            Regex regex = new Regex(pattern);
+            string[] substrings = regex.Split(input);
+            la_q2_1 = substrings[6].ToString();
+            la_q2_2 = substrings[14].ToString();
+            la_q2_3 = substrings[22].ToString();
+            la_q2_4 = substrings[30].ToString();
+            la_q2_5 = substrings[38].ToString();
+            la_q2_6 = substrings[46].ToString();
+
+            string input1 = p.la_q4;
+            string la_q4_1 = "", la_q4_2 = "", la_q4_3 = "", la_q4_4 = "";
+            string[] substring = regex.Split(input1);
+            la_q4_1 = substring[6].ToString();
+            la_q4_2 = substring[14].ToString();
+            la_q4_3 = substring[22].ToString();
+            la_q4_4 = substring[30].ToString();
+
+
+            //Create a Presentation instance
+            Presentation ppt = new Presentation();
+            string file = @"C:/Users/promantus inc/Downloads/ProAcc_Assessment.pptx";
+
+            int numberOfSlides = CountSlides(file);
+
+            //System.Console.WriteLine("Number of slides = {0}", numberOfSlides);
+            //Load the PowerPoint document
+            ppt.LoadFromFile(file);
+
+
+            var Company_Name = db.Customers.Where(x => x.isActive == true && x.Customer_ID == id).FirstOrDefault().Company_Name;
+            for (int i = 0; i < numberOfSlides; i++)
+            {
+                ISlide slide = ppt.Slides[i];
+                slide.ReplaceAllText("XXXXX", "Promantus", false);
+                slide.ReplaceAllText("XXXX", Company_Name, false);
+                slide.ReplaceAllText("_la_q1", p.la_q1, false);
+                slide.ReplaceAllText("_la_q2_1", la_q2_1, false);
+                slide.ReplaceAllText("_la_q2_2", la_q2_2, false);
+                slide.ReplaceAllText("_la_q2_3", la_q2_3, false);
+                slide.ReplaceAllText("_la_q2_4", la_q2_4, false);
+                slide.ReplaceAllText("_la_q2_5", la_q2_5, false);
+                slide.ReplaceAllText("_la_q2_6", la_q2_6, false);
+                slide.ReplaceAllText("_la_q3", p.la_q3, false);
+                slide.ReplaceAllText("_la_q4_1", la_q4_1, false);
+                slide.ReplaceAllText("_la_q4_2", la_q4_2, false);
+                slide.ReplaceAllText("_la_q4_3", la_q4_3, false);
+                slide.ReplaceAllText("_la_q4_4", la_q4_4, false);
+                slide.ReplaceAllText("_la_q5", p.la_q5, false);
+                slide.ReplaceAllText("_la_q6", p.la_q6, false);
+            }
+            String _fname = Company_Name+".pptx";
+            string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_pptPath"].ToString());
+            string fname = Path.Combine(Folder_Path, _fname);
+            ViewBag.pptfileName = fname;
+            TempData["mydata"] = fname;
+            ppt.SaveToFile(fname, FileFormat.Pptx2013);
+            
+            ///////////////
+            //ppt.SaveToFile(fname, FileFormat.PDF);
+            //byte[] fileBytes = System.IO.File.ReadAllBytes(fname);
+            //string fileName = "PROACC.pptx";
+            //return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+            //System.Diagnostics.Process.Start(fname);
+            ////////////////////
+            return Json("success", JsonRequestBehavior.AllowGet);
+        }
+
+        private static int CountSlides(string presentationFile)
+        {
+            using (Presentation presentation = new Presentation(presentationFile, FileFormat.Pptx2010))
+            {
+                return presentation.Slides.Count;
+            }
+
+        }
+
+        public ActionResult DownloadAttachment()
+        {
+
+            var data = TempData["mydata"].ToString();
+            byte[] fileBytes = System.IO.File.ReadAllBytes(data);
+
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, data);
+
         }
     }
 }

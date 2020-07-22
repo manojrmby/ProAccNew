@@ -11,8 +11,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
+using static ProAcc.BL.GetQuestionary;
 using static ProAcc.BL.Model.Common;
-
+using Spire.Presentation;
+using System.Text.RegularExpressions;
 
 
 //using A = DocumentFormat.OpenXml.Drawing;
@@ -1928,6 +1930,46 @@ namespace ProAcc.BL
             Res = true;
             return Res;
         }
+
+        public question Downloadppt()
+        {
+            //List<GetQuestionary.question> ListQuestion = new List<GetQuestionary.question>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Question", CommandType.StoredProcedure);
+            dB.addIn("@Type", "QuestionList");
+            //dB.addIn("@Id", id);
+            dt = dB.ExecuteDataTable();
+            question p = new question();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    p.id = Convert.ToInt32(dr["Id"].ToString());
+                    p.User_ID = Convert.ToInt32(dr["User_ID"].ToString());
+                    p.la_q1 = dr["la_q1"].ToString();
+                    p.la_q2 = dr["la_q2"].ToString();
+                    p.la_q3 = dr["la_q3"].ToString();
+                    p.la_q4 = dr["la_q4"].ToString();
+                    p.la_q5 = dr["la_q5"].ToString();
+                    p.la_q6 = dr["la_q6"].ToString();
+                    p.la_q7 = dr["la_q7"].ToString();
+                    p.la_q8 = dr["la_q8"].ToString();
+                    p.la_q9 = dr["la_q9"].ToString();
+                    p.la_q10 = dr["la_q10"].ToString();
+                    p.la_q11 = dr["la_q11"].ToString();
+                    p.la_q12 = dr["la_q12"].ToString();
+                    p.fq1 = dr["fq1"].ToString();
+                    p.fq2 = dr["fq2"].ToString();
+                    p.fq3 = dr["fq3"].ToString();
+                    p.submitted = Convert.ToInt32(dr["submitted"].ToString());
+                    //ListQuestion.Add(p);
+                }
+            }
+           
+            return p;
+        }
+
+       
         //public Boolean Proceess_WordAddImage()
         //{
         //    string document = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
