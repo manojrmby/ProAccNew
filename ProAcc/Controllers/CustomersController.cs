@@ -283,7 +283,9 @@ namespace ProAcc.Controllers
 
             //Create a Presentation instance
             Presentation ppt = new Presentation();
-            string file = @"C:/Users/promantus inc/Downloads/ProAcc_Assessment.pptx";
+            string file1 = Server.MapPath(ConfigurationManager.AppSettings["Upload_pptPath"].ToString());
+            string file = Path.Combine(file1, "Defaultppt/Default_ProAcc.pptx");
+            //@"C:/Users/promantus inc/Downloads/ProAcc_Assessment.pptx";
 
             int numberOfSlides = CountSlides(file);
 
