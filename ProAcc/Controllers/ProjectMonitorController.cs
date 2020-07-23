@@ -285,6 +285,15 @@ namespace ProAcc.Controllers
             return PartialView("Monitor");
         }
 
+        [ChildActionOnly]
+        public PartialViewResult InstanceSelection()
+        {
+            ViewBag.Customer = TempData["Customer"];
+            ViewBag.Instance = TempData["Instance"];
+            ViewBag.Project = TempData["Project"];
+            return PartialView("InstanceSelection");
+        }
+
         #region Assessment
         public ActionResult AssessmentMonitor()
         {
@@ -302,7 +311,8 @@ namespace ProAcc.Controllers
                 userType = 3;
             }
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
-            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
             TempData["PhaseID"]= (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             //ViewBag.PhaseID= (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
@@ -317,7 +327,8 @@ namespace ProAcc.Controllers
                 else { inst = 0; }
 
             }
-            ViewBag.Instance = inst;
+            //ViewBag.Instance = inst;
+            TempData["Instance"] = inst;
             List<SelectListItem> Project = new List<SelectListItem>();
 
             if (User.IsInRole("Customer"))
@@ -352,7 +363,8 @@ namespace ProAcc.Controllers
 
                 }
             }
-            ViewBag.Project = Project;
+            //ViewBag.Project = Project;
+            TempData["Project"] = Project;
             return View();
         }
 
@@ -374,7 +386,8 @@ namespace ProAcc.Controllers
                 userType = 3;
             }
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
-            ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            TempData["Customer"]  = new SelectList(sP_._List, "Value", "Name");
             TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
@@ -388,7 +401,8 @@ namespace ProAcc.Controllers
                 else { inst = 0; }
 
             }
-            ViewBag.Instance = inst;
+            //ViewBag.Instance = inst;
+            TempData["Instance"] = inst;
             List<SelectListItem> Project = new List<SelectListItem>();
 
             if (User.IsInRole("Customer"))
@@ -423,7 +437,8 @@ namespace ProAcc.Controllers
 
                 }
             }
-            ViewBag.Project = Project;
+            //ViewBag.Project = Project;
+            TempData["Project"]  = Project;
             return View();
         }
         #endregion

@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Assessment Monitor";
     Layout = "~/Views/shared/_Layout.cshtml";
-    
+
 }
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
@@ -21,8 +21,9 @@
         background-color: orange;
         background-image: none
     }
-    #info_dialog{
-        margin-left:150vh;
+
+    #info_dialog {
+        margin-left: 150vh;
     }
 </style>
 
@@ -84,45 +85,9 @@
     }
 </style>
 <hr />
-<div class="row instanceRow" style="padding: 1em;">
-    <div class="col-lg-12 card">
-        <div class="row">
-            @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
-            {
-                <div class="col-md-4">
-                    <div class="position-relative form-group">
-                        <label for="exampleEmail" class="">Customer Name</label>
-                        @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })
-                        @*@Html.DropDownList("Project", (IEnumerable<SelectListItem>), "- SELECT-", new { id = "IDProject", @class = "form-control" })*@
-                    </div>
-                </div>
-            }
-            <div class="col-md-4">
-                <label class="">Project Name</label>
-                @if (User.IsInRole("Customer") || User.IsInRole("Project Manager"))
-                {
-                    @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
-                }
-                else
-                {
-                    @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
-                           "Select a Customer", new { id = "IDProject", @class = "form-control" })
-                }
-            </div>
-            <div class="col-md-2">
-                <label for="exampleEmail" class="">Instance Name</label>
-                @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
-                "-Select-", new { id = "IDInstance", @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                <label for="exampleEmail" class="">.</label>
-                <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
-                    Select Instance
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+@{
+    Html.RenderAction("InstanceSelection", "ProjectMonitor");
+}
 <div style="margin-top:20px">
     @*<table id="jqGrid"></table>
         <div id="jqGridPager"></div>*@
@@ -135,7 +100,7 @@
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
-        
+
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);

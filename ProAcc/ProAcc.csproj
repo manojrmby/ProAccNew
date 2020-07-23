@@ -736,6 +736,7 @@
     <Content Include="Views\Report\_AuditReportIndex.cshtml" />
     <Content Include="Views\ProjectMonitor\Monitor.cshtml" />
     <Content Include="Views\Resource\ResourceAllocation.cshtml" />
+    <Content Include="Views\ProjectMonitor\InstanceSelection.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
