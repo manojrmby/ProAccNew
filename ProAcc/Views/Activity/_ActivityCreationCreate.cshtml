@@ -185,7 +185,7 @@
         }
 
         var typingTimer;                //timer identifier
-        var doneTypingInterval = 2000;  //time in ms, 2 second for example
+        var doneTypingInterval = 1000;  //time in ms, 1 second for example
 
        // on keyup, start the countdown
          $('#txtTask').on('keyup', function () {
@@ -200,8 +200,11 @@
 
         $('#txtTask').on('keypress', function (e) {
             if (e.which === 44) {
-                 e.preventDefault();
+                e.preventDefault();
                 $("#lblTask").html("Not Allowed").show().fadeOut(5000);
+            }
+            else {
+                $("#lblTask").html("").show();
             }
 
         });
@@ -294,15 +297,18 @@
         //});
 
 
-        $('#drpPhase,#drpRole,#drpApplicationArea').change(function () {
+        $('#drpPhase,#drpRole,#drpApplicationArea,#drpBlock').change(function () {
              var Task = $("#txtTask").val();
-            var sequence = $("#txtSequence").val();
-           // var ApplicationArea = $("#txtApplicationArea").val();
+            var sequence = $("#txtSequence").val();           
             var Phase = $('#drpPhase').val();
             var Role = $('#drpRole').val();
             var ApplicationArea = $('#drpApplicationArea').val();
-
-            if (Task != "" && sequence != "" && Phase != 0&& Role!=0 && ApplicationArea!=0) {
+            var Block = $('#drpBlock').val();
+            if (Task != "" && sequence != "" && Phase != 0 && Role != 0 && ApplicationArea != 0 && Block != 0) {
+                $("#lblApplicationArea").html("");
+                $('#lblPhase').html("");
+                $('#lblRole').html("");
+                $('#lblBlock').html("");
                 ValidateActivity();
             }
             else {
