@@ -132,7 +132,8 @@
     });
 
    
-   $(".userDelete").on("click", function () {
+    $(".userDelete").on("click", function () {
+        debugger;
         var id = $(this).next().val();
          Notiflix.Confirm.Show(
                 'Confirm',
@@ -147,7 +148,7 @@
                         success: function (response) {
                             if (response == "success") {
                                 Notiflix.Notify.Success('User deleted Successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                                setTimeout(Redirect, 3000);
+                                 location.reload();
                             }
                             else {
                                  Notiflix.Notify.Success('User holding some task..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });

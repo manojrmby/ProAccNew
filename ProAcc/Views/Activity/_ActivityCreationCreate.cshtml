@@ -53,15 +53,15 @@
                 </div>
             </div>
             @*<div class="form-group">
-            <label class="control-label col-md-6 required">Application Area</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" id="txtApplicationArea" />
-                <input type="hidden" id="hiddenActivityId" />
-            </div>
-            <div>
-                &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblApplicationArea">&nbsp;</span>
-            </div>
-        </div>*@
+                    <label class="control-label col-md-6 required">Application Area</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="txtApplicationArea" />
+                        <input type="hidden" id="hiddenActivityId" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblApplicationArea">&nbsp;</span>
+                    </div>
+                </div>*@
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">Application Area</label>
@@ -84,7 +84,7 @@
 
         <div class="col-6">
 
-            
+
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">Building Block</label>
@@ -149,7 +149,7 @@
 
 </div>
 <div class="w3-container">
-       <div id="id01" class="w3-modal">
+    <div id="id01" class="w3-modal">
         <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:20%;">
             <div class="w3-container" style="margin:0 auto !important;">
                 <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
@@ -175,7 +175,7 @@
 
     $(document).ready(function () {
         $("#btnActivityCreCreate").prop('disabled', true);
-        
+
         var id = $("#activityrid").val().trim();
         if (id != "") {
             //$("#txtSequence").prop("readonly", true);
@@ -193,7 +193,7 @@
           typingTimer = setTimeout(TaskCheck, doneTypingInterval);
         });
 
-        //on keydown, clear the countdown 
+        //on keydown, clear the countdown
          $('#txtTask').on('keydown', function () {
           clearTimeout(typingTimer);
         });
@@ -203,11 +203,11 @@
                  e.preventDefault();
                 $("#lblTask").html("Not Allowed").show().fadeOut(5000);
             }
-               
+
         });
 
         function TaskCheck() {
-           
+
             var Task = $("#txtTask").val().trim();
             Task = Task.replace(",", " ");
             var id = $("#activityrid").val();
@@ -313,7 +313,7 @@
     });
 
     function ValidateActivity() {
-        
+
         var Task = $("#txtTask").val();
         var ApplicationArea = $("#drpApplicationArea").val();
         var Phase = $('#drpPhase').val();
@@ -469,6 +469,7 @@
 
          var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
+         Task = Task.replace(",", " ");
         var sequence = $("#txtSequence").val();
         //var ApplicationArea = $("#txtApplicationArea").val();
         var ApplicationArea = $("#drpApplicationArea").val();
