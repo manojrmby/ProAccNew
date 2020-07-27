@@ -86,6 +86,8 @@ namespace ProAcc.Controllers
                 }
             }
             TempData["Project"] = Project;
+            ViewBag.AssignedTo = db.UserMasters.Where(x => x.isActive == true).ToList();
+
             return View();            
         }
 
