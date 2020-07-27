@@ -43,6 +43,8 @@ namespace ProACC_DB
         public virtual DbSet<MailMaster> MailMasters { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ScenarioMaster> ScenarioMasters { get; set; }
+        public virtual DbSet<HistoryLog> HistoryLogs { get; set; }
+        public virtual DbSet<Issuetrack> Issuetracks { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {

@@ -33,6 +33,10 @@
         <AssociationConnector Association="ProAccModel.FK_Instance_Project" />
         <AssociationConnector Association="ProAccModel.FK_Project_ScenarioMaster" />
         <AssociationConnector Association="ProAccModel.FK_Project_UserMaster" />
+        <EntityTypeShape EntityType="ProAccModel.HistoryLog" Width="1.5" PointX="15.625" PointY="13.5" />
+        <EntityTypeShape EntityType="ProAccModel.Issuetrack" Width="1.5" PointX="13.375" PointY="13" />
+        <AssociationConnector Association="ProAccModel.FK_HistoryLog_Issuetrack" />
+        <AssociationConnector Association="ProAccModel.FK_Issuetrack_Instance" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

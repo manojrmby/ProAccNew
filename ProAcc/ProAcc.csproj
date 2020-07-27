@@ -630,6 +630,7 @@
     <Compile Include="Controllers\ErrorLogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstanceCreationController.cs" />
+    <Compile Include="Controllers\IssueTrackController.cs" />
     <Compile Include="Controllers\LinkController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="BL\Base.cs" />
@@ -737,6 +738,7 @@
     <Content Include="Views\ProjectMonitor\Monitor.cshtml" />
     <Content Include="Views\Resource\ResourceAllocation.cshtml" />
     <Content Include="Views\ProjectMonitor\InstanceSelection.cshtml" />
+    <Content Include="Views\IssueTrack\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

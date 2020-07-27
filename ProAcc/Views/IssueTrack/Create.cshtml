@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderAction("InstanceSelection", "ProjectMonitor");
+}
+
+<a class="card-title">Create Issue</a>
+<hr />
+<div style="padding:1em;" id="CreateIssue">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Issue Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtIssueName" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIssueName">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Task</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtTask" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Start Date</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtStartDate" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStartDate">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">End Date</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtEndDate" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEndDate">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Status</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtStatus" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStatus">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Assigned To</label>
+                <div class="col-md-10">
+                    @*<select class="form-control" id="drpIndustrySector">
+                            <option value="0">Select Industry</option>
+                            @foreach (var item in ViewBag.Assigned)
+                            {
+                                <option value="@item.IndustrySector_ID">@item.Industry_Sector</option>
+                            }
+                        </select>*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIndustrySector">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Last Updated</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtLastUpdated" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblLastUpdated">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Comments</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtComments" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblComments">&nbsp;</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="col-md-offset-2 col-md-12">
+                <button type="button" id="btnCustomerCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
+                    Create
+                    <div class="ld ld-ring ld-spin"></div>
+                </button>
+                <div class="col-lg-3" style="float:right;">
+                    @Html.ActionLink("Back to List", "Index", "IssueTrack")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+            $("#IDInstance").prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+        $("#CreateIssue").hide();
+
+    });
+     $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+        });
+    $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstanceforResource","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+            });
+    $('#IDInstance').change(function () {
+                var id = $(this).val();
+                if (id == ""||id =="0") {
+                     $('#SubmitInstance').prop("disabled", true);
+                } else {
+					$('#SubmitInstance').prop("disabled", false);
+                }
+            });
+    $('#SubmitInstance').click(function () {
+        $("#CreateIssue").show();
+   });
+
+</script>
