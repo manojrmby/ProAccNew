@@ -15,11 +15,11 @@ namespace ProACC_DB
     public partial class HistoryLog
     {
         public int HistoryLogId { get; set; }
-        public int IssueTrackId { get; set; }
+        public System.Guid IssueTrackId { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string HistoryComment { get; set; }
         public bool isActive { get; set; }
-        public bool Cre_on { get; set; }
+        public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }

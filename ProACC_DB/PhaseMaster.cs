@@ -18,6 +18,7 @@ namespace ProACC_DB
         public PhaseMaster()
         {
             this.ActivityMasters = new HashSet<ActivityMaster>();
+            this.Issuetracks = new HashSet<Issuetrack>();
         }
     
         public int Id { get; set; }
@@ -31,5 +32,7 @@ namespace ProACC_DB
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ActivityMaster> ActivityMasters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Issuetrack> Issuetracks { get; set; }
     }
 }

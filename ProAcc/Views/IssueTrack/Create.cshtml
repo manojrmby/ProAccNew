@@ -100,7 +100,7 @@
             <div class="col-lg-12">
 
                 <div class="col-md-offset-2 col-md-12">
-                    <button type="button" id="btnCustomerCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
+                    <button type="button" id="btnIssueCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
                         Create
                         <div class="ld ld-ring ld-spin"></div>
                     </button>
@@ -212,4 +212,65 @@
         $("#CreateIssue").show();
    });
 
+    $("#btnIssueCreate").on("click", function () {
+        debugger;
+        var IssueName = $("#txtIssueName").val().trim();
+        var Task = $("#txtTask").val();
+         var StartDate=$("#txtStartDate").val().trim();
+        var EndDate = $("#txtEndDate").val();
+        var Status = $("#txtStatus").val().trim();
+        var AssignedTo=$("#drpAssignedTo").val().trim();
+        var Comments=$("#txtComments").val().trim();
+
+        if (IssueName == "") {
+            $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
+        }
+        else if (Task =="")
+        {
+            $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
+        }
+         else if (StartDate =="")
+        {
+            $("#lblContact").html("Please enter the Contact Person").show().fadeOut(2000);
+        }
+        else if (EndDate == "")
+        {
+            $("#error-msg").html("Please enter a valid mobile number").show().fadeOut(2000);
+        }
+        else if (Status=="")
+        {
+            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+        }
+        else if (AssignedTo==0)
+        {
+            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+        }
+        else if (Comments=="")
+        {
+            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+        }
+
+        else {
+            $.ajax({
+                    type: "POST",
+                url: '@Url.Action("Create","Customers")',
+                data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail, Contact: Contact, Countrycode: SelectedCountrycode },
+                    success: function (response) {
+                        if (response == "success") {
+                            Notiflix.Notify.Success('Customer Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                             setTimeout(Redirect, 3000);                            
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+
+
+        }
+    });
 </script>

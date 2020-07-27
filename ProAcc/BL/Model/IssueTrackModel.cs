@@ -28,7 +28,7 @@ namespace ProAcc.BL.Model
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
         public int Status { get; set; }
-        public int Comments { get; set; }
+        public String Comments { get; set; }
     
         public virtual ProACC_DB.UserMaster UserMaster { get; set; }
     }

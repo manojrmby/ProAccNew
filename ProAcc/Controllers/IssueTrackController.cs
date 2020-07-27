@@ -1,4 +1,5 @@
 ﻿using ProAcc.BL;
+using ProAcc.BL.Model;
 using ProACC_DB;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace ProAcc.Controllers
     public class IssueTrackController : Controller
     {
         Base _Base = new Base();
+        LogHelper _Log = new LogHelper();
         private ProAccEntities db = new ProAccEntities();
         // GET: IssueTrack
         public ActionResult Index()
@@ -89,6 +91,54 @@ namespace ProAcc.Controllers
             ViewBag.AssignedTo = db.UserMasters.Where(x => x.isActive == true).ToList();
 
             return View();            
+        }
+
+        [HttpPost]
+        public ActionResult Create(IssueTrackModel ism)
+        {
+            try
+            {
+                var IssueName = db.Issuetracks.Where(p => p.IssueName == ism.IssueName && p.isActive == true).ToList();
+                if (IssueName.Count == 0)
+                {
+                    Issuetrack isstr = new Issuetrack();
+                    isstr.IssueName = ism.IssueName;
+                    isstr.StartDate = ism.StartDate;
+                    isstr.EndDate = ism.EndDate;
+                    isstr.AssignedTo = ism.AssignedTo;
+                    isstr.ProjectInstance_Id = ism.ProjectInstance_Id;
+                    isstr.isActive = true;
+                    isstr.Cre_on = DateTime.UtcNow;
+                    isstr.Cre_By = Guid.Parse(Session["loginid"].ToString());
+                    db.Issuetracks.Add(isstr);
+                    db.SaveChanges();
+
+                    HistoryLog HL = new HistoryLog();
+                    HL.IssueTrackId = isstr.Issuetrack_Id;
+                    HL.HistoryComment = ism.Comments;
+                    HL.CreatedDate= DateTime.UtcNow;
+                    HL.isActive = true;
+                    HL.Cre_on = DateTime.UtcNow;
+                    HL.Cre_By = Guid.Parse(Session["loginid"].ToString());
+                    db.HistoryLogs.Add(HL);
+                    db.SaveChanges();
+
+                    return Json("success");
+                }
+                else
+                {
+                    return Json("error");
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                string Url = Request.Url.AbsoluteUri;
+                //_Log.createLog(Ex, Url);
+                throw;
+            }
+
+            //return View();
         }
 
         [ChildActionOnly]
