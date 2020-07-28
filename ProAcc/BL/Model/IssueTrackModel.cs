@@ -8,8 +8,10 @@ namespace ProAcc.BL.Model
 {
     public class IssueTrackModel
     {
-        public int Issuetrack_Id { get; set; }
+        public System.Guid Issuetrack_Id { get; set; }
+        public int RunningID { get; set; }
         public string IssueName { get; set; }
+        public int PhaseID { get; set; }
         public Nullable<int> TaskId { get; set; }
         public System.Guid ProjectInstance_Id { get; set; }
         [DataType(DataType.Date)]
@@ -31,5 +33,9 @@ namespace ProAcc.BL.Model
         public String Comments { get; set; }
     
         public virtual ProACC_DB.UserMaster UserMaster { get; set; }
+
+        public virtual ProACC_DB.PhaseMaster phaseMaster { get; set; }
+
+
     }
 }

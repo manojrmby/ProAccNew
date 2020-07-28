@@ -89,7 +89,7 @@ namespace ProAcc.Controllers
             }
             TempData["Project"] = Project;
             ViewBag.AssignedTo = db.UserMasters.Where(x => x.isActive == true).ToList();
-
+            ViewBag.PhaseMaster = new SelectList(db.PhaseMasters, "Id", "PhaseName");
             return View();            
         }
 
@@ -140,6 +140,32 @@ namespace ProAcc.Controllers
 
             //return View();
         }
+
+
+        public JsonResult GetTask(int Pid)
+        {
+
+            List<SelectListItem> Instance = new List<SelectListItem>();
+           
+                var query = from u in db.ActivityMasters where u.PhaseID == Pid && u.isActive == true orderby u.Task select u;
+                
+                    foreach (var v in query)
+                    {
+                        Instance.Add(new SelectListItem { Text = v.Task, Value = v.Activity_ID.ToString() });
+                    }
+            return Json(Instance, JsonRequestBehavior.AllowGet);
+        }
+            
+
+
+            //List<ActivityMaster> actList = from u in db.ActivityMasters where u.Activity_ID == Pid && u.isActive == true orderby u.Task select u;
+            //var TaskList = actList.Select(m => new SelectListItem()
+            //{
+            //    Text = m.Task,
+            //    Value = m.Activity_ID.ToString()
+            //}) ;
+            //return Json(actList,JsonRequestBehavior.AllowGet);
+       // }
 
         [ChildActionOnly]
         public PartialViewResult InstanceSelection()

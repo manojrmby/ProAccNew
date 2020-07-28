@@ -9,122 +9,178 @@
 }
 
 
-    <div style="padding:1em;" id="CreateIssue">
-        <a class="card-title">Create Issue</a>
-        <hr />
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group">
-                    <label class="control-label col-md-4 required">Issue Name</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtIssueName" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIssueName">&nbsp;</span>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-4 required">Task</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtTask" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
-                    </div>
+<div style="padding:1em;" id="CreateIssue">
+    <a class="card-title">Create Issue</a>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Issue Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtIssueName" />
                 </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-4 required">Start Date</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtStartDate" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStartDate">&nbsp;</span>
-                    </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIssueName">&nbsp;</span>
                 </div>
             </div>
-            <div class="col-6">
 
-                <div class="form-group">
-                    <label class="control-label col-md-4 required">End Date</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtEndDate" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEndDate">&nbsp;</span>
-                    </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required">PhaseId</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.phaseMaster.Id, ViewBag.PhaseMaster as SelectList, "--Select Phase---", htmlAttributes: new { @class = "form-control", id = "PhaseMaster" })
                 </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-4 required">Status</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtStatus" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStatus">&nbsp;</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-4 required">Assigned To</label>
-                    <div class="col-md-10">
-                        <select class="form-control" id="drpAssignedTo">
-                            <option value="0">Select AssignedTo</option>
-                            @foreach (var item in ViewBag.AssignedTo)
-                            {
-                                <option value="@item.UserId">@item.Name</option>
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIndustrySector">&nbsp;</span>
-                    </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="form-group">
-                    <label class="control-label col-md-4 required">Comments</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtComments" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblComments">&nbsp;</span>
-                    </div>
+            <div class="form-group" id="Task1">
+                <label class="control-label col-md-4 required">Task</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("Task", new SelectList(Enumerable.Empty<SelectListItem>(), "Activity_ID", "Task"), "--Select Task---", htmlAttributes: new { @class = "form-control", id = "TaskList" })
                 </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
+                </div>
+            </div>
 
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Assigned To</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="drpAssignedTo">
+                        <option value="0">Select AssignedTo</option>
+                        @foreach (var item in ViewBag.AssignedTo)
+                        {
+                            <option value="@item.UserId">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIndustrySector">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required" for="txtStartDate">Start Date</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtStartDate" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStartDate">&nbsp;</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required" for="txtEndDate">End Date</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtEndDate" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEndDate">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Status</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="ddllist">
+                        <option selected>---Select Status---</option>
+                        <option>
+                            In progress
+                        </option>
+                        <option>
+                            Completed 
+                        </option>
+                        <option>
+                            On hold
+                        </option>
+                        <option>
+                            Resolved waiting for customer conformation
+                        </option>
+                        <option>Re-opened</option>
+                    </select>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStatus">&nbsp;</span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Comments</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" id="txtArea" name="Description" rows="2" cols="20" style="width:300px;height:100px"></textarea>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblComments">&nbsp;</span>
+                </div>
             </div>
 
         </div>
-        <div class="row">
-            <div class="col-lg-12">
+        <div class="col-12">
 
-                <div class="col-md-offset-2 col-md-12">
-                    <button type="button" id="btnIssueCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
-                        Create
-                        <div class="ld ld-ring ld-spin"></div>
-                    </button>
-                    <div class="col-lg-3" style="float:right;">
-                        @Html.ActionLink("Back to List", "Index", "IssueTrack")
-                    </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="col-md-offset-2 col-md-12">
+                <button type="button" id="btnIssueCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
+                    Create
+                    <div class="ld ld-ring ld-spin"></div>
+                </button>
+                <div class="col-lg-3" style="float:right;">
+                    @Html.ActionLink("Back to List", "Index", "IssueTrack")
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 <script>
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
+        $("#Task1").hide();
+
         $("#CreateIssue").hide();
 
-         $("#txtStartDate").datepicker({
-            dateFormat: "dd-M-yy",
+        $("#txtStartDate").datepicker({
+            dateFormat:"dd-M-yy"
          });
-         $('#txtEndDate').datepicker({         
-             dateFormat: "dd-M-yy",
-         }); 
+        $('#txtEndDate').datepicker({
+            dateFormat:"dd-M-yy"
+         });
     });
+
+        $("#PhaseMaster").change(function () {
+            $("#Task1").show();
+
+            var PhaseId = $(this).val();
+             $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetTask", "IssueTrack")',
+                data: { 'Pid': PhaseId },
+                success: function (data) {
+                    var TaskMaster = $("#TaskList");
+                    TaskMaster.empty();
+                    TaskMaster.append($('<option/>', {
+                        value: 0,
+                        text: "---Select Task List---"
+                    }));
+                    $.each(data, function (index, item) {
+                        TaskMaster.append($('<option/>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
+                    });
+                }
+             });
+        });
+
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);
             var id = $(this).val();
@@ -199,7 +255,8 @@
                     alert(a);
                 }
             });
-            });
+    });
+
     $('#IDInstance').change(function () {
                 var id = $(this).val();
                 if (id == ""||id =="0") {
@@ -258,7 +315,7 @@
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('Customer Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                             setTimeout(Redirect, 3000);                            
+                             setTimeout(Redirect, 3000);
                         }
                     },
                     failure: function (response) {
