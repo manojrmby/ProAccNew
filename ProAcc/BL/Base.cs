@@ -2014,6 +2014,63 @@ namespace ProAcc.BL
 
             return p;
         }
+
+        public bool Sp_InsertIssue(IssueTrackModel blism)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "AddIssueTrack");
+                dB.addIn("@ProjectInstance_Id", blism.ProjectInstance_Id);                
+                dB.addIn("@IssueName", blism.IssueName);
+                dB.addIn("@PhaseID", blism.PhaseID);
+                dB.addIn("@TaskId", blism.TaskId);
+                dB.addIn("@StartDate", blism.StartDate);
+                dB.addIn("@EndDate", blism.EndDate);
+                dB.addIn("@LastUpdatedDate", blism.LastUpdatedDate);
+                dB.addIn("@AssignedTo", blism.AssignedTo);
+                dB.addIn("@Status", blism.Status);
+                dB.addIn("@IsApproved", false);
+                dB.addIn("@Cre_By", blism.Cre_By);
+                dB.addIn("@Comments", blism.Comments);
+                dB.ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
+
+        public bool Sp_UpdateIssue(IssueTrackModel blism)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "UpdateIssueTrack");             
+                dB.addIn("@Status", blism.Status);
+                dB.addIn("@Modified_by", blism.Modified_by);
+                dB.addIn("@Comments", blism.Comments);
+                dB.addIn("@Id", blism.Issuetrack_Id);
+                dB.ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
+
         //public Boolean Proceess_WordAddImage()
         //{
         //    string document = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
