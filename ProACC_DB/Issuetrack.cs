@@ -30,7 +30,7 @@ namespace ProACC_DB
         public System.DateTime EndDate { get; set; }
         public System.DateTime LastUpdatedDate { get; set; }
         public System.Guid AssignedTo { get; set; }
-        public int Status { get; set; }
+        public string Status { get; set; }
         public bool IsApproved { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
@@ -39,7 +39,6 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual ActivityMaster ActivityMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HistoryLog> HistoryLogs { get; set; }
         public virtual Instance Instance { get; set; }

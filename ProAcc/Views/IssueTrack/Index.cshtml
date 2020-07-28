@@ -105,13 +105,31 @@
                 //},
                 { label: 'Id', name: 'Issuetrack_Id', index: 'Issuetrack_Id', width: 150, editable: false },
                 { label: 'IssueName', name: 'IssueName', index: 'IssueName', width: 150, editable: false },
-                { label: 'Phase', name: 'PhaseID', index: 'PhaseID', width: 150, editable: false },
+                {
+                    label: 'Phase', name: 'PhaseID', index: 'PhaseID', width: 150, editable: false,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetPhaseDropDown()
+                    }
+                },
                 { label: 'Task', name: 'TaskId', index: 'TaskId', width: 150, editable: false },
-                { label: 'Project', name: 'ProjectInstance_Id', index: 'ProjectInstance_Id', width: 150, editable: false },
-                { label: 'Start Date', name: 'StartDate', index: 'StartDate', width: 150, editable: false },
-                { label: 'End Date', name: 'EndDate', index: 'EndDate', width: 150, editable: false },
-                { label: 'Updated Date', name: 'LastUpdatedDate', index: 'LastUpdatedDate', width: 150, editable: false },
-                { label: 'Owner', name: 'AssignedTo', index: 'AssignedTo', width: 150, editable: false },
+                {
+                    label: 'Instance', name: 'ProjectInstance_Id', index: 'ProjectInstance_Id', width: 150, editable: false,
+                    //cellEdit: true, edittype: 'select', formatter: 'select',
+                    //editoptions: {
+                    //    value: GetInstanceDropDown()
+                    //}
+                },
+                { label: 'Start Date', name: 'StartDate', index: 'StartDate', width: 150, editable: false,formatter: "date",formatoptions: { newformat: "d/m/Y" } },
+                { label: 'End Date', name: 'EndDate', index: 'EndDate', width: 150, editable: false,formatter: "date",formatoptions: { newformat: "d/m/Y" } },
+                {
+                    label: 'AssignedTo', name: 'AssignedTo', index: 'AssignedTo', width: 150, editable: false,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetUserDropDown()
+                    }
+
+                },
                 { label: 'Status', name: 'Status', index: 'Status', width: 150, editable: false },
 
             ],
@@ -128,4 +146,75 @@
         });
 
     });
+
+  function GetUserDropDown() {
+	var Parameters = {};
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("GetAllUser","ProjectMonitor")',
+        dataType: "json",
+		async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (Data) {
+            //debugger;
+				for (var i = 0; i < Data.length; i++) {
+                var obj = {};
+                    var Name = Data[i].Name;
+                var key = ""+Data[i].UserId;
+                Parameters[key] = Name;
+            }
+        },
+        error: function (data) {
+            alert("GetAllUser fail");
+        }
+    });
+	return Parameters;
+    }
+
+     function GetPhaseDropDown() {
+				 var Parameters = {};
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetPhase","ProjectMonitor")',
+                    //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (Data) {
+						 for (var i = 0; i < Data.length; i++) {
+                           var obj = {};
+                             var PhaseName = Data[i].PhaseName;
+                            var key = ""+Data[i].Id;
+                            Parameters[key] = PhaseName;
+                        }
+                    },
+                    error: function (data) {
+                        alert("GetPhase fail");
+                    }
+                });
+				return Parameters;
+    }
+
+    function GetInstanceDropDown() {
+		 var Parameters = {};
+         $.ajax({
+            type: "POST",
+                    url: '@Url.Action("GetInstance","IssueTrack")',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (Data) {
+						 for (var i = 0; i < Data.length; i++) {
+                           var obj = {};
+                             var PhaseName = Data[i].PhaseName;
+                            var key = ""+Data[i].Id;
+                            Parameters[key] = PhaseName;
+                        }
+                    },
+                    error: function (data) {
+                        alert("GetProject fail");
+                    }
+         });
+				return Parameters;
+    }
 </script>

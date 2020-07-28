@@ -142,7 +142,7 @@
           <Property Name="EndDate" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
           <Property Name="AssignedTo" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="IsApproved" Type="bit" Nullable="false" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="Cre_on" Type="datetime" Nullable="false" />
@@ -388,18 +388,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Issuetrack_ActivityMaster">
-          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="0..1" />
-          <End Role="Issuetrack" Type="Self.Issuetrack" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActivityMaster">
-              <PropertyRef Name="Activity_ID" />
-            </Principal>
-            <Dependent Role="Issuetrack">
-              <PropertyRef Name="TaskId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Issuetrack_Instance">
           <End Role="Instance" Type="Self.Instance" Multiplicity="1" />
           <End Role="Issuetrack" Type="Self.Issuetrack" Multiplicity="*" />
@@ -556,10 +544,6 @@
             <End Role="Project" EntitySet="Project" />
             <End Role="Instance" EntitySet="Instance" />
           </AssociationSet>
-          <AssociationSet Name="FK_Issuetrack_ActivityMaster" Association="Self.FK_Issuetrack_ActivityMaster">
-            <End Role="ActivityMaster" EntitySet="ActivityMaster" />
-            <End Role="Issuetrack" EntitySet="Issuetrack" />
-          </AssociationSet>
           <AssociationSet Name="FK_Issuetrack_Instance" Association="Self.FK_Issuetrack_Instance">
             <End Role="Instance" EntitySet="Instance" />
             <End Role="Issuetrack" EntitySet="Issuetrack" />
@@ -680,10 +664,6 @@
           </AssociationSet>
           <EntitySet Name="HistoryLogs" EntityType="ProAccModel.HistoryLog" />
           <EntitySet Name="Issuetracks" EntityType="ProAccModel.Issuetrack" />
-          <AssociationSet Name="FK_Issuetrack_ActivityMaster" Association="ProAccModel.FK_Issuetrack_ActivityMaster">
-            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
-            <End Role="Issuetrack" EntitySet="Issuetracks" />
-          </AssociationSet>
           <AssociationSet Name="FK_HistoryLog_Issuetrack" Association="ProAccModel.FK_HistoryLog_Issuetrack">
             <End Role="Issuetrack" EntitySet="Issuetracks" />
             <End Role="HistoryLog" EntitySet="HistoryLogs" />
@@ -977,7 +957,6 @@
           <NavigationProperty Name="Buldingblock" Relationship="ProAccModel.FK_ActivityMaster_Buldingblock" FromRole="ActivityMaster" ToRole="Buldingblock" />
           <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="ActivityMaster" ToRole="PhaseMaster" />
           <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_ActivityMaster_RoleMaster" FromRole="ActivityMaster" ToRole="RoleMaster" />
-          <NavigationProperty Name="Issuetracks" Relationship="ProAccModel.FK_Issuetrack_ActivityMaster" FromRole="ActivityMaster" ToRole="Issuetrack" />
         </EntityType>
         <EntityType Name="Buldingblock">
           <Key>
@@ -1174,7 +1153,7 @@
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AssignedTo" Type="Guid" Nullable="false" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="IsApproved" Type="Boolean" Nullable="false" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
@@ -1182,23 +1161,10 @@
           <Property Name="Modified_On" Type="DateTime" Precision="3" />
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ActivityMaster" Relationship="ProAccModel.FK_Issuetrack_ActivityMaster" FromRole="Issuetrack" ToRole="ActivityMaster" />
           <NavigationProperty Name="HistoryLogs" Relationship="ProAccModel.FK_HistoryLog_Issuetrack" FromRole="Issuetrack" ToRole="HistoryLog" />
           <NavigationProperty Name="Instance" Relationship="ProAccModel.FK_Issuetrack_Instance" FromRole="Issuetrack" ToRole="Instance" />
           <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_Issuetrack_PhaseMaster" FromRole="Issuetrack" ToRole="PhaseMaster" />
         </EntityType>
-        <Association Name="FK_Issuetrack_ActivityMaster">
-          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="0..1" />
-          <End Type="ProAccModel.Issuetrack" Role="Issuetrack" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActivityMaster">
-              <PropertyRef Name="Activity_ID" />
-            </Principal>
-            <Dependent Role="Issuetrack">
-              <PropertyRef Name="TaskId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_HistoryLog_Issuetrack">
           <End Type="ProAccModel.Issuetrack" Role="Issuetrack" Multiplicity="1" />
           <End Type="ProAccModel.HistoryLog" Role="HistoryLog" Multiplicity="*" />

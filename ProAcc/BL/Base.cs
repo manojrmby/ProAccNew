@@ -1355,6 +1355,26 @@ namespace ProAcc.BL
             return L;
         }
 
+        public List<Instance> GetInstanceMasters()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetInstance");
+            dt = dB.ExecuteDataTable();
+            List<Instance> PM = new List<Instance>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Instance P = new Instance();
+                    P.Instance_id = Guid.Parse(dr["Instance_id"].ToString());
+                    P.InstaceName = dr["InstaceName"].ToString();
+                    PM.Add(P);
+                }
+            }
+
+            return PM;
+        }
         #endregion
 
 
@@ -2090,6 +2110,43 @@ namespace ProAcc.BL
                 _log.createLog(ex, "");
             }
             return Status;
+        }
+
+        public List<IssueTrackModel> Sp_GetIssueTrackData()
+        {
+            List<IssueTrackModel> ITM = new List<IssueTrackModel>();
+            DataTable dt = new DataTable();
+            //if (Status)
+            {
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "PullData");
+                //dB.addIn("@Issuetrack_Id", InstanceId);
+                dt = dB.ExecuteDataTable();
+
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        IssueTrackModel P = new IssueTrackModel();
+                        P.Issuetrack_Id = Guid.Parse(dr["Issuetrack_Id"].ToString());
+                        P.RunningID = Convert.ToInt32(dr["RunningID"].ToString());
+                        P.IssueName = dr["IssueName"].ToString();
+                        P.PhaseID = Convert.ToInt32(dr["PhaseID"].ToString());
+                        P.TaskId = Convert.ToInt32(dr["TaskId"].ToString());
+                        P.ProjectInstance_Id = Guid.Parse(dr["ProjectInstance_Id"].ToString());                        
+                        P.StartDate = Convert.ToDateTime(dr["StartDate"].ToString());
+                        P.EndDate = Convert.ToDateTime(dr["EndDate"].ToString());
+                        P.LastUpdatedDate = Convert.ToDateTime(dr["LastUpdatedDate"].ToString());
+                        P.AssignedTo = Guid.Parse(dr["AssignedTo"].ToString());
+                        P.Status = dr["Status"].ToString();
+                        P.IsApproved = Convert.ToBoolean(dr["IsApproved"].ToString());
+                        P.Comments = dr["HistoryComment"].ToString();
+
+                        ITM.Add(P);
+                    }
+                }
+            }
+            return ITM;
         }
 
         //public Boolean Proceess_WordAddImage()

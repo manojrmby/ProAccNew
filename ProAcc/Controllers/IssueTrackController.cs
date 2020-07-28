@@ -98,12 +98,17 @@ namespace ProAcc.Controllers
         {
             bool Result = false;
 
-            IssueTrackModel isstr = new IssueTrackModel();
-            isstr.Cre_By = Guid.Parse(Session["loginid"].ToString());
+            ism.Cre_By = Guid.Parse(Session["loginid"].ToString());
 
             Result = _Base.Sp_InsertIssue(ism);
-            return Json("success", JsonRequestBehavior.AllowGet);
-           
+            if(Result==true)
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("fail", JsonRequestBehavior.AllowGet);
+            }           
         }
 
 
@@ -126,6 +131,9 @@ namespace ProAcc.Controllers
         }
         public ActionResult Getdata()
         {
+            List<IssueTrackModel> ITM= _Base.Sp_GetIssueTrackData();
+            
+
             //List<Issuetrack> issuelist = db.Issuetracks.Where(x=>x.isActive==true).ToList();
             //List<Issuetrack> Issu2 = new List<Issuetrack>();
             //for (int i = 0; i < issuelist.Count; i++)
@@ -134,8 +142,14 @@ namespace ProAcc.Controllers
             //    Issu3 = issuelist[i];
             //    Issu2.Add(Issu3);
             //}
-            var Issu2 = db.Issuetracks.ToList();
-            return Json(Issu2, JsonRequestBehavior.AllowGet);
+            //var Issu2 = db.Issuetracks.ToList();
+            return Json(ITM, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetInstance()
+        {
+            List<Instance> P = _Base.GetInstanceMasters();
+            return Json(P, JsonRequestBehavior.AllowGet);
         }
 
         [ChildActionOnly]

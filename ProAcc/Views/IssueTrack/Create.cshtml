@@ -87,11 +87,11 @@
                 <div class="col-md-10">
                     <select class="form-control" id="ddllist">
                         <option selected value="0">---Select Status---</option>
-                        <option value="1">In progress</option>
-                        <option value="2">Completed </option>
-                        <option value="3">On hold</option>
-                        <option value="4">Resolved waiting for customer conformation</option>
-                        <option value="5">Re-opened</option>
+                        <option value="In progress">In progress</option>
+                        <option value="Completed">Completed </option>
+                        <option value="On hold">On hold</option>
+                        <option value="Resolved waiting for customer conformation">Resolved waiting for customer conformation</option>
+                        <option value="Re-opened">Re-opened</option>
                     </select>
                 </div>
                 <div>
@@ -329,7 +329,6 @@
         }	
     });
     $("#btnIssueCreate").on("click", function () {
-        debugger;
         var IssueName = $("#txtIssueName").val().trim();
         var PhaseMaster = $("#PhaseMaster").val().trim();
         var TaskList = $("#TaskList").val().trim();

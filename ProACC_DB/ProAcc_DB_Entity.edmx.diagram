@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8e2369ce9df44ff58790c5c178865d31" Name="Diagram1" ZoomLevel="63">
+      <Diagram DiagramId="8e2369ce9df44ff58790c5c178865d31" Name="Diagram1" ZoomLevel="49">
         <EntityTypeShape EntityType="ProAccModel.Instance" Width="1.5" PointX="5.25" PointY="10" />
         <EntityTypeShape EntityType="ProAccModel.PhaseMaster" Width="1.5" PointX="5.75" PointY="1.5" />
         <EntityTypeShape EntityType="ProAccModel.ProjectMonitor" Width="1.5" PointX="7.75" PointY="8.75" />
@@ -33,9 +33,8 @@
         <AssociationConnector Association="ProAccModel.FK_Instance_Project" />
         <AssociationConnector Association="ProAccModel.FK_Project_ScenarioMaster" />
         <AssociationConnector Association="ProAccModel.FK_Project_UserMaster" />
-        <EntityTypeShape EntityType="ProAccModel.HistoryLog" Width="1.5" PointX="17.5" PointY="6" />
-        <EntityTypeShape EntityType="ProAccModel.Issuetrack" Width="1.5" PointX="15.25" PointY="5" />
-        <AssociationConnector Association="ProAccModel.FK_Issuetrack_ActivityMaster" />
+        <EntityTypeShape EntityType="ProAccModel.HistoryLog" Width="1.5" PointX="10.25" PointY="24.125" />
+        <EntityTypeShape EntityType="ProAccModel.Issuetrack" Width="1.5" PointX="8" PointY="0.75" />
         <AssociationConnector Association="ProAccModel.FK_HistoryLog_Issuetrack" />
         <AssociationConnector Association="ProAccModel.FK_Issuetrack_Instance" />
         <AssociationConnector Association="ProAccModel.FK_Issuetrack_PhaseMaster" />

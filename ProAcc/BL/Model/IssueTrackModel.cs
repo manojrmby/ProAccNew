@@ -29,7 +29,7 @@ namespace ProAcc.BL.Model
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
-        public int Status { get; set; }
+        public String Status { get; set; }
         public String Comments { get; set; }
     
         public virtual ProACC_DB.UserMaster UserMaster { get; set; }
