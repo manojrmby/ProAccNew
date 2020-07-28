@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ProACC_DB.Issuetrack>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+
+@Styles.Render("~/Content/css/jqGrid")
+@Scripts.Render("~/bundles/Scripts/jqGrid")
+<style>
+    .wrapColumnText {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+    }
+
+    .fit_Data {
+        width: fit-content;
+    }
+
+    .ui-jqgrid .ui-jqgrid-labels th.ui-th-column {
+        background-color: orange;
+        background-image: none
+    }
+
+    #info_dialog {
+        margin-left: 150vh;
+    }
+</style>
+
+<script>
+    //$.jgrid.defaults.width =1000;
+    $.jgrid.defaults.responsive = true;
+    $.jgrid.defaults.styleUI = 'Bootstrap4';
+    $.jgrid.defaults.iconSet = "Octicons";
+</script>
+<style>
+    .ui-jqgrid {
+        font-size: 0.8rem
+    }
+
+    th.ui-th-column div {
+        white-space: normal !important;
+        height: auto !important;
+        padding: 2px;
+        text-align: center;
+    }
+
+    .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
+        font-size: 11px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-bdiv {
+        overflow-y: scroll
+    }
+
+    #jqGridPager_center {
+        visibility: hidden;
+    }
+
+    .fixed-sidebar .app-sidebar {
+        height: 100% !important;
+    }
+
+    .app-main {
+        flex: 1;
+        display: flex;
+        z-index: 8;
+        position: relative;
+        min-width: 100% !important;
+    }
+
+    .app-theme-white.app-container {
+        background: #ffffff;
+    }
+
+    .app-container {
+        min-height: 100%;
+    }
+
+    .ui-jqgrid .ui-jqgrid-labels th.ui-th-column {
+        /*background-color: orange;
+    background-image: none*/
+        /*background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);*/
+    }
+</style>
+
+<table id="mytable2">
+</table>
+<div id="pager2"></div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#mytable2").jqGrid({
+            url: '@Url.Action("Getdata","IssueTrack")',
+            datatype: "json",
+            height: 280,
+            colModel: [
+                //{
+                //    label: 'Action', name: 'myac', width: 80, fixed: true, sortable: false, resize: false, formatter: 'actions',
+                //    formatoptions: { keys: true }
+                //},
+                { label: 'Id', name: 'Issuetrack_Id', index: 'Issuetrack_Id', width: 150, editable: false },
+                { label: 'IssueName', name: 'IssueName', index: 'IssueName', width: 150, editable: false },
+                { label: 'Phase', name: 'PhaseID', index: 'PhaseID', width: 150, editable: false },
+                { label: 'Task', name: 'TaskId', index: 'TaskId', width: 150, editable: false },
+                { label: 'Project', name: 'ProjectInstance_Id', index: 'ProjectInstance_Id', width: 150, editable: false },
+                { label: 'Start Date', name: 'StartDate', index: 'StartDate', width: 150, editable: false },
+                { label: 'End Date', name: 'EndDate', index: 'EndDate', width: 150, editable: false },
+                { label: 'Updated Date', name: 'LastUpdatedDate', index: 'LastUpdatedDate', width: 150, editable: false },
+                { label: 'Owner', name: 'AssignedTo', index: 'AssignedTo', width: 150, editable: false },
+                { label: 'Status', name: 'Status', index: 'Status', width: 150, editable: false },
+
+            ],
+
+            rowNum: 10,
+            viewrecords: true,
+            rowList: [10, 20, 30],
+            pager: '#pager2',
+            sortable: true,
+            sortname: 'Name',
+            sortorder: "asc",
+            grouping: true,
+            caption: "Isuue Report"
+        });
+
+    });
+</script>

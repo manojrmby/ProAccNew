@@ -31,7 +31,7 @@
                     @Html.DropDownListFor(model => model.phaseMaster.Id, ViewBag.PhaseMaster as SelectList, "--Select Phase---", htmlAttributes: new { @class = "form-control", id = "PhaseMaster" })
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhaseId">&nbsp;</span>
                 </div>
             </div>
             <div class="form-group" id="Task1">
@@ -47,16 +47,17 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Assigned To</label>
                 <div class="col-md-10">
-                    <select class="form-control" id="drpAssignedTo">
-                        <option value="0">Select AssignedTo</option>
-                        @foreach (var item in ViewBag.AssignedTo)
-                        {
-                            <option value="@item.UserId">@item.Name</option>
-                        }
-                    </select>
+                    @Html.DropDownList("AssignedTo", new SelectList(Enumerable.Empty<SelectListItem>(), "UserId", "Name"), "--Select User---", htmlAttributes: new { @class = "form-control", id = "drpAssignedTo" })
+                    @*<select class="form-control" id="drpAssignedTo">
+            <option value="0">Select AssignedTo</option>
+            @foreach (var item in ViewBag.AssignedTo)
+            {
+                <option value="@item.UserId">@item.Name</option>
+            }
+        </select>*@
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIndustrySector">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblAssignedTo">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -85,20 +86,12 @@
                 <label class="control-label col-md-4 required">Status</label>
                 <div class="col-md-10">
                     <select class="form-control" id="ddllist">
-                        <option selected>---Select Status---</option>
-                        <option>
-                            In progress
-                        </option>
-                        <option>
-                            Completed 
-                        </option>
-                        <option>
-                            On hold
-                        </option>
-                        <option>
-                            Resolved waiting for customer conformation
-                        </option>
-                        <option>Re-opened</option>
+                        <option selected value="0">---Select Status---</option>
+                        <option value="1">In progress</option>
+                        <option value="2">Completed </option>
+                        <option value="3">On hold</option>
+                        <option value="4">Resolved waiting for customer conformation</option>
+                        <option value="5">Re-opened</option>
                     </select>
                 </div>
                 <div>
@@ -110,7 +103,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Comments</label>
                 <div class="col-md-10">
-                    <textarea class="form-control" id="txtArea" name="Description" rows="2" cols="20" style="width:300px;height:100px"></textarea>
+                    <textarea class="form-control" id="txtComments" name="Description" rows="2" cols="20" style="width:300px;height:100px"></textarea>
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblComments">&nbsp;</span>
@@ -118,11 +111,7 @@
             </div>
 
         </div>
-        <div class="col-12">
-
-
-        </div>
-
+       
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -144,7 +133,6 @@
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
-        $("#Task1").hide();
 
         $("#CreateIssue").hide();
 
@@ -157,7 +145,6 @@
     });
 
         $("#PhaseMaster").change(function () {
-            $("#Task1").show();
 
             var PhaseId = $(this).val();
              $.ajax({
@@ -267,55 +254,132 @@
             });
     $('#SubmitInstance').click(function () {
         $("#CreateIssue").show();
+         var id = $("#IDProject").val();
+        $.ajax({
+            type:"GET",
+                url: '@Url.Action("AssignedTo","IssueTrack")',
+                data: { 'Pid' : id},
+                success: function (data) {
+                    var select = $("#drpAssignedTo");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.UserId,
+                            text: itemData.Name
+                        }));
+                    });
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
    });
 
+     $("#txtIssueName").on('focusout', function () {
+        var Name = $("#txtIssueName").val().trim();
+        if (Name == "") {
+            $("#lblIssueName").html("Please enter the Issue").show().fadeOut(2000);
+        }
+    });
+    $("#PhaseMaster").on('focusout', function () {
+        var PhaseMaster = $("#PhaseMaster").val().trim();
+        if (PhaseMaster == "") {
+             $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
+        }
+    });
+    $("#TaskList").on('focusout', function () {
+        var Tasklist = $("#TaskList").val().trim();
+        if (Tasklist == "") {
+            $("#lblTask").html("Please select the Task").show().fadeOut(2000);
+        }
+    });
+    $("#drpAssignedTo").on('focusout', function () {
+        var Assignedto = $("#drpAssignedTo").val().trim();
+        if (Assignedto == "") {
+             $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);
+        }
+    });
+    $("#txtStartDate").on('focusout', function () {
+        var StrtDate = $("#txtStartDate").val().trim();
+        if (StrtDate == "") {
+            $("#lblStartDate").html("Please enter the StartDate").show().fadeOut(2000);
+        }
+    });
+    $("#txtEndDate").on('focusout', function () {
+        var Enddate = $("#txtEndDate").val().trim();
+        if (Enddate == "") {
+           $("#lblEndDate").html("Please enter the EndDate").show().fadeOut(2000);
+        }
+    });
+    $("#ddllist").on('focusout', function () {
+        var List = $("#ddllist").val().trim();
+        if (List == "") {
+            $("#lblStatus").html("Please select the status").show().fadeOut(2000);
+        }
+    });
+    $("#txtComments").on('focusout', function () {
+        var txtarea = $("#txtComments").val().trim();
+        if (txtarea == "") {
+            $("#lblComments").html("Please enter the Comments").show().fadeOut(2000);
+        }	
+    });
     $("#btnIssueCreate").on("click", function () {
         debugger;
         var IssueName = $("#txtIssueName").val().trim();
-        var Task = $("#txtTask").val();
+        var PhaseMaster = $("#PhaseMaster").val().trim();
+        var TaskList = $("#TaskList").val().trim();
+         var AssignedTo=$("#drpAssignedTo").val().trim();
          var StartDate=$("#txtStartDate").val().trim();
-        var EndDate = $("#txtEndDate").val();
-        var Status = $("#txtStatus").val().trim();
-        var AssignedTo=$("#drpAssignedTo").val().trim();
+        var EndDate = $("#txtEndDate").val().trim();
+        var Status = $("#ddllist").val().trim();
         var Comments=$("#txtComments").val().trim();
+        var ProjectInstance_Id=$("#IDInstance").val().trim();
 
         if (IssueName == "") {
-            $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
+            $("#lblIssueName").html("Please enter the Issue").show().fadeOut(2000);
         }
-        else if (Task =="")
-        {
-            $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
+        if (PhaseMaster == 0) {
+            $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
         }
-         else if (StartDate =="")
+        else if (TaskList ==0)
         {
-            $("#lblContact").html("Please enter the Contact Person").show().fadeOut(2000);
-        }
-        else if (EndDate == "")
-        {
-            $("#error-msg").html("Please enter a valid mobile number").show().fadeOut(2000);
-        }
-        else if (Status=="")
-        {
-            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+            $("#lblTask").html("Please select the Task").show().fadeOut(2000);
         }
         else if (AssignedTo==0)
         {
-            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+            $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);
         }
+         else if (StartDate =="")
+        {
+            $("#lblStartDate").html("Please enter the StartDate").show().fadeOut(2000);
+        }
+        else if (EndDate == "")
+        {
+            $("#lblEndDate").html("Please enter the EndDate").show().fadeOut(2000);
+        }
+        else if (Status==0)
+        {
+            $("#lblStatus").html("Please select the status").show().fadeOut(2000);
+        }       
         else if (Comments=="")
         {
-            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+            $("#lblComments").html("Please enter the Comments").show().fadeOut(2000);
         }
 
         else {
             $.ajax({
                     type: "POST",
-                url: '@Url.Action("Create","Customers")',
-                data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail, Contact: Contact, Countrycode: SelectedCountrycode },
+                url: '@Url.Action("Create","IssueTrack")',
+                data: { IssueName:IssueName,PhaseID:PhaseMaster,TaskId:TaskList,ProjectInstance_Id:ProjectInstance_Id,StartDate:StartDate,EndDate:EndDate,Status:Status,AssignedTo:AssignedTo,Comments:Comments},
                     success: function (response) {
                         if (response == "success") {
-                            Notiflix.Notify.Success('Customer Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                             setTimeout(Redirect, 3000);
+                            Notiflix.Notify.Success('Issue Created successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+
                         }
                     },
                     failure: function (response) {
@@ -325,9 +389,6 @@
                         alert(response.responseText);
                     }
             });
-
-
-
         }
     });
 </script>

@@ -740,6 +740,7 @@
     <Content Include="Views\Resource\ResourceAllocation.cshtml" />
     <Content Include="Views\ProjectMonitor\InstanceSelection.cshtml" />
     <Content Include="Views\IssueTrack\Create.cshtml" />
+    <Content Include="Views\IssueTrack\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

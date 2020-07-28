@@ -88,7 +88,7 @@ namespace ProAcc.Controllers
                 }
             }
             TempData["Project"] = Project;
-            ViewBag.AssignedTo = db.UserMasters.Where(x => x.isActive == true).ToList();
+            //ViewBag.AssignedTo = db.UserMasters.Where(x => x.isActive == true).ToList();
             ViewBag.PhaseMaster = new SelectList(db.PhaseMasters, "Id", "PhaseName");
             return View();            
         }
@@ -96,55 +96,19 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Create(IssueTrackModel ism)
         {
-            try
-            {
-                var IssueName = db.Issuetracks.Where(p => p.IssueName == ism.IssueName && p.isActive == true).ToList();
-                if (IssueName.Count == 0)
-                {
-                    Issuetrack isstr = new Issuetrack();
-                    isstr.IssueName = ism.IssueName;
-                    isstr.StartDate = ism.StartDate;
-                    isstr.EndDate = ism.EndDate;
-                    isstr.AssignedTo = ism.AssignedTo;
-                    isstr.ProjectInstance_Id = ism.ProjectInstance_Id;
-                    isstr.isActive = true;
-                    isstr.Cre_on = DateTime.UtcNow;
-                    isstr.Cre_By = Guid.Parse(Session["loginid"].ToString());
-                    db.Issuetracks.Add(isstr);
-                    db.SaveChanges();
+            bool Result = false;
 
-                    HistoryLog HL = new HistoryLog();
-                    HL.IssueTrackId = isstr.Issuetrack_Id;
-                    HL.HistoryComment = ism.Comments;
-                    HL.CreatedDate= DateTime.UtcNow;
-                    HL.isActive = true;
-                    HL.Cre_on = DateTime.UtcNow;
-                    HL.Cre_By = Guid.Parse(Session["loginid"].ToString());
-                    db.HistoryLogs.Add(HL);
-                    db.SaveChanges();
+            IssueTrackModel isstr = new IssueTrackModel();
+            isstr.Cre_By = Guid.Parse(Session["loginid"].ToString());
 
-                    return Json("success");
-                }
-                else
-                {
-                    return Json("error");
-                }
-
-            }
-            catch (Exception Ex)
-            {
-                string Url = Request.Url.AbsoluteUri;
-                //_Log.createLog(Ex, Url);
-                throw;
-            }
-
-            //return View();
+            Result = _Base.Sp_InsertIssue(ism);
+            return Json("success", JsonRequestBehavior.AllowGet);
+           
         }
 
 
         public JsonResult GetTask(int Pid)
         {
-
             List<SelectListItem> Instance = new List<SelectListItem>();
            
                 var query = from u in db.ActivityMasters where u.PhaseID == Pid && u.isActive == true orderby u.Task select u;
@@ -154,18 +118,25 @@ namespace ProAcc.Controllers
                         Instance.Add(new SelectListItem { Text = v.Task, Value = v.Activity_ID.ToString() });
                     }
             return Json(Instance, JsonRequestBehavior.AllowGet);
+        } 
+        public JsonResult AssignedTo(Guid Pid)
+        {
+            List<UserMaster> B = _Base.Sp_AssignedTo(Pid);
+            return Json(B, JsonRequestBehavior.AllowGet);
         }
-            
-
-
-            //List<ActivityMaster> actList = from u in db.ActivityMasters where u.Activity_ID == Pid && u.isActive == true orderby u.Task select u;
-            //var TaskList = actList.Select(m => new SelectListItem()
+        public ActionResult Getdata()
+        {
+            //List<Issuetrack> issuelist = db.Issuetracks.Where(x=>x.isActive==true).ToList();
+            //List<Issuetrack> Issu2 = new List<Issuetrack>();
+            //for (int i = 0; i < issuelist.Count; i++)
             //{
-            //    Text = m.Task,
-            //    Value = m.Activity_ID.ToString()
-            //}) ;
-            //return Json(actList,JsonRequestBehavior.AllowGet);
-       // }
+            //    Issuetrack Issu3 = new Issuetrack();
+            //    Issu3 = issuelist[i];
+            //    Issu2.Add(Issu3);
+            //}
+            var Issu2 = db.Issuetracks.ToList();
+            return Json(Issu2, JsonRequestBehavior.AllowGet);
+        }
 
         [ChildActionOnly]
         public PartialViewResult InstanceSelection()

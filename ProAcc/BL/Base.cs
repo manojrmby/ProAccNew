@@ -2015,6 +2015,27 @@ namespace ProAcc.BL
             return p;
         }
 
+        public List<UserMaster> Sp_AssignedTo(Guid Pid)
+        {
+            List<UserMaster> ListM = new List<UserMaster>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+            dB.addIn("@Type", "AssignedTo");
+            dB.addIn("@Project_Id", Pid);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    UserMaster U = new UserMaster();
+                    U.UserId = Guid.Parse(dr["UserId"].ToString());
+                    U.Name = dr["Name"].ToString();
+                  
+                    ListM.Add(U);
+                }
+            }
+            return ListM;
+        }
         public bool Sp_InsertIssue(IssueTrackModel blism)
         {
             bool Status = false;
@@ -2029,7 +2050,7 @@ namespace ProAcc.BL
                 dB.addIn("@TaskId", blism.TaskId);
                 dB.addIn("@StartDate", blism.StartDate);
                 dB.addIn("@EndDate", blism.EndDate);
-                dB.addIn("@LastUpdatedDate", blism.LastUpdatedDate);
+                //dB.addIn("@LastUpdatedDate", blism.LastUpdatedDate);
                 dB.addIn("@AssignedTo", blism.AssignedTo);
                 dB.addIn("@Status", blism.Status);
                 dB.addIn("@IsApproved", false);
