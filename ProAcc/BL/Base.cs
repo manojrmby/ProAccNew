@@ -1627,7 +1627,7 @@ namespace ProAcc.BL
             return Status;
 
         }
-
+       
         public Boolean SP_SubmitResource(String IDS, Guid ProjectID, Guid LoginID)
         {
             bool Result = false;
@@ -2132,7 +2132,8 @@ namespace ProAcc.BL
                         P.RunningID = Convert.ToInt32(dr["RunningID"].ToString());
                         P.IssueName = dr["IssueName"].ToString();
                         P.PhaseID = Convert.ToInt32(dr["PhaseID"].ToString());
-                        P.TaskId = Convert.ToInt32(dr["TaskId"].ToString());
+                        //P.TaskId = Convert.ToInt32(dr["TaskId"].ToString());
+                        P.Task = dr["Task"].ToString();
                         P.ProjectInstance_Id = Guid.Parse(dr["ProjectInstance_Id"].ToString());                        
                         P.StartDate = Convert.ToDateTime(dr["StartDate"].ToString());
                         P.EndDate = Convert.ToDateTime(dr["EndDate"].ToString());
@@ -2140,7 +2141,7 @@ namespace ProAcc.BL
                         P.AssignedTo = Guid.Parse(dr["AssignedTo"].ToString());
                         P.Status = dr["Status"].ToString();
                         P.IsApproved = Convert.ToBoolean(dr["IsApproved"].ToString());
-                        P.Comments = dr["HistoryComment"].ToString();
+                        P.Comments = dr["Comments"].ToString();
 
                         ITM.Add(P);
                     }
@@ -2149,6 +2150,34 @@ namespace ProAcc.BL
             return ITM;
         }
 
+        public bool Sp_UpdateIssueTrack(IssueTrackModel Data)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "UpdateIssueTrack");
+                dB.addIn("@Id", Data.Issuetrack_Id);
+                dB.addIn("@Status", Data.Status);
+                dB.addIn("@EndDate", Data.EndDate);               
+               // dB.addIn("@Modified_by", Data.Modified_by);
+                dB.addIn("@Comments", Data.Comments);
+                dB.addIn("@Cre_By", Data.Modified_by);
+                
+                dB.ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+
+            return Status;
+
+        }
         //public Boolean Proceess_WordAddImage()
         //{
         //    string document = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";

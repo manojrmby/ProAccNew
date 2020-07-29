@@ -134,18 +134,30 @@ namespace ProAcc.Controllers
             List<IssueTrackModel> ITM= _Base.Sp_GetIssueTrackData();
             
 
-            //List<Issuetrack> issuelist = db.Issuetracks.Where(x=>x.isActive==true).ToList();
-            //List<Issuetrack> Issu2 = new List<Issuetrack>();
-            //for (int i = 0; i < issuelist.Count; i++)
-            //{
-            //    Issuetrack Issu3 = new Issuetrack();
-            //    Issu3 = issuelist[i];
-            //    Issu2.Add(Issu3);
-            //}
-            //var Issu2 = db.Issuetracks.ToList();
             return Json(ITM, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult SubmitIssueTrack(Guid Issuetrack_Id, DateTime EndDate, String Status, String Comments)
+        {
+            bool Result = false;
+            IssueTrackModel Data = new IssueTrackModel();
+            Data.Issuetrack_Id = Issuetrack_Id;
+            Data.EndDate = EndDate;            
+            Data.Status = Status;
+            Data.Comments = Comments;
+            Data.Modified_by= Guid.Parse(Session["loginid"].ToString());
+
+            Result = _Base.Sp_UpdateIssueTrack(Data);
+            if(Result==true)
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("fail", JsonRequestBehavior.AllowGet);
+            }
+            
+        }
         public ActionResult GetInstance()
         {
             List<Instance> P = _Base.GetInstanceMasters();

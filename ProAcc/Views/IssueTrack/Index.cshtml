@@ -95,13 +95,11 @@
     var status = "{ In progress:In progress; Completed:Completed;On hold:On hold;Resolved waiting for customer conformation:Resolved waiting for customer conformation;Re-opened:Re-opened;}";
 
     var EndDate = function (element, options) {
-        debugger
         var ID = options.rowId;
-        //var ST_Date=$('#').val();
         $(element).on('keypress', function (e) {
             e.preventDefault();
         })
-        //var Date = $('#mytable2').jqGrid('getCell', ID, '_StartDate');
+        var Date = $('#mytable2').jqGrid('getCell', ID, 'StartDate');
         $(element).datepicker({
             duration: "slow",
             dateFormat: "dd/mm/yy",
@@ -111,21 +109,9 @@
             showButtonPanel: false,
             showWeek: false,
             showButtonPanel: true,
-           // minDate: Date,
-            onClose: function (selectedDate) {
-               // $("#" + ID + "_startDate").datepicker("option", "minDate", selectedDate);
-                
-            },
-        });//.datepicker("setDate", new Date());
-        // }).datepicker();
+            minDate: Date
+        });
     };
-
-
-
-
-
-
-
 
 
     $(document).ready(function () {
@@ -134,8 +120,11 @@
             datatype: "json",
             height: 280,
             colModel: [
-                
-                { label: 'Id', name: 'Issuetrack_Id', index: 'Issuetrack_Id', width: 150,hidden:true},
+                {
+                    label: 'Issue Id', name: 'RunningID', index: 'Issuetrack_Id', width: 150,
+                   
+                },
+                { label: 'Issuetrack_Id', name: 'Issuetrack_Id', index: 'Issuetrack_Id', width: 150,hidden:true},
                 { label: 'IssueName', name: 'IssueName', index: 'IssueName', width: 150, editable: false },
                 {
                     label: 'Phase', name: 'PhaseID', index: 'PhaseID', width: 150, editable: false,
@@ -144,7 +133,7 @@
                         value: GetPhaseDropDown()
                     }
                 },
-                { label: 'Task', name: 'TaskId', index: 'TaskId', width: 150, editable: false },
+                { label: 'Task', name: 'Task', index: 'Task', width: 150, editable: false },
                 {
                     label: 'Instance', name: 'ProjectInstance_Id', index: 'ProjectInstance_Id', width: 150, editable: false,hidden:true,
                     edittype: 'select', formatter: 'select',
@@ -172,7 +161,7 @@
                     }
                 },
                 { label: 'Comment', name: 'Comments', index: 'Comments', width: 150, editable: false },
-                { label: 'Comment', name: ' ', index: ' ', width: 150, editable: true },
+                { label: 'Comment', name: 'cmt', index: ' ', width: 150, editable: true },
 
                 {
                     label: 'Action', name: 'myac', width: 80, fixed: true, sortable: false, resize: false, formatter: 'actions',
@@ -180,9 +169,23 @@
                         keys: true,
                         delbutton: false,
                         align: "center",
-                        onEdit: function(rowid) {
-                            
-                        }
+                        onEdit: function (rowid) {
+                            var ids = jQuery("#mytable2").jqGrid('getDataIDs');
+                            for (var i = 0; i < ids.length; i++) {
+                                $('#jEditButton_' + ids[i]).hide();
+                            }
+                        },
+                        afterSave: function (rowid, response, postdata, options) {   
+                             var ids = jQuery("#mytable2").jqGrid('getDataIDs');
+                            for (var i = 0; i < ids.length; i++) {
+                                 $('#jEditButton_' + ids[i]).show();
+                            }
+                           
+                            $('#mytable2').trigger( 'reloadGrid' );
+                        },
+                        afterRestore: function (rowid) {
+                             $('#mytable2').trigger( 'reloadGrid' );
+                        },
                     }
                 },
 
@@ -198,8 +201,38 @@
             grouping: true,
             caption: "Isuue Report",
             //onSelectRow: editRow
+            serializeRowData: function (postdata) {
+               
+                var ColValue = $("#mytable2").jqGrid('getGridParam', 'selrow');
+                var Issuetrack_Id = $("#mytable2").jqGrid('getCell', ColValue, 'Issuetrack_Id');
+                
+                var Status = postdata.Status;
+                var EndDate = postdata.EndDate;
+                var cmt = postdata.cmt
+                var Issuetrack_Id = Issuetrack_Id
+                 var Message;
+                Notiflix.Confirm.Show('ProAcc Info. Confirm..!',
+                    Message, 'Yes', 'No',
+                    function () {
+                        $.ajax({                            
+                             type: "POST",
+                              url: '@Url.Action("SubmitIssueTrack","IssueTrack")',
+                             data: {
+                                'Issuetrack_Id': "" + Issuetrack_Id + "",
+                                'EndDate': EndDate,
+                                'Status': Status,
+                                'Comments': cmt,
+                             },
+                            success: function (Result) {
+                               $('#mytable2').trigger('reloadGrid');
 
-            
+                             }
+                        });
+                    }, function () {
+                       
+                    });
+            },
+
         });
 
     });
