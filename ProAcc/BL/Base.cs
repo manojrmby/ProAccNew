@@ -2142,7 +2142,27 @@ namespace ProAcc.BL
                         P.Status = dr["Status"].ToString();
                         P.IsApproved = Convert.ToBoolean(dr["IsApproved"].ToString());
                         P.Comments = dr["Comments"].ToString();
-
+                       // P.IssueID = dr["IssueID"].ToString();
+                        if (P.PhaseID == 1)
+                        {
+                            P.IssueID = "Ass_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 2)
+                        {
+                            P.IssueID = "Pre_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 3)
+                        {
+                            P.IssueID = "Con_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 4)
+                        {
+                            P.IssueID = "Post_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 5)
+                        {
+                            P.IssueID = "Val_" + P.RunningID;
+                        }
                         ITM.Add(P);
                     }
                 }

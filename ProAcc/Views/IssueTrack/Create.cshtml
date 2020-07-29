@@ -34,8 +34,8 @@
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhaseId">&nbsp;</span>
                 </div>
             </div>
-            <div class="form-group" id="Task1">
-                <label class="control-label col-md-4 required">Task</label>
+            <div class="form-group">
+                <label class="control-label col-md-4">Task</label>
                 <div class="col-md-10">
                     @Html.DropDownList("Task", new SelectList(Enumerable.Empty<SelectListItem>(), "Activity_ID", "Task"), "--Select Task---", htmlAttributes: new { @class = "form-control", id = "TaskList" })
                 </div>
@@ -131,6 +131,7 @@
 
 <script>
     $(document).ready(function () {
+        $("#btnIssueCreate").prop("disabled", true);
             $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
 
@@ -280,63 +281,117 @@
             });
    });
 
+    $('#txtIssueName').on('keypress', function (e) {
+       if (e.which === 44) {
+            e.preventDefault();
+            $("#lblIssueName").html("Not Allowed").show().fadeOut(5000);
+       }
+       else {
+           $("#lblIssueName").html("").show();
+        }
+        validateIssueTrack()
+    });
      $("#txtIssueName").on('focusout', function () {
         var Name = $("#txtIssueName").val().trim();
         if (Name == "") {
             $("#lblIssueName").html("Please enter the Issue").show().fadeOut(2000);
-        }
-    });
+         }
+         validateIssueTrack()
+     });
+
     $("#PhaseMaster").on('focusout', function () {
         var PhaseMaster = $("#PhaseMaster").val().trim();
         if (PhaseMaster == "") {
              $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
         }
+        validateIssueTrack()
     });
-    $("#TaskList").on('focusout', function () {
-        var Tasklist = $("#TaskList").val().trim();
-        if (Tasklist == "") {
-            $("#lblTask").html("Please select the Task").show().fadeOut(2000);
-        }
-    });
+
     $("#drpAssignedTo").on('focusout', function () {
         var Assignedto = $("#drpAssignedTo").val().trim();
         if (Assignedto == "") {
              $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);
         }
+        validateIssueTrack()
     });
-    $("#txtStartDate").on('focusout', function () {
-        var StrtDate = $("#txtStartDate").val().trim();
-        if (StrtDate == "") {
-            $("#lblStartDate").html("Please enter the StartDate").show().fadeOut(2000);
+
+    $("#txtEndDate").change(function () {
+        debugger;
+        var startDate = $("#txtStartDate").val();
+        var endDate = $("#txtEndDate").val();
+
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+            $("#lblEndDate").html("please select date greater than start date").show().fadeOut(2000);
+            $("#txtEndDate").val('');
         }
+        validateIssueTrack()
     });
-    $("#txtEndDate").on('focusout', function () {
-        var Enddate = $("#txtEndDate").val().trim();
-        if (Enddate == "") {
-           $("#lblEndDate").html("Please enter the EndDate").show().fadeOut(2000);
-        }
-    });
+
     $("#ddllist").on('focusout', function () {
         var List = $("#ddllist").val().trim();
         if (List == "") {
             $("#lblStatus").html("Please select the status").show().fadeOut(2000);
         }
+        validateIssueTrack()
+    });
+
+    $('#txtComments').on('keypress', function (e) {
+       if (e.which === 44) {
+            e.preventDefault();
+            $("#lblComments").html("Not Allowed").show().fadeOut(5000);
+       }
+       else {
+           $("#lblComments").html("").show();
+        }
+        validateIssueTrack()
     });
     $("#txtComments").on('focusout', function () {
         var txtarea = $("#txtComments").val().trim();
         if (txtarea == "") {
             $("#lblComments").html("Please enter the Comments").show().fadeOut(2000);
-        }	
+        }
+        validateIssueTrack()
     });
+
+    function validateIssueTrack() {
+        var IssueName = $("#txtIssueName").val().trim();
+        var PhaseMaster = $("#PhaseMaster").val().trim();
+        var AssignedTo = $("#drpAssignedTo").val().trim();
+        var StartDate = $("#txtStartDate").val().trim();
+        var EndDate = $("#txtEndDate").val().trim();
+        var Status = $("#ddllist").val().trim();
+        var Comments = $("#txtComments").val().trim();
+
+        var lblIssueName = $("#lblIssueName").val().trim();
+        var lblPhaseMaster = $("#lblPhaseId").val().trim();
+        var lblAssignedTo = $("#lblAssignedTo").val().trim();
+       
+        var lblEndDate = $("#lblEndDate").val().trim();
+        var lblStatus = $("#lblStatus").val().trim();
+        var lblComments = $("#lblComments").val().trim();
+
+        if (IssueName.length > 0 && PhaseMaster != "" && AssignedTo != "" && StartDate.length > 0 && EndDate.length > 0 && Status != "" && Comments.length>0 &&
+            lblIssueName == "" && lblPhaseMaster == "" && lblAssignedTo == "" && lblEndDate == ""&&lblStatus==""&&lblComments=="") {
+
+            $("#btnIssueCreate").prop("disabled", false);
+        }
+        else {
+            $("#btnIssueCreate").prop("disabled", true);
+        }
+
+    }
+
     $("#btnIssueCreate").on("click", function () {
         var IssueName = $("#txtIssueName").val().trim();
+          IssueName = IssueName.replace(",", " ");
         var PhaseMaster = $("#PhaseMaster").val().trim();
         var TaskList = $("#TaskList").val().trim();
          var AssignedTo=$("#drpAssignedTo").val().trim();
          var StartDate=$("#txtStartDate").val().trim();
         var EndDate = $("#txtEndDate").val().trim();
         var Status = $("#ddllist").val().trim();
-        var Comments=$("#txtComments").val().trim();
+        var Comments = $("#txtComments").val().trim();
+        Comments = Comments.replace(",", " ");
         var ProjectInstance_Id=$("#IDInstance").val().trim();
 
         if (IssueName == "") {
@@ -344,10 +399,6 @@
         }
         if (PhaseMaster == 0) {
             $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
-        }
-        else if (TaskList ==0)
-        {
-            $("#lblTask").html("Please select the Task").show().fadeOut(2000);
         }
         else if (AssignedTo==0)
         {
@@ -378,7 +429,7 @@
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('Issue Created successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-
+                            location.href = '@Url.Action("Index", "IssueTrack")';
                         }
                     },
                     failure: function (response) {
