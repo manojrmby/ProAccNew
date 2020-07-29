@@ -92,45 +92,99 @@
 
 
 <script>
-    $(document).ready(function () {
+    var status = "{ In progress:In progress; Completed:Completed;On hold:On hold;Resolved waiting for customer conformation:Resolved waiting for customer conformation;Re-opened:Re-opened;}";
 
+    var EndDate = function (element, options) {
+        debugger
+        var ID = options.rowId;
+        //var ST_Date=$('#').val();
+        $(element).on('keypress', function (e) {
+            e.preventDefault();
+        })
+        //var Date = $('#mytable2').jqGrid('getCell', ID, '_StartDate');
+        $(element).datepicker({
+            duration: "slow",
+            dateFormat: "dd/mm/yy",
+            autoSize: false,
+            changeYear: true,
+            changeMonth: true,
+            showButtonPanel: false,
+            showWeek: false,
+            showButtonPanel: true,
+           // minDate: Date,
+            onClose: function (selectedDate) {
+               // $("#" + ID + "_startDate").datepicker("option", "minDate", selectedDate);
+                
+            },
+        });//.datepicker("setDate", new Date());
+        // }).datepicker();
+    };
+
+
+
+
+
+
+
+
+
+    $(document).ready(function () {
         $("#mytable2").jqGrid({
             url: '@Url.Action("Getdata","IssueTrack")',
             datatype: "json",
             height: 280,
             colModel: [
-                //{
-                //    label: 'Action', name: 'myac', width: 80, fixed: true, sortable: false, resize: false, formatter: 'actions',
-                //    formatoptions: { keys: true }
-                //},
-                { label: 'Id', name: 'Issuetrack_Id', index: 'Issuetrack_Id', width: 150, editable: false },
+                
+                { label: 'Id', name: 'Issuetrack_Id', index: 'Issuetrack_Id', width: 150,hidden:true},
                 { label: 'IssueName', name: 'IssueName', index: 'IssueName', width: 150, editable: false },
                 {
                     label: 'Phase', name: 'PhaseID', index: 'PhaseID', width: 150, editable: false,
-                    cellEdit: true, edittype: 'select', formatter: 'select',
+                     edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetPhaseDropDown()
                     }
                 },
                 { label: 'Task', name: 'TaskId', index: 'TaskId', width: 150, editable: false },
                 {
-                    label: 'Instance', name: 'ProjectInstance_Id', index: 'ProjectInstance_Id', width: 150, editable: false,
-                    //cellEdit: true, edittype: 'select', formatter: 'select',
-                    //editoptions: {
-                    //    value: GetInstanceDropDown()
-                    //}
+                    label: 'Instance', name: 'ProjectInstance_Id', index: 'ProjectInstance_Id', width: 150, editable: false,hidden:true,
+                    edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetInstanceDropDown()
+                    }
                 },
-                { label: 'Start Date', name: 'StartDate', index: 'StartDate', width: 150, editable: false,formatter: "date",formatoptions: { newformat: "d/m/Y" } },
-                { label: 'End Date', name: 'EndDate', index: 'EndDate', width: 150, editable: false,formatter: "date",formatoptions: { newformat: "d/m/Y" } },
+                { label: 'Start Date', name: 'StartDate', index: 'StartDate', width: 150, editable: false, formatter: "date", formatoptions: { newformat: "d/m/Y" } },
+                {
+                    label: 'End Date', name: 'EndDate', index: 'EndDate', width: 150, editable: true, formatter: "date", formatoptions: { newformat: "d/m/Y" },
+                    editoptions: { dataInit: EndDate },
+                },
                 {
                     label: 'AssignedTo', name: 'AssignedTo', index: 'AssignedTo', width: 150, editable: false,
-                    cellEdit: true, edittype: 'select', formatter: 'select',
+                     edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
                     }
 
                 },
-                { label: 'Status', name: 'Status', index: 'Status', width: 150, editable: false },
+                {
+                    label: 'Status', name: 'Status', index: 'Status', width: 150, editable: true, edittype: "select",
+                    editoptions: {
+                        value: status,
+                    }
+                },
+                { label: 'Comment', name: 'Comments', index: 'Comments', width: 150, editable: false },
+                { label: 'Comment', name: ' ', index: ' ', width: 150, editable: true },
+
+                {
+                    label: 'Action', name: 'myac', width: 80, fixed: true, sortable: false, resize: false, formatter: 'actions',
+                    formatoptions: {
+                        keys: true,
+                        delbutton: false,
+                        align: "center",
+                        onEdit: function(rowid) {
+                            
+                        }
+                    }
+                },
 
             ],
 
@@ -142,10 +196,25 @@
             sortname: 'Name',
             sortorder: "asc",
             grouping: true,
-            caption: "Isuue Report"
+            caption: "Isuue Report",
+            //onSelectRow: editRow
+
+            
         });
 
     });
+
+
+    //var lastSelection;
+    //function editRow(id) {
+    //    if (id && id !== lastSelection) {
+    //        var grid = $("#jqGrid");
+    //        grid.jqGrid('restoreRow', lastSelection);
+    //        grid.jqGrid('editRow', id, { keys: true });
+    //        lastSelection = id;
+    //    }
+    //}
+
 
   function GetUserDropDown() {
 	var Parameters = {};
@@ -206,9 +275,9 @@
                     success: function (Data) {
 						 for (var i = 0; i < Data.length; i++) {
                            var obj = {};
-                             var PhaseName = Data[i].PhaseName;
-                            var key = ""+Data[i].Id;
-                            Parameters[key] = PhaseName;
+                             var PhaseName = Data[i].InstanceName;
+                             var key = "" + Data[i].Instance_id;
+                             Parameters[key] = PhaseName;
                         }
                     },
                     error: function (data) {
