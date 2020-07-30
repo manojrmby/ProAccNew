@@ -12,20 +12,26 @@ namespace ProACC_DB
     using System;
     using System.Collections.Generic;
     
-    public partial class Instance
+    public partial class Issuetrack
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Instance()
+        public Issuetrack()
         {
-            this.Issuetracks = new HashSet<Issuetrack>();
+            this.HistoryLogs = new HashSet<HistoryLog>();
         }
     
-        public System.Guid Instance_id { get; set; }
-        public string InstaceName { get; set; }
-        public System.Guid Project_ID { get; set; }
-        public System.DateTime LastUpdated_Dt { get; set; }
-        public bool AssessmentUploadStatus { get; set; }
-        public bool PreConvertionIsActive { get; set; }
+        public System.Guid Issuetrack_Id { get; set; }
+        public int RunningID { get; set; }
+        public string IssueName { get; set; }
+        public int PhaseID { get; set; }
+        public Nullable<int> TaskId { get; set; }
+        public System.Guid ProjectInstance_Id { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime EndDate { get; set; }
+        public System.DateTime LastUpdatedDate { get; set; }
+        public System.Guid AssignedTo { get; set; }
+        public string Status { get; set; }
+        public bool IsApproved { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }
@@ -33,8 +39,9 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual Project Project { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Issuetrack> Issuetracks { get; set; }
+        public virtual ICollection<HistoryLog> HistoryLogs { get; set; }
+        public virtual Instance Instance { get; set; }
+        public virtual PhaseMaster PhaseMaster { get; set; }
     }
 }

@@ -83,6 +83,21 @@
           <Property Name="Modified_by" Type="uniqueidentifier" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="HistoryLog">
+          <Key>
+            <PropertyRef Name="HistoryLogId" />
+          </Key>
+          <Property Name="HistoryLogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IssueTrackId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="HistoryComment" Type="varchar" MaxLength="500" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="IndustrySector">
           <Key>
             <PropertyRef Name="IndustrySector_ID" />
@@ -106,6 +121,29 @@
           <Property Name="LastUpdated_Dt" Type="datetime" Nullable="false" />
           <Property Name="AssessmentUploadStatus" Type="bit" Nullable="false" />
           <Property Name="PreConvertionIsActive" Type="bit" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Issuetrack">
+          <Key>
+            <PropertyRef Name="Issuetrack_Id" />
+          </Key>
+          <Property Name="Issuetrack_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RunningID" Type="int" Nullable="false" />
+          <Property Name="IssueName" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="PhaseID" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" />
+          <Property Name="ProjectInstance_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="AssignedTo" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="Cre_on" Type="datetime" Nullable="false" />
           <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
@@ -380,6 +418,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_HistoryLog_Issuetrack">
+          <End Role="Issuetrack" Type="Self.Issuetrack" Multiplicity="1" />
+          <End Role="HistoryLog" Type="Self.HistoryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issuetrack">
+              <PropertyRef Name="Issuetrack_Id" />
+            </Principal>
+            <Dependent Role="HistoryLog">
+              <PropertyRef Name="IssueTrackId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Instance_Project">
           <End Role="Project" Type="Self.Project" Multiplicity="1" />
           <End Role="Instance" Type="Self.Instance" Multiplicity="*" />
@@ -401,6 +451,30 @@
             </Principal>
             <Dependent Role="PMTaskMaster">
               <PropertyRef Name="PMTaskCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Issuetrack_Instance">
+          <End Role="Instance" Type="Self.Instance" Multiplicity="1" />
+          <End Role="Issuetrack" Type="Self.Issuetrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instance">
+              <PropertyRef Name="Instance_id" />
+            </Principal>
+            <Dependent Role="Issuetrack">
+              <PropertyRef Name="ProjectInstance_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Issuetrack_PhaseMaster">
+          <End Role="PhaseMaster" Type="Self.PhaseMaster" Multiplicity="1" />
+          <End Role="Issuetrack" Type="Self.Issuetrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Issuetrack">
+              <PropertyRef Name="PhaseID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -495,8 +569,10 @@
           <EntitySet Name="Buldingblock" EntityType="Self.Buldingblock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileUploadMaster" EntityType="Self.FileUploadMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistoryLog" EntityType="Self.HistoryLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IndustrySector" EntityType="Self.IndustrySector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Instance" EntityType="Self.Instance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Issuetrack" EntityType="Self.Issuetrack" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MailMaster" EntityType="Self.MailMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhaseMaster" EntityType="Self.PhaseMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PMTaskCategory" EntityType="Self.PMTaskCategory" Schema="dbo" store:Type="Tables" />
@@ -529,13 +605,25 @@
             <End Role="IndustrySector" EntitySet="IndustrySector" />
             <End Role="Customer" EntitySet="Customer" />
           </AssociationSet>
+          <AssociationSet Name="FK_HistoryLog_Issuetrack" Association="Self.FK_HistoryLog_Issuetrack">
+            <End Role="Issuetrack" EntitySet="Issuetrack" />
+            <End Role="HistoryLog" EntitySet="HistoryLog" />
+          </AssociationSet>
           <AssociationSet Name="FK_Instance_Project" Association="Self.FK_Instance_Project">
             <End Role="Project" EntitySet="Project" />
             <End Role="Instance" EntitySet="Instance" />
           </AssociationSet>
+          <AssociationSet Name="FK_Issuetrack_Instance" Association="Self.FK_Issuetrack_Instance">
+            <End Role="Instance" EntitySet="Instance" />
+            <End Role="Issuetrack" EntitySet="Issuetrack" />
+          </AssociationSet>
           <AssociationSet Name="FK_PMTaskMaster_PMTaskCategory" Association="Self.FK_PMTaskMaster_PMTaskCategory">
             <End Role="PMTaskCategory" EntitySet="PMTaskCategory" />
             <End Role="PMTaskMaster" EntitySet="PMTaskMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Issuetrack_PhaseMaster" Association="Self.FK_Issuetrack_PhaseMaster">
+            <End Role="PhaseMaster" EntitySet="PhaseMaster" />
+            <End Role="Issuetrack" EntitySet="Issuetrack" />
           </AssociationSet>
           <AssociationSet Name="FK_Project_Customer" Association="Self.FK_Project_Customer">
             <End Role="Customer" EntitySet="Customer" />
@@ -654,6 +742,20 @@
             <End Role="PMTaskMaster" EntitySet="PMTaskMasters" />
           </AssociationSet>
           <EntitySet Name="PMTaskMonitor_" EntityType="ProAccModel.PMTaskMonitor_" />
+          <EntitySet Name="HistoryLogs" EntityType="ProAccModel.HistoryLog" />
+          <EntitySet Name="Issuetracks" EntityType="ProAccModel.Issuetrack" />
+          <AssociationSet Name="FK_HistoryLog_Issuetrack" Association="ProAccModel.FK_HistoryLog_Issuetrack">
+            <End Role="Issuetrack" EntitySet="Issuetracks" />
+            <End Role="HistoryLog" EntitySet="HistoryLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Issuetrack_Instance" Association="ProAccModel.FK_Issuetrack_Instance">
+            <End Role="Instance" EntitySet="Instances" />
+            <End Role="Issuetrack" EntitySet="Issuetracks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Issuetrack_PhaseMaster" Association="ProAccModel.FK_Issuetrack_PhaseMaster">
+            <End Role="PhaseMaster" EntitySet="PhaseMasters" />
+            <End Role="Issuetrack" EntitySet="Issuetracks" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
           <Property Type="Int32" Name="RC" Nullable="true" />
@@ -687,6 +789,7 @@
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Project" Relationship="ProAccModel.FK_Instance_Project" FromRole="Instance" ToRole="Project" />
+          <NavigationProperty Name="Issuetracks" Relationship="ProAccModel.FK_Issuetrack_Instance" FromRole="Instance" ToRole="Issuetrack" />
         </EntityType>
         <EntityType Name="PhaseMaster">
           <Key>
@@ -701,6 +804,7 @@
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ActivityMasters" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="PhaseMaster" ToRole="ActivityMaster" />
+          <NavigationProperty Name="Issuetracks" Relationship="ProAccModel.FK_Issuetrack_PhaseMaster" FromRole="PhaseMaster" ToRole="Issuetrack" />
         </EntityType>
         <EntityType Name="ProjectMonitor">
           <Key>
@@ -1096,6 +1200,84 @@
             </Principal>
             <Dependent Role="Project">
               <PropertyRef Name="ProjectManager_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="HistoryLog">
+          <Key>
+            <PropertyRef Name="HistoryLogId" />
+          </Key>
+          <Property Name="HistoryLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IssueTrackId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="HistoryComment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Issuetrack" Relationship="ProAccModel.FK_HistoryLog_Issuetrack" FromRole="HistoryLog" ToRole="Issuetrack" />
+        </EntityType>
+        <EntityType Name="Issuetrack">
+          <Key>
+            <PropertyRef Name="Issuetrack_Id" />
+          </Key>
+          <Property Name="Issuetrack_Id" Type="Guid" Nullable="false" />
+          <Property Name="RunningID" Type="Int32" Nullable="false" />
+          <Property Name="IssueName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PhaseID" Type="Int32" Nullable="false" />
+          <Property Name="TaskId" Type="Int32" />
+          <Property Name="ProjectInstance_Id" Type="Guid" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AssignedTo" Type="Guid" Nullable="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="HistoryLogs" Relationship="ProAccModel.FK_HistoryLog_Issuetrack" FromRole="Issuetrack" ToRole="HistoryLog" />
+          <NavigationProperty Name="Instance" Relationship="ProAccModel.FK_Issuetrack_Instance" FromRole="Issuetrack" ToRole="Instance" />
+          <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_Issuetrack_PhaseMaster" FromRole="Issuetrack" ToRole="PhaseMaster" />
+        </EntityType>
+        <Association Name="FK_HistoryLog_Issuetrack">
+          <End Type="ProAccModel.Issuetrack" Role="Issuetrack" Multiplicity="1" />
+          <End Type="ProAccModel.HistoryLog" Role="HistoryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issuetrack">
+              <PropertyRef Name="Issuetrack_Id" />
+            </Principal>
+            <Dependent Role="HistoryLog">
+              <PropertyRef Name="IssueTrackId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Issuetrack_Instance">
+          <End Type="ProAccModel.Instance" Role="Instance" Multiplicity="1" />
+          <End Type="ProAccModel.Issuetrack" Role="Issuetrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instance">
+              <PropertyRef Name="Instance_id" />
+            </Principal>
+            <Dependent Role="Issuetrack">
+              <PropertyRef Name="ProjectInstance_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Issuetrack_PhaseMaster">
+          <End Type="ProAccModel.PhaseMaster" Role="PhaseMaster" Multiplicity="1" />
+          <End Type="ProAccModel.Issuetrack" Role="Issuetrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Issuetrack">
+              <PropertyRef Name="PhaseID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1523,6 +1705,46 @@
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="PMTaskID" ColumnName="PMTaskID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistoryLogs">
+            <EntityTypeMapping TypeName="ProAccModel.HistoryLog">
+              <MappingFragment StoreEntitySet="HistoryLog">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="HistoryComment" ColumnName="HistoryComment" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IssueTrackId" ColumnName="IssueTrackId" />
+                <ScalarProperty Name="HistoryLogId" ColumnName="HistoryLogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Issuetracks">
+            <EntityTypeMapping TypeName="ProAccModel.Issuetrack">
+              <MappingFragment StoreEntitySet="Issuetrack">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="ProjectInstance_Id" ColumnName="ProjectInstance_Id" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
+                <ScalarProperty Name="IssueName" ColumnName="IssueName" />
+                <ScalarProperty Name="RunningID" ColumnName="RunningID" />
+                <ScalarProperty Name="Issuetrack_Id" ColumnName="Issuetrack_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

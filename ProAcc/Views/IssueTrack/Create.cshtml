@@ -1,0 +1,569 @@
+﻿@model ProAcc.BL.Model.IssueTrackModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderAction("InstanceSelection", "ProjectMonitor");
+}
+
+
+
+    <div style="padding:1em;" id="CreateIssue">
+        <a class="card-title">Create Issue</a>
+        <hr />
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4 required">Issue Name</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="txtIssueName" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIssueName">&nbsp;</span>
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                    <label class="control-label col-md-4 ">Phase</label>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.phaseMaster.Id, ViewBag.PhaseMaster as SelectList, "--Select Phase---", htmlAttributes: new { @class = "form-control", id = "PhaseMaster" })
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhaseId">&nbsp;</span>
+                    </div>
+                </div>*@
+
+                <div class="form-group">
+                    <label class="control-label col-md-4 ">Phase</label>
+                    <div class="col-md-10">
+                        <select class="form-control" id="PhaseMaster">
+                            <option value="0">---Select Phase---</option>
+                        </select>
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4 required">Status</label>
+                    <div class="col-md-10">
+                        <select class="form-control" id="ddllist">
+                            <option selected value="0">---Select Status---</option>
+                            <option value="In progress">In progress</option>
+                            <option value="Completed">Completed </option>
+                            <option value="On hold">On hold</option>
+                            <option value="Resolved waiting for customer conformation">Resolved waiting for customer conformation</option>
+                            <option value="Re-opened">Re-opened</option>
+                        </select>
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStatus">&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+
+                <div class="form-group">
+                    <label class="control-label col-md-4 required">Assigned To</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("AssignedTo", new SelectList(Enumerable.Empty<SelectListItem>(), "UserId", "Name"), "--Select User---", htmlAttributes: new { @class = "form-control", id = "drpAssignedTo" })
+                        @*<select class="form-control" id="drpAssignedTo">
+                            <option value="0">Select AssignedTo</option>
+                            @foreach (var item in ViewBag.AssignedTo)
+                            {
+                                <option value="@item.UserId">@item.Name</option>
+                            }
+                        </select>*@
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblAssignedTo">&nbsp;</span>
+                    </div>
+                </div>
+
+                <div class="form-group" id="Task1">
+                    <label class="control-label col-md-4 ">Task</label>
+                    <div class="col-md-10">
+                        <select class="form-control" id="TaskList">
+                            <option value="0">---Select Task---</option>
+                        </select>
+                        @*@Html.DropDownList("Task", new SelectList(Enumerable.Empty<SelectListItem>(), "Activity_ID", "Task"), "--Select Task---", htmlAttributes: new { @class = "form-control", id = "TaskList" })*@
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
+                    </div>
+                </div>
+
+                <div class="form-group" id="frmgrup1">
+                    <label class="control-label col-md-4 required" for="txtStartDate">Start Date</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="txtStartDate" name="date" placeholder="dd/mm/yyyy" />
+                        <i class=" fa fa-calendar-alt"></i>
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStartDate">&nbsp;</span>
+                    </div>
+                </div>
+                <div class="form-group" id="frmgrup">
+                    <label class="control-label col-md-4 required" for="txtEndDate">End Date</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="txtEndDate" placeholder="dd/mm/yyyy" />
+                        <i class=" fa fa-calendar-alt"></i>
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEndDate">&nbsp;</span>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="control-label col-md-4 required">Comments</label>
+                    <div class="col-md-10">
+                        <textarea class="form-control" id="txtComments" name="Description" rows="2" cols="20" style="width:900px;height:100px"></textarea>
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblComments">&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="col-md-offset-2 col-md-12">
+                    <button type="button" id="btnIssueCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
+                        Create
+                        <div class="ld ld-ring ld-spin"></div>
+                    </button>
+                    <div class="col-lg-3" style="float:right;">
+                        @Html.ActionLink("Back to List", "Index", "IssueTrack")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnIssueCreate").prop("disabled", true);
+            $("#IDInstance").prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+
+        $("#CreateIssue").hide();
+
+        $("#txtStartDate").datepicker({
+            dateFormat: "dd-M-yy",
+            onSelect: function (selected) {
+                var dt = new Date(selected);
+                dt.setDate(dt.getDate() + 1);
+                $("#txtEndDate").datepicker("option", "minDate", dt);
+            }
+        });
+
+
+        $('#txtEndDate').datepicker({
+            dateFormat: "dd-M-yy",
+            onSelect: function (selected) {
+                var dt = new Date(selected);
+                dt.setDate(dt.getDate() - 1);
+                $("#txtStartDate").datepicker("option", "maxDate", dt);
+            }
+         });
+    });
+
+        $("#PhaseMaster").change(function () {
+
+            var PhaseId = $(this).val();
+             $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetTask", "IssueTrack")',
+                data: { 'Pid': PhaseId },
+                success: function (data) {
+                    var TaskMaster = $("#TaskList");
+                    TaskMaster.empty();
+                    //TaskMaster.append($('<option/>', {
+                    //    value: 0,
+                    //    text: "---Select Task List---"
+                    //}));
+                    $.each(data, function (index, item) {
+                        TaskMaster.append($('<option/>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
+                    });
+                    var listValue = document.getElementById("TaskList").length;
+                     if (listValue == 0) {
+                         TaskMaster.append($('<option/>', {
+                             value: 0,
+                             text: "Not Available"
+                         }));
+
+                     }
+                }
+             });
+        });
+
+     $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+        });
+    $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstanceforResource","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+    });
+
+    $('#IDInstance').change(function () {
+                var id = $(this).val();
+                if (id == ""||id =="0") {
+                     $('#SubmitInstance').prop("disabled", true);
+                } else {
+					$('#SubmitInstance').prop("disabled", false);
+                }
+            });
+    $('#SubmitInstance').click(function () {
+        //debugger;
+        $("#CreateIssue").show();
+         var id = $("#IDProject").val();
+        $.ajax({
+            type:"GET",
+                url: '@Url.Action("AssignedTo","IssueTrack")',
+                data: { 'Pid' : id},
+                success: function (data) {
+                    var select = $("#drpAssignedTo");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.UserId,
+                            text: itemData.Name
+                        }));
+                    });
+                },
+                error: function (a) {
+                    alert(a);
+                }
+        });
+
+         $.ajax({
+            type:"GET",
+                url: '@Url.Action("GetPhase","ProjectMonitor")',
+                //data: { 'Pid' : id},
+                success: function (data) {
+                    var select = $("#PhaseMaster");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select Phase-"
+                    }));
+                    
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Id,
+                            text: itemData.PhaseName
+                        }));
+                    });
+                },
+                error: function (a) {
+                    alert(a);
+                }
+        });
+
+
+   });
+
+    $('#txtIssueName').on('keypress', function (e) {
+       if (e.which === 44) {
+            e.preventDefault();
+            $("#lblIssueName").html("Not Allowed").show().fadeOut(5000);
+       }
+       else {
+           $("#lblIssueName").html("").show();
+        }
+        validateIssueTrack()
+    });
+     $("#txtIssueName").on('focusout', function () {
+        var Name = $("#txtIssueName").val().trim();
+        if (Name == "") {
+            $("#lblIssueName").html("Please enter the Issue").show().fadeOut(2000);
+         }
+         validateIssueTrack()
+     });
+
+    //$("#PhaseMaster").on('focusout', function () {
+    //    var PhaseMaster = $("#PhaseMaster").val().trim();
+    //    if (PhaseMaster == "") {
+    //         $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
+    //    }
+    //    validateIssueTrack()
+    //});
+
+    $("#drpAssignedTo").on('focusout', function () {
+        var Assignedto = $("#drpAssignedTo").val().trim();
+        if (Assignedto == "") {
+             $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);
+        }
+        validateIssueTrack()
+    });
+    
+     $("#txtStartDate").keypress(function (e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            $("#lblStartDate").html("Date Only").show().fadeOut("slow");
+            return false;
+        }
+     });
+
+     $("#txtStartDate").on('focusout', function () {
+        var StrtDate = $("#txtStartDate").val().trim();
+        if (StrtDate=="") {
+            $("#lblStartDate").html("Please Enter Valid Start Date").show().fadeOut(2000);
+        }
+    });
+
+    $("#txtEndDate").keypress(function (e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            $("#lblEndDate").html("Date Only").show().fadeOut("slow");
+            return false;
+        }
+    });
+    
+    $("#txtEndDate").on('focusout', function () {
+        var Enddate = $("#txtEndDate").val().trim();
+        if (Enddate == "") {
+           $("#lblEndDate").html("Please Enter The EndDate").show().fadeOut(2000);
+        }
+    });
+    //$("#txtEndDate").change(function () {
+    //    debugger;
+    //    var startDate = $("#txtStartDate").val();
+    //    var endDate = $("#txtEndDate").val();
+
+    //    if ((Date.parse(startDate) >= Date.parse(endDate))) {
+    //        $("#lblEndDate").html("please select date greater than start date").show().fadeOut(2000);
+    //        $("#txtEndDate").val('');
+    //    }
+    //    validateIssueTrack()
+    //});
+
+    $("#ddllist").on('focusout', function () {
+        var List = $("#ddllist").val().trim();
+        if (List == "") {
+            $("#lblStatus").html("Please select the status").show().fadeOut(2000);
+        }
+        validateIssueTrack()
+    });
+
+    $('#txtComments').on('keypress', function (e) {
+       if (e.which === 44) {
+            e.preventDefault();
+            $("#lblComments").html("Not Allowed").show().fadeOut(5000);
+       }
+       else {
+           $("#lblComments").html("").show();
+        }
+        validateIssueTrack()
+    });
+    $("#txtComments").on('focusout', function () {
+        var txtarea = $("#txtComments").val().trim();
+        if (txtarea == "") {
+            $("#lblComments").html("Please enter the Comments").show().fadeOut(2000);
+        }
+        validateIssueTrack()
+    });
+
+    function validateIssueTrack() {
+        var IssueName = $("#txtIssueName").val().trim();
+        var PhaseMaster = $("#PhaseMaster").val().trim();
+        var AssignedTo = $("#drpAssignedTo").val().trim();
+        var StartDate = $("#txtStartDate").val().trim();
+        var EndDate = $("#txtEndDate").val().trim();
+        var Status = $("#ddllist").val().trim();
+        var Comments = $("#txtComments").val().trim();
+
+        var lblIssueName = $("#lblIssueName").val().trim();
+       // var lblPhaseMaster = $("#lblPhaseId").val().trim();
+        var lblAssignedTo = $("#lblAssignedTo").val().trim();
+       
+        var lblEndDate = $("#lblEndDate").val().trim();
+        var lblStatus = $("#lblStatus").val().trim();
+        var lblComments = $("#lblComments").val().trim();
+
+        if (IssueName.length > 0 && PhaseMaster != "" && AssignedTo != "" && StartDate.length > 0 && EndDate.length > 0 && Status != "" && Comments.length>0 &&
+            lblIssueName == "" && lblAssignedTo == "" && lblEndDate == ""&&lblStatus==""&&lblComments=="") {
+
+            $("#btnIssueCreate").prop("disabled", false);
+        }
+        else {
+            $("#btnIssueCreate").prop("disabled", true);
+        }
+
+    }
+
+    $("#btnIssueCreate").on("click", function () {
+        var IssueName = $("#txtIssueName").val().trim();
+          IssueName = IssueName.replace(",", " ");
+        var PhaseMaster = $("#PhaseMaster").val().trim();
+        var TaskList = $("#TaskList").val().trim();
+         var AssignedTo=$("#drpAssignedTo").val().trim();
+         var StartDate=$("#txtStartDate").val().trim();
+        var EndDate = $("#txtEndDate").val().trim();
+        var Status = $("#ddllist").val().trim();
+        var Comments = $("#txtComments").val().trim();
+        Comments = Comments.replace(",", " ");
+        var ProjectInstance_Id=$("#IDInstance").val().trim();
+
+        if (IssueName == "") {
+            $("#lblIssueName").html("Please enter the Issue").show().fadeOut(2000);
+        }
+        //if (PhaseMaster == 0) {
+        //    $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
+        //}
+        else if (AssignedTo==0)
+        {
+            $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);
+        }
+         else if (StartDate =="")
+        {
+            $("#lblStartDate").html("Please enter the StartDate").show().fadeOut(2000);
+        }
+        else if (EndDate == "")
+        {
+            $("#lblEndDate").html("Please enter the EndDate").show().fadeOut(2000);
+        }
+        else if (Status==0)
+        {
+            $("#lblStatus").html("Please select the status").show().fadeOut(2000);
+        }       
+        else if (Comments=="")
+        {
+            $("#lblComments").html("Please enter the Comments").show().fadeOut(2000);
+        }
+
+        else {
+            $.ajax({
+                    type: "POST",
+                url: '@Url.Action("Create","IssueTrack")',
+                data: { IssueName:IssueName,PhaseID:PhaseMaster,TaskId:TaskList,ProjectInstance_Id:ProjectInstance_Id,StartDate:StartDate,EndDate:EndDate,Status:Status,AssignedTo:AssignedTo,Comments:Comments},
+                    success: function (response) {
+                        if (response == "success") {
+                            Notiflix.Notify.Success('Issue Created successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            location.href = '@Url.Action("Index", "IssueTrack")';
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+        }
+    });
+</script>
+<style>
+    i.fa.fa-calendar-alt {
+        position: absolute;
+        margin-left: 150px;
+        margin-top: -33px;
+        font-size: 27px;
+        cursor: pointer;
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    input#txtStartDate {
+        cursor: pointer;
+        width: 180px;
+    }
+
+    input#txtEndDate {
+        cursor: pointer;
+        width: 180px;
+    }
+
+    div#frmgrup {
+        width: 322px;
+        margin-top: -104px;
+        margin-left: 200px;
+    }
+</style>

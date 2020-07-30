@@ -610,6 +610,7 @@
     <Compile Include="BL\Mail.cs" />
     <Compile Include="BL\Model\AuditReport.cs" />
     <Compile Include="BL\Model\CreateViewModel.cs" />
+    <Compile Include="BL\Model\IssueTrackModel.cs" />
     <Compile Include="BL\Model\LogedUser.cs" />
     <Compile Include="BL\Model\MailModel.cs" />
     <Compile Include="BL\Model\PicturetoData.cs" />
@@ -630,6 +631,7 @@
     <Compile Include="Controllers\ErrorLogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstanceCreationController.cs" />
+    <Compile Include="Controllers\IssueTrackController.cs" />
     <Compile Include="Controllers\LinkController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="BL\Base.cs" />
@@ -741,6 +743,8 @@
     <Content Include="Views\ProjectCreation\_PMTaskCreate.cshtml" />
     <Content Include="Views\ProjectCreation\_PMTaskIndex.cshtml" />
     <Content Include="Views\ProjectMonitor\PMTask.cshtml" />
+    <Content Include="Views\IssueTrack\Create.cshtml" />
+    <Content Include="Views\IssueTrack\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

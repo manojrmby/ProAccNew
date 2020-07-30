@@ -1355,6 +1355,26 @@ namespace ProAcc.BL
             return L;
         }
 
+        public List<Instance> GetInstanceMasters()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetInstance");
+            dt = dB.ExecuteDataTable();
+            List<Instance> PM = new List<Instance>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Instance P = new Instance();
+                    P.Instance_id = Guid.Parse(dr["Instance_id"].ToString());
+                    P.InstaceName = dr["InstaceName"].ToString();
+                    PM.Add(P);
+                }
+            }
+
+            return PM;
+        }
         #endregion
 
 
@@ -1607,7 +1627,7 @@ namespace ProAcc.BL
             return Status;
 
         }
-
+       
         public Boolean SP_SubmitResource(String IDS, Guid ProjectID, Guid LoginID)
         {
             bool Result = false;
@@ -2015,47 +2035,175 @@ namespace ProAcc.BL
             return p;
         }
 
-        public List<PMTaskMonitor_> GetPMTask(String IDProject)
+        public List<UserMaster> Sp_AssignedTo(Guid Pid)
         {
-            List<PMTaskMonitor_> ListM = new List<PMTaskMonitor_>();
+            List<UserMaster> ListM = new List<UserMaster>();
             DataTable dt = new DataTable();
-            DBHelper dB = new DBHelper("SP_PMTask", CommandType.StoredProcedure);
-            dB.addIn("@Type", "GetPMTask");
-            dB.addIn("@ProjectID", IDProject);
-            //dB.addIn("@InstunceID", InstanceId);
+            DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+            dB.addIn("@Type", "AssignedTo");
+            dB.addIn("@Project_Id", Pid);
             dt = dB.ExecuteDataTable();
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    PMTaskMonitor_ M = new PMTaskMonitor_();
-                    M.Id = Guid.Parse(dr["id"].ToString());
-                    M.PMTaskID = Guid.Parse(dr["PMTaskID"].ToString());
-                    M.ProjectId = Guid.Parse(dr["ProjectId"].ToString());
-                    M.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
-                    M.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
-                    M.EST_hours= Convert.ToDouble(dr["EST_hours"].ToString());
-                    M.Actual_St_hours = Convert.ToDouble(dr["Actual_St_hours"].ToString());
-
-                    M.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
-                    
-                    M.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
-                    M.Planed__En_Date = Convert.ToDateTime(dr["Planed__En_Date"].ToString());
-                    M.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
-                    M.Actual_En_Date = Convert.ToDateTime(dr["Actual_En_Date"].ToString());
-
-                    M.Notes = Convert.ToString(dr["Notes"].ToString());
-                    
-
-                    ListM.Add(M);
+                    UserMaster U = new UserMaster();
+                    U.UserId = Guid.Parse(dr["UserId"].ToString());
+                    U.Name = dr["Name"].ToString();
+                  
+                    ListM.Add(U);
                 }
             }
             return ListM;
         }
+        public bool Sp_InsertIssue(IssueTrackModel blism)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "AddIssueTrack");
+                dB.addIn("@ProjectInstance_Id", blism.ProjectInstance_Id);                
+                dB.addIn("@IssueName", blism.IssueName);
+                dB.addIn("@PhaseID", blism.PhaseID);
+                dB.addIn("@TaskId", blism.TaskId);
+                dB.addIn("@StartDate", blism.StartDate);
+                dB.addIn("@EndDate", blism.EndDate);
+                //dB.addIn("@LastUpdatedDate", blism.LastUpdatedDate);
+                dB.addIn("@AssignedTo", blism.AssignedTo);
+                dB.addIn("@Status", blism.Status);
+                dB.addIn("@IsApproved", false);
+                dB.addIn("@Cre_By", blism.Cre_By);
+                dB.addIn("@Comments", blism.Comments);
+                dB.ExecuteScalar();
 
+                Status = true;
+            }
+            catch (Exception ex)
+            {
 
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
 
+        public bool Sp_UpdateIssue(IssueTrackModel blism)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "UpdateIssueTrack");             
+                dB.addIn("@Status", blism.Status);
+                dB.addIn("@Modified_by", blism.Modified_by);
+                dB.addIn("@Comments", blism.Comments);
+                dB.addIn("@Id", blism.Issuetrack_Id);
+                dB.ExecuteScalar();
 
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
+
+        public List<IssueTrackModel> Sp_GetIssueTrackData()
+        {
+            List<IssueTrackModel> ITM = new List<IssueTrackModel>();
+            DataTable dt = new DataTable();
+            //if (Status)
+            {
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "PullData");
+                //dB.addIn("@Issuetrack_Id", InstanceId);
+                dt = dB.ExecuteDataTable();
+
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        IssueTrackModel P = new IssueTrackModel();
+                        P.Issuetrack_Id = Guid.Parse(dr["Issuetrack_Id"].ToString());
+                        P.RunningID = Convert.ToInt32(dr["RunningID"].ToString());
+                        P.IssueName = dr["IssueName"].ToString();
+                        P.PhaseID = Convert.ToInt32(dr["PhaseID"].ToString());
+                        //P.TaskId = Convert.ToInt32(dr["TaskId"].ToString());
+                        P.Task = dr["Task"].ToString();
+                        P.ProjectInstance_Id = Guid.Parse(dr["ProjectInstance_Id"].ToString());                        
+                        P.StartDate = Convert.ToDateTime(dr["StartDate"].ToString());
+                        P.EndDate = Convert.ToDateTime(dr["EndDate"].ToString());
+                        P.LastUpdatedDate = Convert.ToDateTime(dr["LastUpdatedDate"].ToString());
+                        P.AssignedTo = Guid.Parse(dr["AssignedTo"].ToString());
+                        P.Status = dr["Status"].ToString();
+                        P.IsApproved = Convert.ToBoolean(dr["IsApproved"].ToString());
+                        P.Comments = dr["Comments"].ToString();
+                        P.Phase = dr["Phase"].ToString();
+                       // P.IssueID = dr["IssueID"].ToString();
+                        if (P.PhaseID == 1)
+                        {
+                            P.IssueID = "Ass_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 2)
+                        {
+                            P.IssueID = "Pre_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 3)
+                        {
+                            P.IssueID = "Con_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 4)
+                        {
+                            P.IssueID = "Post_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 5)
+                        {
+                            P.IssueID = "Val_" + P.RunningID;
+                        }
+                        if (P.PhaseID == 0)
+                        {
+                            P.IssueID = "Com_" + P.RunningID;
+                        }
+
+                        ITM.Add(P);
+                    }
+                }
+            }
+            return ITM;
+        }
+
+        public bool Sp_UpdateIssueTrack(IssueTrackModel Data)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "UpdateIssueTrack");
+                dB.addIn("@Id", Data.Issuetrack_Id);
+                dB.addIn("@Status", Data.Status);
+                dB.addIn("@EndDate", Data.EndDate);               
+               // dB.addIn("@Modified_by", Data.Modified_by);
+                dB.addIn("@Comments", Data.Comments);
+                dB.addIn("@Cre_By", Data.Modified_by);
+                
+                dB.ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+
+            return Status;
+
+        }
         //public Boolean Proceess_WordAddImage()
         //{
         //    string document = @"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\1cb32e25-e9e7-4581-b4b3-3bf2741c58ec.docx";
