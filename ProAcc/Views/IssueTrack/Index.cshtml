@@ -121,19 +121,15 @@
             height: 280,
             colModel: [
                 {
-                    label: 'Issue Id', name: 'IssueID', index: 'IssueID', width: 100,align: "center",
+                    label: 'Issue', name: 'IssueID', index: 'IssueID', width: 100,align: "center",editable: false
                    
                 },
-                { label: 'Issuetrack_Id', name: 'Issuetrack_Id', index: 'Issuetrack_Id', width: 150,hidden:true,align: "center",},
+                { label: 'Issuetrack_Id', name: 'Issuetrack_Id', index: 'Issuetrack_Id', width: 100,hidden:true,align: "center",},
                 
                 {
-                    label: 'Phase', name: 'PhaseID', index: 'PhaseID', width: 150, editable: false,align: "center",
-                     edittype: 'select', formatter: 'select',
-                    editoptions: {
-                        value: GetPhaseDropDown()
-                    }
+                    label: 'Phase', name: 'Phase', index: 'Phase', width: 100, editable: false,align: "center",hidden:true
                 },
-                { label: 'Task', name: 'Task', index: 'Task', width: 150, editable: false ,align: "center"},
+                { label: 'Task', name: 'Task', index: 'Task', width: 100, editable: false ,align: "center"},
                 {
                     label: 'Instance', name: 'ProjectInstance_Id', index: 'ProjectInstance_Id', width: 150, editable: false,hidden:true,align: "center",
                     edittype: 'select', formatter: 'select',
@@ -141,33 +137,33 @@
                         value: GetInstanceDropDown()
                     }
                 },
-                { label: 'IssueName', name: 'IssueName', index: 'IssueName', width: 150, editable: false ,align: "center"},
+                { label: 'IssueName', name: 'IssueName', index: 'IssueName', width: 150, editable: false ,align: "center",classes: 'wrapColumnText'},
                 {
-                    label: 'Status', name: 'Status', index: 'Status', width: 150, editable: true, edittype: "select",
+                    label: 'Status', name: 'Status', index: 'Status', width: 150, editable: true, edittype: "select",classes: 'wrapColumnText',
                     editoptions: {
                        value: "In progress: In progress; Completed: Completed; On hold: On hold; Resolved waiting for customer conformation: Resolved waiting for customer conformation; Re- opened: Re - opened",
                     }
                 },
-                { label: 'Start Date', name: 'StartDate', index: 'StartDate', width: 150, editable: false, formatter: "date", align: "center",formatoptions: { newformat: "d/m/Y" } },
+                { label: 'Start Date', name: 'StartDate', index: 'StartDate', width: 100, editable: false, formatter: "date", align: "center",formatoptions: { newformat: "d/m/Y" } },
                 {
-                    label: 'End Date', name: 'EndDate', index: 'EndDate', width: 150, editable: true, formatter: "date",align: "center", formatoptions: { newformat: "d/m/Y" },
+                    label: 'End Date', name: 'EndDate', index: 'EndDate', width: 100, editable: true, formatter: "date",align: "center", formatoptions: { newformat: "d/m/Y" },
                     editoptions: { dataInit: EndDate },
                 },
                 {
-                    label: 'AssignedTo', name: 'AssignedTo', index: 'AssignedTo', width: 150, editable: false,align: "center",
+                    label: 'AssignedTo', name: 'AssignedTo', index: 'AssignedTo', width: 100, editable: false,align: "center",
                      edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
                     }
 
                 },                
-                { label: 'Comment', name: 'Comments', index: 'Comments', width: 150, editable: false,align: "center" },
+                { label: 'Comment', name: 'Comments', index: 'Comments', width: 150, editable: false,classes: 'wrapColumnText' },
                 {
-                    label: 'Comment', name: 'cmt', index: ' ', width: 150, editable: true, hidden: false,
+                    label: 'New Comments', name: 'cmt', index: ' ', width: 150, editable: true, hidden: false,
                 },
 
                 {
-                    label: 'Action', name: 'myac', width: 80, fixed: true, sortable: false, resize: false, formatter: 'actions',
+                    label: 'Action', name: 'myac', width: 80, fixed: true, sortable: false, resize: false, formatter: 'actions',align: "center",
                     formatoptions: {
                         keys: true,
                         delbutton: false,
@@ -198,12 +194,17 @@
             rowNum: 10,
             viewrecords: true,
            // rowList: [10, 20, 30],
-            pager: '#pager2',
-            sortable: true,
+           //pager: '#pager2',
+            rownumbers: true,
+             reload: true,
+            reloadAfterSubmit:true,
+            sortable: false,
+            grouping: false,
             sortname: 'Name',
             sortorder: "asc",
-            grouping: true,
+            grouping: false,
             caption: "Isuue Report",
+            
             //onSelectRow: editRow
             serializeRowData: function (postdata) {
                
@@ -214,7 +215,7 @@
                 var EndDate = postdata.EndDate;
                 var cmt = postdata.cmt
                 var Issuetrack_Id = Issuetrack_Id
-                 var Message;
+                 var Message='Do you Want to Save the Task?';
                 Notiflix.Confirm.Show('ProAcc Info. Confirm..!',
                     Message, 'Yes', 'No',
                     function () {
@@ -323,4 +324,5 @@
          });
 				return Parameters;
     }
+    
 </script>

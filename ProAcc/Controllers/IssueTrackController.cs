@@ -146,8 +146,9 @@ namespace ProAcc.Controllers
             Data.Status = Status;
             Data.Comments = Comments;
             Data.Modified_by= Guid.Parse(Session["loginid"].ToString());
-
+           
             Result = _Base.Sp_UpdateIssueTrack(Data);
+          
             if(Result==true)
             {
                 return Json("success", JsonRequestBehavior.AllowGet);

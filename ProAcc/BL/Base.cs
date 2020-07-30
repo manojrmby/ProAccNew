@@ -2142,6 +2142,7 @@ namespace ProAcc.BL
                         P.Status = dr["Status"].ToString();
                         P.IsApproved = Convert.ToBoolean(dr["IsApproved"].ToString());
                         P.Comments = dr["Comments"].ToString();
+                        P.Phase = dr["Phase"].ToString();
                        // P.IssueID = dr["IssueID"].ToString();
                         if (P.PhaseID == 1)
                         {
@@ -2163,6 +2164,11 @@ namespace ProAcc.BL
                         {
                             P.IssueID = "Val_" + P.RunningID;
                         }
+                        if (P.PhaseID == 0)
+                        {
+                            P.IssueID = "Com_" + P.RunningID;
+                        }
+
                         ITM.Add(P);
                     }
                 }

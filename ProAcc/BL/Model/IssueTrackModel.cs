@@ -33,6 +33,7 @@ namespace ProAcc.BL.Model
         public String Comments { get; set; }
         public String Task { get; set; }
         public String IssueID { get; set; }
+        public String Phase { get; set; }
     
         public virtual ProACC_DB.UserMaster UserMaster { get; set; }
 
