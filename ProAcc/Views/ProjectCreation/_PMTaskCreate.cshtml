@@ -1,0 +1,201 @@
+﻿@{
+    ViewBag.Title = "Create PM Task";
+}
+
+
+<a class="card-title" id="prjtCreate">PM Task Creation</a>
+<a class="card-title" id="prjtUpdate" style="display:none">Update</a>
+
+<hr />
+<div style="padding:1em;" id="PM-Create">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Task Category</label>
+
+                <div class="col-md-10">
+                    <select class="form-control" id="drpTaskCat">
+                        <option value="0">Select Category</option>
+                        @foreach (var item in ViewBag.TaskCat)
+                        {
+                            <option value="@item.ID">@item.Name</option>
+                        }
+                    </select>
+                    @*<input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />*@
+                    @*<span id="lblCustomerName" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTaskCat">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <input type="hidden" id="proj_id" />
+            <input type="hidden" id="projcre_on" />
+            <input type="hidden" id="projcre_By" />
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Task Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtTaskName" />
+                    @*<span id="lblProjectName" style="color:red" />*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTaskName">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Create" class="btn btn-primary" id="btnCreate" />
+                    <input type="button" value="Update" class="btn btn-info" id="btnUpdate" style="display:none" />
+                    <a class="btn btn-success" id="btnAddNew" style="display:none"><i class="fa fa-plus"></i>New PM Task</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#btnCreate").prop('disabled', true);
+
+        $("#txtTaskName").keypress(function (event) {
+            if (event.which === 44) {
+                event.preventDefault();
+                $("#lblTaskName").html("Not Allowed").show().fadeOut(5000);
+            }
+            else {
+                $("#lblTaskName").html("").show();
+            }
+            ValidateData();
+        });
+    });
+    $('#drpTaskCat').change(function () {
+        ValidateData();
+    });
+    function ValidateData() {
+            var TaskName = $("#txtTaskName").val().trim();
+            var TaskCat = $("#drpTaskCat").val();
+
+            var lblTaskName = $("#lblTaskName").text().trim();
+            var lblTaskCat = $("#lblTaskCat").text().trim();
+
+
+            if (TaskName.length > 0 && TaskCat != 0 && 
+                lblTaskName == "" && lblTaskCat == "" ) {
+
+                $("#btnCreate").prop("disabled", false);
+                $("#btnUpdate").prop("disabled", false);
+            }
+            else {
+                $("#btnCreate").prop("disabled", true);
+                $("#btnUpdate").prop("disabled", true);
+            }
+
+
+        }
+    $("#btnCreate").on("click", function () {
+        
+
+        var TaskName = $("#txtTaskName").val().trim();
+         TaskName = TaskName.replace(",", " ");
+        var TaskCat = $("#drpTaskCat").val();
+
+            if (TaskName == "") {
+                $("#lblTaskName").html("Please enter the Task Name").show().fadeOut(5000);
+                ValidateProject();
+            }
+            else if (TaskCat == 0) {
+                $("#lblCustomerName").html("Please select the Task Category").show().fadeOut(5000);
+                ValidateProject();
+            }
+            else {
+               
+            $.ajax({
+                    type: "POST",
+                url: '@Url.Action("PMTaskCreate", "ProjectCreation")',
+                data: {
+                    PMTaskName: TaskName,
+                    PMTaskCategoryID: TaskCat
+                },
+                    success: function (response) {
+                        if (response == "success") {
+                            Notiflix.Notify.Success('PM Task Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            loadPM();
+                            Reset();
+                            $("#btnCreate").show();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+        }
+    });
+    $("#btnUpdate").on("click", function () {
+
+        var id = $("#proj_id").val();
+        var TaskName = $("#txtTaskName").val().trim();
+        TaskName = TaskName.replace(",", " ");
+        var TaskCat = $("#drpTaskCat").val();
+        var cre_on = $("#projcre_on").val();
+        var cre_By = $("#projcre_By").val();
+
+        var model = {
+            PMTaskId: id,
+            PMTaskName: TaskName,
+            PMTaskCategoryID: TaskCat,
+            Cre_on: cre_on,
+            Cre_By: cre_By
+        }
+        if (TaskName == "") {
+            $("#lblTaskName").html("Please enter the Task Name").show().fadeOut(5000);
+            ValidateProject();
+        }
+        else if (TaskCat == 0) {
+            $("#lblCustomerName").html("Please select the Task Category").show().fadeOut(5000);
+            ValidateProject();
+        }
+        
+        else {
+
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("PMTaskEdit", "ProjectCreation")',
+                data: { PMTask : model},
+                    //dataType: "json",
+                    success: function (response) {
+                        if (response == "success") {
+                            Notiflix.Notify.Success('PMTask <Strong>Update </strong>successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            loadPM();
+                            Reset();
+
+                            $("#btnAddNew").hide();
+                            $("#btnUpdate").hide();
+                            $("#btnCreate").show();
+                            //$("#prjtCreate").show();
+                            //$("#prjtUpdate").hide();
+
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+
+        }
+    });
+
+    function Reset() {
+        $("#txtTaskName").val("")
+        $("#drpTaskCat").val(0);
+    }
+</script>

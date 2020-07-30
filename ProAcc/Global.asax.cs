@@ -18,8 +18,8 @@ namespace ProAcc
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             GlobalFilters.Filters.Add(new AuthorizeAttribute());
-            //Mail mail = new Mail();
-            //mail.StartMailSend();
+            Mail mail = new Mail();
+            mail.StartMailSend();
         }
          protected void Application_Error()
         {

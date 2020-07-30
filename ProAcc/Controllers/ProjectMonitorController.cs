@@ -55,10 +55,6 @@ namespace ProAcc.Controllers
             ViewBag.Instance = inst;
 
             List<SelectListItem> Project = new List<SelectListItem>();
-
-
-
-
             ViewBag.Project = Project;
             return View();
         }
@@ -107,7 +103,6 @@ namespace ProAcc.Controllers
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
-        
         public ActionResult SubmitProjectMonitor(int Phase_ID,Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, double EST_hours, double Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
         {
 
@@ -583,7 +578,6 @@ namespace ProAcc.Controllers
             return View();
         }
         #endregion
-
         #region Validation
         public ActionResult ValidationMonitor()
         {
@@ -652,6 +646,90 @@ namespace ProAcc.Controllers
             }
             ViewBag.Project = Project;
             return View();
+        }
+        #endregion
+
+
+        #region PMTask
+        public ActionResult PMTask()
+        {
+
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+            var Data = (from a in db.UserMasters
+                        join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                        where a.UserId == LoginId && b.isActive == true
+                        select new { b.Project_Id, b.Project_Name }).ToList();
+            if (Data.Count() > 0)
+            {
+                foreach (var v in Data)
+                {
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                }
+
+            }
+
+            ViewBag.Project = Project;
+            return View();
+        }
+
+        public ActionResult PMTaskGetData(String IDProject)
+        {
+            List<PMTaskMonitor_> PM = _Base.GetPMTask(IDProject);
+            return Json(PM, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetTaskName()
+        {
+            var PMTasklist = db.PMTaskMasters.Where(x => x.isActive == true ).ToList();
+            List<PMTaskMaster> PM = new List<PMTaskMaster>();
+            foreach (var item in PMTasklist)
+            {
+                PMTaskMaster p = new PMTaskMaster();
+                p.PMTaskId = item.PMTaskId;
+                p.PMTaskName = item.PMTaskName;
+                PM.Add(p);
+            }
+            return Json(PM, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetProject()
+        {
+            var Projects = db.Projects.Where(x => x.isActive == true).ToList();
+            List<Project> PM = new List<Project>();
+            foreach (var item in Projects)
+            {
+                Project p = new Project();
+                p.Project_Id = item.Project_Id;
+                p.Project_Name = item.Project_Name;
+                PM.Add(p);
+            }
+            return Json(PM, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SubmitPMTaskMonitor(PMTaskMonitor_ PM)
+        {
+            Boolean Result = false;
+            var PMTask = db.PMTaskMonitor_.Where(x => x.Id == PM.Id).FirstOrDefault();
+            PMTask.Delay_occurred = PM.Delay_occurred;
+            PMTask.StatusId = PM.StatusId;
+
+            PMTask.EST_hours = PM.EST_hours;
+            PMTask.Actual_St_hours = PM.Actual_St_hours;
+            
+            PMTask.Actual_St_Date = PM.Actual_St_Date;
+            PMTask.Actual_En_Date = PM.Actual_En_Date;
+
+            PMTask.Planed__St_Date = PM.Planed__St_Date;
+            PMTask.Planed__En_Date = PM.Planed__En_Date;
+
+            PMTask.Notes = PM.Notes;
+            PMTask.Modified_On = DateTime.UtcNow;
+            PMTask.Modified_by = Guid.Parse(Session["loginid"].ToString());
+            db.Entry(PMTask).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            Result = true;
+            return Json(Result, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

@@ -33,6 +33,10 @@
         <AssociationConnector Association="ProAccModel.FK_Instance_Project" />
         <AssociationConnector Association="ProAccModel.FK_Project_ScenarioMaster" />
         <AssociationConnector Association="ProAccModel.FK_Project_UserMaster" />
+        <EntityTypeShape EntityType="ProAccModel.PMTaskCategory" Width="1.5" PointX="13.375" PointY="12.75" />
+        <EntityTypeShape EntityType="ProAccModel.PMTaskMaster" Width="1.5" PointX="15.625" PointY="12.625" />
+        <AssociationConnector Association="ProAccModel.FK_PMTaskMaster_PMTaskCategory" />
+        <EntityTypeShape EntityType="ProAccModel.PMTaskMonitor_" Width="1.5" PointX="15.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

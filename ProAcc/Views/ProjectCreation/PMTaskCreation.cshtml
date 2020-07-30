@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "PMTaskCreation";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@Html.Partial("_PMTaskCreate")
+@*@Html.Partial("_PMTaskIndex")*@
+
+
+
+<div id="divPMCreation">
+
+</div>
+
+<script>
+    function loadPM() {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetPMTask", "ProjectCreation")',
+
+            success: function (response) {
+                $("#divPMCreation").html(response);
+            },
+            failure: function (response) {
+            alert(response.responseText);
+            },
+            error: function (response) {
+            alert(response.responseText);
+            }
+         });
+    }
+
+    $(document).ready(function () {
+        loadPM();
+    })
+</script>

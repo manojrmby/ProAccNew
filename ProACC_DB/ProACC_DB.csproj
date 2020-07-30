@@ -77,6 +77,15 @@
     <Compile Include="PhaseMaster.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
+    <Compile Include="PMTaskCategory.cs">
+      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMTaskMaster.cs">
+      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMTaskMonitor_.cs">
+      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
+    </Compile>
     <Compile Include="ProAcc_DB_Entity.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

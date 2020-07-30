@@ -461,7 +461,7 @@
                     label: 'Status', name: 'StatusId', index: 'StatusId', width: 100,  align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
-                        value: GetStatusDropDown()
+                        value: GetStatusDropDown(),defaultValue:"0",
                     },
                     @*editoptions: {
                         dataUrl: '@Url.Action("GetStatus","ProjectMonitor")',
@@ -1031,6 +1031,9 @@
         contentType: "application/json; charset=utf-8",
         success: function (Data) {
              //debugger;
+            var StatusName = "NO DATA";
+            var key = 0;
+            Parameters[key] = StatusName;
             for (var i = 0; i < Data.length; i++) {
                 //var obj = {};
                 var StatusName = Data[i].StatusName;

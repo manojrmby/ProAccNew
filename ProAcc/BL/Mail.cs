@@ -25,7 +25,11 @@ namespace ProAcc.BL
         private string _TemplatePath = System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Mail_FolderPath"].ToString());
         internal void StartMailSend()
         {
-            StartTimer();
+            Boolean MailRunstatus = Convert.ToBoolean(WebConfigurationManager.AppSettings["MailRunStatus"]);
+            if (MailRunstatus)
+            {
+                StartTimer();
+            }
             //GQ.StartGQPULL();
         }
         public async Task StartTimer()

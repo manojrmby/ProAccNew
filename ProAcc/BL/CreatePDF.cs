@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
+
 //using Word = Microsoft.Office.Interop.Word;
 namespace ProAcc.BL
 {
@@ -27,8 +28,43 @@ namespace ProAcc.BL
                 {
                     Status = false;
                 }
+
+
+                //SautinSoft.UseOffice u = new SautinSoft.UseOffice();
+
+                //if (u.InitWord() == 0)
+
+                //{
+                //    string path = Path.GetDirectoryName(Pathpdf);
+                //    string filename = Path.GetFileNameWithoutExtension(Pathpdf);
+                //    //convert Word (RTF, DOC, DOCX to PDF)
+
+                //    u.ConvertFile(PathDoc, @""+Pathpdf, SautinSoft.UseOffice.eDirection.DOC_to_PDF);
+
+                //}
+
+                //u.CloseOffice();
+
+                //Word2Pdf objWorPdf = new Word2Pdf();
+                //string backfolder1 = "D:\\WOrdToPDF\\";
+                //string strFileName = "TestFile.docx";
+                //object FromLocation = backfolder1 + "\\" + strFileName;
+                //string FileExtension = Path.GetExtension(strFileName);
+                //string ChangeExtension = strFileName.Replace(FileExtension, ".pdf");
+                //if (FileExtension == ".doc" || FileExtension == ".docx")
+                //{
+                //    object ToLocation = backfolder1 + "\\" + ChangeExtension;
+                //    objWorPdf.InputLocation = PathDoc;
+                //    objWorPdf.OutputLocation = Pathpdf;
+                //    //Status = true;
+                //    objWorPdf.Word2PdfCOnversion();
+                //}
+
+
+
+
             }
-            catch (Exception)
+            catch (Exception Ex)
             {
                 Status = false;
                 throw;

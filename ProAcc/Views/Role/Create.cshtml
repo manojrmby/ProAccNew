@@ -47,8 +47,15 @@
     $("#txtRoleName").keypress(function (event) {
         var inputValue = event.which;
         // allow letters and whitespaces only.
+        //alert(inputValue);
+        if (event.which === 44) {
+            event.preventDefault();
+            $("#lblTaskName").html("Not Allowed").show().fadeOut(5000);
+        }
+        else if (inputValue == 47 || inputValue == 45) {
 
-        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+        }
+        else if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
             event.preventDefault();
             $("#lblRoleName").html("Not Allowed").show().fadeOut(5000);
              $("#btnRoleCreate").prop('disabled', true);
@@ -59,21 +66,24 @@
     });
 
     function validateRolename(data) {
-        var letters = /^[A-Za-z, ]+$/;
-        if (!letters.test(data)) {
+        //var letters = /[~`!#$%\^&*()+=\-\[\]\\';,/{}|\\":<>\?]/;
+        var letters = /[~`!#$%\^&*()+=';,{}|":<>?]/;
+        ///^[A-Za-z, ]+$-_/;
+        alert(letters.test(data));
+        if (letters.test(data)) {
             return false;
         }
     }
 
     $("#btnRoleCreate").on("click", function () {
-        
+
         var RoleName = $("#txtRoleName").val().trim();
         if (RoleName == "" || validateRolename(RoleName) == false) {
             $("#lblRoleName").html("Please enter the Valid Role").show().fadeOut(5000);
             //alert("Please enter the Team Name")
         }
         else {
-            
+
             $.ajax({
                 url: '@Url.Action("CheckRole","Role")',
                 type: "GET",
@@ -85,7 +95,7 @@
                         //$("#txtTeamName").val("");
                     }
                     else {
-                        
+
                         $.ajax({
                             type: "POST",
                             url: '@Url.Action("Create","Role")',
@@ -111,7 +121,7 @@
                                     //            }
                                     //        }
                                     //    }
-                                    //});                                    
+                                    //});
                                 }
                             },
                             failure: function (response) {
@@ -146,7 +156,7 @@
             $("#lblRoleName").html("Please enter the Role").show().fadeOut(5000);
         }
         else {
-            
+
             $.ajax({
               url: '@Url.Action("CheckRole","Role")',
               type: "GET",
@@ -157,7 +167,7 @@
                       $("#lblRoleName").html("This Role name is already in use").show().fadeOut(5000);
                   }
                   else {
-                      
+
                       $.ajax({
                     type: "POST",
                     url: '@Url.Action("Edit","Role")',
@@ -187,7 +197,7 @@
                             //           }
                             //      }
                             //   }
-                            //});  
+                            //});
 
                             //alert("Role Edited successfully!");
                             //resetRole();

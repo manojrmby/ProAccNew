@@ -445,12 +445,12 @@ background-attachment:local, local, scroll, scroll;
                     </div>
                 </div>
                 <div class="col-md-6 col-xl-4">
-                    <img src=""  id="SceTopimg" style="height: 100px;margin-left: 35%;margin-top: -3%;">
+                    <img src="~/Asset/images/"  id="SceTopimg" style="height: 100px;margin-left: 35%;margin-top: -3%;">
                 </div>
             </div>
         </div>
         <div class="col-lg-12 card" style="margin-bottom:10px !important;">
-            <img src="" id="Scebottomimg" class="margin-h-center" style="max-width:930px;">
+            <img src="~/Asset/images/" id="Scebottomimg" class="margin-h-center" style="max-width:930px;">
         </div>
         <div class="col-lg-12 card" style="margin-bottom:10px !important;">
 
@@ -2330,13 +2330,15 @@ background-attachment:local, local, scroll, scroll;
 
     var ScenarioID =@ViewBag.Scen;
     var fileName = "";
+    var src = $('#Scebottomimg').attr("src");
     if (ScenarioID == 0) {
         $('#SceTopimg').hide();
         $('#Scebottomimg').hide();
     }
     else if (ScenarioID == 1) {
         fileName = "POC"
-        $('#Scebottomimg').attr('src', '/Asset/images/' + fileName + '.png');
+        $('#SceTopimg').hide();
+        $('#Scebottomimg').attr('src', src + fileName + '.png');
 
     } 
     else if (ScenarioID == 2) {
@@ -2361,8 +2363,9 @@ background-attachment:local, local, scroll, scroll;
             $('#Scebottomimg').hide();
         }
         else {
-            $('#SceTopimg').attr('src', '/Asset/images/' + fileName + '.png');
-            $('#Scebottomimg').attr('src', '/Asset/images/' + fileName + '1.png');
+
+            $('#SceTopimg').attr('src', src  + fileName + '.png');
+            $('#Scebottomimg').attr('src',src + fileName + '1.png');
         }
     }
     

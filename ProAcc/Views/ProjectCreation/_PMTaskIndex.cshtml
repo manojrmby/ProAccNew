@@ -1,0 +1,173 @@
+﻿
+@model IEnumerable<ProACC_DB.PMTaskMaster>
+@*@{
+        var projdetails = ViewBag.Projdetails;
+    }*@
+
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+<style>
+    .chartAreaWrapper {
+        /*width: 50%!important;*/
+        overflow-x: scroll;
+    }
+</style>
+<table class="table" id="tblProjectCreation">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Cre_on</th>
+            <th>Task Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.PMTaskCategoryID">@item.PMTaskCategory.Name</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.PMTaskName">@item.PMTaskName</a>
+                </td>
+                
+
+                <td>
+                    <a href="#" id="btnEdit" class="fa fa-edit"></a><input type="hidden" value="@item.PMTaskId" /> |
+                    <a href="#" class="btnProjCreationDelete fa fa-trash"></a><input type="hidden" value="@item.PMTaskId" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        $("#tblProjectCreation").dataTable({
+            "order": [[1, 'desc']],
+            "columnDefs": [
+                {
+                    "targets": [1],
+                    "visible": false
+                }
+            ]
+        } );
+    });
+
+    $("#btnEdit").on("click", function () {
+        //debugger;
+        // $('html, body').animate({scrollTop:0}, 'slow');
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetPMtaskById","ProjectCreation")',
+            type: "GET",
+            data: { id: id },
+            //processData: false,
+
+            success: function (result) {
+
+
+                $("#proj_id").val(result.PMTaskId);
+
+
+                $("#drpTaskCat").val(result.PMTaskCategoryID);
+                $("#txtTaskName").val(result.PMTaskName);
+
+                $("#projcre_on").val(result.Cre_on);
+                $("#projcre_By").val(result.Cre_By);
+
+                $("#btnCreate").hide();
+                $("#btnUpdate").show();
+                $("#btnAddNew").show();
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+        //window.scrollTo(0, 0);
+       // $('.chartAreaWrapper').scrollTop($('.chartAreaWrapper')[0].scrollHeight);
+
+    });
+      $(".btnProjCreationDelete").on("click", function () {
+        var id = $(this).next().val();
+        $.confirm({
+              title: 'Delete !',
+              content: 'Do you want to delete ?',
+              icon: 'fa fa-trash-o',
+              animation: 'scale',
+              closeAnimation: 'scale',
+              opacity: 0.5,
+              buttons: {
+                 'confirm': {
+                    text: 'Yes',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                      $.ajax({
+                          type: "POST",
+                           url: '@Url.Action("PMTaskDelete", "ProjectCreation")',
+                           data: { id: id },
+                           dataType: "json",
+                           success: function (response) {
+                              if (response == "success") {
+                                 $.alert({
+                                    title: 'Alert !',
+                                    content: 'PM Task deleted successfully!..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                                    icon: 'fa fa-rocket',
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                       okay: {
+                                          text: 'Okay',
+                                          btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                                            action: function (event, ui) {
+                                                $(this).remove();
+                                                location.reload();
+                                            }
+                                       }
+                                    }
+                                 });
+                              }
+                              //else {
+                              // $.alert({
+                              //   title: 'Alert !',
+                              //   content: 'Project Instances are in active..!',
+                              //   icon: 'fa fa-rocket',
+                              //   animation: 'scale',
+                              //   closeAnimation: 'scale',
+                              //    buttons: {
+                              //     okay: {
+                              //       text: 'Okay',
+                              //       btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                              //       action: function (event, ui) {
+                              //          $(this).remove();
+                              //          location.reload();
+                              //       }
+                              //     }
+                              //    }
+                              // });
+                              //}
+                           },
+                           failure: function (response) {
+                              alert(response.responseText);
+                           },
+                           error: function (response) {
+                               alert(response.responseText);
+                           }
+                      });
+                    }
+                 },
+                 cancel: function(){
+                      // $.alert('You clicked on <strong>cancel</strong>');
+                 },
+              }
+         });
+    });
+</script>
