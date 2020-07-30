@@ -2385,7 +2385,43 @@ namespace ProAcc.BL
         //    return wpd.MainDocumentPart.GetIdOfPart(ip);
         //}
 
+        public List<PMTaskMonitor_> GetPMTask(String IDProject)
+        {
+            List<PMTaskMonitor_> ListM = new List<PMTaskMonitor_>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_PMTask", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetPMTask");
+            dB.addIn("@ProjectID", IDProject);
+            //dB.addIn("@InstunceID", InstanceId);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    PMTaskMonitor_ M = new PMTaskMonitor_();
+                    M.Id = Guid.Parse(dr["id"].ToString());
+                    M.PMTaskID = Guid.Parse(dr["PMTaskID"].ToString());
+                    M.ProjectId = Guid.Parse(dr["ProjectId"].ToString());
+                    M.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
+                    M.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
+                    M.EST_hours = Convert.ToDouble(dr["EST_hours"].ToString());
+                    M.Actual_St_hours = Convert.ToDouble(dr["Actual_St_hours"].ToString());
 
+                    M.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
+
+                    M.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
+                    M.Planed__En_Date = Convert.ToDateTime(dr["Planed__En_Date"].ToString());
+                    M.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
+                    M.Actual_En_Date = Convert.ToDateTime(dr["Actual_En_Date"].ToString());
+
+                    M.Notes = Convert.ToString(dr["Notes"].ToString());
+
+
+                    ListM.Add(M);
+                }
+            }
+            return ListM;
+        }
 
 
         public string Phase_Assessment = "Assessment";
