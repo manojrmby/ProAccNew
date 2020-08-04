@@ -85,6 +85,37 @@
     $('#drpTaskCat').change(function () {
         ValidateData();
     });
+    $('#txtTaskName').on('focusout', function () {
+           
+            var TaskName = $("#txtTaskName").val().trim();
+            var id = $("#drpTaskCat").val();
+            if (TaskName == "") {
+                $("#lblTaskName").html("Please Enter valid Instance name").show().fadeOut(2000);
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("CheckPMTaskAvailability", "ProjectCreation")',
+                type: "GET",
+                data: { namedata: TaskName,id:id },
+                dataType: "json",
+                success: function (data) {
+                    if (data != "success") {
+                        $("#lblTaskName").html("This Task Name is already in use").show();
+                        $("#btnCreate").prop("disabled", true);
+                        $("#btnUpdate").prop("disabled", true);
+                    }
+                    else {
+                        $("#lblTaskName").html("").hide();
+                         $("#btnCreate").prop("disabled", false);
+                        $("#btnUpdate").prop("disabled", false);
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+            }
+        });
     function ValidateData() {
             var TaskName = $("#txtTaskName").val().trim();
             var TaskCat = $("#drpTaskCat").val();

@@ -163,6 +163,8 @@
 
         $("#txtStartDate").datepicker({
             dateFormat: "dd-M-yy",
+            changeYear: true,
+            changeMonth: true,
             onSelect: function (selected) {
                 var dt = new Date(selected);
                 dt.setDate(dt.getDate() + 1);
@@ -173,12 +175,14 @@
 
         $('#txtEndDate').datepicker({
             dateFormat: "dd-M-yy",
+            changeYear: true,
+            changeMonth: true,
             onSelect: function (selected) {
                 var dt = new Date(selected);
                 dt.setDate(dt.getDate() - 1);
                 $("#txtStartDate").datepicker("option", "maxDate", dt);
             }
-         });
+        });
     });
 
         $("#PhaseMaster").change(function () {

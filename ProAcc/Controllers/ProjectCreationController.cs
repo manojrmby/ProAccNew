@@ -304,6 +304,19 @@ namespace ProAcc.Controllers
             //}
 
         }
+
+        public JsonResult CheckPMTaskAvailability(string namedata, int? id)
+        {
+            var SearchDt = db.PMTaskMasters.Where(x => x.PMTaskName == namedata).Where(x => x.PMTaskCategoryID == id).Where(x => x.isActive == true).FirstOrDefault();
+            if (SearchDt != null)
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+        }
         #endregion
 
 
