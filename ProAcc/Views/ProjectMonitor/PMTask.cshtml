@@ -394,13 +394,22 @@
 
                         onEdit: function (rowid) {
                             $("#" + rowid + "_StatusId").addClass("fit_Data");
+                            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                            for (var i = 0; i < ids.length; i++) {
+                                $('#jEditButton_' + ids[i]).hide();
+                            }
                              //Show_PMEdit();
                         },
 
                         editformbutton: false,//Determines if popup should open or not
                         afterSave: function (rowid, response, postdata, options) {
                            // Show_HideEdit();
-                            $('#jqGrid').trigger( 'reloadGrid' );
+                            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                            for (var i = 0; i < ids.length; i++) {
+                                $('#jEditButton_' + ids[i]).show();
+                            }
+
+                            $('#jqGrid').trigger('reloadGrid');
                         },
                         afterRestore: function (rowid) {
                              $('#jqGrid').trigger( 'reloadGrid' );

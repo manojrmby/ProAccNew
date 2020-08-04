@@ -840,7 +840,7 @@ namespace ProAcc.BL
         #endregion
 
 
-        #region Drodown
+        #region Drop down
         public GeneralList GetInstanceDropdown(string projectID)
         {
             GeneralList sP_ = new GeneralList();
@@ -1588,35 +1588,11 @@ namespace ProAcc.BL
                 dB.addIn("@Notes", PM.Notes);
                 dB.addIn("@Cre_By", PM.Cre_By);
                 dB.addIn("@Id", PM.Id);
-
                 dB.ExecuteScalar();
-
-                DBHelper Db1 = new DBHelper("SP_Mail", CommandType.StoredProcedure);
-                Db1.addIn("@Type", "ProjectMonitor");
-                Db1.addIn("@PhaseID", PhaseId);
-                Db1.addIn("@InstanceID", PM.Instance);
-                Db1.addIn("@PM_ID", PM.Id);
-                Db1.addIn("@Cre_By", PM.Cre_By);
-                // Db1.ExecuteScalar();
-                DataTable dt = new DataTable();
-                dt = Db1.ExecuteDataTable();
-
-                //if(dt.Rows.Count>0)
-                //{
-
-                //        foreach (DataRow dr in dt.Rows)
-                //    {
-                //        String ToMailId = dr["To"].ToString();
-                //        bool mail = false;
-                //        Mail _mail = new Mail();
-                //        mail = _mail.SendEmail(ToMailId);
-                //    }
-
-
-
-                //}
-
-                Status = true;
+                Boolean s = UpdateMonitor_Mail(PM, PhaseId);
+                if (s)
+                    Status = true;
+                
             }
             catch (Exception ex)
             {
@@ -1938,41 +1914,8 @@ namespace ProAcc.BL
             return AR;
         }
 
-        public List<MailModel> GetMailList()
-        {
-            List<MailModel> ListM = new List<MailModel>();
-            DataTable dt = new DataTable();
-            DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
-            dB.addIn("@Type", "MailList");
-            //dB.addIn("@InstunceID", InstanceId);
-            dt = dB.ExecuteDataTable();
-            if (dt.Rows.Count > 0)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    MailModel M = new MailModel();
-                    M.Name = dr["Name"].ToString();
-                    M.Running_ID = Convert.ToInt32(dr["Running_ID"].ToString());
-                    M.To = Convert.ToString(dr["TO"].ToString());
-                    M.Subject = dr["Subject"].ToString();
-                    M.Body = dr["Body"].ToString();
-                    M.TemplateName = dr["FileName"].ToString();
-
-                    ListM.Add(M);
-                }
-            }
-            return ListM;
-        }
-        public Boolean UpdateMailList(int ID)
-        {
-            Boolean Res = false;
-            DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
-            dB.addIn("@Type", "UpdateMailList");
-            dB.addIn("@Running_ID", ID);
-            dB.ExecuteScalar();
-            Res = true;
-            return Res;
-        }
+       
+        
 
 
         public List<Buldingblock> GetBlock()
@@ -2422,6 +2365,105 @@ namespace ProAcc.BL
             }
             return ListM;
         }
+
+        #region Mail
+
+        public Boolean UpdateMailList(int ID)
+        {
+            Boolean Res = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+            dB.addIn("@Type", "UpdateMailList");
+            dB.addIn("@Running_ID", ID);
+            dB.ExecuteScalar();
+            Res = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "-->UpdateMailList"+ex.Message.ToString());
+            }
+            return Res;
+        }
+        public Boolean AddQuestionnaire_Mail(int User_ID, string MailID)
+        {
+            Boolean Status = false;
+
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+                dB.addIn("@Type", "Questionnaire");
+                dB.addIn("@Q_Mail", MailID);
+                dB.addIn("@Q_UserID", User_ID);
+                dB.addIn("@Cre_By", "00000000-0000-0000-0000-000000000000");
+                dB.ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "-->AddQuestionnaire_Mail" + ex.Message.ToString());
+            }
+
+            return Status;
+        }
+
+        private Boolean UpdateMonitor_Mail(ProjectMonitorModel PM, int PhaseId)
+        {
+            Boolean Status = false;
+
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper Db1 = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+                Db1.addIn("@Type", "ProjectMonitor");
+                Db1.addIn("@PhaseID", PhaseId);
+                Db1.addIn("@InstanceID", PM.Instance);
+                Db1.addIn("@PM_ID", PM.Id);
+                Db1.addIn("@Cre_By", PM.Cre_By);
+                DataTable dt = new DataTable();
+                dt = Db1.ExecuteDataTable();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "-->AddQuestionnaire_Mail" + ex.Message.ToString());
+            }
+
+            return Status;
+        }
+        public List<MailModel> GetMailList()
+        {
+            List<MailModel> ListM = new List<MailModel>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+            dB.addIn("@Type", "MailList");
+            //dB.addIn("@InstunceID", InstanceId);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    MailModel M = new MailModel();
+                    M.Name = dr["Name"].ToString();
+                    M.Running_ID = Convert.ToInt32(dr["Running_ID"].ToString());
+                    M.To = Convert.ToString(dr["TO"].ToString());
+                    M.Subject = dr["Subject"].ToString();
+                    M.Body = dr["Body"].ToString();
+                    M.TemplateName = dr["FileName"].ToString();
+                    M.Q_UserID = Convert.ToInt32(dr["Q_UserID"].ToString());
+                    ListM.Add(M);
+                }
+            }
+            return ListM;
+        }
+        #endregion
 
 
         public string Phase_Assessment = "Assessment";

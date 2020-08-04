@@ -71,6 +71,16 @@
             }
             ValidateData();
         });
+
+        $("#txtTaskName").bind('paste', function () {
+            var self = $(this);
+            var orig = self.val();
+            setTimeout(function () {
+               
+                ValidateData();
+            });
+        });
+       
     });
     $('#drpTaskCat').change(function () {
         ValidateData();

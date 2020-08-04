@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ProAcc.BL;
 using ProACC_DB;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace ProAcc.Controllers
     public class ProjectCreationController : Controller
     {
         private ProAccEntities db = new ProAccEntities();
+        LogHelper _Log = new LogHelper();
         // GET: ProjectCreation
         public ActionResult Index()
         {
@@ -171,6 +173,8 @@ namespace ProAcc.Controllers
                 {
                     project.isActive = false;
                     project.IsDeleted = true;
+                    project.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                    project.Modified_On = DateTime.UtcNow;
                     db.Entry(project).State = EntityState.Modified;
                     db.SaveChanges();
                 }
@@ -210,8 +214,10 @@ namespace ProAcc.Controllers
                     return Json("error");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                string Url = Request.Url.AbsoluteUri;
+                _Log.createLog(ex, Url);
                 throw;
             }
         }

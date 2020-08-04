@@ -210,16 +210,14 @@
         });
 
         function TaskCheck() {
-
             var Task = $("#txtTask").val().trim();
-            Task = Task.replace(",", " ");
+            Task = Task.replace(/,/g, " ");
             var id = $("#activityrid").val();
             if (Task == "") {
                 $("#lblTask").html("Please Enter Task").show().fadeOut(5000);
                 ValidateActivity();
             }
             else {
-
              $.ajax({
                 url: '@Url.Action("CheckTaskAvailability", "Activity")',
                 type: "GET",
@@ -344,9 +342,8 @@
     }
 
     $("#btnActivityCreCreate").on("click", function () {
-       // debugger;
         var Task = $("#txtTask").val();
-        Task = Task.replace(",", " ");
+        Task = Task.replace(/,/g, " ");
        // var sequence = $("#txtSequence").val();
         //var ApplicationArea = $("#txtApplicationArea").val();
         var ApplicationArea = $("#drpApplicationArea").val();

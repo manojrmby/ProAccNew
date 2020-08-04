@@ -14,6 +14,8 @@ namespace ProAcc.BL.Model
         public string Body { get; set; }
 
         public string TemplateName { get; set; }
+
+        public int Q_UserID { get; set; }
         // public string Task { get; set; }
     }
 }

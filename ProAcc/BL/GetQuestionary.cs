@@ -13,9 +13,11 @@ namespace ProAcc.BL
 {
     public class GetQuestionary
     {
-        public async Task StartGQPULL()
+        
+        public void StartGQPULL()
         {
-            mysql();
+            _ = mysql();
+            
         }
         //private static void mysql()
         //{
@@ -119,7 +121,7 @@ namespace ProAcc.BL
             //string MyConnectionstring = "Server=123.176.34.15,8021;user id = survey;password = Admin1!;database = survey";
             //string MyConnectionstring = "Server= sql12.freemysqlhosting.net;Database=sql12353260;Uid=sql12353260;Pwd= qHCWfvIhS7;";
 
-            string MyConnectionstring = "Data Source = 123.176.34.15;port=8021;Integrated Security=False; Initial Catalog = survey; User ID = survey; Password = Admin1!;";
+            string MyConnectionstring = "Data Source = 123.176.34.15;port=4043;Integrated Security=False; Initial Catalog = survey; User ID = TestLogin; Password = ASD123!@#;";
             //string constr = ConfigurationManager.ConnectionStrings["mysql"].ConnectionString;
             try
             {
@@ -230,6 +232,9 @@ namespace ProAcc.BL
             public string fq3 { get; set; }
             public int submitted { get; set; }
         }
+
+
+
 
     }
 }
