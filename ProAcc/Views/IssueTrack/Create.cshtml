@@ -386,14 +386,22 @@
         validateIssueTrack()
     });
     
-     $("#txtStartDate").keypress(function (e) {
-        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-            $("#lblStartDate").html("Date Only").show().fadeOut("slow");
+     //$("#txtStartDate").keypress(function (e) {
+     //   if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+     //       $("#lblStartDate").html("Date Only").show().fadeOut("slow");
+     //       return false;
+     //   }
+     //});
+
+    $("#txtStartDate").keypress(function (e) {
+        if ((e.which < 48 || e.which > 57 || e.which > 95 || e.which < 107)) {
+             e.preventDefault();
+            $("#lblStartDate").html("Accept Date Only").show().fadeOut("slow");
             return false;
         }
-     });
+    });
 
-     $("#txtStartDate").on('focusout', function () {
+     $("#txtStartDate").on('change', function () {
         var StrtDate = $("#txtStartDate").val().trim();
         if (StrtDate=="") {
             $("#lblStartDate").html("Please Enter Valid Start Date").show().fadeOut(2000);
@@ -401,13 +409,21 @@
     });
 
     $("#txtEndDate").keypress(function (e) {
-        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-            $("#lblEndDate").html("Date Only").show().fadeOut("slow");
+        if ((e.which < 48 || e.which > 57 || e.which > 95 || e.which < 107)) {
+            e.preventDefault();
+            $("#lblEndDate").html("Accept Date Only").show().fadeOut("slow");
             return false;
         }
     });
+
+    //$("#txtEndDate").keypress(function (e) {
+    //    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+    //        $("#lblEndDate").html("Date Only").show().fadeOut("slow");
+    //        return false;
+    //    }
+    //});
     
-    $("#txtEndDate").on('focusout', function () {
+    $("#txtEndDate").on('change', function () {
         var Enddate = $("#txtEndDate").val().trim();
         if (Enddate == "") {
            $("#lblEndDate").html("Please Enter The EndDate").show().fadeOut(2000);
@@ -449,6 +465,12 @@
             $("#lblComments").html("Please enter the Comments").show().fadeOut(2000);
         }
         validateIssueTrack()
+    });
+
+    $("#txtIssueName,#txtComments").bind('paste', function () {
+        setTimeout(function () {
+            validateIssueTrack();
+        });
     });
 
     function validateIssueTrack() {

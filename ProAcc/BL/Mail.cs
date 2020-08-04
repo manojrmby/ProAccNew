@@ -41,9 +41,9 @@ namespace ProAcc.BL
             Boolean MailRunstatus = Convert.ToBoolean(_MailRunStatus);
             if (MailRunstatus)
             {
-               // _ = StartTimer();
+                _ = StartTimer();
             }
-            GQ.StartGQPULL();
+            //GQ.StartGQPULL();
         }
         public async Task StartTimer()
         {
@@ -53,7 +53,7 @@ namespace ProAcc.BL
                 while (true)
                 {
                     _Log.createLog("Mail Started");
-                    _ = SendAsyncMail();
+                   // _ = SendAsyncMail();
                     pDF.Report();
                     await Task.Delay(T);
                     Thread.Sleep(100000);

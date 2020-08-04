@@ -196,7 +196,8 @@
     // Error messages based on the code returned from getValidationError
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         var intl = window.intlTelInput(input, {        
-            utilsScript: "/Asset/js/utils.js",
+            //utilsScript: "/Asset/js/utils.js",
+            utilsScript: "../../Asset/js/utils.js",
             separateDialCode: true 
     });
 
@@ -215,6 +216,7 @@
         input.addEventListener('countrychange', function () {
             countryCode = intl.getSelectedCountryData().iso2;
             $("#selectedCountry").val(countryCode);
+            $("#txtCustomerPhone").val("");
         })
         // Validate on blur event   
         input.addEventListener('blur', function () {
