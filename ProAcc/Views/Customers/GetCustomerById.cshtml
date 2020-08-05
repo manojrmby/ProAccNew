@@ -154,12 +154,24 @@
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                 event.preventDefault();
                 $("#lblContact").html("Not Allowed").show().fadeOut(5000);
-                validatecustomer();
             }
             else {
                 $("#lblContact").html("").hide();
-                validatecustomer();
             }
+            validatecustomer();
+        });
+
+         $('#txtContact').on('focusout', function () {
+
+            var ContactName = $("#txtContact").val().trim();
+            ContactName = ContactName.replace(/,/g, " ");
+            if (ContactName == "") {
+                $("#lblContact").html("Please Enter valid Contact Person Name").show().fadeOut(5000);
+            }
+            else {
+                 $("#lblContact").html("").show().fadeOut(5000);
+            }
+             validatecustomer();
         });
 
         $("#txtCustomerPhone").keypress(function (e) {
@@ -297,7 +309,8 @@
          var id = $("#customerid").val();
         var CompanyName = $("#txtCompanyName").val().trim();
          var IndustrySector = $("#drpIndustrySector").val();
-         var Contact = $('#txtContact').val().trim();
+        var Contact = $('#txtContact').val().trim();
+         Contact = Contact.replace(/,/g, " ");
          var SelectedCountrycode= $("#selectedCountry").val();
         var custphone = $("#txtCustomerPhone").val().trim();
         var custEmail=$("#txtCustomerEmail").val().trim();

@@ -22,24 +22,32 @@ namespace ProAcc.Controllers
         public ActionResult Index()
         {
             List<UserMaster> u = new List<UserMaster>();
-            var users = db.UserMasters.Where(x => x.LoginId!= "Admin").OrderByDescending(x=>x.Cre_on).ToList();
-            users.ForEach(p => {
-                if (p.UserTypeID == 3 )
-                {
-                    if (p.Customer_Id != null)
+            try
+            {
+                var users = db.UserMasters.Where(x => x.LoginId != "Admin").OrderByDescending(x => x.Cre_on).ToList();
+                users.ForEach(p => {
+                    if (p.UserTypeID == 3)
                     {
-                        p.Customer = db.Customers.Where(pp => pp.Customer_ID == p.Customer_Id).FirstOrDefault();
-                        if (p.Customer.IsDeleted == false)
+                        if (p.Customer_Id != null)
                         {
-                            u.Add(p);
+                            p.Customer = db.Customers.Where(pp => pp.Customer_ID == p.Customer_Id).FirstOrDefault();
+                            if (p.Customer.IsDeleted == false)
+                            {
+                                u.Add(p);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    u.Add(p);
-                }
-            });
+                    else
+                    {
+                        u.Add(p);
+                    }
+                });
+            }
+            catch(Exception ex)
+            {
+                _Log.createLog(ex, "-->Users Index" + ex.Message.ToString());
+            }
+            
            
             return View(u);
         }
@@ -128,151 +136,178 @@ namespace ProAcc.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Create(UserMaster con)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (con.Name != null && con.LoginId != null && con.Password != null)
+                if (ModelState.IsValid)
                 {
-                    con.UserId = Guid.NewGuid();
-                    con.Cre_By = Guid.Parse(Session["loginid"].ToString());
-                    con.Cre_on = DateTime.UtcNow;
-                    con.isActive = true;
-                    //var usertypeid = db.User_Type.Where(x => x.UserTypeID==con.UserTypeID && x.isActive == true).FirstOrDefault().UserTypeID;
-                    if (con.UserTypeID == 1)
+                    if (con.Name != null && con.LoginId != null && con.Password != null)
                     {
-                        var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
-                        con.RoleID = adminRoleId;
-                        con.Customer_Id = null;
+                        con.UserId = Guid.NewGuid();
+                        con.Cre_By = Guid.Parse(Session["loginid"].ToString());
+                        con.Cre_on = DateTime.UtcNow;
+                        con.isActive = true;
+                        //var usertypeid = db.User_Type.Where(x => x.UserTypeID==con.UserTypeID && x.isActive == true).FirstOrDefault().UserTypeID;
+                        if (con.UserTypeID == 1)
+                        {
+                            var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+                            con.RoleID = adminRoleId;
+                            con.Customer_Id = null;
+                        }
+                        else if (con.UserTypeID == 2)
+                        {
+                            con.Customer_Id = null;
+                        }
+                        else if (con.UserTypeID == 4)
+                        {
+                            var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+                            con.RoleID = pmRoleId;
+                            con.Customer_Id = null;
+                        }
+                        db.UserMasters.Add(con);
+                        db.SaveChanges();
+                        return Json("success");
+                        //return RedirectToAction("Index");
                     }
-                    else if(con.UserTypeID == 2)
+                    else
                     {
-                        con.Customer_Id = null;
+                        return Json("error");
+                        //ViewBag.UserTypeID = new SelectList(db.User_Type, "UserTypeID", "UserType", con.UserTypeID);
+                        //ViewBag.Message = true;
+                        //return View();
                     }
-                    else if (con.UserTypeID == 4)
-                    {
-                        var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
-                        con.RoleID = pmRoleId;
-                        con.Customer_Id = null;
-                    }
-                    db.UserMasters.Add(con);
-                    db.SaveChanges();
-                    return Json("success");
-                    //return RedirectToAction("Index");
-                }
-                else
-                {
-                    return Json("error");
-                    //ViewBag.UserTypeID = new SelectList(db.User_Type, "UserTypeID", "UserType", con.UserTypeID);
-                    //ViewBag.Message = true;
-                    //return View();
-                }
 
+                }
+                ViewBag.UserTypeID = new SelectList(db.User_Type, "UserTypeID", "UserType", con.UserTypeID);
             }
-
-            ViewBag.UserTypeID = new SelectList(db.User_Type, "UserTypeID", "UserType", con.UserTypeID);
+            catch(Exception ex)
+            {
+                _Log.createLog(ex, "-->Users Create post" + ex.Message.ToString());
+            }
+            
             return View(con);
         }
 
         public ActionResult Edit(Guid id)
         {
-            if (id == null)
+            UserMaster userMaster = null;
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                userMaster = db.UserMasters.Find(id);
+                if (userMaster == null)
+                {
+                    return HttpNotFound();
+                }
+
+                ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
+                var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+                var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+                ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
+                ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
             }
-            UserMaster userMaster = db.UserMasters.Find(id);
-            if (userMaster == null)
+            catch(Exception ex)
             {
-                return HttpNotFound();
+                _Log.createLog(ex, "-->Users Edit" + ex.Message.ToString());
             }
-
-            ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
-            var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
-            var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
-            ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
-            ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
-
-            //var val = db.User_Type.Where(x => x.isActive == true).ToList();
-            //ViewBag.UserTypeID = new SelectList(val, "UserTypeID", "UserType",userMaster.UserTypeID);
-
-            //var Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != 1).ToList();
-            //ViewBag.RoleID = new SelectList(Role, "RoleId", "RoleName", userMaster.RoleID);
-
-            //var Cust = db.Customers.Where(x => x.isActive == true).ToList();
-            //ViewBag.Customer_Id = new SelectList(Cust, "Customer_ID", "Company_Name", userMaster.Customer_Id);
+           
             return View(userMaster);
         }
 
         [HttpPost]
         public ActionResult Edit(UserMaster userMaster)
         {
-            
-            if (userMaster.Name != null)
+            try
             {
-                 userMaster.Modified_On = DateTime.UtcNow;
-                 userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
-                 userMaster.isActive = true;
-                if (userMaster.UserTypeID == 1)
+                if (userMaster.Name != null)
                 {
+                    userMaster.Modified_On = DateTime.UtcNow;
+                    userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                    userMaster.isActive = true;
+                    if (userMaster.UserTypeID == 1)
+                    {
+                        var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+                        userMaster.RoleID = adminRoleId;
+                        userMaster.Customer_Id = null;
+                    }
+                    else if (userMaster.UserTypeID == 2)
+                    {
+                        userMaster.Customer_Id = null;
+                    }
+                    else if (userMaster.UserTypeID == 4)
+                    {
+                        var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+                        userMaster.RoleID = pmRoleId;
+                        userMaster.Customer_Id = null;
+                    }
+                    db.Entry(userMaster).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json("success");
+                }
+                else
+                {
+                    ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
                     var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
-                    userMaster.RoleID = adminRoleId;
-                    userMaster.Customer_Id = null;
-                }
-                else if (userMaster.UserTypeID == 2)
-                {
-                    userMaster.Customer_Id = null;
-                }
-                else if (userMaster.UserTypeID == 4)
-                {
                     var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
-                    userMaster.RoleID = pmRoleId;
-                    userMaster.Customer_Id = null;
-                }
-                db.Entry(userMaster).State = EntityState.Modified;
-                 db.SaveChanges();
-                 return Json("success");
-             }
-            else
-            {
-                 ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
-                 var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
-                 var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
-                 ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
-                 ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
+                    ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
+                    ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
 
-                 ViewBag.Message = true;
-                return View();
-             }
+                    ViewBag.Message = true;
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                string Url = Request.Url.AbsoluteUri;
+                _Log.createLog(ex, "-->Users Edit Post" + Url);
+                throw;
+            }
+
+            
             
         }
 
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
-            var del = (from a in db.UserMasters
-                       join b in db.ProjectMonitors
-                       on a.UserId equals b.UserID
-                       where a.UserId == id && (b.StatusId!=1&& b.StatusId != 3) && b.isActive == true 
-                       select b).ToList();
-            var delpm = (from a in db.UserMasters
-                         join b in db.Projects
-                         on a.UserId equals b.ProjectManager_Id
-                         where a.UserId == id && a.isActive == true && b.isActive == true
-                         select b).ToList();
-            if(del.Count!=0 || delpm.Count!=0)            
+            try
             {
-                return Json("fail");
-            }
-            else
-            {
-                UserMaster user = db.UserMasters.Find(id);
-                if (user.UserId == id)
+                var del = (from a in db.UserMasters
+                           join b in db.ProjectMonitors
+                           on a.UserId equals b.UserID
+                           where a.UserId == id && (b.StatusId != 1 && b.StatusId != 3) && b.isActive == true
+                           select b).ToList();
+                var delpm = (from a in db.UserMasters
+                             join b in db.Projects
+                             on a.UserId equals b.ProjectManager_Id
+                             where a.UserId == id && a.isActive == true && b.isActive == true
+                             select b).ToList();
+                if (del.Count != 0 || delpm.Count != 0)
                 {
-                    user.isActive = false;
-                    user.IsDeleted = true;
-                    db.Entry(user).State = EntityState.Modified;
-                    db.SaveChanges();
+                    return Json("fail");
                 }
-                return Json("success");
+                else
+                {
+                    UserMaster user = db.UserMasters.Find(id);
+                    if (user.UserId == id)
+                    {
+                        user.isActive = false;
+                        user.IsDeleted = true;
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    return Json("success");
+                }
             }
+            catch (Exception ex)
+            {
+                string Url = Request.Url.AbsoluteUri;
+                _Log.createLog(ex, "-->Users Delete Post" + Url);
+                throw;
+            }
+
         }
 
         public ActionResult ResourceAllocationCreate()

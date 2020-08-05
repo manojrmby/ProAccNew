@@ -12,7 +12,7 @@
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
 <style>
-    .wrapColumnText {
+     .wrapColumnText {
         white-space: normal !important;
         height: auto;
         vertical-align: text-top;
@@ -21,9 +21,15 @@
     .fit_Data {
         width: fit-content;
     }
-    /*.instanceRow {
-        max-width: 1 !important;
-    }*/
+
+    .ui-jqgrid .ui-jqgrid-labels th.ui-th-column {
+        background-color: orange;
+        background-image: none
+    }
+
+    #info_dialog {
+        margin-left: 150vh;
+    }
 </style>
 
 @*<style type="text/css">

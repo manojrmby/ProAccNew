@@ -118,7 +118,8 @@
 
 <script>
     $('#Submit').click(function () {
-        var IDProject = $("#IDProject").val();
+        debugger        
+        var IDProject = $("#IDProject").val();        
         LoadTable(IDProject);
         $('#jqGrid').trigger('reloadGrid');
         Notiflix.Notify.Success('updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
@@ -359,13 +360,13 @@
                 {
                     label: 'Planned End Date', name: 'Planed__En_Date',
                     width: 75, align: "center", formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
-                    
+
                     editoptions: { dataInit: Planed_EndDate, classes: 'DateClass' }
                 },
                 {
                     label: 'Actual End Date', name: 'Actual_En_Date',
                     width: 75, align: "center", formatter: "date", formatoptions: { altFormat: "dd-mm-yy", newformat: "d/m/Y" }, editable: true,
-                    
+
                     editoptions: { dataInit: Actual_En_Date, classes: 'DateClass' }
                 },
                 {
@@ -403,11 +404,25 @@
 
                         editformbutton: false,//Determines if popup should open or not
                         afterSave: function (rowid, response, postdata, options) {
-                           // Show_HideEdit();
-                            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
-                            for (var i = 0; i < ids.length; i++) {
-                                $('#jEditButton_' + ids[i]).show();
-                            }
+                            Show_HideEdit();
+                            //var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                            ////for (var i = 0; i < ids.length; i++) {
+                            ////    $('#jEditButton_' + ids[i]).show();
+                            ////}
+
+                            //for (var i = 0; i < ids.length; i++) {
+                            //    debugger;
+                            //     var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+
+                            //     if (Status_Id == 1) {
+                            //         $('#jEditButton_' + ids[i]).hide();
+                            //     }
+                            //     else {
+                            //          $('#jEditButton_' + ids[i]).show();
+                            //     }
+
+                            //}
+
 
                             $('#jqGrid').trigger('reloadGrid');
                         },
@@ -542,8 +557,13 @@
             },
             afterrestorefunc: function (response) {
                 //alert("afterrestorefunc");
-            }
+            },
+             gridComplete: function () {
+               // alert("tdyt");
+               
+                Show_HideEdit();
 
+            }
 
 
             // set table stripped class in table style in bootsrap
@@ -567,8 +587,8 @@
                 //$("#" + id + "_StatusId option[value='1']").prop('disabled', 'disabled');
                 //$("#" + id + "_StatusId option[value='5']").prop('disabled', 'disabled');
 
-                $("#" + id + "_StatusId option[value='1']").hide();
-                $("#" + id + "_StatusId option[value='2']").hide();
+                //$("#" + id + "_StatusId option[value='1']").hide();
+                //$("#" + id + "_StatusId option[value='2']").hide();
                 //$("#" + id + "_StatusId option[value='5']").hide();
             }
 
@@ -686,6 +706,27 @@
 
 
     }
+
+     function Show_HideEdit() {
+        var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+        var User = '@Session["UserType"]';
+        var loginid = '@Session["loginid"]';
+        var j = 0;
+
+         var UserType ="@Session["UserType"].ToString()"
+        if (UserType == 'Project Manager')        {
+             for (var i = 0; i < ids.length; i++) {
+                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+
+                 if (Status_Id == 1) {
+                     $('#jEditButton_' + ids[i]).hide();
+                 }
+                 else {
+                      $('#jEditButton_' + ids[i]).show();
+                 }
+            }
+        }
+     }
 
     function GetTaskName()
     {

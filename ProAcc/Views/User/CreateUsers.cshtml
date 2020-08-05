@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                     <label class="control-label col-md-4 required">Phone Number</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" maxlength="10" id="txtMob" />
@@ -82,19 +82,19 @@
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMob1">&nbsp;</span>
                     </div>
-            </div>
+            </div>*@
 
-            @*<div class="form-group">
+            <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="hidden" class="form-control" id="selectedCountry">
-                    <input type="tel" class="form-control" id="txtMob" style="width: 150%;">
+                    <input type="tel" class="form-control" id="txtMob" style="width: 135%;">
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
                     &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
-            </div>*@
+            </div>
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">User Type</label>
@@ -185,7 +185,8 @@
 
          $('#txtName1').on('focusout', function () {
 
-            var CnstName = $("#txtName1").val().trim();
+             var CnstName = $("#txtName1").val().trim();
+              CnstName = CnstName.replace(/,/g, " ");
             if (CnstName == "") {
                 $("#lblName1").html("Please Enter valid Name").show();
                 SubmitConsultant();
@@ -216,9 +217,21 @@
 
          });
 
+         $('#LoginID').on('keypress', function (e) {
+            if (e.which === 44) {
+                e.preventDefault();
+                $("#StatusConsultant").html("Not Allowed").show().fadeOut(5000);
+            }
+            else {
+                $("#StatusConsultant").html("").show();
+            }
+
+         });
+
         $('#LoginID').on('focusout', function () {
 
             var CnstUserName = $("#LoginID").val().trim();
+             CnstUserName = CnstUserName.replace(/,/g, "");
             if (CnstUserName == "") {
                 $("#StatusConsultant").html("Please Enter valid LoginId").show().fadeOut(5000);
                 SubmitConsultant()
@@ -258,68 +271,67 @@
              SubmitConsultant();
          });
 
-        $("#txtMob").blur(function () {
+        //$("#txtMob").blur(function () {
 
-            phone = $(this).val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
-                SubmitConsultant();
-            }
-            else {
-                $("#lblMob1").html("").hide();
-                SubmitConsultant();
-            }
+        //    phone = $(this).val();
+        //    phone = phone.replace(/[^0-9]/g,'');
+        //    if (phone.length != 10) {
+        //        $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
+        //        SubmitConsultant();
+        //    }
+        //    else {
+        //        $("#lblMob1").html("").hide();
+        //        SubmitConsultant();
+        //    }
+        //});
+
+        var input = document.querySelector("#txtMob"),
+            errorMsg = document.querySelector("#error-msg"),
+            validMsg = document.querySelector("#valid-msg");
+
+        // Error messages based on the code returned from getValidationError
+        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+        var intl = window.intlTelInput(input, {
+             utilsScript: "../Asset/js/utils.js",
+             separateDialCode: true 
         });
 
-    // var input = document.querySelector("#txtMob"),
-    //    errorMsg = document.querySelector("#error-msg"),
-    //    validMsg = document.querySelector("#valid-msg");
+        var reset = function () {
+            input.classList.remove("error");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
 
-    //// Error messages based on the code returned from getValidationError
-    //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        var countryCode;
+        input.addEventListener('countrychange', function () {
+            countryCode = intl.getSelectedCountryData().iso2;
+            $("#selectedCountry").val(countryCode);
+            //alert(countryCode)
+        })
 
-    //var intl = window.intlTelInput(input, {
-       
-    //    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
-    //    //utilsScript: "js/utils.js"
-    //});
+        // Validate on blur event
+        input.addEventListener('blur', function () {
+            //debugger;
+            reset();
+            if (input.value.trim()) {
+                if (intl.isValidNumber()) {
+                    validMsg.classList.remove("hide");
 
-    //var reset = function() {
-    //    input.classList.remove("error");
-    //    errorMsg.innerHTML = "";
-    //    errorMsg.classList.add("hide");
-    //    validMsg.classList.add("hide");
-    //    };
-   
-    //    var countryCode;
-    //    input.addEventListener('countrychange', function () {
-    //        countryCode = intl.getSelectedCountryData().iso2;
-    //        $("#selectedCountry").val(countryCode);
-    //       //alert(countryCode)
-    //    })
+                } else {
+                    input.classList.add("error");
+                    var errorCode = intl.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                }
+            }
+            validatecustomer();
+        });
 
-    //// Validate on blur event
-    //    input.addEventListener('blur', function () {
-    //        //debugger;
-    //    reset();
-    //    if(input.value.trim()){
-    //        if(intl.isValidNumber()){
-    //            validMsg.classList.remove("hide");
-               
-    //        }else{
-    //            input.classList.add("error");
-    //            var errorCode = intl.getValidationError();
-    //            errorMsg.innerHTML = errorMap[errorCode];
-    //            errorMsg.classList.remove("hide");
-    //        }
-    //    }
-    //      validatecustomer();
-    //});
-
-    //// Reset on keyup/change event
-    //input.addEventListener('change', reset);
-    //input.addEventListener('keyup', reset);
+        // Reset on keyup/change event
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
 
         $("#Passwd,#txtConsCnfmPassword").bind('copy paste cut', function (e) {
             e.preventDefault();
@@ -447,10 +459,12 @@
     $("#btnConsultantCreate").on("click", function () {
 
         var Name1 = $("#txtName1").val();
+         Name1 = Name1.replace(/,/g, " ");
         var SelectedCountrycode = $("#selectedCountry").val();
         var Mob = $("#txtMob").val();
         var Email1 = $("#txtEmail1").val();
         var LoginID = $("#LoginID").val();
+        LoginID = LoginID.replace(/,/g, "");
         var Passwd = $("#Passwd").val();
         var UserTypeID = $("#UserTypeID").val();
         var RoleID = $("#RoleID").val();

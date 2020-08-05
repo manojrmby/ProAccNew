@@ -14,9 +14,6 @@
 <table class="table" id="tblUserTable">
     <thead>
         <tr>
-            @*<th>
-            @Html.DisplayNameFor(model => model.UserId)
-        </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -49,9 +46,6 @@
         @foreach (var item in Model)
         {
         <tr>
-            @*<td>
-            @Html.HiddenFor(modelItem => item.UserId)
-        </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -91,7 +85,6 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;<a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("Edit", "User", new { id = item.UserId })"></a> &nbsp;&nbsp;
                         &nbsp;<a href="#" class="userDelete fa fa-trash"></a><input type="hidden" value="@item.UserId" />
                     </div>
-
                 </td>
             }
             else
@@ -133,7 +126,6 @@
 
    
     $(".userDelete").on("click", function () {
-        debugger;
         var id = $(this).next().val();
          Notiflix.Confirm.Show(
                 'Confirm',
@@ -162,78 +154,4 @@
                 }
             )
     });
-
-    @*$(".userDelete").on("click", function () {
-        var id = $(this).next().val();
-        $.confirm({
-              title: 'Delete !',
-              content: 'Do you want to delete ?',
-              icon: 'fa fa-trash-o',
-              animation: 'scale',
-              closeAnimation: 'scale',
-              opacity: 0.5,
-              buttons: {
-                 'confirm': {
-                    text: 'Yes',
-                    btnClass: 'btn-blue',
-                    action: function () {
-                      $.ajax({
-                          type: "POST",
-                           url: '@Url.Action("Delete","User")',
-                           data: { id: id },
-                           dataType: "json",
-                           success: function (response) {
-                              if (response == "success") {
-                                 $.alert({
-                                    title: 'Alert !',
-                                    content: 'Customer deleted successfully!..!',// <br> with some <strong>HTML</strong> <em>contents</em>',
-                                    icon: 'fa fa-rocket',
-                                    animation: 'scale',
-                                    closeAnimation: 'scale',
-                                    buttons: {
-                                       okay: {
-                                          text: 'Okay',
-                                          btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                            action: function (event, ui) {
-                                               location.reload();
-                                            }
-                                       }
-                                    }
-                                 });
-                              }
-                              else {
-                               $.alert({
-                                 title: 'Alert !',
-                                 content: 'User Holding some task..!',
-                                 icon: 'fa fa-rocket',
-                                 animation: 'scale',
-                                 closeAnimation: 'scale',
-                                  buttons: {
-                                   okay: {
-                                     text: 'Okay',
-                                     btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                     action: function (event, ui) {
-                                        $(this).remove();
-                                        location.reload();
-                                     }
-                                   }
-                                  }
-                               });
-                              }
-                           },
-                           failure: function (response) {
-                              alert(response.responseText);
-                           },
-                           error: function (response) {
-                               alert(response.responseText);
-                           }
-                      });
-                    }
-                 },
-                 cancel: function(){
-                      // $.alert('You clicked on <strong>cancel</strong>');
-                 },
-              }
-         });
-    });*@
 </script>

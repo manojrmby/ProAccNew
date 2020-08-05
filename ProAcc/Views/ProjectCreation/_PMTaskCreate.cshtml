@@ -85,9 +85,23 @@
     $('#drpTaskCat').change(function () {
         ValidateData();
     });
-    $('#txtTaskName').on('focusout', function () {
-           
-            var TaskName = $("#txtTaskName").val().trim();
+
+      var typingTimer;                //timer identifier
+        var doneTypingInterval = 1000;  //time in ms, 1 second for example
+
+       // on keyup, start the countdown
+         $('#txtTaskName').on('keyup', function () {
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(PMTaskCheck, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown
+         $('#txtTaskName').on('keydown', function () {
+          clearTimeout(typingTimer);
+         });
+
+    function PMTaskCheck() {
+         var TaskName = $("#txtTaskName").val().trim();
             var id = $("#drpTaskCat").val();
             if (TaskName == "") {
                 $("#lblTaskName").html("Please Enter valid Instance name").show().fadeOut(2000);
@@ -114,9 +128,12 @@
                     alert(err);
                 }
             });
-            }
-        });
+        }
+          ValidateData()
+    }
+   
     function ValidateData() {
+        
             var TaskName = $("#txtTaskName").val().trim();
             var TaskCat = $("#drpTaskCat").val();
 
@@ -146,11 +163,11 @@
 
             if (TaskName == "") {
                 $("#lblTaskName").html("Please enter the Task Name").show().fadeOut(5000);
-                ValidateProject();
+                ValidateData();
             }
             else if (TaskCat == 0) {
                 $("#lblCustomerName").html("Please select the Task Category").show().fadeOut(5000);
-                ValidateProject();
+                ValidateData();
             }
             else {
                
@@ -166,7 +183,8 @@
                             Notiflix.Notify.Success('PM Task Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             loadPM();
                             Reset();
-                            $("#btnCreate").show();
+                            //$("#btnCreate").show();
+                            $("#btnCreate").prop('disabled', true);
                         }
                     },
                     failure: function (response) {
@@ -218,7 +236,8 @@
 
                             $("#btnAddNew").hide();
                             $("#btnUpdate").hide();
-                            $("#btnCreate").show();
+                            //$("#btnCreate").show();
+                            $("#btnCreate").prop('disabled', true);
                             //$("#prjtCreate").show();
                             //$("#prjtUpdate").hide();
 

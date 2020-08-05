@@ -473,6 +473,7 @@
                     $("#jqGrid").jqGrid('setGridState', 'hidden');
                      var msg = 'one or more previous phase task\'s are not completed ,Please complete the task\'s and try..!';
                     Notiflix.Report.Info("ProAcc Info !", msg);
+                    
                 }
                 else {
                     $("#jqGrid").jqGrid('setGridState', 'visible');
@@ -771,7 +772,8 @@
         //debugger;
         if (UserType != 'Project Manager') {
              if (a==0) {
-                Notiflix.Report.Info("ProAcc Info !", "You dont have any Task to Perform");
+                 //Notiflix.Report.Info("ProAcc Info !", "You dont have any Task to Perform");
+                 Notiflix.Notify.Info( "You dont have any Task to Perform");
              }
         }
        

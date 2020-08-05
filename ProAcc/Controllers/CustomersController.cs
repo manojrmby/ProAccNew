@@ -35,26 +35,44 @@ namespace ProAcc.Controllers
         }
         public ActionResult Index()
         {
-            var customers = db.Customers
-                .Where(a => a.isActive == true)
-                .OrderByDescending(x => x.Cre_on).ToList();
-            //.Where(x => x.Name.StartsWith(search) || search == null).ToList(); //.ToPagedList(i ?? 1, 5);
+            List<ProACC_DB.Customer> customers = null; 
+            try
+            {
+               customers = db.Customers
+              .Where(a => a.isActive == true)
+              .OrderByDescending(x => x.Cre_on).ToList();
+                //.Where(x => x.Name.StartsWith(search) || search == null).ToList(); //.ToPagedList(i ?? 1, 5);
+                //return View(customers);
+                //ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).OrderByDescending(x => x.Cre_on).ToList();
+                //return View(ViewBag.customersIndex);
+            }
+            catch (Exception ex)
+            {
+                _Log.createLog(ex, "-->Customers Index" + ex.Message.ToString());
+            }
             return View(customers);
-            //ViewBag.customersIndex = db.Customers.Where(x => x.isActive == true).OrderByDescending(x => x.Cre_on).ToList();
-            //return View(ViewBag.customersIndex);
         }
         // GET: Customers/Details/5
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            Customer customer = null;
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                customer = db.Customers.Find(id);
+                if (customer == null)
+                {
+                    return HttpNotFound();
+                }
             }
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                _Log.createLog(ex, "-->Customers Details" + ex.Message.ToString());
             }
+           
             return View(customer);
         }
 
@@ -97,7 +115,16 @@ namespace ProAcc.Controllers
         [HttpGet]
         public ActionResult GetCustomers()
         {
-            var list = db.Customers.Where(x => x.isActive == true).ToList();
+            List<ProACC_DB.Customer> list = null;
+            try
+            {
+                list = db.Customers.Where(x => x.isActive == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                _Log.createLog(ex, "-->GetCustomers" + ex.Message.ToString());
+            }
+           
             return PartialView("_CustomerIndex", list);
         }
         
@@ -128,7 +155,7 @@ namespace ProAcc.Controllers
             catch (Exception Ex)
             {
                 string Url = Request.Url.AbsoluteUri;
-                _Log.createLog(Ex, Url);
+                _Log.createLog(Ex, "-->Create Post" + Url);
                 throw;
             }
             
@@ -136,24 +163,32 @@ namespace ProAcc.Controllers
 
         public ActionResult GetCustomerById(Guid? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            Customer customer = null;
+            try
+            {               
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                customer = db.Customers.Find(id);
+                if (customer == null)
+                {
+                    return HttpNotFound();
+                }
+                var Data = db.Customers.Find(id);
+                ViewBag.IndustrySector = db.IndustrySectors.Where(x => x.IsActive == true);
+                //Customer cust = new Customer();
+                //cust.Customer_ID = Data.Customer_ID;
+                //cust.Company_Name = Data.Company_Name;
+                //cust.Contact = Data.Contact;
+                //cust.Phone = Data.Phone;
+                //cust.Email = Data.Email;
             }
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            catch (Exception Ex)
             {
-                return HttpNotFound();
+                _Log.createLog(Ex, "-->Create Custoemr Post" + Url);
             }
 
-            var Data = db.Customers.Find(id);
-            ViewBag.IndustrySector = db.IndustrySectors.Where(x => x.IsActive == true);
-            Customer cust = new Customer();
-            cust.Customer_ID = Data.Customer_ID;
-            cust.Company_Name = Data.Company_Name;
-            cust.Contact = Data.Contact;
-            cust.Phone = Data.Phone;
-            cust.Email = Data.Email;
             return View(customer);
             //return Json(cust, JsonRequestBehavior.AllowGet);
         }
@@ -179,35 +214,56 @@ namespace ProAcc.Controllers
         [HttpPost]
         public ActionResult Edit(Customer customer)
         {
-            var name = db.Customers.Where(p => p.Company_Name == customer.Company_Name).Where(x => x.Customer_ID != customer.Customer_ID).Where(x => x.isActive == true).ToList();
-            if (name.Count == 0)
+            try
             {
-                customer.Modified_On = DateTime.UtcNow;
-                //customer.Cre_on = DateTime.Now;
-                customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
-                customer.isActive = true;
-                db.Entry(customer).State = EntityState.Modified;
-                db.SaveChanges();
-                return Json("success");
+                var name = db.Customers.Where(p => p.Company_Name == customer.Company_Name).Where(x => x.Customer_ID != customer.Customer_ID).Where(x => x.isActive == true).ToList();
+                if (name.Count == 0)
+                {
+                    customer.Modified_On = DateTime.UtcNow;
+                    //customer.Cre_on = DateTime.Now;
+                    customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                    customer.isActive = true;
+                    db.Entry(customer).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json("success");
+                }
+                else
+                {
+                    return Json("error");
+                }
             }
-            else
+            catch (Exception Ex)
             {
-                return Json("error");
+                string Url = Request.Url.AbsoluteUri;
+                _Log.createLog(Ex, "-->Edit Customer Post" + Url);
+                throw;
             }
+           
         }
 
         // GET: Customers/Delete/5
         public ActionResult Delete(Guid? id)
         {
-            if (id == null)
+            Customer customer = null;
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                 customer = db.Customers.Find(id);
+                if (customer == null)
+                {
+                    return HttpNotFound();
+                }
             }
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            catch(Exception Ex)
             {
-                return HttpNotFound();
+                string Url = Request.Url.AbsoluteUri;
+                _Log.createLog(Ex, "-->Delete Customer" + Url);
+                throw;
             }
+          
             return View(customer);
         }
 
@@ -215,33 +271,39 @@ namespace ProAcc.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            
-            var del = (from a in db.Customers
-                       join b in db.Projects
-                       on a.Customer_ID equals b.Customer_Id
-                       where a.Customer_ID==id && a.isActive == true && b.isActive == true
-                       select b).ToList();
+            try
+            {
+                var del = (from a in db.Customers
+                           join b in db.Projects
+                           on a.Customer_ID equals b.Customer_Id
+                           where a.Customer_ID == id && a.isActive == true && b.isActive == true
+                           select b).ToList();
 
-            if(del.Count!=0)
-            {
-                return Json("fail");
-            }
-            else
-            {
-                Customer customer = db.Customers.Find(id);
-                if (customer.Customer_ID == id)
+                if (del.Count != 0)
                 {
-                    customer.isActive = false;
-                    customer.IsDeleted = true;
-                    customer.Modified_On = DateTime.UtcNow;
-                    customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
-                    db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
+                    return Json("fail");
+                }
+                else
+                {
+                    Customer customer = db.Customers.Find(id);
+                    if (customer.Customer_ID == id)
+                    {
+                        customer.isActive = false;
+                        customer.IsDeleted = true;
+                        customer.Modified_On = DateTime.UtcNow;
+                        customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                        db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
                 }
                 return Json("success");
             }
-
-            
+            catch (Exception Ex)
+            {
+                string Url = Request.Url.AbsoluteUri;
+                _Log.createLog(Ex, "-->Delete Customer Post" + Url);
+                throw;
+            }
         }
 
         protected override void Dispose(bool disposing)
