@@ -27,7 +27,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Task</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtTask" />
+                    <input type="text" class="form-control remove" id="txtTask" />
                     @*<span id="lblTask" style="color:red" />*@
                 </div>
                 <div>
@@ -212,6 +212,7 @@
         function TaskCheck() {
             var Task = $("#txtTask").val().trim();
             Task = Task.replace(/,/g, " ");
+            $("#txtTask").val(Task);
             var id = $("#activityrid").val();
             if (Task == "") {
                 $("#lblTask").html("Please Enter Task").show().fadeOut(5000);
@@ -241,7 +242,12 @@
              });
             }
         }
+        //var elements = document.querySelectorAll('.remove');
 
+        //Array.from(elements).forEach(function (elem) {
+        //    debugger;
+        //    elem.textContent = elem.textContent.replace(/,/g, '');
+        //});
 
         @*$('#txtTask').on('focusout', function () {
 

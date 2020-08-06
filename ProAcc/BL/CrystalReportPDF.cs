@@ -26,7 +26,8 @@ namespace ProAcc.BL
                 MySqlConnection con1 = new MySqlConnection();
                 //SqlConnection con1 = new SqlConnection();
                 //con1.ConnectionString = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
-                con1.ConnectionString = "Data Source = 123.176.34.15;port=4043;Integrated Security=False; Initial Catalog = survey; User ID = TestLogin; Password = ASD123!@#;";
+                //con1.ConnectionString = "Data Source = 123.176.34.15;port=4043;Integrated Security=False; Initial Catalog = survey; User ID = TestLogin; Password = ASD123!@#;";
+                con1.ConnectionString = ConfigurationManager.ConnectionStrings["MysqlPath"].ConnectionString;
                 //SqlDataAdapter da = new SqlDataAdapter("select * from question where submitted =1 AND MailStatus=0", con1);
                 MySqlDataAdapter da = new MySqlDataAdapter("select * from question where submitted =1 AND MailStatus=0 and id not in (1,2,3)", con1);
                 DataTable dt = new DataTable();

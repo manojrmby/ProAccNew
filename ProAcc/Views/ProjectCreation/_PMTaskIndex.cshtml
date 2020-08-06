@@ -38,7 +38,7 @@
                 
 
                 <td>
-                    <a href="#" id="btnEdit" class="fa fa-edit"></a><input type="hidden" value="@item.PMTaskId" /> |
+                    <a href="#" id="btnEdit" class="btnEdit fa fa-edit"></a><input type="hidden" value="@item.PMTaskId" /> |
                     <a href="#" class="btnProjCreationDelete fa fa-trash"></a><input type="hidden" value="@item.PMTaskId" />
                 </td>
             </tr>
@@ -62,7 +62,7 @@
         } );
     });
 
-    $("#btnEdit").on("click", function () {
+    $(".btnEdit").on("click", function () {
         //debugger;
         // $('html, body').animate({scrollTop:0}, 'slow');
         var id = $(this).next().val();
