@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            @*<div class="form-group">
+            <div class="form-group">
                     <label class="control-label col-md-4 required">Phone Number</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" maxlength="10" id="txtMob" />
@@ -82,9 +82,9 @@
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMob1">&nbsp;</span>
                     </div>
-            </div>*@
+            </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="hidden" class="form-control" id="selectedCountry">
@@ -94,7 +94,7 @@
                     &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
                     &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
-            </div>
+            </div>*@
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">User Type</label>
@@ -271,67 +271,67 @@
              SubmitConsultant();
          });
 
-        //$("#txtMob").blur(function () {
+        $("#txtMob").blur(function () {
 
-        //    phone = $(this).val();
-        //    phone = phone.replace(/[^0-9]/g,'');
-        //    if (phone.length != 10) {
-        //        $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
-        //        SubmitConsultant();
-        //    }
-        //    else {
-        //        $("#lblMob1").html("").hide();
-        //        SubmitConsultant();
-        //    }
+            phone = $(this).val();
+            phone = phone.replace(/[^0-9]/g,'');
+            if (phone.length != 10) {
+                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(2000);
+                SubmitConsultant();
+            }
+            else {
+                $("#lblMob1").html("").hide();
+                SubmitConsultant();
+            }
+        });
+
+        //var input = document.querySelector("#txtMob"),
+        //    errorMsg = document.querySelector("#error-msg"),
+        //    validMsg = document.querySelector("#valid-msg");
+
+        //// Error messages based on the code returned from getValidationError
+        //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+        //var intl = window.intlTelInput(input, {
+        //     utilsScript: "../Asset/js/utils.js",
+        //     separateDialCode: true 
         //});
 
-        var input = document.querySelector("#txtMob"),
-            errorMsg = document.querySelector("#error-msg"),
-            validMsg = document.querySelector("#valid-msg");
+        //var reset = function () {
+        //    input.classList.remove("error");
+        //    errorMsg.innerHTML = "";
+        //    errorMsg.classList.add("hide");
+        //    validMsg.classList.add("hide");
+        //};
 
-        // Error messages based on the code returned from getValidationError
-        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        //var countryCode;
+        //input.addEventListener('countrychange', function () {
+        //    countryCode = intl.getSelectedCountryData().iso2;
+        //    $("#selectedCountry").val(countryCode);
+        //    //alert(countryCode)
+        //})
 
-        var intl = window.intlTelInput(input, {
-             utilsScript: "../Asset/js/utils.js",
-             separateDialCode: true 
-        });
+        //// Validate on blur event
+        //input.addEventListener('blur', function () {
+        //    //debugger;
+        //    reset();
+        //    if (input.value.trim()) {
+        //        if (intl.isValidNumber()) {
+        //            validMsg.classList.remove("hide");
 
-        var reset = function () {
-            input.classList.remove("error");
-            errorMsg.innerHTML = "";
-            errorMsg.classList.add("hide");
-            validMsg.classList.add("hide");
-        };
+        //        } else {
+        //            input.classList.add("error");
+        //            var errorCode = intl.getValidationError();
+        //            errorMsg.innerHTML = errorMap[errorCode];
+        //            errorMsg.classList.remove("hide");
+        //        }
+        //    }
+        //    SubmitConsultant();
+        //});
 
-        var countryCode;
-        input.addEventListener('countrychange', function () {
-            countryCode = intl.getSelectedCountryData().iso2;
-            $("#selectedCountry").val(countryCode);
-            //alert(countryCode)
-        })
-
-        // Validate on blur event
-        input.addEventListener('blur', function () {
-            //debugger;
-            reset();
-            if (input.value.trim()) {
-                if (intl.isValidNumber()) {
-                    validMsg.classList.remove("hide");
-
-                } else {
-                    input.classList.add("error");
-                    var errorCode = intl.getValidationError();
-                    errorMsg.innerHTML = errorMap[errorCode];
-                    errorMsg.classList.remove("hide");
-                }
-            }
-            validatecustomer();
-        });
-
-        // Reset on keyup/change event
-        input.addEventListener('change', reset);
-        input.addEventListener('keyup', reset);
+        //// Reset on keyup/change event
+        //input.addEventListener('change', reset);
+        //input.addEventListener('keyup', reset);
 
         $("#Passwd,#txtConsCnfmPassword").bind('copy paste cut', function (e) {
             e.preventDefault();
@@ -419,7 +419,7 @@
     })
 
     function SubmitConsultant() {
-
+        //debugger;
         //alert("HI");
         var Name1 = $("#txtName1").val().trim();
         var Mob = $("#txtMob").val().trim();
@@ -428,11 +428,11 @@
         var Passwd = $("#Passwd").val().trim();
         var UserTypeID = $("#UserTypeID").val().trim();
         var RoleID = $("#RoleID").val().trim();
-        var Customer_Id = $("#Customer_Id").val().trim();
+        var Customer_Id = $("#Customer_Id").val();
 
         var lblName1 = $("#lblName1").text().trim();
-        //var lblMob1 = $("#lblMob1").text().trim();
-        var lblMob1 = $("#error-msg").text().trim();
+        var lblMob1 = $("#lblMob1").text().trim();
+        //var lblMob1 = $("#error-msg").text().trim();
         var lblEmail1 = $("#lblEmail1").text().trim();
         var Status1 = $("#StatusConsultant").text().trim();
         var lblAltConsPwd = $("#lblAltConsPwd").text().trim();
@@ -475,8 +475,8 @@
         }
          else if (Mob =="")
         {
-            //$("#lblMob1").html("Please enter the Mobile Number").show().fadeOut(5000);
-            $("#error-msg").html("Please enter the Mobile Number").show().fadeOut(5000);
+            $("#lblMob1").html("Please enter the Mobile Number").show().fadeOut(5000);
+            //$("#error-msg").html("Please enter the Mobile Number").show().fadeOut(5000);
         }
         else if (Email1 == "")
         {
