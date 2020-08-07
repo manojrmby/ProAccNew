@@ -92,7 +92,7 @@
 
 
 <script>
-    var status = 'In progress:In progress; Completed:Completed;On hold:On hold;Resolved waiting for customer conformation:Resolved waiting for customer conformation;Re-opened:Re-opened;'
+   // var status = 'In progress:In progress; Completed:Completed;On hold:On hold;Resolved waiting for customer conformation:Resolved waiting for customer conformation;Re-opened:Re-opened;'
 
     var EndDate = function (element, options) {
         var ID = options.rowId;
@@ -141,7 +141,7 @@
                 {
                     label: 'Status', name: 'Status', index: 'Status', width: 150,align: "center", editable: true, edittype: "select",classes: 'wrapColumnText',
                     editoptions: {
-                       value: "In progress: In progress; Completed: Completed; On hold: On hold; Resolved waiting for customer conformation: Resolved waiting for customer conformation; Re- opened: Re - opened",
+                       value: "In progress:In progress;Completed:Completed;On hold:On hold;Resolved waiting for customer conformation:Resolved waiting for customer conformation",// Re- opened: Re - opened
                     }
                 },
                 { label: 'Start Date', name: 'StartDate', index: 'StartDate', width: 100, editable: false, formatter: "date", align: "center",formatoptions: { newformat: "d/m/Y" } },
@@ -176,14 +176,12 @@
 
                         },
                         afterSave: function (rowid, response, postdata, options) {   
-                             var ids = jQuery("#mytable2").jqGrid('getDataIDs');
-                            for (var i = 0; i < ids.length; i++) {
-                                 $('#jEditButton_' + ids[i]).show();
-                            }
-                           
+                            Show_HideEdit()                           
+                            
                             $('#mytable2').trigger( 'reloadGrid' );
                         },
                         afterRestore: function (rowid) {
+                           // Show_HideEdit()
                              $('#mytable2').trigger( 'reloadGrid' );
                         },
                     }
@@ -237,21 +235,27 @@
                        
                     });
             },
-
+            loadComplete: function () {
+                Show_HideEdit();
+            },
         });
 
     });
 
-
-    //var lastSelection;
-    //function editRow(id) {
-    //    if (id && id !== lastSelection) {
-    //        var grid = $("#jqGrid");
-    //        grid.jqGrid('restoreRow', lastSelection);
-    //        grid.jqGrid('editRow', id, { keys: true });
-    //        lastSelection = id;
-    //    }
-    //}
+    function Show_HideEdit() {
+       
+        var ids = jQuery("#mytable2").jqGrid('getDataIDs');
+        for (var i = 0; i < ids.length; i++) {
+            //  $('#jEditButton_' + ids[i]).show();
+            var Status = $("#mytable2").jqGrid('getCell', ids[i], 'Status')
+            if (Status == "Completed") {
+                $('#jEditButton_' + ids[i]).hide();
+            }
+            else {
+                $('#jEditButton_' + ids[i]).show();
+            }
+        }
+    };
 
 
   function GetUserDropDown() {
@@ -263,7 +267,6 @@
 		async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data) {
-            //debugger;
 				for (var i = 0; i < Data.length; i++) {
                 var obj = {};
                     var Name = Data[i].Name;
