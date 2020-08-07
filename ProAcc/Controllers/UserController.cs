@@ -67,8 +67,8 @@ namespace ProAcc.Controllers
             ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
             var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
             var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
-            ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
-            ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
+            ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).OrderBy(x => x.RoleName).ToList();
+            ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).OrderBy(x => x.Company_Name).ToList();
 
             return View();
         }
@@ -202,11 +202,11 @@ namespace ProAcc.Controllers
                     return HttpNotFound();
                 }
 
-                ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
+                ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).OrderBy(x=>x.UserType).ToList();
                 var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
                 var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
-                ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
-                ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
+                ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).OrderBy(x => x.RoleName).ToList();
+                ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).OrderBy(x => x.Company_Name).ToList();
             }
             catch(Exception ex)
             {

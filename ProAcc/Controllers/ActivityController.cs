@@ -26,9 +26,9 @@ namespace ProAcc.Controllers
             ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true).OrderBy(x=>x.Id);
             var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
             var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
-            ViewBag.Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!= adminRoleId && x.RoleId != pmRoleId);
-            ViewBag.Block = db.Buldingblocks.Where(x => x.isActive == true).OrderBy(x => x.block_ID);
-            ViewBag.ApplicationArea = db.ApplicationAreaMasters.Where(x => x.isActive == true).OrderBy(x => x.Id);
+            ViewBag.Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId!= adminRoleId && x.RoleId != pmRoleId).OrderBy(x=>x.RoleName);
+            ViewBag.Block = db.Buldingblocks.Where(x => x.isActive == true).OrderBy(x => x.Block_Name);
+            ViewBag.ApplicationArea = db.ApplicationAreaMasters.Where(x => x.isActive == true).OrderBy(x => x.ApplicationArea);
             return View();
         }
 

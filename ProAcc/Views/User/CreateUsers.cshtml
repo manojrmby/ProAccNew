@@ -45,7 +45,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Password</label>
                 <div class="col-md-10">
-                    <input type="password" class="form-control" id="Passwd" />
+                    <input type="password" class="form-control" id="Passwd" maxlength="8" />
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPwd">&nbsp;</span>
@@ -54,10 +54,10 @@
             <div class="form-group">
                 <label class="control-label col-md-8 required">Confirm Password</label>
                 <div class="col-md-10">
-                    <input type="password" class="form-control" onchange="validateConsPwd()" id="txtConsCnfmPassword" />
+                    <input type="password" class="form-control" onchange="validateConsPwd()" id="txtConsCnfmPassword" maxlength="8"/>
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp; <span class="Class_span" id="lblAltConsPwd">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp; <span class="Class_span" id="lblAltConsPwd" >&nbsp;</span>
                 </div>
             </div>
 
@@ -335,9 +335,47 @@
 
         $("#Passwd,#txtConsCnfmPassword").bind('copy paste cut', function (e) {
             e.preventDefault();
-         });
-    });
+        });
 
+        $("#Passwd").on("keypress", function (e) {
+            if (e.which === 44) {
+                e.preventDefault();
+                $("#lblPwd").html("Not Allowed").show().fadeOut(5000);
+            }
+            else {
+                 $("#lblPwd").html("").show();
+            }           
+        });
+
+       var typingTimer;                //timer identifier
+        var doneTypingInterval = 1000;  //time in ms, 1 second for example
+
+       // on keyup, start the countdown
+         $('#Passwd').on('keyup', function () {
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(TaskPwd, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown
+         $('#Passwd').on('keydown', function () {
+          clearTimeout(typingTimer);
+        });
+
+        function TaskPwd() {
+           var str = $("#Passwd").val();
+            var filter = /^(?=.*\d)(?=.*[a-zA-Z])(?!.*\s).{6,8}$/;
+            if (str.length < 6 ||str.length > 8) {
+                 $("#lblPwd").html("Password char should be 6-8").show();
+            }
+            else if (!filter.test(str)) {
+                $("#lblPwd").html("Password contains atlease one special char and num").show();
+            }
+            else {
+                $("#lblPwd").html("");
+            }
+            SubmitConsultant()           
+        }
+    });
 
 </script>
 

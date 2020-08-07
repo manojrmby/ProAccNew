@@ -2345,7 +2345,7 @@ namespace ProAcc.BL
                     M.Id = Guid.Parse(dr["id"].ToString());
                     M.PMTaskID = Guid.Parse(dr["PMTaskID"].ToString());
                     M.ProjectId = Guid.Parse(dr["ProjectId"].ToString());
-                    M.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
+                    //M.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
                     M.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
                     M.EST_hours = Convert.ToDouble(dr["EST_hours"].ToString());
                     M.Actual_St_hours = Convert.ToDouble(dr["Actual_St_hours"].ToString());
