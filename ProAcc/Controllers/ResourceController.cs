@@ -143,7 +143,7 @@ namespace ProAcc.Controllers
             ViewBag.Instance = inst;
             List<SelectListItem> Project = new List<SelectListItem>();
 
-            var query = from u in db.Projects where (u.isActive == true) select u;
+            var query =from u in db.Projects where (u.isActive == true) select u;
             if (query.Count() > 0)
             {
                 foreach (var v in query)
@@ -280,6 +280,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.Customer_Id equals b.Customer_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -296,6 +297,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.UserId equals b.ProjectManager_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -353,6 +355,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.Customer_Id equals b.Customer_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -369,6 +372,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.UserId equals b.ProjectManager_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -422,6 +426,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.Customer_Id equals b.Customer_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -438,6 +443,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.UserId equals b.ProjectManager_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -492,6 +498,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.Customer_Id equals b.Customer_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -508,6 +515,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.UserId equals b.ProjectManager_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {

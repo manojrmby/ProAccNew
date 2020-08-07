@@ -53,7 +53,7 @@ namespace ProAcc.BL
                 while (true)
                 {
                     _Log.createLog("Mail Started");
-                   // _ = SendAsyncMail();
+                    _ = SendAsyncMail();
                     pDF.Report();
                     await Task.Delay(T);
                     Thread.Sleep(100000);

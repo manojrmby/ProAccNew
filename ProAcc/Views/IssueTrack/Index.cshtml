@@ -129,7 +129,7 @@
                 {
                     label: 'Phase', name: 'Phase', index: 'Phase', width: 100, editable: false, align: "center", hidden: false
                 },
-                { label: 'Task', name: 'Task', index: 'Task', width: 100, editable: false ,align: "center"},
+                { label: 'Task', name: 'Task', index: 'Task', width: 200, editable: false ,classes: 'wrapColumnText'},
                 {
                     label: 'Instance', name: 'ProjectInstance_Id', index: 'ProjectInstance_Id', width: 150, editable: false,hidden:true,align: "center",
                     edittype: 'select', formatter: 'select',
@@ -139,7 +139,7 @@
                 },
                 { label: 'Issue Name', name: 'IssueName', index: 'IssueName', width: 150, editable: false ,align: "center",classes: 'wrapColumnText'},
                 {
-                    label: 'Status', name: 'Status', index: 'Status', width: 150, editable: true, edittype: "select",classes: 'wrapColumnText',
+                    label: 'Status', name: 'Status', index: 'Status', width: 150,align: "center", editable: true, edittype: "select",classes: 'wrapColumnText',
                     editoptions: {
                        value: "In progress: In progress; Completed: Completed; On hold: On hold; Resolved waiting for customer conformation: Resolved waiting for customer conformation; Re- opened: Re - opened",
                     }
@@ -150,7 +150,7 @@
                     editoptions: { dataInit: EndDate },
                 },
                 {
-                    label: 'AssignedTo', name: 'AssignedTo', index: 'AssignedTo', width: 100, editable: false,align: "center",
+                    label: 'Assigned To', name: 'AssignedTo', index: 'AssignedTo', width: 130, editable: false,align: "center",
                      edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetUserDropDown()
