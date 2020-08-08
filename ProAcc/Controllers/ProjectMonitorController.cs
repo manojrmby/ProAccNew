@@ -289,6 +289,12 @@ namespace ProAcc.Controllers
             return PartialView("InstanceSelection");
         }
 
+        public ActionResult GetBlock()
+        {
+            List<Buldingblock> B = _Base.GetBlock();
+            return Json(B, JsonRequestBehavior.AllowGet);
+        }
+
         #region Assessment
         public ActionResult AssessmentMonitor()
         {

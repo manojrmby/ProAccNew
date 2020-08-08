@@ -373,14 +373,14 @@
             url: "@Url.Action("GetData","Report")",
             datatype: "json",
 
-             colModel: [
+            colModel: [
                 {
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
-                     align: 'center', editable: true, hidden: true,
+                    align: 'center', editable: true, hidden: true,
                 },
-                 {
+                {
                     label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                     align: 'center', editable: true, edittype: 'custom',
+                    align: 'center', editable: true, edittype: 'custom',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editrules: {
                         required: true,
@@ -391,7 +391,7 @@
                     }
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,classes: 'wrapColumnText',
+                    label: 'Activity / Task ', name: 'Task', width: 150, editable: true, hidden: true, classes: 'wrapColumnText',
                     editrules: {
                         required: true,
                         edithidden: true
@@ -399,20 +399,20 @@
 
                 },
                 {
-                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false ,classes: 'wrapColumnText',
+                    label: 'Activity / Task ', name: 'Task', width: 150, editable: false, classes: 'wrapColumnText',
 
 
                 },
                 {
-                    label: 'Application Area', name: 'ApplicationAreaID',index: 'ApplicationAreaID', width: 100, editable: false, classes: 'wrapColumnText',
+                    label: 'Application Area', name: 'ApplicationAreaID', index: 'ApplicationAreaID', width: 100, editable: false, classes: 'wrapColumnText',
                     cellEdit: true, edittype: 'select', formatter: 'select',
-                   editoptions: {
+                    editoptions: {
                         value: GetApplicationAreaDropDown()
-                    } 
+                    }
 
                 },
                 {
-                    label: 'Sequence ', name: 'SequenceNum', width: 50,  editable: true, hidden: true,
+                    label: 'Sequence ', name: 'SequenceNum', width: 50, editable: true, hidden: true,
                     editrules: {
                         required: true,
                         edithidden: true
@@ -431,23 +431,50 @@
                 },
                 {
                     label: 'Task Other Env. (Y/N)',
-                    name: 'Task_Other_Environment', width: 55, editable: true,hidden: true,
+                    name: 'Task_Other_Environment', width: 55, editable: true, hidden: true,
                     editoptions: { value: "True:False" }
 
                 },
                 {
                     label: 'Dependency (Y/N)',
-                    name: 'Dependency', width: 72,editable: true,hidden: true,
+                    name: 'Dependency', width: 72, editable: true, hidden: true,
                     //edittype: 'checkbox',
                     editoptions: { value: "Yes:No" }
                     //, formatter: "checkbox",
                 },
-                { label: 'Pending With ', name: 'Pending', width: 100,  editable: true,hidden: true },
+                { label: 'Pending With ', name: 'Pending', width: 100, editable: true, hidden: true },
                 {
-                    label: 'Delay', name: 'Delay_occurred', width: 58,  editable: true,
-                    //edittype: 'checkbox',
-                    editoptions: { value: "True:False" }
-                    //, formatter: "checkbox",
+                    label: 'Delay', name: 'Delay_occurred', width: 58, align: 'center', editable: true, edittype: 'select',
+                    editoptions: {
+                        //defaultValue: 'N',
+                        //value: Delay_Data()
+                    },
+                    formatter: function (cellvalue, options, rowObject, action) {
+                        if (cellvalue) {
+                            return "Yes";
+                        } else {
+                            return "No";
+                        }
+                    }
+                
+                    //edittype: 'checkbox'
+                    //editoptions: {
+                    //    value: function (a) { debugger; }
+                    //}
+                    // formatter: "checkbox",
+                    // editoptions: { value: "Yes:True:No" }
+                    
+                    //editoptions: {
+                    //    size: 15, maxlengh: 10,
+                    //    dataInit: function (element) {
+                    //        debugger;
+                    //        $(element).keypress(function (e) {
+                    //            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    //                return false;
+                    //            }
+                    //        });
+                    //    }
+                    //}
                 },
                 {
                     label: 'Owner', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: false,
@@ -456,6 +483,7 @@
                         //defaultValue: 'N',
                         value: GetUserDropDown()
                     }
+                    
                 },
                 {
                     label: 'Status', name: 'StatusId', index: 'StatusId', width: 100,  align: 'center', editable: true,
@@ -483,7 +511,7 @@
 
                 },
                 {
-                    label: 'Est.(hrs)', name: 'EST_hours', width: 55,
+                    label: 'Est.(hrs)', name: 'EST_hours', width: 55, align: 'right',
                     //maxlength: 4,
                     //formatter: "number",
                     editable: true,
@@ -507,7 +535,7 @@
                     }
                 },
                 {
-                   label: 'Actual (hrs)', name: 'Actual_St_hours',
+                    label: 'Actual (hrs)', name: 'Actual_St_hours', align: 'right',
                     //formatter: "number",
                     width: 55, editable: true,
                     editoptions: {
@@ -972,7 +1000,19 @@
                 });
 				return Parameters;
 
-            }
+    }
+
+    //function Delay_Data() {
+    //    debugger;
+    //    var Parameters = {};
+    //    var DelayName = "Yes";
+    //    var key = true;
+    //    var DelayName1 = "No";
+    //    var key1 = false;
+    //    Parameters[key] = DelayName;
+    //    Parameters[key1] = DelayName1;
+    //    return Parameters;
+    //}
     @*function GetTeamDropDown() {
 		    var Parameters = {};
         $.ajax({
@@ -1067,17 +1107,22 @@
         contentType: "application/json; charset=utf-8",
         success: function (Data) {
             //debugger;
+            var Name1 = 'Not Assigned';
+            var key1 = "00000000-0000-0000-0000-000000000000";
+            Parameters[key1] = Name1;
 				for (var i = 0; i < Data.length; i++) {
                 var obj = {};
                     var Name = Data[i].Name;
                 var key = ""+Data[i].UserId;
                 Parameters[key] = Name;
             }
+
         },
         error: function (data) {
            // alert("GetAllUser fail");
         }
     });
+
 	return Parameters;
     }
     function Confirm() {
@@ -1109,7 +1154,10 @@
             includeLabels: true,
             includeGroupHeader: true,
             includeFooter: true,
-            fileName: "OverAllReportExport.pdf"
+            fileName: "OverAllReportExport.pdf",
+            onBeforeExport: function (doc) {
+                //doc.content[0].table.headerRows = 2;
+            }
             //header_logo: "~/Asset/images/ProACCTool.png",            
         })
     })
