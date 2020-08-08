@@ -103,12 +103,33 @@ namespace ProAcc.BL
 
                     crypt.SetParameterValue("Q11", Que11.la_q11_1.ToString() + " , " + Que11.la_q11_2.ToString());
 
-
                     crypt.SetParameterValue("Q13", que13);
 
                     crypt.SetParameterValue("Q14", que14);
 
                     crypt.SetParameterValue("Q15", Que15.la_q15_1 + " , " + Que15.la_q15_2.ToString());
+
+                    crypt.SetParameterValue("f1", fq1.f1);
+                    crypt.SetParameterValue("f2", fq1.f2);
+                    crypt.SetParameterValue("f3", fq1.f3);
+                    crypt.SetParameterValue("f4", fq2.f4);
+                    crypt.SetParameterValue("f5", fq2.f5);
+                    crypt.SetParameterValue("f6", fq2.f6);
+                    crypt.SetParameterValue("f7", fq3.f7);
+                    crypt.SetParameterValue("f8", fq3.f8);
+                    if(que3=="no")
+                    {
+                        if(Que4.la_q4_1!= "SAP ECC6.0" && Que4.la_q4_1 != "EHP")
+                        {
+                            crypt.SetParameterValue("Img_Op1", true); 
+                            crypt.SetParameterValue("Img_Op2", false); 
+                        }
+                        else
+                        {
+                            crypt.SetParameterValue("Img_Op2", true);
+                            crypt.SetParameterValue("Img_Op1", false);
+                        }
+                    }
 
                     foreach (CrystalDecisions.CrystalReports.Engine.Table myTable in crypt.Database.Tables)
                     {
@@ -167,6 +188,19 @@ namespace ProAcc.BL
 
                     ss.SetParameterValue("Q6", que6);
 
+                    if (que3 == "no")
+                    {
+                        if (Que4.la_q4_1 != "SAP ECC6.0" && Que4.la_q4_1 != "EHP")
+                        {
+                            ss.SetParameterValue("Img_Op1", true);
+                            ss.SetParameterValue("Img_Op2", false);
+                        }
+                        else
+                        {
+                            ss.SetParameterValue("Img_Op2", true);
+                            ss.SetParameterValue("Img_Op1", false);
+                        }
+                    }
 
                     #region Q7
                     String Q7 = "";
@@ -254,6 +288,16 @@ namespace ProAcc.BL
                     ss.SetParameterValue("Q14", que14);
 
                     ss.SetParameterValue("Q15", Que15.la_q15_1 + " , " + Que15.la_q15_2.ToString());
+
+                    ss.SetParameterValue("f1", fq1.f1);
+                    ss.SetParameterValue("f2", fq1.f2);
+                    ss.SetParameterValue("f3", fq1.f3);
+                    ss.SetParameterValue("f4", fq2.f4);
+                    ss.SetParameterValue("f5", fq2.f5);
+                    ss.SetParameterValue("f6", fq2.f6);
+                    ss.SetParameterValue("f7", fq3.f7);
+                    ss.SetParameterValue("f8", fq3.f8);
+
 
                     ExportOptions CrExportOptions;
                     DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
@@ -432,7 +476,7 @@ namespace ProAcc.BL
             public string f7 { get; set; }
             public string f8 { get; set; }
 
-        }
+        } 
 
         #endregion
     }
