@@ -72,7 +72,7 @@
             </div>
 
             <div class="form-group">
-                    <label class="control-label col-md-4 required">Contact Person Phone</label>
+                    <label class="control-label col-md-5 required">Contact Person Phone</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" maxlength="10" id="txtMobile" value="@Model.Phone" />
                     </div>
@@ -403,6 +403,45 @@
             e.preventDefault();
      });
 
+    $("#txtPassword").on("keypress", function (e) {
+        if (e.which === 44) {
+            e.preventDefault();
+            $("#lblPassword").html("Not Allowed").show().fadeOut(5000);
+        }
+        else {
+            $("#lblPassword").html("").show();
+        }
+    });
+
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 1000;  //time in ms, 1 second for example
+
+    // on keyup, start the countdown
+    $('#txtPassword').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(TaskPwd, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown
+    $('#txtPassword').on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
+
+    function TaskPwd() {
+        var str = $("#txtPassword").val();
+        var filter = /^(?=.*\d)(?=.*[a-zA-Z])(?!.*\s).{6,8}$/;
+        if (str.length < 6 || str.length > 8) {
+            $("#lblPassword").html("Password char should be 6-8").show();
+        }
+        else if (!filter.test(str)) {
+            $("#lblPassword").html("Password contains atlease one special char and num").show();
+        }
+        else {
+            $("#lblPassword").html("");
+        }
+        ValidateUser();
+    }
+
     $("#txtPassword").focusout(function () {
         //debugger;
         var str = $("#txtPassword").val().trim();
@@ -422,28 +461,7 @@
                     //alert('If you say so...');
                 }
             )
-
-            //$.alert({
-            //    title: 'Info !',
-            //    content: 'Do you want to update password?',
-            //    icon: 'fa fa-trash-o',
-            //    animation: 'scale',
-            //    closeAnimation: 'scale',
-            //    opacity: 0.5,
-            //    draggable: false,
-            //    buttons: {
-            //        'confirm': {
-            //            text: 'Yes',
-            //            btnClass: 'btn-danger',
-            //            action: function (event, ui) {
-            //                $("#txtCnfmPassword").val("");
-            //                ValidateUser();
-            //            }
-            //        }
-            //    },
-            //});
         }
-
     });
 
     $("#txtCnfmPassword").focusout(function () {

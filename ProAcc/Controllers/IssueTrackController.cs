@@ -61,6 +61,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.Customer_Id equals b.Customer_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -77,6 +78,7 @@ namespace ProAcc.Controllers
                 var Data = (from a in db.UserMasters
                             join b in db.Projects on a.UserId equals b.ProjectManager_Id
                             where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
                             select new { b.Project_Id, b.Project_Name }).ToList();
                 if (Data.Count() > 0)
                 {
@@ -112,16 +114,29 @@ namespace ProAcc.Controllers
         }
 
 
-        public JsonResult GetTask(int Pid)
+        public JsonResult GetTask(int Pid,Guid insID)
         {
             List<SelectListItem> Instance = new List<SelectListItem>();
-           
-                var query = from u in db.ActivityMasters where u.PhaseID == Pid && u.isActive == true orderby u.Task select u;
-                
-                    foreach (var v in query)
-                    {
-                        Instance.Add(new SelectListItem { Text = v.Task, Value = v.Activity_ID.ToString() });
-                    }
+
+            //var query = from u in db.ActivityMasters where u.PhaseID == Pid && u.isActive == true orderby u.Task select u;
+
+            //foreach (var v in query)
+            //{
+            //    Instance.Add(new SelectListItem { Text = v.Task, Value = v.Activity_ID.ToString() });
+            //}
+            var query = from p in db.ProjectMonitors
+                        join a in db.ActivityMasters on p.ActivityID equals a.Activity_ID
+                        where p.isActive == true && p.InstanceID==insID && p.PhaseId==Pid
+                        orderby a.Task
+                        select new { p.ActivityID, a.Task };
+                //db.ProjectMonitors.Where(x => x.InstanceID == insID && x.PhaseId == Pid && x.isActive == true).ToList();
+            //from u in db.ActivityMasters where u.PhaseID == Pid && u.isActive == true orderby u.Task select u;
+
+            foreach (var v in query)
+            {
+                Instance.Add(new SelectListItem { Text = v.Task, Value = v.ActivityID.ToString() });
+            }
+
             return Json(Instance, JsonRequestBehavior.AllowGet);
         } 
         public JsonResult AssignedTo(Guid Pid)

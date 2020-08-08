@@ -23,10 +23,10 @@ namespace ProAcc.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Customer = db.Customers.Where(x => x.isActive == true).ToList();
-            ViewBag.Projdetails = db.Projects.Where(x => x.isActive == true).ToList();
-            ViewBag.Scenario = db.ScenarioMasters.Where(x => x.isActive == true).ToList();
-            ViewBag.ProjectManager = db.UserMasters.Where(x => x.UserTypeID == 4 && x.isActive == true).ToList();
+            ViewBag.Customer = db.Customers.Where(x => x.isActive == true).OrderBy(x=>x.Company_Name).ToList();
+            ViewBag.Projdetails = db.Projects.Where(x => x.isActive == true).OrderBy(x=>x.Project_Name).ToList();
+            ViewBag.Scenario = db.ScenarioMasters.Where(x => x.isActive == true).OrderBy(x=>x.ScenarioName).ToList();
+            ViewBag.ProjectManager = db.UserMasters.Where(x => x.UserTypeID == 4 && x.isActive == true).OrderBy(x=>x.Name).ToList();
             
             return View();
         }
@@ -220,7 +220,7 @@ namespace ProAcc.Controllers
 
         public ActionResult PMTaskCreation()
         {
-            ViewBag.TaskCat = db.PMTaskCategories.Where(x => x.isActive == true).ToList();
+            ViewBag.TaskCat = db.PMTaskCategories.Where(x => x.isActive == true).OrderBy(x=>x.Name).ToList();
             return View();
 
         }

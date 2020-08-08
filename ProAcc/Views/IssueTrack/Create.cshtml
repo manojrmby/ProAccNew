@@ -36,14 +36,14 @@
                 </div>*@
 
                 <div class="form-group">
-                    <label class="control-label col-md-4 ">Phase</label>
+                    <label class="control-label col-md-4 required">Phase</label>
                     <div class="col-md-10">
                         <select class="form-control" id="PhaseMaster">
                             <option value="0">---Select Phase---</option>
                         </select>
                     </div>
                     <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhaseId">&nbsp;</span>
                     </div>
                 </div>
 
@@ -53,10 +53,10 @@
                         <select class="form-control" id="ddllist">
                             <option selected value="0">---Select Status---</option>
                             <option value="In progress">In progress</option>
-                            <option value="Completed">Completed </option>
+                            <option value="Completed">Completed</option>
                             <option value="On hold">On hold</option>
                             <option value="Resolved waiting for customer conformation">Resolved waiting for customer conformation</option>
-                            <option value="Re-opened">Re-opened</option>
+                            @*<option value="Re-opened">Re-opened</option>*@
                         </select>
                     </div>
                     <div>
@@ -85,12 +85,11 @@
                 </div>
 
                 <div class="form-group" id="Task1">
-                    <label class="control-label col-md-4 ">Task</label>
+                    <label class="control-label col-md-4 required">Task</label>
                     <div class="col-md-10">
                         <select class="form-control" id="TaskList">
                             <option value="0">---Select Task---</option>
                         </select>
-                        @*@Html.DropDownList("Task", new SelectList(Enumerable.Empty<SelectListItem>(), "Activity_ID", "Task"), "--Select Task---", htmlAttributes: new { @class = "form-control", id = "TaskList" })*@
                     </div>
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
@@ -185,13 +184,14 @@
         });
     });
 
-        $("#PhaseMaster").change(function () {
-
+    $("#PhaseMaster").change(function () {
+       // debugger;
             var PhaseId = $(this).val();
+            var Instance = $("#IDInstance").val();
              $.ajax({
                 type: "POST",
                 url: '@Url.Action("GetTask", "IssueTrack")',
-                data: { 'Pid': PhaseId },
+                data: { 'Pid': PhaseId,'insID':Instance },
                 success: function (data) {
                     var TaskMaster = $("#TaskList");
                     TaskMaster.empty();
@@ -374,13 +374,14 @@
          validateIssueTrack()
      });
 
-    //$("#PhaseMaster").on('focusout', function () {
-    //    var PhaseMaster = $("#PhaseMaster").val().trim();
-    //    if (PhaseMaster == "") {
-    //         $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
-    //    }
-    //    validateIssueTrack()
-    //});
+    $("#PhaseMaster").on('focusout', function () {
+        deb
+        var PhaseMaster = $("#PhaseMaster").val().trim();
+        if (PhaseMaster == 0) {
+             $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
+        }
+        validateIssueTrack()
+    });
 
     $("#drpAssignedTo").on('focusout', function () {
         var Assignedto = $("#drpAssignedTo").val().trim();
@@ -479,7 +480,7 @@
 
     function validateIssueTrack() {
         var IssueName = $("#txtIssueName").val().trim();
-        var PhaseMaster = $("#PhaseMaster").val().trim();
+        var PhaseMaster = $("#PhaseMaster").val();
         var AssignedTo = $("#drpAssignedTo").val().trim();
         var StartDate = $("#txtStartDate").val().trim();
         var EndDate = $("#txtEndDate").val().trim();
@@ -487,15 +488,14 @@
         var Comments = $("#txtComments").val().trim();
 
         var lblIssueName = $("#lblIssueName").val().trim();
-       // var lblPhaseMaster = $("#lblPhaseId").val().trim();
-        var lblAssignedTo = $("#lblAssignedTo").val().trim();
-       
+        var lblPhaseMaster = $("#lblPhaseId").val().trim();
+        var lblAssignedTo = $("#lblAssignedTo").val().trim();       
         var lblEndDate = $("#lblEndDate").val().trim();
         var lblStatus = $("#lblStatus").val().trim();
         var lblComments = $("#lblComments").val().trim();
 
-        if (IssueName.length > 0 && PhaseMaster != "" && AssignedTo != "" && StartDate.length > 0 && EndDate.length > 0 && Status != "" && Comments.length>0 &&
-            lblIssueName == "" && lblAssignedTo == "" && lblEndDate == ""&&lblStatus==""&&lblComments=="") {
+        if (IssueName.length > 0 && PhaseMaster != 0 && AssignedTo != 0 && StartDate.length > 0 && EndDate.length > 0 && Status != "" && Comments.length>0 &&
+            lblIssueName == ""&&lblPhaseMaster=="" && lblAssignedTo == "" && lblEndDate == ""&&lblStatus==""&&lblComments=="") {
 
             $("#btnIssueCreate").prop("disabled", false);
         }
@@ -521,9 +521,9 @@
         if (IssueName == "") {
             $("#lblIssueName").html("Please enter the Issue").show().fadeOut(2000);
         }
-        //if (PhaseMaster == 0) {
-        //    $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
-        //}
+        if (PhaseMaster == 0) {
+            $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
+        }
         else if (AssignedTo==0)
         {
             $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);

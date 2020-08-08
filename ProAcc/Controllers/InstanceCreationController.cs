@@ -28,7 +28,7 @@ namespace ProAcc.Controllers
             ViewBag.project = (from e in db.Projects                               
                                join cu in db.Customers on e.Customer_Id equals cu.Customer_ID
                                where e.isActive == true && cu.isActive == true
-                               select e).ToList();
+                               select e).OrderBy(x=>x.Project_Name).ToList();
             return View();
         }
 

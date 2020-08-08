@@ -224,7 +224,7 @@
                 },
                 {
                     label: 'Est.(hrs)', name: 'EST_hours', width: 55,
-                    editable: true,
+                    editable: true,align: 'right',
                     editrules: { },
                     editoptions: {
                         dataInit: function (element) {
@@ -244,7 +244,7 @@
                 },
                 {
                     label: 'Actual (hrs)', name: 'Actual_St_hours',
-                    width: 55, editable: true,
+                    width: 55, editable: true,align: 'right',
                     editoptions: {
                          dataInit: function (element) {
                             $(element).keyup(function (event) {
@@ -448,7 +448,7 @@
             },
             afterrestorefunc: function (response) {
                 //alert("afterrestorefunc");
-    },
+            },
 
             loadComplete: function () {
                 //alert("mm");
