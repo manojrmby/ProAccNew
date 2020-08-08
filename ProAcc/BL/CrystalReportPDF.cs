@@ -311,8 +311,12 @@ namespace ProAcc.BL
                         CrExportOptions.FormatOptions = CrFormatTypeOptions;
                     }
                     ss.Export();
-                    Boolean S = @base.AddQuestionnaire_Mail(Convert.ToInt32(User_ID), "");
-
+                    con1.Open();
+                    string q = "Select Email from  users  WHERE User_ID = " + User_ID + " ";
+                    MySqlCommand cmd3 = new MySqlCommand(q, con1);
+                   var a= cmd3.ExecuteScalar();
+                    con1.Close();
+                    Boolean S = @base.AddQuestionnaire_Mail(Convert.ToInt32(User_ID), a.ToString());
                     con1.Open();
                     string myQuery = "UPDATE question SET MailStatus = " + S + " WHERE User_ID = " + User_ID + " ";
                     MySqlCommand cmd2 = new MySqlCommand(myQuery, con1);
