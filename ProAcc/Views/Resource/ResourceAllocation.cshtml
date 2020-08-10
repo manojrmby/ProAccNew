@@ -202,7 +202,7 @@
             altRows: true,
             //rownumbers : true,
             //multiselect : true,
-            width: 950,
+            width: 1050,
             colMenu: false,
             menubar: false,
             viewrecords: true,
@@ -215,6 +215,7 @@
             grouping: false,
             pager: "#jqGridPager",
             rownumbers: true,
+            rownumWidth: 45,
             reload: true,
             //sortname: 'SequenceNum',
             //sortorder: 'desc',
@@ -225,7 +226,7 @@
                 //return [true];
             },
             loadComplete: function () {
-
+                $("#jqGrid").jqGrid("setLabel", "rn", "S.no");
             }
             // set table stripped class in table style in bootsrap
         });
