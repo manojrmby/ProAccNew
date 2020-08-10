@@ -29,5 +29,6 @@ namespace ProACC_DB
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
+        public int Q_UserID { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace ProACC_DB
         public System.Guid Issuetrack_Id { get; set; }
         public int RunningID { get; set; }
         public string IssueName { get; set; }
-        public int PhaseID { get; set; }
+        public Nullable<int> PhaseID { get; set; }
         public Nullable<int> TaskId { get; set; }
         public System.Guid ProjectInstance_Id { get; set; }
         public System.DateTime StartDate { get; set; }
@@ -42,6 +42,5 @@ namespace ProACC_DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HistoryLog> HistoryLogs { get; set; }
         public virtual Instance Instance { get; set; }
-        public virtual PhaseMaster PhaseMaster { get; set; }
     }
 }
