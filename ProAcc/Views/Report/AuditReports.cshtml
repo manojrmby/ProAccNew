@@ -89,14 +89,24 @@
 
     $("#StartDate").datepicker({
         dateFormat: "dd-M-yy",
-         changeYear: true,
-            changeMonth: true,
-     });
-     $('#EndDate').datepicker({         
-         dateFormat: "dd-M-yy",
-          changeYear: true,
-            changeMonth: true,
-     });   
+        changeYear: true,
+        changeMonth: true,
+        onSelect: function (selected) {
+            var dt = new Date(selected);
+            dt.setDate(dt.getDate() + 1);
+            $("#EndDate").datepicker("option", "minDate", dt);
+        }
+    });
+    $('#EndDate').datepicker({
+        dateFormat: "dd-M-yy",
+        changeYear: true,
+        changeMonth: true,
+        onSelect: function (selected) {
+            var dt = new Date(selected);
+            dt.setDate(dt.getDate() - 1);
+            $("#StartDate").datepicker("option", "maxDate", dt);
+        }
+    });   
 
     function loadAuditReport() {
 
