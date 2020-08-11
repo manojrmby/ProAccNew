@@ -171,7 +171,14 @@ namespace ProAcc.Controllers
         //    var obj = new { data = PM };
         //    return Json(PM, JsonRequestBehavior.AllowGet);
         //}
-
+        public ActionResult GetDataReport()
+        {
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            string LoginID = Session["loginid"].ToString();
+            List<ProjectMonitorModel> PM = _Base.Sp_GetReportDataReport(InstanceID, LoginID);
+            var obj = new { data = PM };
+            return Json(PM, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

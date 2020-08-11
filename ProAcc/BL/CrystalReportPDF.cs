@@ -7,9 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.Configuration;
 using System.Web.Script.Serialization;
 
@@ -93,7 +90,33 @@ namespace ProAcc.BL
 
                     String User_ID = dr["User_ID"].ToString();
 
+                    con1.Open();
+                    string q = "Select * from  users  WHERE User_ID = " + User_ID + " ";
+                    MySqlCommand cmd3 = new MySqlCommand(q, con1);
+                    //var a = cmd3.ExecuteScalar();
+
+                    MySqlDataReader reader = cmd3.ExecuteReader();
+                    MySqlUser u = new MySqlUser();
+                    while (reader.Read())
+                    {
+
+                        u.FirstName = reader.GetString("First_Name");
+                        u.SecoundName = reader.GetString("Second_Name");
+                        u.Email = reader.GetString("Email");
+                        u.Compnay = reader.GetString("Company_Name");
+                        u.UserName= reader.GetString("User_Name");
+                    }
+
+                    con1.Close();
+
                     CrystalReport crypt = new CrystalReport();
+
+                    
+                    crypt.SetParameterValue("Company_Name", u.Compnay);
+                    crypt.SetParameterValue("User", u.FirstName+ " " +u.SecoundName);
+                    crypt.SetParameterValue("Promantus_POC", "Promantus");
+
+
 
                     crypt.SetParameterValue("Q4.1", Que4.la_q4_1);
                     crypt.SetParameterValue("Q4.2", Que4.la_q4_2);
@@ -298,6 +321,10 @@ namespace ProAcc.BL
                     ss.SetParameterValue("f7", fq3.f7);
                     ss.SetParameterValue("f8", fq3.f8);
 
+                    ss.SetParameterValue("Company_Name", u.Compnay);
+                    ss.SetParameterValue("User", u.FirstName + " " + u.SecoundName);
+                    ss.SetParameterValue("Promantus_POC", "Promantus");
+
 
                     ExportOptions CrExportOptions;
                     DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
@@ -311,12 +338,12 @@ namespace ProAcc.BL
                         CrExportOptions.FormatOptions = CrFormatTypeOptions;
                     }
                     ss.Export();
-                    con1.Open();
-                    string q = "Select Email from  users  WHERE User_ID = " + User_ID + " ";
-                    MySqlCommand cmd3 = new MySqlCommand(q, con1);
-                   var a= cmd3.ExecuteScalar();
-                    con1.Close();
-                    Boolean S = @base.AddQuestionnaire_Mail(Convert.ToInt32(User_ID), a.ToString());
+                   // con1.Open();
+                   // string q = "Select Email from  users  WHERE User_ID = " + User_ID + " ";
+                   // MySqlCommand cmd3 = new MySqlCommand(q, con1);
+                   //var a= cmd3.ExecuteScalar();
+                   
+                    Boolean S = @base.AddQuestionnaire_Mail(Convert.ToInt32(User_ID), u.Email);
                     con1.Open();
                     string myQuery = "UPDATE question SET MailStatus = " + S + " WHERE User_ID = " + User_ID + " ";
                     MySqlCommand cmd2 = new MySqlCommand(myQuery, con1);
@@ -482,6 +509,16 @@ namespace ProAcc.BL
 
         } 
 
+
+        public class MySqlUser
+        {
+            public string FirstName { get; set; }
+            public string SecoundName { get; set; }
+            public string Email { get; set; }
+            public string Compnay { get; set; }
+
+            public string UserName { get; set; }
+        }
         #endregion
     }
 }
