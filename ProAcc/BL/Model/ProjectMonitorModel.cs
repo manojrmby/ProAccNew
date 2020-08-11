@@ -21,6 +21,8 @@ namespace ProAcc.BL.Model
 		public string Pending { get; set; }
 		public bool Delay_occurred { get; set; }
 
+		public string Delay_occurred_Report { get; set; }
+
 		public string Delayed_Reas { get; set; }
 		public int RoleID { get; set; }
 		public Guid UserID { get; set; }
