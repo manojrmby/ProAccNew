@@ -307,30 +307,28 @@
          if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
               event.preventDefault();
              //display error message
-             $("#lblMobile").html("Numbers Only").show();
-             ValidateUser()
+             $("#lblMobile").html("Numbers Only").show().fadeOut(2000);
          }
          else {
-              $("#lblMobile").html("").hide();
-             ValidateUser()
+              $("#lblMobile").html("").show();
          }
          ValidateUser()
      });
 
-    $("#txtMobile").blur(function () {
+    //$("#txtMobile").blur(function () {
 
-            phone = $(this).val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
-                 ValidateUser();
-            }
-            else {
-                $("#lblMobile").html("").hide();
-                 ValidateUser();
-            }
-            ValidateUser();
-     });
+    //        phone = $(this).val();
+    //        phone = phone.replace(/[^0-9]/g,'');
+    //        if (phone.length != 10) {
+    //            $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
+    //             ValidateUser();
+    //        }
+    //        else {
+    //            $("#lblMobile").html("").hide();
+    //             ValidateUser();
+    //        }
+    //        ValidateUser();
+    // });
 
     //var input = document.querySelector("#txtMobile"),
     //    errorMsg = document.querySelector("#error-msg"),
@@ -383,21 +381,7 @@
     //    input.addEventListener('change', reset);
     //        input.addEventListener('keyup', reset);
 
-    $("#txtUserEmail").on("blur", function (event) {
-
-           var str = $(this).val();
-           var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-
-        if (!filter.test(str)) {
-            $("#lblUserEmail").html("Email is not valid").show().fadeOut(5000);
-            ValidateUser();
-        }
-        else {
-            $("#lblUserEmail").html("");
-            ValidateUser();
-        }
-
-    });
+    
 
      $("#txtPassword,#txtCnfmPassword").bind('copy paste cut', function (e) {
             e.preventDefault();
@@ -423,7 +407,7 @@
     });
 
     //on keydown, clear the countdown
-    $('#txtPassword').on('keydown', function () {
+    $('#txtPassword','#txtCnfmPassword','#txtUserEmail','#txtMobile').on('keydown', function () {
         clearTimeout(typingTimer);
     });
 
@@ -442,6 +426,7 @@
         ValidateUser();
     }
 
+    
     $("#txtPassword").focusout(function () {
         //debugger;
         var str = $("#txtPassword").val().trim();
@@ -464,18 +449,70 @@
         }
     });
 
-    $("#txtCnfmPassword").focusout(function () {
-        var str = $("#txtPassword").val().trim();
+     // on keyup, start the countdown
+    $('#txtCnfmPassword').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(TaskCnfmPwd, doneTypingInterval);
+    });
+    function TaskCnfmPwd() {
+         var str = $("#txtPassword").val().trim();
         var str1 = $("#txtCnfmPassword").val().trim();
         if (str != str1) {
-            $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(5000);
-            ValidateUser();
+            $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(2000);
         }
         else {
-            $("#lblCnfmPassword").html("");
-            ValidateUser();
+            $("#lblCnfmPassword").html("").show();            
         }
-    })
+        ValidateUser();
+    }
+
+     // on keyup, start the countdown
+    $('#txtUserEmail').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(TaskEmail, doneTypingInterval);
+    });
+    function TaskEmail() {
+         var str = $("#txtUserEmail").val();
+           var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+        if (!filter.test(str)) {
+            $("#lblUserEmail").html("Email is not valid").show().fadeOut(5000);
+        }
+        else {
+            $("#lblUserEmail").html("").show();            
+        }
+        ValidateUser();
+    }
+
+     $('#txtMobile').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(TaskMobile, doneTypingInterval);
+     });
+
+    function TaskMobile() {
+        phone = $("#txtMobile").val();
+        phone = phone.replace(/[^0-9]/g, '');
+        if (phone.length != 10) {
+            $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
+        }
+        else {
+            $("#lblMobile").html("").show();
+        }
+        ValidateUser();
+    }
+    
+    //$("#txtCnfmPassword").focusout(function () {
+    //    var str = $("#txtPassword").val().trim();
+    //    var str1 = $("#txtCnfmPassword").val().trim();
+    //    if (str != str1) {
+    //        $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(5000);
+    //        ValidateUser();
+    //    }
+    //    else {
+    //        $("#lblCnfmPassword").html("");
+    //        ValidateUser();
+    //    }
+    //})
     // function Onchangepassword() {
     //    var str = document.getElementById("txtcnfmPassword").value;
     //    var str2 = document.getElementById("txtPassword").value;
