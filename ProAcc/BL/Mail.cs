@@ -21,7 +21,6 @@ namespace ProAcc.BL
     {
         Base _Base = new Base();
         LogHelper _Log = new LogHelper();
-        GetQuestionary GQ = new GetQuestionary();
         CrystalReportPDF pDF = new CrystalReportPDF();
         private readonly string _TemplatePath = System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Mail_FolderPath"].ToString());
         private readonly string OutputPath_pdf = System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["OutputPath_pdf"].ToString());
@@ -32,6 +31,10 @@ namespace ProAcc.BL
         private readonly string serverName = WebConfigurationManager.AppSettings["Mail_Client"];
         private readonly string userName = WebConfigurationManager.AppSettings["Mail_UserName"];
         private readonly string password = WebConfigurationManager.AppSettings["Mail_Password"];
+
+        private readonly string Mail_ToAddress = WebConfigurationManager.AppSettings["Mail_ToAddress"];
+        private readonly string Mail_CCAddress = WebConfigurationManager.AppSettings["Mail_CCAddress"];
+
         readonly MailAddress fromAddress = new MailAddress(WebConfigurationManager.AppSettings["Mail_UserName"]);
         readonly int port = Convert.ToInt32(WebConfigurationManager.AppSettings["Mail_Port"]);
         
@@ -43,7 +46,6 @@ namespace ProAcc.BL
             {
                 _ = StartTimer();
             }
-            //GQ.StartGQPULL();
         }
         public async Task StartTimer()
         {
@@ -80,7 +82,7 @@ namespace ProAcc.BL
                     Send_Mail SM = new Send_Mail();
 
                     SM.subject = item.Subject;
-                    SM.body = PopulateBody(item.TemplateName.Trim(),item.Body,item.Name);
+                    SM.body = PopulateBody(item.TemplateName.Trim(),item.Body,item.Name,item.To);
                     SM.priority = priority;
                     SM.ID = item.Running_ID;
                     SM.Q_UserID = item.Q_UserID;
@@ -97,8 +99,8 @@ namespace ProAcc.BL
                         To = item.To.ToString();
                         Name = item.Name.ToString();
                     }
-                    MailAddress toAddress = new MailAddress(To,Name);
-                    await Task.Run(() => this.Send(toAddress, SM));
+                   
+                    await Task.Run(() => this.Send(To, Name, SM));
                 }
                 _Log.createLog("All Mail Sent");
             }
@@ -110,29 +112,55 @@ namespace ProAcc.BL
             
         }
         
-        public void Send(MailAddress toAddress, Send_Mail SM)
+        public void Send(string To, string Name, Send_Mail SM)
         {
-            Task.Factory.StartNew(() => SendEmail(toAddress, SM), TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(() => SendEmail(To, Name, SM), TaskCreationOptions.LongRunning);
         }
 
-        private void SendEmail(MailAddress toAddress, Send_Mail SM)
+        private void SendEmail(string To, string Name, Send_Mail SM)
         {
             try
             {
+                MailMessage msg = new MailMessage();
+                if (SM.Q_UserID > 0)
+                {
+                    //To = "akhil@promantus.com";
+                    //Name = "Akhil";
+                    SM.priority = true;
+                    string Toaddresses = Mail_ToAddress;
+                    string CCAddress = Mail_CCAddress;
+                    foreach (var address in Toaddresses.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        msg.To.Add(address);
+                    }
 
-                var message = new MailMessage(fromAddress, toAddress);
+                    foreach (var CCAdd in CCAddress.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        msg.CC.Add(CCAdd);
+                    }
+                }
+                else
+                {
+                    MailAddress toAddress = new MailAddress(To, Name);
+                    msg.To.Add(toAddress);
+                }
 
-                message.Subject = SM.subject;
-                message.Body = SM.body;
-                message.IsBodyHtml = true;
-                message.HeadersEncoding = Encoding.UTF8;
-                message.SubjectEncoding = Encoding.UTF8;
-                message.BodyEncoding = Encoding.UTF8;
-                if (SM.priority) message.Priority = MailPriority.High;
+                
+                
+                msg.From=fromAddress;
+
+                msg.Subject = SM.subject;
+                msg.Body = SM.body;
+                msg.IsBodyHtml = true;
+                msg.HeadersEncoding = Encoding.UTF8;
+                msg.SubjectEncoding = Encoding.UTF8;
+                msg.BodyEncoding = Encoding.UTF8;
+                if (SM.priority) msg.Priority = MailPriority.High;
+
                 if (SM.Q_UserID >0)
                 {
                     var fs = new FileStream(OutputPath_pdf + SM.Q_UserID + ".pdf", FileMode.Open);
-                    message.Attachments.Add(new System.Net.Mail.Attachment(fs, "Questionnaire.pdf", "application/pdf"));
+                    msg.Attachments.Add(new System.Net.Mail.Attachment(fs, "Questionnaire.pdf", "application/pdf"));
                 }
                 Thread.Sleep(1000);
 
@@ -154,12 +182,12 @@ namespace ProAcc.BL
                                                                                                    
                 if (mm == false)
                 {
-                    client.Send(message);
-                    _Log.createLog(SM.ID + "--->" + toAddress.ToString());
+                    client.Send(msg);
+                    _Log.createLog(SM.ID + "--->" + To.ToString());
                     _Base.UpdateMailList(SM.ID);
                 }
                 client.Dispose();
-                message.Dispose();
+                msg.Dispose();
 
             }
             catch (Exception ex)
@@ -168,7 +196,7 @@ namespace ProAcc.BL
             }
 
         }
-        private string PopulateBody(string TemplateName,string Body,string Name)
+        private string PopulateBody(string TemplateName,string Body,string Name,string To)
         {
             string body = string.Empty;
             try
@@ -187,6 +215,10 @@ namespace ProAcc.BL
                 {
                     //string[] substrings = regex.Split(input);
                     //User_ID= substrings[0].ToString();
+
+                    string[] substrings = regex.Split(input);
+                    body = body.Replace("{MailId}", To);
+
                 }
                 else
                 {

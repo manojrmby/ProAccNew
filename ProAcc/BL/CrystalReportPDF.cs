@@ -172,38 +172,40 @@ namespace ProAcc.BL
 
                     #region Q2
                     String Q2 = "";
-                    if (Que2.la_q2_1 != "")
+                    if (Que2 != null)
                     {
-                        Q2 = Que2.la_q2_1 + ",";
-                    }
+                        if (Que2.la_q2_1 != "")
+                        {
+                            Q2 = Que2.la_q2_1 + ",";
+                        }
+                        if (Que2.la_q2_2 == "yes")
+                        {
+                            Q2 = Q2 + " Development,";
+                        }
 
-                    if (Que2.la_q2_2 == "yes")
-                    {
-                        Q2 = Q2 + " Development,";
-                    }
+                        if (Que2.la_q2_3 == "yes")
+                        {
+                            Q2 = Q2 + " Sandbox,";
+                        }
 
-                    if (Que2.la_q2_3 == "yes")
-                    {
-                        Q2 = Q2 + " Sandbox,";
-                    }
+                        if (Que2.la_q2_4 == "yes")
+                        {
+                            Q2 = Q2 + " Quality / Test,";
+                        }
 
-                    if (Que2.la_q2_4 == "yes")
-                    {
-                        Q2 = Q2 + " Quality / Test,";
-                    }
+                        if (Que2.la_q2_5 == "yes")
+                        {
+                            Q2 = Q2 + " Production,";
+                        }
 
-                    if (Que2.la_q2_5 == "yes")
-                    {
-                        Q2 = Q2 + " Production,";
-                    }
+                        if (Que2.la_q2_6 == "yes")
+                        {
+                            Q2 = Q2 + " Any other System / Client in the SAP Landscape";
+                        }
 
-                    if (Que2.la_q2_6 == "yes")
-                    {
-                        Q2 = Q2 + " Any other System / Client in the SAP Landscape";
+                        #endregion Q2
+                        ss.SetParameterValue("Q2", Q2);
                     }
-
-                    #endregion Q2
-                    ss.SetParameterValue("Q2", Q2);
 
                     ss.SetParameterValue("Q4.1", Que4.la_q4_1);
                     ss.SetParameterValue("Q4.2", Que4.la_q4_2);
@@ -227,82 +229,86 @@ namespace ProAcc.BL
 
                     #region Q7
                     String Q7 = "";
-                    if (Que7.la_q7_FI == "yes")
+                    if (Que7 != null)
                     {
-                        Q7 = Q7 + "Financials,";
-                    }
-                    if (Que7.la_q7_CO == "yes")
-                    {
-                        Q7 = Q7 + " Controlling,";
-                    }
-                    if (Que7.la_q7_MM == "yes")
-                    {
-                        Q7 = Q7 + " Materials Management,";
-                    }
 
-                    if (Que7.la_q7_SD == "yes")
-                    {
-                        Q7 = Q7 + " Sales & Distribution,";
+                        if (Que7.la_q7_FI == "yes")
+                        {
+                            Q7 = Q7 + "Financials,";
+                        }
+                        if (Que7.la_q7_CO == "yes")
+                        {
+                            Q7 = Q7 + " Controlling,";
+                        }
+                        if (Que7.la_q7_MM == "yes")
+                        {
+                            Q7 = Q7 + " Materials Management,";
+                        }
+
+                        if (Que7.la_q7_SD == "yes")
+                        {
+                            Q7 = Q7 + " Sales & Distribution,";
+                        }
+
+                        if (Que7.la_q7_PP == "yes")
+                        {
+                            Q7 = Q7 + " Production Planning,";
+                        }
+
+                        if (Que7.la_q7_QM == "yes")
+                        {
+                            Q7 = Q7 + " Quality Management,";
+                        }
+                        if (Que7.la_q7_PS == "yes")
+                        {
+                            Q7 = " Project Systems,";
+                        }
+
+                        if (Que7.la_q7_PM == "yes")
+                        {
+                            Q7 = Q7 + " Plant Maintenance,";
+                        }
+
+                        if (Que7.la_q7_CS == "yes")
+                        {
+                            Q7 = Q7 + " Customer Service,";
+                        }
+
+                        if (Que7.la_q7_HR == "yes")
+                        {
+                            Q7 = Q7 + " Human Resources,";
+                        }
+
+                        if (Que7.la_q7_WM == "yes")
+                        {
+                            Q7 = Q7 + " Warehouse Management,";
+                        }
+
+                        if (Que7.la_q7_LO_VC == "yes")
+                        {
+                            Q7 = Q7 + " Variant Configuration,";
+                        }
+
+                        if (Que7.la_q7_LO_WTY == "yes")
+                        {
+                            Q7 = Q7 + " Warranty Management,";
+                        }
+
+                        if (Que7.la_q7_LO_SPM == "yes")
+                        {
+                            Q7 = Q7 + " Spare Parts Management,";
+                        }
+
+                        if (Que7.la_q7_other != "")
+                        {
+                            Q7 = Q7 + Que7.la_q7_other;
+                        }
+
+                        
+                        ss.SetParameterValue("Q7", Q7);
+
                     }
-
-                    if (Que7.la_q7_PP == "yes")
-                    {
-                        Q7 = Q7 + " Production Planning,";
-                    }
-
-                    if (Que7.la_q7_QM == "yes")
-                    {
-                        Q7 = Q7 + " Quality Management,";
-                    }
-                    if (Que7.la_q7_PS == "yes")
-                    {
-                        Q7 = " Project Systems,";
-                    }
-
-                    if (Que7.la_q7_PM == "yes")
-                    {
-                        Q7 = Q7 + " Plant Maintenance,";
-                    }
-
-                    if (Que7.la_q7_CS == "yes")
-                    {
-                        Q7 = Q7 + " Customer Service,";
-                    }
-
-                    if (Que7.la_q7_HR == "yes")
-                    {
-                        Q7 = Q7 + " Human Resources,";
-                    }
-
-                    if (Que7.la_q7_WM == "yes")
-                    {
-                        Q7 = Q7 + " Warehouse Management,";
-                    }
-
-                    if (Que7.la_q7_LO_VC == "yes")
-                    {
-                        Q7 = Q7 + " Variant Configuration,";
-                    }
-
-                    if (Que7.la_q7_LO_WTY == "yes")
-                    {
-                        Q7 = Q7 + " Warranty Management,";
-                    }
-
-                    if (Que7.la_q7_LO_SPM == "yes")
-                    {
-                        Q7 = Q7 + " Spare Parts Management,";
-                    }
-
-                    if (Que7.la_q7_other != "")
-                    {
-                        Q7 = Q7 + Que7.la_q7_other;
-                    }
-
-                    #endregion Q2
-                    ss.SetParameterValue("Q7", Q7);
-
-
+                    #endregion Q7
                     ss.SetParameterValue("Q11", Que11.la_q11_1.ToString() + " , " + Que11.la_q11_2.ToString());
 
 
