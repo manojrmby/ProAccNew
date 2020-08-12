@@ -41,7 +41,7 @@ namespace ProAcc.BL
             //con1.ConnectionString = "Data Source = 123.176.34.15;port=4043;Integrated Security=False; Initial Catalog = survey; User ID = TestLogin; Password = ASD123!@#;";
             con1.ConnectionString = ConfigurationManager.ConnectionStrings["MysqlPath"].ConnectionString;
             //SqlDataAdapter da = new SqlDataAdapter("select * from question where submitted =1 AND MailStatus=0", con1);
-            MySqlDataAdapter da = new MySqlDataAdapter("select * from question where submitted =1 AND MailStatus=0 and id not in (1,2,3)", con1);
+            MySqlDataAdapter da = new MySqlDataAdapter("select * from question where submitted =1 AND MailStatus=0 and User_ID=64 ", con1);
             DataTable dt = new DataTable();
             da.Fill(dt);
             Base @base = new Base();
@@ -71,9 +71,9 @@ namespace ProAcc.BL
                     Question4 Que4 = (Question4)scr.Deserialize(dr["la_q4"].ToString().Replace("\\", ""), typeof(Question4));
                     Question7 Que7 = (Question7)scr.Deserialize(dr["la_q7"].ToString().Replace("\\", ""), typeof(Question7));
                     question8 Que8 = (question8)scr.Deserialize(dr["la_q8"].ToString().Replace("\\", ""), typeof(question8));
-                    List<string> Que9 = (List<string>)scr.Deserialize(dr["la_q9"].ToString().Replace("\\", ""), typeof(List<string>));
+                    //List<string> Que9 = (List<string>)scr.Deserialize(dr["la_q9"].ToString().Replace("\\", ""), typeof(List<string>));
                     Question11 Que11 = (Question11)scr.Deserialize(dr["la_q11"].ToString().Replace("\\", ""), typeof(Question11));
-                    Question15 Que15 = (Question15)scr.Deserialize(dr["la_q15"].ToString().Replace("\\", ""), typeof(Question15));
+                    //Question15 Que15 = (Question15)scr.Deserialize(dr["la_q15"].ToString().Replace("\\", ""), typeof(Question15));
                     FQ1 fq1 = (FQ1)scr.Deserialize(dr["fq1"].ToString().Replace("\\", ""), typeof(FQ1));
                     FQ2 fq2 = (FQ2)scr.Deserialize(dr["fq2"].ToString().Replace("\\", ""), typeof(FQ2));
                     FQ3 fq3 = (FQ3)scr.Deserialize(dr["fq3"].ToString().Replace("\\", ""), typeof(FQ3));
@@ -83,10 +83,12 @@ namespace ProAcc.BL
                     string que3 = dr["la_q3"].ToString();
                     string que5 = dr["la_q5"].ToString();
                     string que6 = dr["la_q6"].ToString();
+                    string que9 = dr["la_q9"].ToString();
                     string que10 = dr["la_q10"].ToString();
                     string que12 = dr["la_q12"].ToString();
                     string que13 = dr["la_q13"].ToString();
                     string que14 = dr["la_q14"].ToString();
+                    string que15 = dr["la_q15"].ToString();
 
                     String User_ID = dr["User_ID"].ToString();
 
@@ -121,16 +123,20 @@ namespace ProAcc.BL
                     crypt.SetParameterValue("Q4.1", Que4.la_q4_1);
                     crypt.SetParameterValue("Q4.2", Que4.la_q4_2);
                     crypt.SetParameterValue("Q4.3", Que4.la_q4_3);
+                    //crypt.SetParameterValue("Q4.5", Que4.la_q4_5.ToString());
 
                     crypt.SetParameterValue("Q6", que6);
 
                     crypt.SetParameterValue("Q11", Que11.la_q11_1.ToString() + " , " + Que11.la_q11_2.ToString());
 
+                    crypt.SetParameterValue("Q12", que12);
+
                     crypt.SetParameterValue("Q13", que13);
 
                     crypt.SetParameterValue("Q14", que14);
 
-                    crypt.SetParameterValue("Q15", Que15.la_q15_1 + " , " + Que15.la_q15_2.ToString());
+                    //crypt.SetParameterValue("Q15", Que15.la_q15_1 + " , " + Que15.la_q15_2.ToString());
+                    crypt.SetParameterValue("Q15", que15);
 
                     crypt.SetParameterValue("f1", fq1.f1);
                     crypt.SetParameterValue("f2", fq1.f2);
@@ -174,7 +180,7 @@ namespace ProAcc.BL
                     String Q2 = "";
                     if (Que2 != null)
                     {
-                        if (Que2.la_q2_1 != "")
+                        if (Que2.la_q2_1 != ""&&Que2.la_q2_1 != "undefined")
                         {
                             Q2 = Que2.la_q2_1 + ",";
                         }
@@ -198,9 +204,9 @@ namespace ProAcc.BL
                             Q2 = Q2 + " Production,";
                         }
 
-                        if (Que2.la_q2_6 == "yes")
+                        if (Que2.la_q2_6 != "")
                         {
-                            Q2 = Q2 + " Any other System / Client in the SAP Landscape";
+                            Q2 = Q2 + Que2.la_q2_6;// " Any other System / Client in the SAP Landscape";
                         }
 
                         #endregion Q2
@@ -210,6 +216,7 @@ namespace ProAcc.BL
                     ss.SetParameterValue("Q4.1", Que4.la_q4_1);
                     ss.SetParameterValue("Q4.2", Que4.la_q4_2);
                     ss.SetParameterValue("Q4.3", Que4.la_q4_3);
+                    //ss.SetParameterValue("Q4.5", Que4.la_q4_5.ToString());
 
                     ss.SetParameterValue("Q6", que6);
 
@@ -311,12 +318,14 @@ namespace ProAcc.BL
                     #endregion Q7
                     ss.SetParameterValue("Q11", Que11.la_q11_1.ToString() + " , " + Que11.la_q11_2.ToString());
 
-
+                    ss.SetParameterValue("Q12", que12);
                     ss.SetParameterValue("Q13", que13);
 
                     ss.SetParameterValue("Q14", que14);
 
-                    ss.SetParameterValue("Q15", Que15.la_q15_1 + " , " + Que15.la_q15_2.ToString());
+                    ss.SetParameterValue("Q15", que15);
+
+                    //ss.SetParameterValue("Q15", Que15.la_q15_1 + " , " + Que15.la_q15_2.ToString());
 
                     ss.SetParameterValue("f1", fq1.f1);
                     ss.SetParameterValue("f2", fq1.f2);
@@ -403,6 +412,7 @@ namespace ProAcc.BL
             public string la_q4_2 { get; set; }
             public string la_q4_3 { get; set; }
             public string la_q4_4 { get; set; }
+            public string la_q4_5 { get; set; }
 
         }
 
