@@ -125,8 +125,16 @@ namespace ProAcc.Controllers
                 string TempPath = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString());
                 string PathPdf = TempPath + "\\Pdf\\" + fileName + ".pdf";
                 string PathDoc = Folder_Path + fileName + ".docx";
-                Boolean Result = P.SpireconvertDOCtoPDF(PathDoc, PathPdf);
-                ViewBag.Status = Result;
+                //if (File.Exists(PathPdf))
+                //{
+                //    ViewBag.Status = true;
+                //}
+                //else
+                //{
+                    Boolean Result = P.convertDOCtoPDF(PathDoc, PathPdf);
+                    ViewBag.Status = Result;
+               // }
+                    
 
                 //P.convertDOCtoPDF(PathDoc, PathPdf);
                 ViewBag.PDFfileName = ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString() + "/Pdf/" + fileName + ".pdf";
