@@ -34,7 +34,8 @@ namespace ProAcc.BL.Model
         public String Task { get; set; }
         public String IssueID { get; set; }
         public String Phase { get; set; }
-    
+        public String Assigned { get; set; }
+        public String Description { get; set; }
         public virtual ProACC_DB.UserMaster UserMaster { get; set; }
 
         public virtual ProACC_DB.PhaseMaster phaseMaster { get; set; }

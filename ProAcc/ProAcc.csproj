@@ -747,6 +747,8 @@
     <Content Include="Views\ProjectMonitor\PMTask.cshtml" />
     <Content Include="Views\IssueTrack\Create.cshtml" />
     <Content Include="Views\IssueTrack\Index.cshtml" />
+    <Content Include="Views\IssueTrack\IndexPage.cshtml" />
+    <Content Include="Views\IssueTrack\GetIssueTrackById.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

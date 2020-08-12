@@ -23,6 +23,12 @@ namespace ProAcc.Controllers
             return View();
         }
 
+        public ActionResult IndexPage()
+        {
+            List<IssueTrackModel> ITM = _Base.Sp_GetIssueTrackData();
+            ViewBag.ITM = ITM;
+            return View();
+        }
         public ActionResult Create()
         {
             int userType = 0;
@@ -101,7 +107,9 @@ namespace ProAcc.Controllers
             bool Result = false;
 
             ism.Cre_By = Guid.Parse(Session["loginid"].ToString());
-
+            ism.StartDate= DateTime.UtcNow;
+            ism.EndDate= DateTime.UtcNow;
+            
             Result = _Base.Sp_InsertIssue(ism);
             if(Result==true)
             {
@@ -113,6 +121,34 @@ namespace ProAcc.Controllers
             }           
         }
 
+
+        
+        public ActionResult GetIssueTrackById(Guid id)
+        {
+            try
+            {
+                IssueTrackModel ITM = _Base.Sp_EditIssueTrackData(id);
+                // ViewBag.ITM = ITM;
+                //List<IssueTrackModel> ITM_Comments = _Base.Sp_GetIssueTrackData();
+                ViewBag.ITM_Comments = db.HistoryLogs.Where(x=>x.IssueTrackId==id && x.isActive==true).ToList();
+                List<UserMaster> B = _Base.Sp_EditAssignedTo(ITM.ProjectInstance_Id);
+                ViewBag.AssignedTo = B;
+
+                return View(ITM);
+            }
+            catch (Exception ex)
+            {
+                string Url = Request.Url.AbsoluteUri;
+                _Log.createLog(ex, "-->GetIssueTrackById" + Url);
+                throw;
+            }
+        }
+
+        public JsonResult EditAssignedTo(Guid Iid)
+        {
+            List<UserMaster> B = _Base.Sp_EditAssignedTo(Iid);
+            return Json(B, JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult GetTask(int Pid,Guid insID)
         {
@@ -152,14 +188,16 @@ namespace ProAcc.Controllers
             return Json(ITM, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SubmitIssueTrack(Guid Issuetrack_Id, DateTime EndDate, String Status, String Comments)
+        public ActionResult SubmitIssueTrack(Guid Issuetrack_Id,  String Status, Guid AssignedTo,String Comments,String Description) //DateTime EndDate,
         {
             bool Result = false;
             IssueTrackModel Data = new IssueTrackModel();
             Data.Issuetrack_Id = Issuetrack_Id;
-            Data.EndDate = EndDate;            
+            Data.EndDate = DateTime.Now;//EndDate;            
             Data.Status = Status;
             Data.Comments = Comments;
+            Data.AssignedTo = AssignedTo;
+            Data.Description = Description;
             Data.Modified_by= Guid.Parse(Session["loginid"].ToString());
            
             Result = _Base.Sp_UpdateIssueTrack(Data);

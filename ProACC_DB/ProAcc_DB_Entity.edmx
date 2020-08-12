@@ -91,6 +91,8 @@
           <Property Name="IssueTrackId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="HistoryComment" Type="varchar" MaxLength="500" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="AssignedTo" Type="uniqueidentifier" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="Cre_on" Type="datetime" Nullable="false" />
           <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
@@ -722,13 +724,8 @@
           </AssociationSet>
           <EntitySet Name="PMTaskCategories" EntityType="ProAccModel.PMTaskCategory" />
           <EntitySet Name="PMTaskMonitor_" EntityType="ProAccModel.PMTaskMonitor_" />
-          <EntitySet Name="HistoryLogs" EntityType="ProAccModel.HistoryLog" />
           <EntitySet Name="Issuetracks" EntityType="ProAccModel.Issuetrack" />
           <EntitySet Name="PMTaskMasters" EntityType="ProAccModel.PMTaskMaster" />
-          <AssociationSet Name="FK_HistoryLog_Issuetrack" Association="ProAccModel.FK_HistoryLog_Issuetrack">
-            <End Role="Issuetrack" EntitySet="Issuetracks" />
-            <End Role="HistoryLog" EntitySet="HistoryLogs" />
-          </AssociationSet>
           <AssociationSet Name="FK_Issuetrack_Instance" Association="ProAccModel.FK_Issuetrack_Instance">
             <End Role="Instance" EntitySet="Instances" />
             <End Role="Issuetrack" EntitySet="Issuetracks" />
@@ -736,6 +733,11 @@
           <AssociationSet Name="FK_PMTaskMaster_PMTaskCategory" Association="ProAccModel.FK_PMTaskMaster_PMTaskCategory">
             <End Role="PMTaskCategory" EntitySet="PMTaskCategories" />
             <End Role="PMTaskMaster" EntitySet="PMTaskMasters" />
+          </AssociationSet>
+          <EntitySet Name="HistoryLogs" EntityType="ProAccModel.HistoryLog" />
+          <AssociationSet Name="FK_HistoryLog_Issuetrack" Association="ProAccModel.FK_HistoryLog_Issuetrack">
+            <End Role="Issuetrack" EntitySet="Issuetracks" />
+            <End Role="HistoryLog" EntitySet="HistoryLogs" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
@@ -1184,22 +1186,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="HistoryLog">
-          <Key>
-            <PropertyRef Name="HistoryLogId" />
-          </Key>
-          <Property Name="HistoryLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IssueTrackId" Type="Guid" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="HistoryComment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="isActive" Type="Boolean" Nullable="false" />
-          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Cre_By" Type="Guid" Nullable="false" />
-          <Property Name="Modified_On" Type="DateTime" Precision="3" />
-          <Property Name="Modified_by" Type="Guid" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Issuetrack" Relationship="ProAccModel.FK_HistoryLog_Issuetrack" FromRole="HistoryLog" ToRole="Issuetrack" />
-        </EntityType>
         <EntityType Name="PMTaskCategory">
           <Key>
             <PropertyRef Name="ID" />
@@ -1263,8 +1249,8 @@
           <Property Name="Modified_On" Type="DateTime" Precision="3" />
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="HistoryLogs" Relationship="ProAccModel.FK_HistoryLog_Issuetrack" FromRole="Issuetrack" ToRole="HistoryLog" />
           <NavigationProperty Name="Instance" Relationship="ProAccModel.FK_Issuetrack_Instance" FromRole="Issuetrack" ToRole="Instance" />
+          <NavigationProperty Name="HistoryLogs" Relationship="ProAccModel.FK_HistoryLog_Issuetrack" FromRole="Issuetrack" ToRole="HistoryLog" />
         </EntityType>
         <EntityType Name="PMTaskMaster">
           <Key>
@@ -1281,18 +1267,6 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PMTaskCategory" Relationship="ProAccModel.FK_PMTaskMaster_PMTaskCategory" FromRole="PMTaskMaster" ToRole="PMTaskCategory" />
         </EntityType>
-        <Association Name="FK_HistoryLog_Issuetrack">
-          <End Type="ProAccModel.Issuetrack" Role="Issuetrack" Multiplicity="1" />
-          <End Type="ProAccModel.HistoryLog" Role="HistoryLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Issuetrack">
-              <PropertyRef Name="Issuetrack_Id" />
-            </Principal>
-            <Dependent Role="HistoryLog">
-              <PropertyRef Name="IssueTrackId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Issuetrack_Instance">
           <End Type="ProAccModel.Instance" Role="Instance" Multiplicity="1" />
           <End Type="ProAccModel.Issuetrack" Role="Issuetrack" Multiplicity="*" />
@@ -1314,6 +1288,36 @@
             </Principal>
             <Dependent Role="PMTaskMaster">
               <PropertyRef Name="PMTaskCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="HistoryLog">
+          <Key>
+            <PropertyRef Name="HistoryLogId" />
+          </Key>
+          <Property Name="HistoryLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IssueTrackId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="HistoryComment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AssignedTo" Type="Guid" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Issuetrack" Relationship="ProAccModel.FK_HistoryLog_Issuetrack" FromRole="HistoryLog" ToRole="Issuetrack" />
+        </EntityType>
+        <Association Name="FK_HistoryLog_Issuetrack">
+          <End Type="ProAccModel.Issuetrack" Role="Issuetrack" Multiplicity="1" />
+          <End Type="ProAccModel.HistoryLog" Role="HistoryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issuetrack">
+              <PropertyRef Name="Issuetrack_Id" />
+            </Principal>
+            <Dependent Role="HistoryLog">
+              <PropertyRef Name="IssueTrackId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1662,22 +1666,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="HistoryLogs">
-            <EntityTypeMapping TypeName="ProAccModel.HistoryLog">
-              <MappingFragment StoreEntitySet="HistoryLog">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
-                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
-                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
-                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="HistoryComment" ColumnName="HistoryComment" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IssueTrackId" ColumnName="IssueTrackId" />
-                <ScalarProperty Name="HistoryLogId" ColumnName="HistoryLogId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Issuetracks">
             <EntityTypeMapping TypeName="ProAccModel.Issuetrack">
               <MappingFragment StoreEntitySet="Issuetrack">
@@ -1714,6 +1702,24 @@
                 <ScalarProperty Name="PMTaskCategoryID" ColumnName="PMTaskCategoryID" />
                 <ScalarProperty Name="PMTaskName" ColumnName="PMTaskName" />
                 <ScalarProperty Name="PMTaskId" ColumnName="PMTaskId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistoryLogs">
+            <EntityTypeMapping TypeName="ProAccModel.HistoryLog">
+              <MappingFragment StoreEntitySet="HistoryLog">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="HistoryComment" ColumnName="HistoryComment" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IssueTrackId" ColumnName="IssueTrackId" />
+                <ScalarProperty Name="HistoryLogId" ColumnName="HistoryLogId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -25,16 +25,6 @@
                     </div>
                 </div>
 
-                @*<div class="form-group">
-                    <label class="control-label col-md-4 ">Phase</label>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.phaseMaster.Id, ViewBag.PhaseMaster as SelectList, "--Select Phase---", htmlAttributes: new { @class = "form-control", id = "PhaseMaster" })
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhaseId">&nbsp;</span>
-                    </div>
-                </div>*@
-
                 <div class="form-group">
                     <label class="control-label col-md-4 required">Phase</label>
                     <div class="col-md-10">
@@ -47,7 +37,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group" id="Status">
                     <label class="control-label col-md-4 required">Status</label>
                     <div class="col-md-10">
                         <select class="form-control" id="ddllist">
@@ -55,14 +45,13 @@
                             <option value="In progress">In progress</option>
                             <option value="Completed">Completed</option>
                             <option value="On hold">On hold</option>
-                            <option value="Resolved waiting for customer conformation">Resolved waiting for customer conformation</option>
-                            @*<option value="Re-opened">Re-opened</option>*@
+                            <option value="Resolved waiting for customer conformation">Resolved waiting for customer conformation</option>                           
                         </select>
                     </div>
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStatus">&nbsp;</span>
                     </div>
-                </div>
+                </div>*@
             </div>
 
             <div class="col-6">
@@ -71,13 +60,6 @@
                     <label class="control-label col-md-4 required">Assigned To</label>
                     <div class="col-md-10">
                         @Html.DropDownList("AssignedTo", new SelectList(Enumerable.Empty<SelectListItem>(), "UserId", "Name"), "--Select User---", htmlAttributes: new { @class = "form-control", id = "drpAssignedTo" })
-                        @*<select class="form-control" id="drpAssignedTo">
-                            <option value="0">Select AssignedTo</option>
-                            @foreach (var item in ViewBag.AssignedTo)
-                            {
-                                <option value="@item.UserId">@item.Name</option>
-                            }
-                        </select>*@
                     </div>
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblAssignedTo">&nbsp;</span>
@@ -85,7 +67,7 @@
                 </div>
 
                 <div class="form-group" id="Task1">
-                    <label class="control-label col-md-4 required">Task</label>
+                    <label class="control-label col-md-4">Task</label>
                     <div class="col-md-10">
                         <select class="form-control" id="TaskList">
                             <option value="0">---Select Task---</option>
@@ -96,7 +78,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" id="frmgrup1">
+                @*<div class="form-group" id="frmgrup1">
                     <label class="control-label col-md-4 required" for="txtStartDate">Start Date</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" id="txtStartDate" name="date" placeholder="dd/mm/yyyy" />
@@ -115,7 +97,7 @@
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEndDate">&nbsp;</span>
                     </div>
-                </div>
+                </div>*@
 
 
             </div>
@@ -152,7 +134,7 @@
         </div>
     </div>
 
-<script>
+    <script>
     $(document).ready(function () {
         $("#btnIssueCreate").prop("disabled", true);
             $("#IDInstance").prop("disabled", true);
@@ -195,24 +177,23 @@
                 success: function (data) {
                     var TaskMaster = $("#TaskList");
                     TaskMaster.empty();
-                    //TaskMaster.append($('<option/>', {
-                    //    value: 0,
-                    //    text: "---Select Task List---"
-                    //}));
+                    TaskMaster.append($('<option/>', {
+                        value: 0,
+                        text: "---Select Task List---"
+                    }));
                     $.each(data, function (index, item) {
                         TaskMaster.append($('<option/>', {
                             value: item.Value,
                             text: item.Text
                         }));
                     });
-                    var listValue = document.getElementById("TaskList").length;
-                     if (listValue == 0) {
-                         TaskMaster.append($('<option/>', {
-                             value: 0,
-                             text: "Not Available"
-                         }));
-
-                     }
+                    //var listValue = document.getElementById("TaskList").length;
+                    // if (listValue == 0) {
+                    //     TaskMaster.append($('<option/>', {
+                    //         value: 0,
+                    //         text: "Not Available"
+                    //     }));
+                    // }
                 }
              });
         });
@@ -316,7 +297,7 @@
                         value: 0,
                         text: "-Select-"
                     }));
-                    
+
                     $.each(data, function (index, itemData) {
                         select.append($('<option/>', {
                             value: itemData.UserId,
@@ -340,7 +321,7 @@
                         value: 0,
                         text: "-Select Phase-"
                     }));
-                    
+
                     $.each(data, function (index, itemData) {
                         select.append($('<option/>', {
                             value: itemData.Id,
@@ -390,7 +371,7 @@
         }
         validateIssueTrack()
     });
-    
+
      //$("#txtStartDate").keypress(function (e) {
      //   if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
      //       $("#lblStartDate").html("Date Only").show().fadeOut("slow");
@@ -427,7 +408,7 @@
     //        return false;
     //    }
     //});
-    
+
     $("#txtEndDate").on('change', function () {
         var Enddate = $("#txtEndDate").val().trim();
         if (Enddate == "") {
@@ -482,20 +463,20 @@
         var IssueName = $("#txtIssueName").val().trim();
         var PhaseMaster = $("#PhaseMaster").val();
         var AssignedTo = $("#drpAssignedTo").val().trim();
-        var StartDate = $("#txtStartDate").val().trim();
-        var EndDate = $("#txtEndDate").val().trim();
-        var Status = $("#ddllist").val().trim();
+        //var StartDate = $("#txtStartDate").val().trim();
+        //var EndDate = $("#txtEndDate").val().trim();
+        //var Status = $("#ddllist").val().trim();
         var Comments = $("#txtComments").val().trim();
 
         var lblIssueName = $("#lblIssueName").val().trim();
         var lblPhaseMaster = $("#lblPhaseId").val().trim();
-        var lblAssignedTo = $("#lblAssignedTo").val().trim();       
-        var lblEndDate = $("#lblEndDate").val().trim();
-        var lblStatus = $("#lblStatus").val().trim();
+        var lblAssignedTo = $("#lblAssignedTo").val().trim();
+       // var lblEndDate = $("#lblEndDate").val().trim();
+        //var lblStatus = $("#lblStatus").val().trim();
         var lblComments = $("#lblComments").val().trim();
 
-        if (IssueName.length > 0 && PhaseMaster != 0 && AssignedTo != 0 && StartDate.length > 0 && EndDate.length > 0 && Status != "" && Comments.length>0 &&
-            lblIssueName == ""&&lblPhaseMaster=="" && lblAssignedTo == "" && lblEndDate == ""&&lblStatus==""&&lblComments=="") {
+        if (IssueName.length > 0 && PhaseMaster != 0 && AssignedTo != 0 && /*StartDate.length > 0 && EndDate.length > 0 && Status != "" &&*/ Comments.length>0 &&
+            lblIssueName == ""&&lblPhaseMaster=="" && lblAssignedTo == ""/* && lblEndDate == ""&&lblStatus==""*/&&lblComments=="") {
 
             $("#btnIssueCreate").prop("disabled", false);
         }
@@ -505,19 +486,19 @@
 
     }
 
-    $("#btnIssueCreate").on("click", function () {
+        $("#btnIssueCreate").on("click", function () {
+           
         var IssueName = $("#txtIssueName").val().trim();
           IssueName = IssueName.replace(",", " ");
         var PhaseMaster = $("#PhaseMaster").val().trim();
         var TaskList = $("#TaskList").val().trim();
-         var AssignedTo=$("#drpAssignedTo").val().trim();
-         var StartDate=$("#txtStartDate").val().trim();
-        var EndDate = $("#txtEndDate").val().trim();
-        var Status = $("#ddllist").val().trim();
+        var AssignedTo = $("#drpAssignedTo").val().trim();
+        var Assigned = $("#drpAssignedTo option:selected").text();
+        var Status = 'In progress';//$("#ddllist").val().trim();
         var Comments = $("#txtComments").val().trim();
         Comments = Comments.replace(",", " ");
         var ProjectInstance_Id=$("#IDInstance").val().trim();
-
+        var Description = 'AssignedTo:' + Assigned + ', Status:' + Status;
         if (IssueName == "") {
             $("#lblIssueName").html("Please enter the Issue").show().fadeOut(2000);
         }
@@ -528,18 +509,10 @@
         {
             $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);
         }
-         else if (StartDate =="")
-        {
-            $("#lblStartDate").html("Please enter the StartDate").show().fadeOut(2000);
-        }
-        else if (EndDate == "")
-        {
-            $("#lblEndDate").html("Please enter the EndDate").show().fadeOut(2000);
-        }
-        else if (Status==0)
-        {
-            $("#lblStatus").html("Please select the status").show().fadeOut(2000);
-        }       
+        //else if (Status==0)
+        //{
+        //    $("#lblStatus").html("Please select the status").show().fadeOut(2000);
+        //}
         else if (Comments=="")
         {
             $("#lblComments").html("Please enter the Comments").show().fadeOut(2000);
@@ -549,11 +522,12 @@
             $.ajax({
                     type: "POST",
                 url: '@Url.Action("Create","IssueTrack")',
-                data: { IssueName:IssueName,PhaseID:PhaseMaster,TaskId:TaskList,ProjectInstance_Id:ProjectInstance_Id,StartDate:StartDate,EndDate:EndDate,Status:Status,AssignedTo:AssignedTo,Comments:Comments},
+                data: { IssueName:IssueName,PhaseID:PhaseMaster,TaskId:TaskList,ProjectInstance_Id:ProjectInstance_Id,/*StartDate:StartDate,EndDate:EndDate,*/Status:Status,AssignedTo:AssignedTo,Comments:Comments,Description:Description},
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('Issue Created successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                            location.href = '@Url.Action("Index", "IssueTrack")';
+                            location.href = '@Url.Action("IndexPage", "IssueTrack")';
+                            //ResetIssue();
                         }
                     },
                     failure: function (response) {
@@ -565,7 +539,15 @@
             });
         }
     });
-</script>
+    function ResetIssue() {
+        $("#txtIssueName").val("");
+        $("#PhaseMaster").val(0);
+        $("#TaskList").val(0);
+        $("#drpAssignedTo").val(0);
+        $("#txtComments").val("");
+        //$("#btnIssueCreate").
+    }
+    </script>
 <style>
     i.fa.fa-calendar-alt {
         position: absolute;

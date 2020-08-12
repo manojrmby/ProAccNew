@@ -2059,6 +2059,28 @@ namespace ProAcc.BL
             }
             return ListM;
         }
+
+        public List<UserMaster> Sp_EditAssignedTo(Guid Iid)
+        {
+            List<UserMaster> ListM = new List<UserMaster>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+            dB.addIn("@Type", "EditAssignedTo");
+            dB.addIn("@Instance_Id", Iid);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    UserMaster U = new UserMaster();
+                    U.UserId = Guid.Parse(dr["UserId"].ToString());
+                    U.Name = dr["Name"].ToString();
+
+                    ListM.Add(U);
+                }
+            }
+            return ListM;
+        }
         public bool Sp_InsertIssue(IssueTrackModel blism)
         {
             bool Status = false;
@@ -2079,6 +2101,8 @@ namespace ProAcc.BL
                 dB.addIn("@IsApproved", false);
                 dB.addIn("@Cre_By", blism.Cre_By);
                 dB.addIn("@Comments", blism.Comments);
+                dB.addIn("@Description", blism.Description);
+
                 dB.ExecuteScalar();
 
                 Status = true;
@@ -2089,6 +2113,51 @@ namespace ProAcc.BL
                 _log.createLog(ex, "");
             }
             return Status;
+        }
+
+        public IssueTrackModel Sp_EditIssueTrackData(Guid id)
+        {
+            
+            LogHelper _log = new LogHelper();
+           
+               // IssueTrackModel ITM = new IssueTrackModel();
+                DataTable dt = new DataTable();
+
+                DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
+                dB.addIn("@Type", "EditIssueTrack");
+               
+                dB.addIn("@Id", id);
+                dt = dB.ExecuteDataTable();
+             IssueTrackModel P = new IssueTrackModel();
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                       
+                        P.Issuetrack_Id = Guid.Parse(dr["Issuetrack_Id"].ToString());
+                        P.RunningID = Convert.ToInt32(dr["RunningID"].ToString());
+                        P.IssueName = dr["IssueName"].ToString();
+                        P.PhaseID = Convert.ToInt32(dr["PhaseID"].ToString());
+                        P.Task = dr["Task"].ToString();
+                        P.ProjectInstance_Id = Guid.Parse(dr["ProjectInstance_Id"].ToString());
+                        P.StartDate = Convert.ToDateTime(dr["StartDate"].ToString());
+                        P.EndDate = Convert.ToDateTime(dr["EndDate"].ToString());
+                        P.LastUpdatedDate = Convert.ToDateTime(dr["LastUpdatedDate"].ToString());
+                        P.AssignedTo = Guid.Parse(dr["AssignedTo"].ToString());
+                        P.Status = dr["Status"].ToString();
+                        P.IsApproved = Convert.ToBoolean(dr["IsApproved"].ToString());
+                        //P.Comments = dr["Comments"].ToString();
+                        P.Phase = dr["Phase"].ToString();
+                        P.Assigned = dr["Assigned"].ToString();
+                       
+                        //ITM.Add(P);
+                       
+                    }
+                }
+            return P;
+            //return ITM;
+
+
         }
 
         public bool Sp_UpdateIssue(IssueTrackModel blism)
@@ -2146,6 +2215,7 @@ namespace ProAcc.BL
                         P.IsApproved = Convert.ToBoolean(dr["IsApproved"].ToString());
                         P.Comments = dr["Comments"].ToString();
                         P.Phase = dr["Phase"].ToString();
+                        P.Assigned = dr["Assigned"].ToString();
                        // P.IssueID = dr["IssueID"].ToString();
                         if (P.PhaseID == 1)
                         {
@@ -2189,12 +2259,13 @@ namespace ProAcc.BL
                 dB.addIn("@Type", "UpdateIssueTrack");
                 dB.addIn("@Id", Data.Issuetrack_Id);
                 dB.addIn("@Status", Data.Status);
-                dB.addIn("@EndDate", Data.EndDate);               
-               // dB.addIn("@Modified_by", Data.Modified_by);
+                dB.addIn("@EndDate", Data.EndDate);
+                dB.addIn("@Description", Data.Description);
+                dB.addIn("@AssignedTo", Data.AssignedTo);
                 dB.addIn("@Comments", Data.Comments);
                 dB.addIn("@Cre_By", Data.Modified_by);
-                
-                dB.ExecuteScalar();
+
+                dB.Execute();// ExecuteScalar();
 
                 Status = true;
             }

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<ProACC_DB.Issuetrack>
+@{
+    ViewBag.Title = "IndexPage";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+<a class="card-title">Issue List</a>
+<hr />
+<table class="table"  id="tblIssue">
+   
+    <thead>
+        <tr>
+            <th>IssueID</th>
+            <th>IssueName</th>
+            <th>Phase</th>
+            <th>Task</th>
+            <th>Assigned</th>
+            <th style="width:130px">Status</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.ITM)
+        {
+        <tr>
+            <td>
+                <a class="txtG" value="@item.IssueID">@item.IssueID</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.IssueName">@item.IssueName</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Phase">@item.Phase</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Task">@item.Task</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Assigned">@item.Assigned</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Status">@item.Status</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.StartDate">@item.StartDate.ToString("dd/MM/yyyy")</a>
+            </td>           
+            <td>
+                @if (item.Status != "Completed")
+                {
+                    <a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetIssueTrackById", "IssueTrack", new { id = item.Issuetrack_Id })"></a>
+                }
+            </td>
+            
+        </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $("#tblIssue").dataTable();
+    });
+
+     @*$(".editIssueTrack").on("click", function () {
+              
+        var id = $(this).next().val();
+        $.ajax({
+            url: '@Url.Action("GetIssueTrackById","IssueTrack")',
+            type: "GET",
+            data: { id: id },
+            
+            success: function (result) {
+                
+                $("#txtIssueName").val("");
+                $("#PhaseMaster").val(0);
+                $("#TaskList").val(0);
+                $("#drpAssignedTo").val(0);
+                $("#txtComments").val("");
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+       
+    });*@
+</script>

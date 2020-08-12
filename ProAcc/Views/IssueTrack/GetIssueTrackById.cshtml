@@ -1,0 +1,242 @@
+﻿@model ProAcc.BL.Model.IssueTrackModel
+@{
+    ViewBag.Title = "GetIssueTrackById";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<div style="padding:1em;" id="CreateIssue">
+    <a class="card-title">Update Issue</a>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <input type="hidden" id="Issuetrack_Id" value="@Model.Issuetrack_Id" />
+            <input type="hidden" id="IDInstance" value="@Model.ProjectInstance_Id" />
+            <input type="hidden" id="IDstatus" value="@Model.Status" />
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Issue Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" readonly value="@Model.IssueName" id="txtIssueName" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblIssueName">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Phase</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" readonly value="@Model.Phase" id="PhaseMaster" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhaseId">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group" id="Status">
+                <label class="control-label col-md-4 required">Status</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="ddllist">                      
+                        
+                        <option value="In progress">In progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="On hold">On hold</option>
+                        <option value="Resolved waiting for customer conformation">Resolved waiting for customer conformation</option>
+                    </select>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStatus">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Assigned To</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="drpAssignedTo">
+                        @foreach (var item in ViewBag.AssignedTo)
+                        {
+                            if (item.Name == Model.Assigned)
+                            {
+                                <option value="@item.UserId" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.UserId">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblAssignedTo">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group" id="Task1">
+                <label class="control-label col-md-4">Task</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" readonly value="@Model.Task" id="txtIssueName" />
+                    @*<select class="form-control" id="TaskList">
+                        <option value="0">---Select Task---</option>
+                    </select>*@
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Comments</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" id="txtComments" name="Description" rows="2" cols="20" style="width:900px;height:100px"></textarea>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblComments">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="col-md-offset-2 col-md-12">
+                <button type="button" id="btnIssueUpdate" class="btn btn-primary ld-ext-right"> @*onclick="this.classList.toggle('running')"*@
+                    Update
+                    <div class="ld ld-ring ld-spin"></div>
+                </button>
+                <div class="col-lg-3" style="float:right;">
+                    @Html.ActionLink("Back to List", "IndexPage", "IssueTrack")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table" id="tblIssue">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Comments</th>            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.ITM_Comments)
+        {
+        <tr>
+            <td>
+                <a class="txtG" value="@item.CreatedDate">@item.CreatedDate.ToString("dd/MM/yyyy")</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Description">@item.Description</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.HistoryComment">@item.HistoryComment</a>
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    $(document).ready(function () {
+
+       
+        var status = $("#IDstatus").val();
+        $("#ddllist option[value='"+status+"']").attr('selected', 'selected');
+            @*var id = $("#IDInstance").val();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("EditAssignedTo","IssueTrack")',
+                data: { 'Iid': id },
+                success: function (data) {
+                    var select = $("#drpAssignedTo");
+                    select.empty();
+                    //select.append($('<option/>', {
+                    //    value: 0,
+                    //    text: "-Select-"
+                    //}));
+
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.UserId,
+                            text: itemData.Name
+                        }));
+                    });
+                    
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });*@
+        
+    });
+
+    $("#btnIssueUpdate").on("click", function () {
+       
+       // var IssueName = $("#txtIssueName").val().trim();
+         // IssueName = IssueName.replace(",", " ");
+        //var PhaseMaster = $("#PhaseMaster").val().trim();
+        //var TaskList = $("#TaskList").val().trim();
+        var Issuetrack_Id = $("#Issuetrack_Id").val().trim();
+        var AssignedTo=$("#drpAssignedTo").val();       
+        var Status = $("#ddllist").val().trim();
+        var Comments = $("#txtComments").val().trim();
+        Comments = Comments.replace(",", " ");
+        var Assigned = $("#drpAssignedTo option:selected").text();
+        var Description = 'AssignedTo:' + Assigned + ', Status:' + Status;
+        //var ProjectInstance_Id=$("#IDInstance").val().trim();
+
+        //if (IssueName == "") {
+        //    $("#lblIssueName").html("Please enter the Issue").show().fadeOut(2000);
+        //}
+        //if (PhaseMaster == 0) {
+        //    $("#lblPhaseId").html("Please select the Phase").show().fadeOut(2000);
+        //}
+        if (AssignedTo==0)
+        {
+            $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);
+        }      
+        else if (Status==0)
+        {
+            $("#lblStatus").html("Please select the status").show().fadeOut(2000);
+        }       
+        else if (Comments=="")
+        {
+            $("#lblComments").html("Please enter the Comments").show().fadeOut(5000);
+        }
+
+        else {
+            $.ajax({
+                    type: "POST",
+                url: '@Url.Action("SubmitIssueTrack","IssueTrack")',
+                data: { Issuetrack_Id:Issuetrack_Id,Status:Status,AssignedTo:AssignedTo,Comments:Comments,Description:Description},
+                    success: function (response) {
+                        if (response == "success") {
+                            Notiflix.Notify.Success('Issue Updated successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            location.href = '@Url.Action("IndexPage", "IssueTrack")';
+                            //ResetIssue();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+        }
+    });
+</script>
+ 

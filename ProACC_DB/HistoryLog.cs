@@ -18,6 +18,8 @@ namespace ProACC_DB
         public System.Guid IssueTrackId { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string HistoryComment { get; set; }
+        public string Description { get; set; }
+        public Nullable<System.Guid> AssignedTo { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }
