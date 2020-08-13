@@ -156,23 +156,23 @@
                 $("#lblContact").html("Not Allowed").show().fadeOut(5000);
             }
             else {
-                $("#lblContact").html("").hide();
+                $("#lblContact").html("").show();
             }
             validatecustomer();
         });
 
-         $('#txtContact').on('focusout', function () {
+        // $('#txtContact').on('focusout', function () {
 
-            var ContactName = $("#txtContact").val().trim();
-            ContactName = ContactName.replace(/,/g, " ");
-            if (ContactName == "") {
-                $("#lblContact").html("Please Enter valid Contact Person Name").show().fadeOut(5000);
-            }
-            else {
-                 $("#lblContact").html("").show().fadeOut(5000);
-            }
-             validatecustomer();
-        });
+        //    var ContactName = $("#txtContact").val().trim();
+        //    ContactName = ContactName.replace(/,/g, " ");
+        //    if (ContactName == "") {
+        //        $("#lblContact").html("Please Enter valid Contact Person Name").show().fadeOut(5000);
+        //    }
+        //    else {
+        //         $("#lblContact").html("").show().fadeOut(5000);
+        //    }
+        //     validatecustomer();
+        //});
 
         $("#txtCustomerPhone").keypress(function (e) {
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -186,20 +186,20 @@
             }
         });
 
-        $("#txtCustomerPhone").blur(function () {
-            //debugger
-            phone = $(this).val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(5000);
-                validatecustomer();
-            }
-            else {
-                $("#lblCustomerPhone").html("").hide();
-                validatecustomer();
-            }
+       // $("#txtCustomerPhone").blur(function () {
+       //     //debugger
+       //     phone = $(this).val();
+       //     phone = phone.replace(/[^0-9]/g,'');
+       //     if (phone.length != 10) {
+       //         $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(5000);
+       //         validatecustomer();
+       //     }
+       //     else {
+       //         $("#lblCustomerPhone").html("").hide();
+       //         validatecustomer();
+       //     }
 
-       });
+       //});
 
     //    var input = document.querySelector("#txtCustomerPhone"),
     //    errorMsg = document.querySelector("#error-msg"),
@@ -301,20 +301,85 @@
 
 
 
-        $("#txtCustomerEmail").on("blur", function (event) {
+         var typingTimer;            //timer identifier
+        var doneTypingInterval = 500;  //time in ms, 0.5 second for example
 
-           var str = $(this).val();
-           var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+       // on keyup, start the countdown
+        $('#txtCustomerEmail').on('keyup', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(TaskEmailCheck, doneTypingInterval);
+        });
+
+        //on keydown, clear the countdown
+        $('#txtCustomerEmail','#txtCustomerPhone','#txtContact').on('keydown', function () {
+            clearTimeout(typingTimer);
+        });
+
+        function TaskEmailCheck() {
+            var str = $("#txtCustomerEmail").val().trim();
+            var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
             if (!filter.test(str)) {
-                $("#lblCustomerEmail").html("Email is not valid").show().fadeOut(5000);
-                validatecustomer();
+                $("#lblCustomerEmail").html("Email is not valid").show().fadeOut(2000);
             }
             else {
-                $("#lblCustomerEmail").html("").hide();
-                validatecustomer();
+                $("#lblCustomerEmail").html("").show();                
             }
+            validatecustomer();
+        }
+
+        // on keyup, start the countdown
+        $('#txtCustomerPhone').on('keyup', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(TaskPhone, doneTypingInterval);
         });
+
+        function TaskPhone() {
+            phone = $('#txtCustomerPhone').val();
+            phone = phone.replace(/[^0-9]/g,'');
+            if (phone.length != 10) {
+                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(5000);
+               
+            }
+            else {
+                $("#lblCustomerPhone").html("").hide();               
+            }
+             validatecustomer();
+        }
+
+         // on keyup, start the countdown
+        $('#txtContact').on('keyup', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(TasktContact, doneTypingInterval);
+        });
+
+        function TasktContact() {
+            var ContactName = $("#txtContact").val().trim();
+            ContactName = ContactName.replace(/,/g, " ");
+            if (ContactName == "") {
+                $("#lblContact").html("Please Enter valid Contact Person Name").show().fadeOut(5000);
+            }
+            else {
+                 $("#lblContact").html("").show().fadeOut(5000);
+            }
+             validatecustomer();
+        }
+        
+
+        //$("#txtCustomerEmail").on("blur", function (event) {
+
+        //   var str = $(this).val();
+        //   var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+        //    if (!filter.test(str)) {
+        //        $("#lblCustomerEmail").html("Email is not valid").show().fadeOut(5000);
+        //        validatecustomer();
+        //    }
+        //    else {
+        //        $("#lblCustomerEmail").html("").hide();
+        //        validatecustomer();
+        //    }
+        //});
 
 
 

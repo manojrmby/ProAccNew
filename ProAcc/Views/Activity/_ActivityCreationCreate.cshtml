@@ -28,7 +28,6 @@
                 <label class="control-label col-md-4 required">Task</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control remove" id="txtTask" />
-                    @*<span id="lblTask" style="color:red" />*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
@@ -44,25 +43,13 @@
                         {
                             <option value="@item.Id">@item.PhaseName</option>
                         }
-                    </select>
-                    @*<input type="text" class="form-control" id="txtPhase" maxlength="10" />*@
-                    @*<span id="lblPhase" style="color:red" />*@
+                    </select>                   
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhase">&nbsp;</span>
                 </div>
             </div>
-            @*<div class="form-group">
-                    <label class="control-label col-md-6 required">Application Area</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtApplicationArea" />
-                        <input type="hidden" id="hiddenActivityId" />
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblApplicationArea">&nbsp;</span>
-                    </div>
-                </div>*@
-
+           
             <div class="form-group">
                 <label class="control-label col-md-4 required">Application Area</label>
                 <div class="col-md-10">
@@ -84,8 +71,6 @@
 
         <div class="col-6">
 
-
-
             <div class="form-group">
                 <label class="control-label col-md-4 required">Building Block</label>
                 <div class="col-md-10">
@@ -97,8 +82,6 @@
                             <option value="@item.block_ID">@item.Block_Name</option>
                         }
                     </select>
-                    @*<input type="text" class="form-control" id="txtPhase" maxlength="10" />*@
-                    @*<span id="lblPhase" style="color:red" />*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblBlock">&nbsp;</span>
@@ -116,26 +99,22 @@
                             <option value="@item.RoleId">@item.RoleName</option>
                         }
                     </select>
-                    @*<input type="text" class="form-control" id="txtRole" />*@
-                    @*<span id="lblRole" style="color:red" />*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblRole">&nbsp;</span>
                 </div>
             </div>
-        </div>
-        @*<div class="col-md-12">
-                <div class="form-group">
-                    <label class="control-label col-md-4 required">Application Area</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" id="txtApplicationArea" />
-                        <input type="hidden" id="hiddenActivityId"/>
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;&nbsp;<span id="lblApplicationArea">&nbsp;</span>
-                    </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Estimated Hours</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtEstimated" placeholder="00:00"/>
                 </div>
-            </div>*@
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEstimated">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+                
         <div class="col-10">
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
@@ -162,8 +141,6 @@
                         <button type="button" id="btnSeq" class="btn btn-primary" style="margin-bottom:50px !important;">Save</button>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -184,6 +161,17 @@
             $("#drpRole").prop("readonly", true);
         }
 
+         $('#txtEstimated').on('keypress', function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 58)) {
+                event.preventDefault();
+                $("#lblEstimated").html("Time Only").show().fadeOut(5000);
+            }
+            else {
+                $("#lblEstimated").html("").show();
+            }
+
+         });
+
         var typingTimer;                //timer identifier
         var doneTypingInterval = 1000;  //time in ms, 1 second for example
 
@@ -194,7 +182,7 @@
         });
 
         //on keydown, clear the countdown
-         $('#txtTask').on('keydown', function () {
+         $('#txtTask','#txtEstimated').on('keydown', function () {
           clearTimeout(typingTimer);
         });
 
@@ -242,6 +230,28 @@
              });
             }
         }
+
+        // on keyup, start the countdown
+         $('#txtEstimated').on('keyup', function () {
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(TaskEstHrs, doneTypingInterval);
+        });
+
+        function TaskEstHrs() {
+            var txtEstimated = $("#txtEstimated").val();
+            //var filter =/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/  //{IMP}
+            var filter =/^([0-9][0-9]):[0-5][0-9]$/
+            if (!filter.test(txtEstimated)) {
+                $("#lblEstimated").html("Time is Invalid").show();
+            }
+            else {
+                $("#lblEstimated").html("").show();
+            }
+             ValidateActivity();           
+        }
+
+
+
         //var elements = document.querySelectorAll('.remove');
 
         //Array.from(elements).forEach(function (elem) {
@@ -308,7 +318,8 @@
             var Role = $('#drpRole').val();
             var ApplicationArea = $('#drpApplicationArea').val();
             var Block = $('#drpBlock').val();
-            if (Task != "" && sequence != "" && Phase != 0 && Role != 0 && ApplicationArea != 0 && Block != 0) {
+            var Estimated = $("#txtEstimated").val();
+            if (Task != "" && sequence != "" && Phase != 0 && Role != 0 && ApplicationArea != 0 && Block != 0&& Estimated!="") {
                 $("#lblApplicationArea").html("");
                 $('#lblPhase').html("");
                 $('#lblRole').html("");
@@ -329,14 +340,16 @@
         var Phase = $('#drpPhase').val();
         var Role = $('#drpRole').val();
         var Block = $('#drpBlock').val();
+        var Estimated = $("#txtEstimated").val();
 
         var lblTask = $("#lblTask").text().trim();
         var lblApplicationArea = $("#lblApplicationArea").text().trim();
         var lblPhase = $('#lblPhase').text().trim();
         var lblRole = $('#lblRole').text().trim();
-        var lblBlock=$('#lblBlock').text().trim();
-        if (Task.length > 0 && ApplicationArea != 0 && Phase != 0 && Role != 0 && Block !=0 &&
-            lblTask == "" && lblApplicationArea=="" &&  lblPhase == "" && lblRole == "" && lblBlock=="" ) {
+        var lblBlock = $('#lblBlock').text().trim();
+        var lblEstimated = $("#lblEstimated").text().trim();
+        if (Task.length > 0 && ApplicationArea != 0 && Phase != 0 && Role != 0 && Block !=0 &&Estimated!="" &&
+            lblTask == "" && lblApplicationArea=="" &&  lblPhase == "" && lblRole == "" && lblBlock==""&&lblEstimated=="" ) {
 
              $("#btnActivityCreCreate").prop("disabled", false);
              $("#btntivityCreUpdate").prop("disabled", false);
@@ -348,6 +361,7 @@
     }
 
     $("#btnActivityCreCreate").on("click", function () {
+        
         var Task = $("#txtTask").val();
         Task = Task.replace(/,/g, " ");
        // var sequence = $("#txtSequence").val();
@@ -355,12 +369,15 @@
         var ApplicationArea = $("#drpApplicationArea").val();
         var Phase = $('#drpPhase').val();
         var Role = $('#drpRole').val();
-        var BlockId=$('#drpBlock').val();
+        var BlockId = $('#drpBlock').val();
+        var Estimated = $("#txtEstimated").val();
+         Estimated = Estimated.replace(/:/g, ".");
+
         var model = {
             Task: Task,
             PhaseID: Phase,
             BuildingBlock_id: BlockId,
-            //Sequence_Num: sequence,
+            EST_hours:Estimated,
             ApplicationAreaID: ApplicationArea,
             RoleID:Role
         }
@@ -386,6 +403,11 @@
          else if (BlockId == 0)
         {
             $("#lblBlock").html("Please select the Building Block").show().fadeOut(5000);
+            ValidateActivity();
+        }
+        else if (Estimated == "")
+        {
+            $("#lblEstimated").html("Please fill the Estimated hours").show();
             ValidateActivity();
         }
 
@@ -459,6 +481,7 @@
                     $('#drpPhase').val(0);
                     $('#drpRole').val(0);
                     $('#drpBlock').val(0);
+                    $("#txtEstimated").val("");
                     $("#btnActivityCreCreate").show()
                     $("#btntivityCreUpdate").hide()
                     $("#btnAddNew").hide()
@@ -488,42 +511,45 @@
         var cre_on = $("#actcre_on").val();
         var cre_By = $("#actcre_By").val();
         var BlockId=$('#drpBlock').val();
+         var Estimated = $("#txtEstimated").val();
+        Estimated = Estimated.replace(/:/g, ".");
 
-         var model = {
-             Activity_ID:id,
+        var model = {
+            Activity_ID: id,
             Task: Task,
             PhaseID: Phase,
-             Sequence_Num: sequence,
-             BuildingBlock_id: BlockId,
+            Sequence_Num: sequence,
+            BuildingBlock_id: BlockId,
             ApplicationAreaID: ApplicationArea,
-            RoleID:Role,
+            RoleID: Role,
+            EST_hours:Estimated,
             Cre_on: cre_on,
             Cre_By: cre_By
-         }
+        }
        if (Task == "") {
            $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
            ValidateActivity();
         }
-        else if (ApplicationArea==0)
-        {
+       else if (ApplicationArea == 0) {
            $("#lblApplicationArea").html("Please select the Application Area").show().fadeOut(5000);
            ValidateActivity();
-        }
-        else if (Phase==0)
-        {
+       }
+       else if (Phase == 0) {
            $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
            ValidateActivity();
-        }
-        else if (Role == 0)
-        {
+       }
+       else if (Role == 0) {
            $("#lblRole").html("Please select the Role").show().fadeOut(5000);
            ValidateActivity();
        }
-            else if (BlockId == 0)
-        {
-            $("#lblBlock").html("Please select the Building Block").show().fadeOut(5000);
-            ValidateActivity();
-        }
+       else if (BlockId == 0) {
+           $("#lblBlock").html("Please select the Building Block").show().fadeOut(5000);
+           ValidateActivity();
+       }
+       else if (Estimated == "") {
+           $("#lblEstimated").html("Please fill the Estimated hours").show();
+           ValidateActivity();
+       }
         else {
 
             $.ajax({

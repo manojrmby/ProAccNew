@@ -211,7 +211,7 @@ namespace ProAcc.Controllers
                 return HttpNotFound();
             }
             //var Activity = db.ActivityMasters.Find(id);
-            var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task, p.ApplicationAreaID, p.PhaseID, p.RoleID,p.Cre_on,p.Cre_By,p.Sequence_Num ,p.BuildingBlock_id}).FirstOrDefault();
+            var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task, p.ApplicationAreaID, p.PhaseID, p.RoleID,p.Cre_on,p.Cre_By,p.Sequence_Num ,p.BuildingBlock_id,p.EST_hours}).FirstOrDefault();
             //TempData["Cre_On"] = activity.Cre_on;
             //var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task,p.ApplicationArea,p.PhaseID,p.RoleID });
 

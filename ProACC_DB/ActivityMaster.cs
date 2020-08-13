@@ -27,6 +27,7 @@ namespace ProACC_DB
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
+        public Nullable<double> EST_hours { get; set; }
     
         public virtual ApplicationAreaMaster ApplicationAreaMaster { get; set; }
         public virtual Buldingblock Buldingblock { get; set; }

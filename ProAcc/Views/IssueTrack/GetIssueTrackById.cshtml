@@ -4,6 +4,10 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+
 <div style="padding:1em;" id="CreateIssue">
     <a class="card-title">Update Issue</a>
     <hr />
@@ -36,8 +40,8 @@
             <div class="form-group" id="Status">
                 <label class="control-label col-md-4 required">Status</label>
                 <div class="col-md-10">
-                    <select class="form-control" id="ddllist">                      
-                        
+                    <select class="form-control" id="ddllist">
+
                         <option value="In progress">In progress</option>
                         <option value="Completed">Completed</option>
                         <option value="On hold">On hold</option>
@@ -79,8 +83,8 @@
                 <div class="col-md-10">
                     <input type="text" class="form-control" readonly value="@Model.Task" id="txtIssueName" />
                     @*<select class="form-control" id="TaskList">
-                        <option value="0">---Select Task---</option>
-                    </select>*@
+                            <option value="0">---Select Task---</option>
+                        </select>*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
@@ -109,7 +113,8 @@
         <div class="col-lg-12">
 
             <div class="col-md-offset-2 col-md-12">
-                <button type="button" id="btnIssueUpdate" class="btn btn-primary ld-ext-right"> @*onclick="this.classList.toggle('running')"*@
+                <button type="button" id="btnIssueUpdate" class="btn btn-primary ld-ext-right">
+                    @*onclick="this.classList.toggle('running')"*@
                     Update
                     <div class="ld ld-ring ld-spin"></div>
                 </button>
@@ -121,29 +126,29 @@
     </div>
 </div>
 
-<table class="table" id="tblIssue">
+<table class="table" id="tblIssueComments">
     <thead>
         <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Comments</th>            
+            <th style="width:55px">Date</th>
+            <th style="width:300px">Description</th>
+            <th>Comments</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in ViewBag.ITM_Comments)
         {
-        <tr>
-            <td>
-                <a class="txtG" value="@item.CreatedDate">@item.CreatedDate.ToString("dd/MM/yyyy")</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Description">@item.Description</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.HistoryComment">@item.HistoryComment</a>
-            </td>
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.CreatedDate">@item.CreatedDate.ToString("dd/MM/yyyy")</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Description">@item.Description</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.HistoryComment">@item.HistoryComment</a>
+                </td>
 
-        </tr>
+            </tr>
         }
     </tbody>
 </table>
@@ -151,8 +156,8 @@
 
 <script>
     $(document).ready(function () {
+         $("#tblIssueComments").dataTable();
 
-       
         var status = $("#IDstatus").val();
         $("#ddllist option[value='"+status+"']").attr('selected', 'selected');
             @*var id = $("#IDInstance").val();
@@ -174,23 +179,23 @@
                             text: itemData.Name
                         }));
                     });
-                    
+
                 },
                 error: function (a) {
                     alert(a);
                 }
             });*@
-        
+
     });
 
     $("#btnIssueUpdate").on("click", function () {
-       
+
        // var IssueName = $("#txtIssueName").val().trim();
          // IssueName = IssueName.replace(",", " ");
         //var PhaseMaster = $("#PhaseMaster").val().trim();
         //var TaskList = $("#TaskList").val().trim();
         var Issuetrack_Id = $("#Issuetrack_Id").val().trim();
-        var AssignedTo=$("#drpAssignedTo").val();       
+        var AssignedTo=$("#drpAssignedTo").val();
         var Status = $("#ddllist").val().trim();
         var Comments = $("#txtComments").val().trim();
         Comments = Comments.replace(",", " ");
@@ -207,11 +212,11 @@
         if (AssignedTo==0)
         {
             $("#lblAssignedTo").html("Please select the AssignedTo").show().fadeOut(2000);
-        }      
+        }
         else if (Status==0)
         {
             $("#lblStatus").html("Please select the status").show().fadeOut(2000);
-        }       
+        }
         else if (Comments=="")
         {
             $("#lblComments").html("Please enter the Comments").show().fadeOut(5000);
@@ -239,4 +244,3 @@
         }
     });
 </script>
- 

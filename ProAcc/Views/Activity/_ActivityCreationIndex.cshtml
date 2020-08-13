@@ -14,8 +14,8 @@
     <thead>
         <tr>
             @*<th cope="col" style="width:3%;text-align:center;">
-                #
-            </th>*@
+            #
+        </th>*@
             <th>Task</th>
             @*<th>Cre_on</th>*@
             <th>Building Blocks</th>
@@ -23,6 +23,7 @@
             <th>Role</th>
             <th>Application Area</th>
             <th>Sequence</th>
+            <th>Estimated</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -32,10 +33,10 @@
         {
         <tr>
             @*<td>
-                @j
-            </td>
-            @{j++;
-            }*@
+            @j
+        </td>
+        @{j++;
+        }*@
             <td>
                 <a class="txtG" value="@item.Task">@item.Task</a>
             </td>
@@ -57,9 +58,11 @@
             <td>
                 <a class="txtG" value="@item.Sequence_Num">@item.Sequence_Num</a>
             </td>
-
             <td>
-                <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" /> 
+                <a class="txtG" value="@item.EST_hours">@item.EST_hours</a>
+            </td>
+            <td>
+                <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" />
                 <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Activity_ID" />
             </td>
         </tr>
@@ -87,7 +90,7 @@
     });
 
     $(".editActivityCreation").on("click", function () {
-        
+       
         var id = $(this).next().val();
         $.ajax({
             url: '@Url.Action("GetActivityCreationById","Activity")',
@@ -103,7 +106,9 @@
                  $("#drpBlock").val(result.BuildingBlock_id);
                     $("#drpRole").val(result.RoleID);
                     $('#drpRole').attr("disabled", true); 
-                    $("#drphiddenRole").val(result.RoleID);
+                $("#drphiddenRole").val(result.RoleID);
+                //var EST_hours = result.EST_hours.replace(".", ":");
+                $("#txtEstimated").val(result.EST_hours); //.replace(".", ":")
                     $("#drpApplicationArea").val(result.ApplicationAreaID);
                     $("#actcre_on").val(result.Cre_on);
                     $("#actcre_By").val(result.Cre_By);
