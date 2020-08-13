@@ -1,7 +1,9 @@
 ﻿using ProAcc.BL;
 using ProAcc.BL.Model;
+using ProACC_DB;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -47,6 +49,12 @@ namespace ProAcc.Controllers
                 
                if (!String.IsNullOrEmpty(user.Username)&& (!String.IsNullOrEmpty(user.Password)))
                 {
+                    Boolean a = Convert.ToBoolean(ConfigurationManager.AppSettings["Enc"].ToString());
+                    if (a)
+                    {
+                        ProAccEntities db = new ProAccEntities();
+                       var a= db.UserMasters.Where()
+                    }
                     logedUser = _Base.UserValidation(logedUser);
                     if (logedUser.ID != Guid.Empty)
                     {

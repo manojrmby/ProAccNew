@@ -13,6 +13,7 @@ using System.Web;
 using static ProAcc.BL.Model.Common;
 using Spire.Presentation;
 using System.Text.RegularExpressions;
+using System.Configuration;
 
 
 
@@ -26,15 +27,17 @@ namespace ProAcc.BL
     {
         private ProAccEntities db = new ProAccEntities();
         //private LogHelper _Log = new LogHelper();
-
+        public  string _salt = "d5cc07aa70fd47";
         #region Login
         public LogedUser UserValidation(LogedUser user)
         {
             DataSet ds = new DataSet();
+           
             DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
             dB.addIn("@Type", "Login");
+
             dB.addIn("@UserName", user.Username);
-            dB.addIn("@Password", user.Password);
+            dB.addIn("@Password", PasswordEncrypt(user.Password));
             ds = dB.ExecuteDataSet();
             DataTable dt = new DataTable();
             if (ds.Tables.Count != 0)
@@ -67,6 +70,15 @@ namespace ProAcc.BL
             }
             return user;
 
+        }
+
+        public string PasswordEncrypt(string st)
+        {
+            return Cipher.Encrypt(st, _salt);
+        }
+        public string PasswordDecrypt(string st)
+        {
+            return Cipher.Decrypt(st, _salt);
         }
         #endregion
 

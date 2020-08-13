@@ -56,7 +56,7 @@ namespace ProAcc.BL
                 {
                     _Log.createLog("Mail Started");
                     _ = SendAsyncMail();
-                    pDF.Report();
+                    _ = pDF.Report();
                     await Task.Delay(T);
                     Thread.Sleep(100000);
                     //, cancellationToken);
@@ -162,7 +162,7 @@ namespace ProAcc.BL
                     var fs = new FileStream(OutputPath_pdf + SM.Q_UserID + ".pdf", FileMode.Open);
                     msg.Attachments.Add(new System.Net.Mail.Attachment(fs, "Questionnaire.pdf", "application/pdf"));
                 }
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
 
                 SmtpClient client = new SmtpClient(serverName, port);
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -182,8 +182,8 @@ namespace ProAcc.BL
                                                                                                    
                 if (mm == false)
                 {
-                    client.Send(msg);
-                    _Log.createLog(SM.ID + "--->" + To.ToString());
+                     client.Send(msg);
+                    _Log.createLog(SM.ID + "---> Email To->" + To.ToString());
                     _Base.UpdateMailList(SM.ID);
                 }
                 client.Dispose();

@@ -142,6 +142,7 @@ namespace ProAcc.Controllers
                 {
                     if (con.Name != null && con.LoginId != null && con.Password != null)
                     {
+                        con.Password = _Base.PasswordEncrypt(con.Password.ToString());
                         con.UserId = Guid.NewGuid();
                         con.Cre_By = Guid.Parse(Session["loginid"].ToString());
                         con.Cre_on = DateTime.UtcNow;

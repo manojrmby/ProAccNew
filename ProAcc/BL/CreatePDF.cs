@@ -80,7 +80,7 @@ namespace ProAcc.BL
             try
             {
 
-
+                _Log.createLog("---IN--");
 
 
                 object misValue = System.Reflection.Missing.Value;
@@ -90,16 +90,18 @@ namespace ProAcc.BL
                 {
                     Directory.CreateDirectory(currentDirectory);
                 }
+                _Log.createLog("---Before Delete--");
                 @base.FileDelete(Pathpdf);
-                
 
+                _Log.createLog("---Before doc--");
                 //Word.Document doc = WORD.Documents.Open(@"D:\Office\Projects\ProACC\ProAccNew\ProAcc\Asset\UploadedFiles\678bda2f-c281-48c1-b565-64f3773d3b1f.docx");
                 Word.Document doc = WORD.Documents.Open(PathDoc);
+                _Log.createLog("---Before Activate--");
                 doc.Activate();
-
+                _Log.createLog("---Before SaveAs2--");
                 doc.SaveAs2(@Pathpdf, Word.WdSaveFormat.wdFormatPDF, misValue, misValue, misValue,
                 misValue, misValue, misValue, misValue, misValue, misValue, misValue);
-
+                _Log.createLog("---Before Close--");
                 doc.Close();
                 WORD.Quit();
 
