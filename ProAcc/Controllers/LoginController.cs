@@ -4,6 +4,7 @@ using ProACC_DB;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -53,7 +54,28 @@ namespace ProAcc.Controllers
                     if (a)
                     {
                         ProAccEntities db = new ProAccEntities();
-                       var a= db.UserMasters.Where()
+                        var aa = db.UserMasters.Where(x=>x.LoginId=="kin_PM").ToList();
+                        foreach (var item in aa)
+                        {
+                            ProAccEntities db1 = new ProAccEntities();
+                            UserMaster us = new UserMaster();
+                            us.UserId = item.UserId;
+                            us.Name = item.Name;
+                            us.EMail = item.EMail;
+                            us.Phone = item.Phone;
+                            us.LoginId = item.LoginId;
+                            us.isActive = item.isActive;
+                            us.IsDeleted = item.IsDeleted;
+                            us.UserTypeID = item.UserTypeID;
+                            us.RoleID= item.RoleID;
+                            us.Cre_on = item.Cre_on;
+                            us.Cre_By = item.Cre_By;
+                            us.Password = _Base.PasswordEncrypt(item.Password);
+                            us.Modified_by = Guid.Empty;
+                            db1.Entry(us).State = EntityState.Modified;
+                            db1.SaveChanges();
+
+                        }
                     }
                     logedUser = _Base.UserValidation(logedUser);
                     if (logedUser.ID != Guid.Empty)

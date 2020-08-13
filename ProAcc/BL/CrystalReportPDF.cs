@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Script.Serialization;
 
@@ -16,7 +17,7 @@ namespace ProAcc.BL
     {
         private readonly string _PDFRunStatus = WebConfigurationManager.AppSettings["PDFRunStatus"];
         LogHelper _log = new LogHelper();
-        public void Report()
+        public async Task Report()
         {
 
             try

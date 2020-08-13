@@ -35,9 +35,9 @@ namespace ProAcc.BL
            
             DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
             dB.addIn("@Type", "Login");
-
+            string s = PasswordEncrypt(user.Password);
             dB.addIn("@UserName", user.Username);
-            dB.addIn("@Password", PasswordEncrypt(user.Password));
+            dB.addIn("@Password", s);
             ds = dB.ExecuteDataSet();
             DataTable dt = new DataTable();
             if (ds.Tables.Count != 0)
