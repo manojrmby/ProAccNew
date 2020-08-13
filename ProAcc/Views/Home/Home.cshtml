@@ -336,8 +336,14 @@ background-attachment:local, local, scroll, scroll;
     .Image_Bottem{
         width:45%;
     }
+    .row{
+        max-width:100%;
+    }
+    .bg-grow-be {
+        background-image: linear-gradient( #AA076B,#61045f) !important;
+    }
 </style>
-<style>
+@*<style>
     #scrollContainer {
     height : 190px;
     overflow : hidden;
@@ -356,14 +362,11 @@ background-attachment:local, local, scroll, scroll;
     background-color : #CCDDFF;
 }
 
-.bg-grow-be
-{
-    background-image: linear-gradient( #AA076B,#61045f) !important;
-}
-</style>
+
+</style>*@
 
 <a class="card-title">Dashboard</a>
-<div style="padding: 1em;" >
+<div style="padding-left:15px;">
     <div class="row">
 
         <div class="col-lg-12 card" style="margin-bottom:20px !important;">
@@ -605,7 +608,7 @@ background-attachment:local, local, scroll, scroll;
             </div>
         </div>
 
-        <h4 id="click-me" class="fa fa-bars"></h4>
+        <h4 id="click-me" class="fa fa-angle-down"></h4>
         <div id="this" class="col-12">
             @*<div class="col-lg-12 card" style=" margin-bottom: 20px;min-height: 250px;">
                 <div class="row">
@@ -627,7 +630,7 @@ background-attachment:local, local, scroll, scroll;
                     </table>
                 </div>
             </div>*@
-            <div class="col-lg-12 card" style="margin-bottom:20px;">
+            <div class="col-lg-12">
                 <div class="row">
 
                     <div class="col-lg-6 card text-center border">
@@ -715,8 +718,6 @@ background-attachment:local, local, scroll, scroll;
 
 
     </div>
-
-
 </div>
 
 <script>
@@ -758,9 +759,9 @@ background-attachment:local, local, scroll, scroll;
                 data_Post_Con = [Data3.COMPLETE, Data3.WIP, Data3.ONHOLD, Data3.YetToStart, Data3.NA];
                 render_Post_Conversion_Chart(data_Post_Con, labels);
 
-                 Data4=Result[4];
-                data_Validation = [Data4.COMPLETE, Data4.WIP, Data4.ONHOLD, Data4.YetToStart, Data4.NA];
-                render_Validation_Chart(data_Validation, labels);
+                // Data4=Result[4];
+                //data_Validation = [Data4.COMPLETE, Data4.WIP, Data4.ONHOLD, Data4.YetToStart, Data4.NA];
+                //render_Validation_Chart(data_Validation, labels);
 				},
 				error: function () {
 					alert("Error while inserting data");
@@ -1284,117 +1285,117 @@ background-attachment:local, local, scroll, scroll;
              window.myRadialGauge = new Chart(ctx, config);
          }
     }
-    function render_Validation_Chart(data, labels) {
-		//Chart.defaults.global.defaultFontFamily = "Verdana";
-        var Total = data[0] + data[1] + data[2] + data[3] + data[4];
-        if (Total == 0) {
-            var ID = 'chart-Validation';
-            Render_No_Data(ID)
-        }
-        else {
-            var ctx = document.getElementById("chart-Validation").getContext("2d");
+  //  function render_Validation_Chart(data, labels) {
+		////Chart.defaults.global.defaultFontFamily = "Verdana";
+  //      var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+  //      if (Total == 0) {
+  //          var ID = 'chart-Validation';
+  //          Render_No_Data(ID)
+  //      }
+  //      else {
+  //          var ctx = document.getElementById("chart-Validation").getContext("2d");
 
-            var Total = data[0] + data[1] + data[2] + data[3] + data[4];
-            var textInside = Total;
-            var config = {
-                type: "doughnut",
-                data: {
-                    labels: labels,
-                    datasets: [{
+  //          var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+  //          var textInside = Total;
+  //          var config = {
+  //              type: "doughnut",
+  //              data: {
+  //                  labels: labels,
+  //                  datasets: [{
 
-                        data: data,
-                        //backgroundColor: [gradientStroke_, gradientStroke_2],
-                        backgroundColor: [
-                            '#71c989',//'#FF6384',
-                            '#74abe2',
-                            '#FFCE56',
-                            '#f08956',
-                            '#8c32a8'
-                        ],
-                        borderWidth: 2,
-                        label: "Score"
-                    }]
-                },
-                options: {
-                    //elements: {
-                    //    center: {
-                    //        text: "Total:"+ Total,
-                    //        color: '#FF6384', // Default is #000000
-                    //        fontStyle: 'Arial', // Default is Arial
-                    //        sidePadding: 5, // Default is 20 (as a percentage)
-                    //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
-                    //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
-                    //    }
-                    //},
-                    elements: {
-                        center: {
-                            text: textInside
-                        }
-                    },
+  //                      data: data,
+  //                      //backgroundColor: [gradientStroke_, gradientStroke_2],
+  //                      backgroundColor: [
+  //                          '#71c989',//'#FF6384',
+  //                          '#74abe2',
+  //                          '#FFCE56',
+  //                          '#f08956',
+  //                          '#8c32a8'
+  //                      ],
+  //                      borderWidth: 2,
+  //                      label: "Score"
+  //                  }]
+  //              },
+  //              options: {
+  //                  //elements: {
+  //                  //    center: {
+  //                  //        text: "Total:"+ Total,
+  //                  //        color: '#FF6384', // Default is #000000
+  //                  //        fontStyle: 'Arial', // Default is Arial
+  //                  //        sidePadding: 5, // Default is 20 (as a percentage)
+  //                  //        minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
+  //                  //        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+  //                  //    }
+  //                  //},
+  //                  elements: {
+  //                      center: {
+  //                          text: textInside
+  //                      }
+  //                  },
 
-                    responsive: true,
-                    legend: {
-                        display: false,
-                        position: 'right',
-                        labels: {
-                            fontColor: "#000080",
-                        }
-                    },
+  //                  responsive: true,
+  //                  legend: {
+  //                      display: false,
+  //                      position: 'right',
+  //                      labels: {
+  //                          fontColor: "#000080",
+  //                      }
+  //                  },
 
-                    //title: {
-                    //    display: true,
-                    //    text: "Assessment"
-                    //},
-                    centerPercentage: 60,
-                    centerArea: {
-                        displayText: true,
-                        text: "100%"
-                    },
+  //                  //title: {
+  //                  //    display: true,
+  //                  //    text: "Assessment"
+  //                  //},
+  //                  centerPercentage: 60,
+  //                  centerArea: {
+  //                      displayText: true,
+  //                      text: "100%"
+  //                  },
 
-                    plugins: {
-                        labels: {
-                            render: 'value' + "%",
-                            fontColor: '#000',
-                            position: 'outside'
-                        }
-                    },
-                    tooltips: {
-                        callbacks: {
-                            label: function (tooltipItem, data) {
-                                var dataset = data.datasets[tooltipItem.datasetIndex];
-                                var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
-                                    return previousValue + currentValue;
-                                });
-                                //var currentValue = dataset.data[tooltipItem.index];
-                                //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
-                                //return percentage + "%";
+  //                  plugins: {
+  //                      labels: {
+  //                          render: 'value' + "%",
+  //                          fontColor: '#000',
+  //                          position: 'outside'
+  //                      }
+  //                  },
+  //                  tooltips: {
+  //                      callbacks: {
+  //                          label: function (tooltipItem, data) {
+  //                              var dataset = data.datasets[tooltipItem.datasetIndex];
+  //                              var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+  //                                  return previousValue + currentValue;
+  //                              });
+  //                              //var currentValue = dataset.data[tooltipItem.index];
+  //                              //var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+  //                              //return percentage + "%";
 
-                                var currentValue = dataset.data[tooltipItem.index];
-                                var percentage = parseFloat((currentValue / total * 100).toFixed(1));
-                                //return currentValue + ' (' + percentage + '%)';
-                                //return percentage + '%';
-                                return currentValue;
+  //                              var currentValue = dataset.data[tooltipItem.index];
+  //                              var percentage = parseFloat((currentValue / total * 100).toFixed(1));
+  //                              //return currentValue + ' (' + percentage + '%)';
+  //                              //return percentage + '%';
+  //                              return currentValue;
 
-                            },
-                            title: function (tooltipItem, data) {
-                                return data.labels[tooltipItem[0].index];
-                            }
-                        }
-                    },
+  //                          },
+  //                          title: function (tooltipItem, data) {
+  //                              return data.labels[tooltipItem[0].index];
+  //                          }
+  //                      }
+  //                  },
 
-                    animation: {
-                        duration: 5000
-                    }
-                },
-                centerText: {
-                    display: true,
-                    text: "Total:" + Total
-                }
-            };
+  //                  animation: {
+  //                      duration: 5000
+  //                  }
+  //              },
+  //              centerText: {
+  //                  display: true,
+  //                  text: "Total:" + Total
+  //              }
+  //          };
 
-            window.myRadialGauge = new Chart(ctx, config);
-        }
-    }
+  //          window.myRadialGauge = new Chart(ctx, config);
+  //      }
+  //  }
   //  function renderChartAssessment(data, labels) {
 
 		//var ctx = document.getElementById("").getContext("2d");
@@ -1622,53 +1623,53 @@ background-attachment:local, local, scroll, scroll;
             }
 
          //Validation
-        var Data4 = Result[4];
-        var d4_total = (Data4.COMPLETE + Data4.WIP + Data4.ONHOLD + Data4.YetToStart);
-        if (d4_total > 0) {
-            var a = (Data4.COMPLETE) / d4_total;
-            var percent = Math.ceil(a * 100);
-            $("#ValiId").html(percent + "%");
-            var progressid = '#ValiId_Progress';
-            $(progressid).css('width', percent + '%');
-            if (percent > 0 && percent < 50) {
-                $(progressid).css('background-color', blue);
-                $("#Vali_StatusId").html("WIP");
-            }
-            else if (percent > 50 && percent < 100) {
-                $(progressid).css('background-color', Yellow);
-                $("#Vali_StatusId").html("WIP");
-            }
-            else if (percent == 100) {
-                $(progressid).css('background-color', Green);
-                $("#Vali_StatusId").html("Completed");
-            }
-            else {
-                 $("#ValiId").html(0 + "%");
-            $("#ValiId_Progress").css('width', 0 + '%');
-            $("#Vali_StatusId").html("Yet To Start");
-            }
-            //if (percent == 100) {
-            //    $("#Vali_StatusId").html("Completed");
-            //     $("#ValiDivId").removeClass("bg-grow-before");
-            //    $("#ValiDivId").last().addClass("bg-grow-early");
+        //var Data4 = Result[4];
+        //var d4_total = (Data4.COMPLETE + Data4.WIP + Data4.ONHOLD + Data4.YetToStart);
+        //if (d4_total > 0) {
+        //    var a = (Data4.COMPLETE) / d4_total;
+        //    var percent = Math.ceil(a * 100);
+        //    $("#ValiId").html(percent + "%");
+        //    var progressid = '#ValiId_Progress';
+        //    $(progressid).css('width', percent + '%');
+        //    if (percent > 0 && percent < 50) {
+        //        $(progressid).css('background-color', blue);
+        //        $("#Vali_StatusId").html("WIP");
+        //    }
+        //    else if (percent > 50 && percent < 100) {
+        //        $(progressid).css('background-color', Yellow);
+        //        $("#Vali_StatusId").html("WIP");
+        //    }
+        //    else if (percent == 100) {
+        //        $(progressid).css('background-color', Green);
+        //        $("#Vali_StatusId").html("Completed");
+        //    }
+        //    else {
+        //         $("#ValiId").html(0 + "%");
+        //    $("#ValiId_Progress").css('width', 0 + '%');
+        //    $("#Vali_StatusId").html("Yet To Start");
+        //    }
+        //    //if (percent == 100) {
+        //    //    $("#Vali_StatusId").html("Completed");
+        //    //     $("#ValiDivId").removeClass("bg-grow-before");
+        //    //    $("#ValiDivId").last().addClass("bg-grow-early");
 
-            //}
-            //else {
+        //    //}
+        //    //else {
 
-            //    $("#Vali_StatusId").html("Yet To Start/WIP");
-            //    $("#ValiDivId").removeClass("bg-grow-early");
-            //    $("#ValiDivId").last().addClass("bg-grow-before");
-            //}
-        }
-        else {
-             $("#ValiId").html(0 + "%");
-            $("#ValiId_Progress").css('width', 0 + '%');
-            $("#Vali_StatusId").html("Yet To Start");
-            //$("#ValiDivId").removeClass("bg-grow-early");
-            //$("#ValiDivId").last().addClass("bg-grow-before");
+        //    //    $("#Vali_StatusId").html("Yet To Start/WIP");
+        //    //    $("#ValiDivId").removeClass("bg-grow-early");
+        //    //    $("#ValiDivId").last().addClass("bg-grow-before");
+        //    //}
+        //}
+        //else {
+        //     $("#ValiId").html(0 + "%");
+        //    $("#ValiId_Progress").css('width', 0 + '%');
+        //    $("#Vali_StatusId").html("Yet To Start");
+        //    //$("#ValiDivId").removeClass("bg-grow-early");
+        //    //$("#ValiDivId").last().addClass("bg-grow-before");
                 
 
-            }
+        //    }
         
 			//	},
 			//	error: function () {
@@ -1928,7 +1929,7 @@ background-attachment:local, local, scroll, scroll;
     var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
     var ctx2 = document.getElementById("chart-Conversion").getContext("2d");
     var ctx3 = document.getElementById("chart-Post_Conversion").getContext("2d");
-    var ctx4 = document.getElementById("chart-Validation").getContext("2d");
+    //var ctx4 = document.getElementById("chart-Validation").getContext("2d");
 
     //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
 
@@ -1944,8 +1945,8 @@ background-attachment:local, local, scroll, scroll;
         var ctx3 = document.getElementById("chart-Post_Conversion").getContext("2d");
         window.myRadialGauge = new Chart(ctx3, config3);
 
-        var ctx4 = document.getElementById("chart-Validation").getContext("2d");
-        window.myRadialGauge = new Chart(ctx4, config4);
+        //var ctx4 = document.getElementById("chart-Validation").getContext("2d");
+        //window.myRadialGauge = new Chart(ctx4, config4);
 
         //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
         //window.myRadialGauge = new Chart(ctx5, config5);
@@ -1968,9 +1969,9 @@ background-attachment:local, local, scroll, scroll;
     gradientStroke_3.addColorStop(0, "#FDB777");
     gradientStroke_3.addColorStop(1, "#FD9346");
 
-    var gradientStroke_4 = ctx4.createLinearGradient(500, 0, 100, 0);
-    gradientStroke_4.addColorStop(0, "#FB291B");
-    gradientStroke_4.addColorStop(1, "#CD1B2D");
+    //var gradientStroke_4 = ctx4.createLinearGradient(500, 0, 100, 0);
+    //gradientStroke_4.addColorStop(0, "#FB291B");
+    //gradientStroke_4.addColorStop(1, "#CD1B2D");
 
     //var gradientStroke_5 = ctx5.createLinearGradient(500, 0, 100, 0);
     //gradientStroke_5.addColorStop(0, "#FDB777");
@@ -2087,33 +2088,33 @@ background-attachment:local, local, scroll, scroll;
         }
     };
 
-    var config4 = {
-        type: "radialGauge",
-        data: {
-            labels: ["In Progress"],
-            datasets: [
-                {
-                    data: [60],
-                    backgroundColor: [gradientStroke_4],
-                    borderWidth: 0,
-                    label: "Score"
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            legend: {},
-            title: {
-                display: false,
-                text: "Radial gauge chart"
-            },
-            centerPercentage: 60,
-            centerArea: {
-                displayText: true,
-                text: "60%"
-            }
-        }
-    };
+    //var config4 = {
+    //    type: "radialGauge",
+    //    data: {
+    //        labels: ["In Progress"],
+    //        datasets: [
+    //            {
+    //                data: [60],
+    //                backgroundColor: [gradientStroke_4],
+    //                borderWidth: 0,
+    //                label: "Score"
+    //            }
+    //        ]
+    //    },
+    //    options: {
+    //        responsive: true,
+    //        legend: {},
+    //        title: {
+    //            display: false,
+    //            text: "Radial gauge chart"
+    //        },
+    //        centerPercentage: 60,
+    //        centerArea: {
+    //            displayText: true,
+    //            text: "60%"
+    //        }
+    //    }
+    //};
 
     //var config5 = {
     //    type: "radialGauge",
@@ -2152,9 +2153,9 @@ background-attachment:local, local, scroll, scroll;
     var height = $("#this").height();
     if( height > 0 ) {
         $('#this').css('height', '0');
-        $('#click-me').removeClass('fa-times').addClass('fa-bars');
+        $('#click-me').removeClass('fa-angle-up').addClass('fa-angle-down');
     } else {
-         $('#click-me').removeClass('fa-bars').addClass('fa-times');
+        $('#click-me').removeClass('fa-angle-down').addClass('fa-angle-up');
         var clone = $('#this').clone()
                     .css({'position':'absolute','visibility':'hidden','height':'auto'})
                     .addClass('slideClone')

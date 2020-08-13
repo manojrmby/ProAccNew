@@ -54,7 +54,7 @@ namespace ProAcc.Controllers
                     if (a)
                     {
                         ProAccEntities db = new ProAccEntities();
-                        var aa = db.UserMasters.Where(x=>x.LoginId=="kin_PM").ToList();
+                        var aa = db.UserMasters.ToList();
                         foreach (var item in aa)
                         {
                             ProAccEntities db1 = new ProAccEntities();

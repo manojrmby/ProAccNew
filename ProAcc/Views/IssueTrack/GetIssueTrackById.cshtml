@@ -8,7 +8,7 @@
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
 
-<div style="padding:1em;" id="CreateIssue">
+<div style="padding:1em; max-width:99.5%" id="CreateIssue">
     <a class="card-title">Update Issue</a>
     <hr />
     <div class="row">
@@ -125,34 +125,34 @@
         </div>
     </div>
 </div>
-
-<table class="table" id="tblIssueComments">
-    <thead>
-        <tr>
-            <th style="width:55px">Date</th>
-            <th style="width:300px">Description</th>
-            <th>Comments</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in ViewBag.ITM_Comments)
-        {
+<div style="max-width:99.5%;">
+    <table class="table" id="tblIssueComments">
+        <thead>
             <tr>
-                <td>
-                    <a class="txtG" value="@item.CreatedDate">@item.CreatedDate.ToString("dd/MM/yyyy")</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Description">@item.Description</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.HistoryComment">@item.HistoryComment</a>
-                </td>
-
+                <th style="width:55px">Date</th>
+                <th style="width:300px">Description</th>
+                <th>Comments</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.ITM_Comments)
+            {
+                <tr>
+                    <td>
+                        <a class="txtG" value="@item.CreatedDate">@item.CreatedDate.ToString("dd/MM/yyyy")</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Description">@item.Description</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.HistoryComment">@item.HistoryComment</a>
+                    </td>
 
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <script>
     $(document).ready(function () {

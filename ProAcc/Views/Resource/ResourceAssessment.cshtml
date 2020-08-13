@@ -4,7 +4,7 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
     <a class="card-title">Resource Allocation</a>
-<div class="row" style="padding: 1em;">
+<div class="row" style="padding: 1em; max-width:100%;">
     <div class="col-lg-12 card">
         <div class="row">
             @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))

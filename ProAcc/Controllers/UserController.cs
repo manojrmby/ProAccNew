@@ -202,7 +202,7 @@ namespace ProAcc.Controllers
                 {
                     return HttpNotFound();
                 }
-
+                userMaster.Password= _Base.PasswordDecrypt(userMaster.Password.ToString());
                 ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).OrderBy(x=>x.UserType).ToList();
                 var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
                 var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
@@ -227,6 +227,7 @@ namespace ProAcc.Controllers
                     userMaster.Modified_On = DateTime.UtcNow;
                     userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
                     userMaster.isActive = true;
+                    userMaster.Password = _Base.PasswordEncrypt(userMaster.Password.ToString());
                     if (userMaster.UserTypeID == 1)
                     {
                         var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
