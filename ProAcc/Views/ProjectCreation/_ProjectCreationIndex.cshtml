@@ -97,7 +97,7 @@
                 $("#btnProjectCreate").hide();
                 $("#prjtCreate").hide();
                 $("#prjtUpdate").show();
-                 $('html, body').animate({scrollTop: $("#Prjt-Create").offset().top}, 1000);
+                $(".app-main_Scroll").animate({ scrollTop: 0 }, 1000);
             },
             error: function (err) {
                 alert(err.responseText);

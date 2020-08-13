@@ -90,7 +90,6 @@
     });
 
     $(".editActivityCreation").on("click", function () {
-       
         var id = $(this).next().val();
         $.ajax({
             url: '@Url.Action("GetActivityCreationById","Activity")',
@@ -116,8 +115,9 @@
                     $("#btnAddNew").show();
                     $("#btnActivityCreCreate").hide();
                     $("#activityCreation").hide();
-                    $("#activityUpdation").show();
-
+                $("#activityUpdation").show();
+                $(".app-main_Scroll").animate({ scrollTop: 0 }, 1000);
+                //$("").scrollTop(0);
                  //$.each(result, function (index, item) {
                  //    $("#activityrid").val(item.Activity_ID);
                  //   $("#txtTask").val(item.Task);
