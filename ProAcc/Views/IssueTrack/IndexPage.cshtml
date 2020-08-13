@@ -51,7 +51,7 @@
             <td>
                 @if (item.Status != "Completed")
                 {
-                    <a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetIssueTrackById", "IssueTrack", new { id = item.Issuetrack_Id })"></a>
+                    <a class="fa fa-edit" data-placement="top" href="@Url.Action("GetIssueTrackById", "IssueTrack", new { id = item.Issuetrack_Id })"></a>
                 }
             </td>
             

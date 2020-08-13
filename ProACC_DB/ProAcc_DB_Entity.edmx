@@ -16,6 +16,7 @@
           <Property Name="Sequence_Num" Type="int" />
           <Property Name="ApplicationAreaID" Type="int" Nullable="false" />
           <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="EST_hours" Type="float" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="Cre_on" Type="datetime" Nullable="false" />
           <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
@@ -1019,6 +1020,7 @@
           <NavigationProperty Name="Buldingblock" Relationship="ProAccModel.FK_ActivityMaster_Buldingblock" FromRole="ActivityMaster" ToRole="Buldingblock" />
           <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="ActivityMaster" ToRole="PhaseMaster" />
           <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_ActivityMaster_RoleMaster" FromRole="ActivityMaster" ToRole="RoleMaster" />
+          <Property Name="EST_hours" Type="Double" />
         </EntityType>
         <EntityType Name="Buldingblock">
           <Key>
@@ -1540,6 +1542,7 @@
           <EntitySetMapping Name="ActivityMasters">
             <EntityTypeMapping TypeName="ProAccModel.ActivityMaster">
               <MappingFragment StoreEntitySet="ActivityMaster">
+                <ScalarProperty Name="EST_hours" ColumnName="EST_hours" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
                 <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />

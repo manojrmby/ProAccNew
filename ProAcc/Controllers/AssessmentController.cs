@@ -469,7 +469,8 @@ namespace ProAcc.Controllers
             if (!string.IsNullOrEmpty(CustomerId))
             {
                 Guid IDCustomer = Guid.Parse(CustomerId);
-                var query = from u in db.Projects where (u.Customer_Id == IDCustomer && u.isActive == true) select u;
+                //var query = from u in db.Projects where (u.Customer_Id == IDCustomer && u.isActive == true) select u;
+                var query = db.Projects.Where(x => x.Customer_Id == IDCustomer && x.isActive == true).OrderBy(x=>x.Project_Name).ToList();
                 if (query.Count() > 0)
                 {
                     foreach (var v in query)

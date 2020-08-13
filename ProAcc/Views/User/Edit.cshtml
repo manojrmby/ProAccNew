@@ -413,12 +413,13 @@
 
     function TaskPwd() {
         var str = $("#txtPassword").val();
-        var filter = /^(?=.*\d)(?=.*[a-zA-Z])(?!.*\s).{6,8}$/;
-        if (str.length < 6 || str.length > 8) {
+        //var filter = /^(?=.*\d)(?=.*[a-zA-Z])(?!.*\s).{6,8}$/;
+         var filter = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
+        if (str.length < 6) {
             $("#lblPassword").html("Password char should be 6-8").show();
         }
         else if (!filter.test(str)) {
-            $("#lblPassword").html("Password contains atlease one special char and num").show();
+            $("#lblPassword").html("password should contain at least one character,Special char and number").show();
         }
         else {
             $("#lblPassword").html("");

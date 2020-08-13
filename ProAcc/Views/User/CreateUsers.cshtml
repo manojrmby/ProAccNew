@@ -355,12 +355,15 @@
         function TaskPwd() {
            
            var str = $("#Passwd").val();
-            var filter = /^(?=.*\d)(?=.*[a-zA-Z])(?!.*\s).{6,8}$/;
+            //var filter = /^(?=.*\d)(?=.*[a-zA-Z])(?!.*\s).{6,8}$/; //{IMP}
+            @*var filter = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;*@
+            var filter = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
+            //var filter = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
             if (str.length < 6) {
                  $("#lblPwd").html("password should contain 6-8 characters").show();
             }
             else if (!filter.test(str)) {
-                $("#lblPwd").html("password should contain at least one character and a number").show();
+                $("#lblPwd").html("password should contain at least one character,Special char and number").show();
             }
             else {
                 $("#lblPwd").html("");
