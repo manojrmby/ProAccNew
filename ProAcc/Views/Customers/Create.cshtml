@@ -222,7 +222,7 @@
         $("#txtCustomerPhone").keypress(function (e) {
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 event.preventDefault();
-                $("#lblCustomerPhone").html("Numbers Only").show().fadeOut(5000);
+                $("#lblCustomerPhone").html("Numbers Only").show();
             }
             else {
                 $("#lblCustomerPhone").html("").show();
@@ -331,7 +331,7 @@
             phone = $("#txtCustomerPhone").val();
             phone = phone.replace(/[^0-9]/g,'');
             if (phone.length != 10) {
-                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
+                $("#lblCustomerPhone").html("Phone number must be 10 digits").show();
             }
             else {
                 $("#lblCustomerPhone").html("").show();
@@ -412,7 +412,7 @@
         }
         else if (custphone == "")
         {
-            $("#lblCustomerPhone").html("Please enter the Customer Phone").show().fadeOut(2000);
+            $("#lblCustomerPhone").html("Please enter the Customer Phone").show();
             //$("#error-msg").html("Please enter a valid mobile number").show().fadeOut(2000);
         }
         else if (custEmail=="")

@@ -8,7 +8,14 @@
 @*<script src="~/Asset/Scripts/Chart.js"></script>
 <script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
 <script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>*@
-
+    <div class="row">
+        <div class="col-6">
+            <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
+        </div>
+        <div class="col-6">
+            <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+        </div>
+    </div>
 <a class="card-title">Readiness Report</a>
 @*<h5><b>Readiness Report</b> </h5>*@
 <div style="padding:1em;">

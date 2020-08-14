@@ -9,67 +9,67 @@
  border: 1px solid #ced4da !important;
 }
 </style>*@
-
-<table class="table" id="tblActivityCreation">
-    <thead>
-        <tr>
-            @*<th cope="col" style="width:3%;text-align:center;">
-            #
-        </th>*@
-            <th>Task</th>
-            @*<th>Cre_on</th>*@
-            <th>Building Blocks</th>
-            <th>Phase</th>
-            <th>Role</th>
-            <th>Application Area</th>
-            <th>Sequence</th>
-            <th>Estimated</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @*@{int j = 1;}*@
-        @foreach (var item in Model)
-        {
-        <tr>
-            @*<td>
-            @j
-        </td>
-        @{j++;
-        }*@
-            <td>
-                <a class="txtG" value="@item.Task">@item.Task</a>
-            </td>
-            @*<td>
-            <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
-        </td>*@
-            <td>
-                <a class="txtG" value="@item.BuildingBlock_id">@item.Buldingblock.Block_Name</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.PhaseID">@item.PhaseMaster.PhaseName</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.RoleID">@item.RoleMaster.RoleName</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.ApplicationAreaID">@item.ApplicationAreaMaster.ApplicationArea</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Sequence_Num">@item.Sequence_Num</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.EST_hours">@item.EST_hours</a>
-            </td>
-            <td>
-                <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" />
-                <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Activity_ID" />
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
-
+<div style="max-width:99.5%;">
+    <table class="table" id="tblActivityCreation">
+        <thead>
+            <tr>
+                @*<th cope="col" style="width:3%;text-align:center;">
+                        #
+                    </th>*@
+                <th>Task</th>
+                @*<th>Cre_on</th>*@
+                <th>Building Blocks</th>
+                <th>Phase</th>
+                <th>Role</th>
+                <th>Application Area</th>
+                <th>Sequence</th>
+                <th>Est.Hrs</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@{int j = 1;}*@
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td>
+                            @j
+                        </td>
+                        @{j++;
+                        }*@
+                    <td>
+                        <a class="txtG" value="@item.Task">@item.Task</a>
+                    </td>
+                    @*<td>
+                            <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+                        </td>*@
+                    <td>
+                        <a class="txtG" value="@item.BuildingBlock_id">@item.Buldingblock.Block_Name</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.PhaseID">@item.PhaseMaster.PhaseName</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.RoleID">@item.RoleMaster.RoleName</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.ApplicationAreaID">@item.ApplicationAreaMaster.ApplicationArea</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Sequence_Num">@item.Sequence_Num</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.EST_hours">@item.EST_hours</a>
+                    </td>
+                    <td>
+                        <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" />
+                        <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Activity_ID" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <script type="text/javascript">
 

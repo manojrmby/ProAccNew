@@ -250,6 +250,7 @@
         };
 
         $("#jqGrid").jqGrid({
+            // url: "@Url.Action("PMTaskGetData", "ProjectMonitor",new { IDProject = TempData["PhaseID"]})",
             url: "@Url.Action("PMTaskGetData", "ProjectMonitor")?IDProject=" + IDProject,
             //editurl: "@Url.Action("SubmitPMTaskMonitor","ProjectMonitor")",
             datatype: "json",
@@ -560,7 +561,7 @@
             },
              gridComplete: function () {
                // alert("tdyt");
-               
+
                 Show_HideEdit();
 
             }

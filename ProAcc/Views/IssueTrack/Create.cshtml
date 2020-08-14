@@ -284,6 +284,7 @@
             });
     $('#SubmitInstance').click(function () {
         //debugger;
+        ResetIssue();
         $("#CreateIssue").show();
          var id = $("#IDProject").val();
         $.ajax({
@@ -533,7 +534,7 @@
                         if (response == "success") {
                             Notiflix.Notify.Success('Issue Created successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             location.href = '@Url.Action("IndexPage", "IssueTrack")';
-                            //ResetIssue();
+                            ResetIssue();
                         }
                     },
                     failure: function (response) {

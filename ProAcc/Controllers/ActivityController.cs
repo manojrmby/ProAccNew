@@ -42,6 +42,7 @@ namespace ProAcc.Controllers
         public ActionResult GetActivities()
         {
             var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.Sequence_Num != null).OrderBy(a => a.Sequence_Num).ToList();
+            
             return PartialView("_ActivityCreationIndex", Activitylist);
         }
         [HttpGet]

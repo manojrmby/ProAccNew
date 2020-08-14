@@ -9,52 +9,56 @@
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
-<a class="card-title">Customer List</a>
-<hr />
-<table class="table" id="tblCustomer"> @*_search*@
-    <thead>
-        <tr>
-            <th>Customer Name</th>
-            <th>Industry Sector</th>
-            <th>Contact Person</th>
-            <th>Contact Person Phone</th>
-            <th>Contact Person Email</th>
-            <th>Created</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                <a class="txtG" value="@item.Company_Name">@item.Company_Name</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.IndustrySector_ID">@item.IndustrySector.Industry_Sector</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Contact">@item.Contact</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Phone">@item.Phone</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Email">@item.Email</a>
-            </td>
-            <td>
-                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
-            </td>
-            <td>
-                &nbsp;&nbsp;<a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetCustomerById","Customers", new { id = item.Customer_ID })"></a>
-                @*<a href="#" id="btnEdit" class="editCustomer fa fa-edit"></a><input type="hidden" value="@item.Customer_ID" /> |*@
-                <a href="#" class="btnDelete fa fa-trash"></a><input type="hidden" value="@item.Customer_ID" />
-                @*<a href="#" class="btnDownload fa fa-download"></a><input type="hidden" value="@item.Customer_ID" />*@
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+<div style="max-width: 99.5%">
+    <a class="card-title">Customer List</a>
+    <hr />
+    <table class="table" id="tblCustomer">
+        @*_search*@
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Industry Sector</th>
+                <th>Contact Person</th>
+                <th>Contact Person Phone</th>
+                <th>Contact Person Email</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="txtG" value="@item.Company_Name">@item.Company_Name</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.IndustrySector_ID">@item.IndustrySector.Industry_Sector</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Contact">@item.Contact</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Phone">@item.Phone</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Email">@item.Email</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;<a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetCustomerById","Customers", new { id = item.Customer_ID })"></a>
+                        @*<a href="#" id="btnEdit" class="editCustomer fa fa-edit"></a><input type="hidden" value="@item.Customer_ID" /> |*@
+                        <a href="#" class="btnDelete fa fa-trash"></a><input type="hidden" value="@item.Customer_ID" />
+                        @*<a href="#" class="btnDownload fa fa-download"></a><input type="hidden" value="@item.Customer_ID" />*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
 
 
 <script type="text/javascript">

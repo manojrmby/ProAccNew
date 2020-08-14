@@ -64,14 +64,21 @@ namespace ProAcc.Controllers
                             us.EMail = item.EMail;
                             us.Phone = item.Phone;
                             us.LoginId = item.LoginId;
+                            us.Password = _Base.PasswordEncrypt(item.Password);
+                            us.RoleID = item.RoleID;
+                            us.UserTypeID = item.UserTypeID;
+                            us.Customer_Id = item.Customer_Id;
+
                             us.isActive = item.isActive;
                             us.IsDeleted = item.IsDeleted;
-                            us.UserTypeID = item.UserTypeID;
-                            us.RoleID= item.RoleID;
+                            
+                            
                             us.Cre_on = item.Cre_on;
                             us.Cre_By = item.Cre_By;
-                            us.Password = _Base.PasswordEncrypt(item.Password);
-                            us.Modified_by = Guid.Empty;
+
+                            
+                            us.Modified_by = item.Modified_by;
+                            us.Modified_On = item.Modified_On;
                             db1.Entry(us).State = EntityState.Modified;
                             db1.SaveChanges();
 

@@ -360,10 +360,10 @@
             var filter = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
             //var filter = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
             if (str.length < 6) {
-                 $("#lblPwd").html("password should contain 6-8 characters").show();
+                 $("#lblPwd").html("Password should contain 6-8 characters").show();
             }
             else if (!filter.test(str)) {
-                $("#lblPwd").html("password should contain at least one character,Special char and number").show();
+                $("#lblPwd").html("Password should contain at least one character,Special char and number").show();
             }
             else {
                 $("#lblPwd").html("");
@@ -400,7 +400,7 @@
              phone = $("#txtMob").val();
             phone = phone.replace(/[^0-9]/g,'');
             if (phone.length != 10) {
-                $("#lblMob1").html("Phone number must be 10 digits").show().fadeOut(1000);
+                $("#lblMob1").html("Phone number must be 10 digits").show();
             }
             else {
                 $("#lblMob1").html("").show();
@@ -476,7 +476,7 @@
         var Passwd = $("#Passwd").val().trim();
         var UserTypeID = $("#UserTypeID").val().trim();
         var RoleID = $("#RoleID").val().trim();
-        var Customer_Id = $("#Customer_Id").val();
+        var Customer_Id = $("#Customer_Id").val(); 
 
         var lblName1 = $("#lblName1").text().trim();
         var lblMob1 = $("#lblMob1").text().trim();
@@ -484,11 +484,12 @@
         var lblEmail1 = $("#lblEmail1").text().trim();
         var Status1 = $("#StatusConsultant").text().trim();
         var lblAltConsPwd = $("#lblAltConsPwd").text().trim();
+        var lblPwd = $("#lblPwd").text().trim();
 
 
 
         if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 && UserTypeID!=0 &&
-            lblName1 == "" && lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "") {
+            lblName1 == "" && lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "" && lblPwd=="") {
 
             $("#btnConsultantCreate").prop("disabled", false);
         }
