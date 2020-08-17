@@ -21,6 +21,7 @@
                 <th>Assigned</th>
                 <th style="width:130px">Status</th>
                 <th style="width:89px">Created Date</th>
+                @*<th>Running ID</th>*@
                 <th>Actions</th>
             </tr>
         </thead>
@@ -49,6 +50,9 @@
                     <td>
                         <a class="txtG" value="@item.StartDate">@item.StartDate.ToString("dd/MM/yyyy")</a>
                     </td>
+                    @*<td>
+                        <a class="txtG" value="@item.RunningID">@item.RunningID</a>
+                    </td>*@
                     <td>
                         @if (item.Status != "Completed")
                         {
@@ -69,6 +73,16 @@
     $(document).ready(function () {
 
         $("#tblIssue").dataTable();
+
+        //$("#tblIssue").dataTable({
+        //    "order": [[8, 'desc']],
+        //    "columnDefs": [
+        //        {
+        //            "targets": [7],
+        //            "visible": false
+        //        }
+        //    ]
+        //});
     });
 
      @*$(".editIssueTrack").on("click", function () {

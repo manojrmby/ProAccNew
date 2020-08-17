@@ -743,21 +743,21 @@ background-attachment:local, local, scroll, scroll;
                 percentage(Result);
                 Data = Result[0];
                 
-                data_Assessment = [Data.COMPLETE, Data.WIP, Data.ONHOLD, Data.YetToStart, Data.NA];
-				 labels = ["Completed", "Work In Progress", "On Hold", "Yet To Start","Not Apllicable"];
+                data_Assessment = [Data.COMPLETE, Data.WIP, Data.ONHOLD, Data.YetToStart]; //, Data.NA
+				 labels = ["Completed", "Work In Progress", "On Hold", "Yet To Start"]; //,"Not Apllicable"
                 render_Ass_Chart(data_Assessment, labels);
 
                 Data1=Result[1];
-                data_Pre_Con = [Data1.COMPLETE, Data1.WIP, Data1.ONHOLD, Data1.YetToStart, Data1.NA];
+                data_Pre_Con = [Data1.COMPLETE, Data1.WIP, Data1.ONHOLD, Data1.YetToStart]; //, Data1.NA
                 render_Pre_Conversion_Chart(data_Pre_Con, labels);
 
                  Data2=Result[2];
-                data_Convertion = [Data2.COMPLETE, Data2.WIP, Data2.ONHOLD, Data2.YetToStart, Data2.NA];
+                data_Convertion = [Data2.COMPLETE, Data2.WIP, Data2.ONHOLD, Data2.YetToStart]; //, Data2.NA
                 render_Conversion_Chart(data_Convertion, labels);
 
                  Data3=Result[3];
-                data_Post_Con = [Data3.COMPLETE, Data3.WIP, Data3.ONHOLD, Data3.YetToStart, Data3.NA];
-                render_Post_Conversion_Chart(data_Post_Con, labels);
+                data_Post_Con = [Data3.COMPLETE, Data3.WIP, Data3.ONHOLD, Data3.YetToStart]; //, Data3.NA
+                 render_Post_Conversion_Chart(data_Post_Con, labels);
 
                 // Data4=Result[4];
                 //data_Validation = [Data4.COMPLETE, Data4.WIP, Data4.ONHOLD, Data4.YetToStart, Data4.NA];
@@ -850,7 +850,7 @@ background-attachment:local, local, scroll, scroll;
 
    function render_Ass_Chart(data, labels) {
 		//Chart.defaults.global.defaultFontFamily = "Verdana";
-       var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+       var Total = data[0] + data[1] + data[2] + data[3] //+ data[4];
        if (Total == 0) {
            var ID = 'Chart_Assessment';
            Render_No_Data(ID)
@@ -956,7 +956,7 @@ background-attachment:local, local, scroll, scroll;
     
    function render_Pre_Conversion_Chart(data, labels) {
         //Chart.defaults.global.defaultFontFamily = "Verdana";
-       var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+       var Total = data[0] + data[1] + data[2] + data[3] //+ data[4];
        if (Total == 0) {
            var ID = 'chart-Pre_Conversion';
            Render_No_Data(ID)
@@ -1065,7 +1065,7 @@ background-attachment:local, local, scroll, scroll;
     }
    function render_Conversion_Chart(data, labels) {
 		//Chart.defaults.global.defaultFontFamily = "Verdana";
-       var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+       var Total = data[0] + data[1] + data[2] + data[3] //+ data[4];
        if (Total == 0) {
            var ID = 'chart-Conversion';
            Render_No_Data(ID)
@@ -1178,7 +1178,7 @@ background-attachment:local, local, scroll, scroll;
     
      function render_Post_Conversion_Chart(data, labels) {
          //Chart.defaults.global.defaultFontFamily = "Verdana";
-      var Total = data[0] + data[1] + data[2] + data[3] + data[4];
+      var Total = data[0] + data[1] + data[2] + data[3] //+ data[4];
          if (Total == 0) {
              var ID = 'chart-Post_Conversion';
              Render_No_Data(ID)

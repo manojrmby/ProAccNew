@@ -121,6 +121,7 @@ namespace ProAcc.BL
         {
             try
             {
+                ProAccEntities db = new ProAccEntities();
                 MailMessage msg = new MailMessage();
                 if (SM.Q_UserID > 0)
                 {
@@ -139,12 +140,24 @@ namespace ProAcc.BL
                         msg.CC.Add(CCAdd);
                     }
                 }
+                else if(SM.subject== "IssueTrack")
+                {
+                    MailAddress toAddress = new MailAddress(To, Name);
+                    msg.To.Add(toAddress);
+
+                    var RoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager").FirstOrDefault().RoleId;
+                    var managerid = (from PM in db.ProjectMonitors
+                                     join I in db.Instances on PM.InstanceID equals I.Instance_id
+                                     join P in db.Projects on I.Project_ID equals P.Project_Id
+                                     select P.ProjectManager_Id ).FirstOrDefault();
+                    var cc = db.UserMasters.Where(x => x.isActive == true&&x.RoleID==RoleId && x.UserId== managerid).FirstOrDefault().EMail;
+                    msg.CC.Add(cc);
+                }
                 else
                 {
                     MailAddress toAddress = new MailAddress(To, Name);
                     msg.To.Add(toAddress);
                 }
-
                 
                 
                 msg.From=fromAddress;
@@ -172,7 +185,7 @@ namespace ProAcc.BL
 
                 NetworkCredential smtpUserInfo = new NetworkCredential(userName, password);
                 client.Credentials = smtpUserInfo;
-                ProAccEntities db = new ProAccEntities();
+               // ProAccEntities db = new ProAccEntities();
                 client.Credentials = smtpUserInfo;
 
                 
