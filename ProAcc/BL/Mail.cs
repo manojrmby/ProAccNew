@@ -203,7 +203,7 @@ namespace ProAcc.BL
             {
                 string pattern = "(,)";
                 string input = Body;
-                string Task = "", Phase = "", projectName = "", Instance = "",User_ID="";
+                string Task = "", Phase = "", projectName = "", Instance = "",User_ID="", Issue="";
                 Regex regex = new Regex(pattern);
 
                 using (StreamReader reader = new StreamReader(_TemplatePath + TemplateName.Trim() + ".html"))
@@ -219,6 +219,20 @@ namespace ProAcc.BL
                     string[] substrings = regex.Split(input);
                     body = body.Replace("{MailId}", To);
 
+                }
+                else if(TemplateName.Trim() == "T6")
+                {
+                    string[] substrings = regex.Split(input);
+                    Issue = substrings[0].ToString();
+                    Phase = substrings[2].ToString();
+                    Instance = substrings[4].ToString();
+                    projectName = substrings[6].ToString();
+
+                    body = body.Replace("{Name}", Name);
+                    body = body.Replace("{IssueName}", Issue);
+                    body = body.Replace("{PhaseName}", Phase);
+                    body = body.Replace("{InstanceName}", Instance);
+                    body = body.Replace("{projectName}", projectName);
                 }
                 else
                 {

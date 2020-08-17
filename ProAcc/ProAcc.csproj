@@ -247,6 +247,7 @@
     <Content Include="Asset\MailTemplate\T3.HTML" />
     <Content Include="Asset\MailTemplate\T4.HTML" />
     <Content Include="Asset\MailTemplate\T5.HTML" />
+    <Content Include="Asset\MailTemplate\T6.HTML" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.css" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.js" />
     <Content Include="Asset\Notiflix\notiflix-aio-2.3.1.min.js" />
@@ -608,6 +609,7 @@
     <Compile Include="BL\FileUpload_Pic.cs" />
     <Compile Include="BL\LogHelper.cs" />
     <Compile Include="BL\Mail.cs" />
+    <Compile Include="BL\Model\ActivityMasterModel.cs" />
     <Compile Include="BL\Model\AuditReport.cs" />
     <Compile Include="BL\Model\CreateViewModel.cs" />
     <Compile Include="Asset\images\CrystalReport.cs">

@@ -2114,7 +2114,8 @@ namespace ProAcc.BL
                 dB.addIn("@Description", blism.Description);
 
                 dB.ExecuteScalar();
-
+                //Boolean s = AddIssueTrack_Mail(blism);
+                //if(s)
                 Status = true;
             }
             catch (Exception ex)
@@ -2193,6 +2194,74 @@ namespace ProAcc.BL
             }
             return Status;
         }
+
+        public List<ActivityMasterModel> Sp_GetActivityMasterData()
+        {
+            List<ActivityMasterModel> AMM = new List<ActivityMasterModel>();
+            DataTable dt = new DataTable();
+
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetActivity");
+            dt = dB.ExecuteDataTable();
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ActivityMasterModel a = new ActivityMasterModel();
+                    a.Activity_ID = Convert.ToInt32(dr["Activity_ID"].ToString());
+                    a.Task = dr["Task"].ToString();
+                    a.BuildingBlock_id = Convert.ToInt32(dr["BuildingBlock_id"].ToString());
+                    a.PhaseID = Convert.ToInt32(dr["PhaseID"].ToString());
+                    a.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
+                    a.ApplicationAreaID = Convert.ToInt32(dr["ApplicationAreaID"].ToString());
+                    a.EST_hours1 = dr["EST_hours"].ToString().Replace(".",":");
+                    a.Buldingblock = dr["Buldingblock"].ToString();
+                    a.Phase = dr["Phase"].ToString();
+                    a.Role = dr["Role"].ToString();
+                    a.ApplicationArea = dr["ApplicationArea"].ToString();
+
+                    AMM.Add(a);
+                }
+            }
+
+            return AMM;
+        }
+
+        public ActivityMasterModel Sp_GetActivityCreationById(int? id)
+        {
+
+            LogHelper _log = new LogHelper();
+            DataTable dt = new DataTable();
+
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "EditActivityCreationById");
+            dB.addIn("@ID", id);
+            dt = dB.ExecuteDataTable();
+            ActivityMasterModel a = new ActivityMasterModel();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                   // ActivityMasterModel a = new ActivityMasterModel();
+                    a.Activity_ID = Convert.ToInt32(dr["Activity_ID"].ToString());
+                    a.Task = dr["Task"].ToString();
+                    a.BuildingBlock_id = Convert.ToInt32(dr["BuildingBlock_id"].ToString());
+                    a.PhaseID = Convert.ToInt32(dr["PhaseID"].ToString());
+                    a.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
+                    a.ApplicationAreaID = Convert.ToInt32(dr["ApplicationAreaID"].ToString());
+                    a.EST_hours1 = dr["EST_hours"].ToString().Replace(".", ":");
+                    a.Buldingblock = dr["Buldingblock"].ToString();
+                    a.Phase = dr["Phase"].ToString();
+                    a.Role = dr["Role"].ToString();
+                    a.ApplicationArea = dr["ApplicationArea"].ToString();
+                }
+            }
+            return a;
+           
+        }
+
+       
 
         public List<IssueTrackModel> Sp_GetIssueTrackData()
         {
@@ -2604,6 +2673,31 @@ namespace ProAcc.BL
             }
             return ListM;
         }
+
+        //public Boolean AddIssueTrack_Mail(IssueTrackModel ITM)
+        //{
+        //    Boolean Status = false;
+
+        //    LogHelper _log = new LogHelper();
+        //    try
+        //    {
+        //        DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+        //        dB.addIn("@Type", "IssueTrack");
+        //        //dB.addIn("@Q_Mail", MailID);
+        //        dB.addIn("@UserID", ITM.AssignedTo);
+        //        //dB.addIn("@Issuetrack_Id", ITM.Issuetrack_Id);
+        //        dB.addIn("@Cre_By", "00000000-0000-0000-0000-000000000000");
+        //        dB.ExecuteScalar();
+
+        //        Status = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _log.createLog(ex, "-->AddIssueTrack_Mail" + ex.Message.ToString());
+        //    }
+
+        //    return Status;
+        //}
         #endregion
 
 

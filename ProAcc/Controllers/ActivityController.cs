@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using ProAcc.BL;
+using ProAcc.BL.Model;
 using ProACC_DB;
 
 namespace ProAcc.Controllers
@@ -15,6 +16,7 @@ namespace ProAcc.Controllers
     [Authorize(Roles = "Admin")]
     public class ActivityController : Controller
     {
+        Base _Base = new Base();
         ProAccEntities db = new ProAccEntities();
         // GET: Activity
         public ActionResult Index()
@@ -41,9 +43,10 @@ namespace ProAcc.Controllers
         [HttpGet]
         public ActionResult GetActivities()
         {
-            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.Sequence_Num != null).OrderBy(a => a.Sequence_Num).ToList();
-            
-            return PartialView("_ActivityCreationIndex", Activitylist);
+            //var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.Sequence_Num != null).OrderBy(a => a.Sequence_Num).ToList();
+            List<ActivityMasterModel> Activitylist = _Base.Sp_GetActivityMasterData(); //Sp_GetIssueTrackData();
+            ViewBag.AMM = Activitylist;
+            return PartialView("_ActivityCreationIndex");
         }
         [HttpGet]
         public ActionResult GetAllTask(int id)
@@ -211,19 +214,12 @@ namespace ProAcc.Controllers
             {
                 return HttpNotFound();
             }
-            //var Activity = db.ActivityMasters.Find(id);
-            var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task, p.ApplicationAreaID, p.PhaseID, p.RoleID,p.Cre_on,p.Cre_By,p.Sequence_Num ,p.BuildingBlock_id,p.EST_hours}).FirstOrDefault();
-            //TempData["Cre_On"] = activity.Cre_on;
-            //var Activity = db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task,p.ApplicationArea,p.PhaseID,p.RoleID });
+
+            var Activity = _Base.Sp_GetActivityCreationById(id);
+                //db.ActivityMasters.Where(x => x.isActive == true && x.Activity_ID == id).Select(p => new { p.Activity_ID, p.Task, p.ApplicationAreaID, p.PhaseID, p.RoleID,p.Cre_on,p.Cre_By,p.Sequence_Num ,p.BuildingBlock_id,p.EST_hours}).FirstOrDefault();
 
             return Json(Activity, JsonRequestBehavior.AllowGet);
-            //var list = JsonConvert.SerializeObject(Activity, Formatting.None,
-            //new JsonSerializerSettings()
-            //{
-            //    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            //});
-
-            //return Content(list, "application/json");
+            
         }
 
         [HttpPost]
