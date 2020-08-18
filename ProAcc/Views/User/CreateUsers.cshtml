@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                     <label class="control-label col-md-4 required">Phone Number</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" maxlength="10" id="txtMob" />
@@ -82,19 +82,19 @@
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMob1">&nbsp;</span>
                     </div>
-            </div>
+            </div>*@
 
-            @*<div class="form-group">
+            <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="hidden" class="form-control" id="selectedCountry">
-                    <input type="tel" class="form-control" id="txtMob" style="width: 135%;">
+                    <input type="tel" class="form-control" id="txtMob" maxlength="15" style="width: 135%;">
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
                     &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
-            </div>*@
+            </div>
 
             <div class="form-group">
                 <label class="control-label col-md-4 required">User Type</label>
@@ -276,31 +276,37 @@
 
         
 
-        //var input = document.querySelector("#txtMob"),
-        //    errorMsg = document.querySelector("#error-msg"),
-        //    validMsg = document.querySelector("#valid-msg");
+        var input = document.querySelector("#txtMob"),
+            errorMsg = document.querySelector("#error-msg"),
+            validMsg = document.querySelector("#valid-msg");
 
-        //// Error messages based on the code returned from getValidationError
+        // Error messages based on the code returned from getValidationError
         //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        var errorMap = ["Please enter a valid mobile number", "Invalid country code", "Please enter a valid mobile number", "Please enter a valid mobile number", "Invalid number"];
 
-        //var intl = window.intlTelInput(input, {
-        //     utilsScript: "../Asset/js/utils.js",
-        //     separateDialCode: true 
-        //});
+        var intl = window.intlTelInput(input, {
+             utilsScript: "../Asset/js/utils.js",
+            separateDialCode: true,
+             preferredCountries: ["in", "us", "dk", "gb"]
+        });
 
-        //var reset = function () {
-        //    input.classList.remove("error");
-        //    errorMsg.innerHTML = "";
-        //    errorMsg.classList.add("hide");
-        //    validMsg.classList.add("hide");
-        //};
+        var countryData = intl.getSelectedCountryData().iso2;
+        $("#selectedCountry").val(countryData);
 
-        //var countryCode;
-        //input.addEventListener('countrychange', function () {
-        //    countryCode = intl.getSelectedCountryData().iso2;
-        //    $("#selectedCountry").val(countryCode);
-        //    //alert(countryCode)
-        //})
+        var reset = function () {
+            input.classList.remove("error");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
+
+        var countryCode;
+        input.addEventListener('countrychange', function () {
+            countryCode = intl.getSelectedCountryData().iso2;
+            $("#selectedCountry").val(countryCode);
+             $("#txtMob").val("");
+            //alert(countryCode)
+        })
 
         //// Validate on blur event
         //input.addEventListener('blur', function () {
@@ -320,9 +326,24 @@
         //    SubmitConsultant();
         //});
 
-        //// Reset on keyup/change event
-        //input.addEventListener('change', reset);
-        //input.addEventListener('keyup', reset);
+        function TaskPhone() {
+             reset();
+            if (input.value.trim()) {
+                if (intl.isValidNumber()) {
+                    validMsg.classList.remove("hide");
+
+                } else {
+                    input.classList.add("error");
+                    var errorCode = intl.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                }
+            }
+            SubmitConsultant();
+        }
+        // Reset on keyup/change event
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
 
         $("#Passwd,#txtConsCnfmPassword").bind('copy paste cut', function (e) {
             e.preventDefault();
@@ -396,17 +417,17 @@
             typingTimer = setTimeout(TaskPhone, doneTypingInterval);
         });
 
-        function TaskPhone() {
-             phone = $("#txtMob").val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblMob1").html("Phone number must be 10 digits").show();
-            }
-            else {
-                $("#lblMob1").html("").show();
-            }
-            SubmitConsultant();
-        }
+        //function TaskPhone() {
+        //     phone = $("#txtMob").val();
+        //    phone = phone.replace(/[^0-9]/g,'');
+        //    if (phone.length != 10) {
+        //        $("#lblMob1").html("Phone number must be 10 digits").show();
+        //    }
+        //    else {
+        //        $("#lblMob1").html("").show();
+        //    }
+        //    SubmitConsultant();
+        //}
 
         // on keyup, start the countdown
         $('#txtConsCnfmPassword').on('keyup', function () {
@@ -479,8 +500,8 @@
         var Customer_Id = $("#Customer_Id").val(); 
 
         var lblName1 = $("#lblName1").text().trim();
-        var lblMob1 = $("#lblMob1").text().trim();
-        //var lblMob1 = $("#error-msg").text().trim();
+        //var lblMob1 = $("#lblMob1").text().trim();
+        var lblMob1 = $("#error-msg").text().trim();
         var lblEmail1 = $("#lblEmail1").text().trim();
         var Status1 = $("#StatusConsultant").text().trim();
         var lblAltConsPwd = $("#lblAltConsPwd").text().trim();
@@ -524,8 +545,8 @@
         }
          else if (Mob =="")
         {
-            $("#lblMob1").html("Please enter the Mobile Number").show().fadeOut(5000);
-            //$("#error-msg").html("Please enter the Mobile Number").show().fadeOut(5000);
+            //$("#lblMob1").html("Please enter the Mobile Number").show().fadeOut(5000);
+            $("#error-msg").html("Please enter the Mobile Number").show().fadeOut(5000);
         }
         else if (Email1 == "")
         {

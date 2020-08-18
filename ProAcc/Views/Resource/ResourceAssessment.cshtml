@@ -3,7 +3,7 @@
     ViewBag.Title = "Resource Allocation";
     Layout = "~/Views/shared/_Layout.cshtml";
 }
-    <a class="card-title">Resource Allocation</a>
+<a class="card-title">Resource Allocation</a>
 <div class="row" style="padding: 1em; max-width:100%;">
     <div class="col-lg-12 card">
         <div class="row">
@@ -43,7 +43,15 @@
         </div>
     </div>
 </div>
-
+@*<div class="row">
+    <div class="col-6">
+        <a class="card-title" style="float: left;">Project Name :</a>
+        <input id="Project_Name">
+    </div>
+    <div class="col-6">
+        <a class="card-title " style="float: right;">Instance Name :</a>
+    </div>
+</div>*@
 @{
     Html.RenderAction("ResourceAllocation", "Resource");
 }
@@ -144,6 +152,7 @@
             });
     $('#SubmitInstance').click(function () {
         var IDInstance = $("#IDInstance").val();
+        var IDProject = $("#IDProject").val();
         $.ajax({
             //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
             url: '@Url.Action("SubmitInstance", "Home")',
@@ -151,8 +160,9 @@
             data: { 'IDInstance': IDInstance },
             success: function (result) {
                 Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                 LoadTable(IDInstance);
-        $('#jqGrid').trigger('reloadGrid');
+                LoadTable(IDInstance);
+                //$("#Project_Name").val(IDProject);
+                 $('#jqGrid').trigger('reloadGrid');
                    //setTimeout(Redirect, 3000);
                 //$.alert({
                 //    title: 'Alert !',

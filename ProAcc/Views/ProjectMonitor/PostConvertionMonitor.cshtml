@@ -12,7 +12,7 @@
 @Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
 <style>
-     .wrapColumnText {
+    .wrapColumnText {
         white-space: normal !important;
         height: auto;
         vertical-align: text-top;
@@ -118,14 +118,38 @@
     @*<table id="jqGrid"></table>
         <div id="jqGridPager"></div>*@
     @{
+        <div class="row">
+            <div class="col-6">
+                <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
+            </div>
+            <div class="col-6">
+                <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+            </div>
+        </div>
         Html.RenderAction("Monitor", "ProjectMonitor");
     }
 </div>
-
+<input type="hidden" id="hdnSessionProject_ID" value="@Session["Project_ID"]" />
+<input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />
 <script>
     $(document).ready(function () {
-            $("#IDInstance").prop("disabled", true);
-            $('#SubmitInstance').prop("disabled", true);
+        $("#IDInstance").prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+
+        var Instance=$("#hdnSessionInstance_ID").val();
+        if (Instance != "") {
+            var IDInstance = $("#hdnSessionInstance_ID").val();
+            $.ajax({
+                url: '@Url.Action("SubmitInstance", "Home")',
+                type: "POST",
+                data: { 'IDInstance': IDInstance },
+                success: function (result) {
+                    Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                     LoadTable(IDInstance);
+                    $('#jqGrid').trigger('reloadGrid');
+                }
+            });
+        }
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);

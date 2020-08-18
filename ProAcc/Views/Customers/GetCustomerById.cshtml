@@ -89,7 +89,7 @@
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="hidden" class="form-control" value="@Model.Countrycode" id="selectedCountry">
-                    <input type="tel" class="form-control" value="@Model.Phone" id="txtCustomerPhone" style="width: 135%;">
+                    <input type="tel" class="form-control" value="@Model.Phone" id="txtCustomerPhone" maxlength="15" style="width: 135%;">
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
@@ -206,12 +206,13 @@
         validMsg = document.querySelector("#valid-msg");
         
     // Error messages based on the code returned from getValidationError
-    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+    //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        var errorMap = ["Please enter a valid mobile number", "Invalid country code", "Please enter a valid mobile number", "Please enter a valid mobile number", "Invalid number"];
         var intl = window.intlTelInput(input, {        
             //utilsScript: "/Asset/js/utils.js",
             utilsScript: "../../Asset/js/utils.js",
             separateDialCode: true,
-             preferredCountries:["in","us","dk","gb"]
+            preferredCountries:["in","us","dk","gb"]
             
     });
 
@@ -413,8 +414,8 @@
             var lblCompanyName = $("#lblCompanyName").text().trim();
             var lblIndustrySector = $("#lblIndustrySector").text().trim();
             var lblContact = $("#lblContact").text().trim();
-            var lblcustphone = $("#lblCustomerPhone").text().trim();
-            //var lblcustphone = $("#error-msg").text().trim();
+            //var lblcustphone = $("#lblCustomerPhone").text().trim();
+            var lblcustphone = $("#error-msg").text().trim();
             var lblcustEmail = $("#lblCustomerEmail").text().trim();
 
 
@@ -473,8 +474,8 @@
         }
         else if (custphone=="")
          {
-             // $("#error-msg").html("Please enter the Customer Phone").show().fadeOut(2000);
-             $("#lblCustomerPhone").html("Please enter the Customer Phone").show();
+              $("#error-msg").html("Please enter the Customer Phone").show().fadeOut(2000);
+             //$("#lblCustomerPhone").html("Please enter the Customer Phone").show();
          }
         else if (custEmail=="")
         {

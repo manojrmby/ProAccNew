@@ -8,14 +8,7 @@
 @*<script src="~/Asset/Scripts/Chart.js"></script>
 <script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>
 <script src="~/Asset/Scripts/chartjs-plugin-labels.min.js"></script>*@
-    <div class="row">
-        <div class="col-6">
-            <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
-        </div>
-        <div class="col-6">
-            <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
-        </div>
-    </div>
+   
 <a class="card-title">Readiness Report</a>
 @*<h5><b>Readiness Report</b> </h5>*@
 <div style="padding:1em;">
@@ -56,9 +49,16 @@
 					</button>
 				</div>
 			</div>
-			
-		</div>
 
+		</div>
+		@*<div class="row">*@
+			<div class="col-6">
+				<a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
+			</div>
+			<div class="col-6">
+				<a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+			</div>
+		@*</div>*@
 		<a class="toast-title">Readiness Report</a>
 		<hr />
 		<div class="col-lg-12 ">
@@ -84,10 +84,10 @@
 					<canvas id="Chart_Activities_Donut"></canvas>
 				</div>
 				@*<div class="col-lg-4">
-						<label></label>
+					<label></label>
 
-						<canvas id="Chart_Activities_Bar2"></canvas>
-					</div>*@
+					<canvas id="Chart_Activities_Bar2"></canvas>
+				</div>*@
 			</div>
 		</div>
 

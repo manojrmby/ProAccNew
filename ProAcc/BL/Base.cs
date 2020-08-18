@@ -2295,6 +2295,10 @@ namespace ProAcc.BL
                         P.Comments = dr["Comments"].ToString();
                         P.Phase = dr["Phase"].ToString();
                         P.Assigned = dr["Assigned"].ToString();
+                        P.Instance = dr["Instance"].ToString();
+                        P.Project = dr["Project"].ToString();
+                        P.Customer = dr["Customer"].ToString();
+
                        // P.IssueID = dr["IssueID"].ToString();
                         if (P.PhaseID == 1)
                         {

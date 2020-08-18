@@ -230,23 +230,23 @@
              validatecustomer()
         });
 
-        $("#txtCustomerPhone").blur(function () {
+       // $("#txtCustomerPhone").blur(function () {
 
-            phone = $(this).val();
-            phone = phone.replace(/[^0-9]/g,'');
-            if (phone.length != 10) {
-                $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
-                validatecustomer();
-            }
-            else {
-                $("#lblCustomerPhone").html("").hide();
-                validatecustomer();
-            }
+       //     phone = $(this).val();
+       //     phone = phone.replace(/[^0-9]/g,'');
+       //     if (phone.length != 10) {
+       //         $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
+       //         validatecustomer();
+       //     }
+       //     else {
+       //         $("#lblCustomerPhone").html("").hide();
+       //         validatecustomer();
+       //     }
 
-       });
+       //});
 
         var input = document.querySelector("#txtCustomerPhone"),
-            errorMsg = document.querySelector("#error-msg");
+        errorMsg = document.querySelector("#error-msg");
         //validMsg = document.querySelector("#valid-msg");
 
     // Error messages based on the code returned from getValidationError
@@ -256,10 +256,11 @@
     var intl = window.intlTelInput(input, {
         utilsScript: "../Asset/js/utils.js",
         separateDialCode: true,
-        //preferredCountries: ["in", "us", "dk", "gb"]
-       //var countryCode = intl.getSelectedCountryData().iso2,
-       //  $("#selectedCountry").val(countryCode)
+        preferredCountries: ["in", "us", "dk", "gb"]
+        
     });
+        var countryData = intl.getSelectedCountryData().iso2;
+         $("#selectedCountry").val(countryData);
 
     var reset = function() {
         input.classList.remove("error");
@@ -295,7 +296,7 @@
             reset();
             if (input.value.trim()) {
                 if (intl.isValidNumber()) {
-                    validMsg.classList.remove("hide");
+                   // validMsg.classList.remove("hide");
 
                 } else {
                     input.classList.add("error");

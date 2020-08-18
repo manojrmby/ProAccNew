@@ -36,6 +36,9 @@ namespace ProAcc.BL.Model
         public String Phase { get; set; }
         public String Assigned { get; set; }
         public String Description { get; set; }
+        public String Instance { get; set; }
+        public String Project { get; set; }
+        public String Customer { get; set; }
         public virtual ProACC_DB.UserMaster UserMaster { get; set; }
 
         public virtual ProACC_DB.PhaseMaster phaseMaster { get; set; }
