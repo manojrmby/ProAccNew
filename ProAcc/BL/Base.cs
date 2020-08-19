@@ -2678,6 +2678,31 @@ namespace ProAcc.BL
             return ListM;
         }
 
+        public Boolean sendmailtocustomer(String Name,String Email)
+        {
+            Boolean Status = false;
+
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+                dB.addIn("@Type", "SendCustomerMail");
+                dB.addIn("@Q_Name", Name);
+                dB.addIn("@Q_Mail", Email);                
+                dB.addIn("@Cre_By", "00000000-0000-0000-0000-000000000000");
+                dB.ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+                _log.createLog(ex, "-->AddIssueTrack_Mail" + ex.Message.ToString());
+            }
+
+            return Status;
+        }
+
+
         //public Boolean AddIssueTrack_Mail(IssueTrackModel ITM)
         //{
         //    Boolean Status = false;

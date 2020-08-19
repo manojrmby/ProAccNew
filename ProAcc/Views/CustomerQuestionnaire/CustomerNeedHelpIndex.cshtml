@@ -1,0 +1,100 @@
+﻿@model IEnumerable<ProAcc.BL.Model.CustomerQuestionnaireViewModel>
+@{
+    ViewBag.Title = "CustomerNeedHelpIndex";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+<div style="max-width: 99.5%">
+    <a class="card-title">Customer Help Desk</a>
+    <hr />
+    <table class="table" id="tblCustomerQuestionnaire">
+        <thead>
+            <tr>
+                <th>User_ID</th>
+                <th>First Name</th>
+                <th>Second Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Need Help</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.User_ID">@item.User_ID</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.First_Name">@item.First_Name</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Second_Name">@item.Second_Name</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Email">@item.Email</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Phone_No">@item.Phone_No</a>
+                </td>
+                <td>
+                    @*<a class="txtG" type="button" value="@item.Need_Help">@item.Need_Help</a>*@
+                    <a href="#" id="Customerhelp" class="Customerhelp fa fa-tram"></a><input type="hidden" value="@item.User_ID" />
+                </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+
+     $(document).ready(function () {
+
+         //$("#tblCustomerQuestionnaire").dataTable();
+
+         $("#tblCustomerQuestionnaire").dataTable({
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false
+                }
+            ]
+         });
+
+         $(".Customerhelp").on("click", function () {
+             var id = $(this).next().val();
+              Notiflix.Confirm.Show(
+                'Confirm',
+                'Are you sure to proceed ?',
+                'Yes', 'No',
+                function () {
+                     $.ajax({
+                        url: '@Url.Action("UpdateNeepHelp", "CustomerQuestionnaire")',
+                        data: {id:id },
+                        dataType: "json",
+                         async: false,
+                        success: function (data) {
+                            if (data == "success") {
+                                Notiflix.Notify.Success('Updated successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                location.reload();
+                            }
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    });
+
+                }, function () {
+                    location.reload();
+                }
+            )
+         });
+     });
+
+</script>
