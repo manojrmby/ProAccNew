@@ -7,8 +7,16 @@
 @{
     Html.RenderAction("InstanceSelection", "ProjectMonitor");
 }
-
-
+@*<div class="row">
+    <div class="col-6">
+        <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
+    </div>
+    <div class="col-6">
+        <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+    </div>
+</div>
+<input type="hidden" id="hdnSessionProject_ID" value="@Session["Project_ID"]" />
+<input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />*@
 
 <div style="padding:1em;" id="CreateIssue">
 
@@ -136,11 +144,16 @@
 
 <script>
     $(document).ready(function () {
+        //debugger
         $("#btnIssueCreate").prop("disabled", true);
             $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
 
-        $("#CreateIssue").hide();
+        // var Instance=$("#hdnSessionInstance_ID").val();
+        //if (Instance == "") {
+        //    $("#CreateIssue").hide();
+        //}
+         $("#CreateIssue").hide();
 
         $("#txtStartDate").datepicker({
             dateFormat: "dd-M-yy",

@@ -193,7 +193,7 @@ namespace ProAcc.Controllers
             bool Result = false;
             IssueTrackModel Data = new IssueTrackModel();
             Data.Issuetrack_Id = Issuetrack_Id;
-            Data.EndDate = DateTime.Now;//EndDate;            
+            Data.EndDate = DateTime.UtcNow; //EndDate;            
             Data.Status = Status;
             Data.Comments = Comments;
             Data.AssignedTo = AssignedTo;

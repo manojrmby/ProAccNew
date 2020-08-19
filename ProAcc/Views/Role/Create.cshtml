@@ -66,76 +66,59 @@
     });
 
     function validateRolename(data) {
-        //var letters = /[~`!#$%\^&*()+=\-\[\]\\';,/{}|\\":<>\?]/;
         var letters = /[~`!#$%\^&*()+=';,{}|":<>?]/;
-        ///^[A-Za-z, ]+$-_/;
-        //alert(letters.test(data));
         if (letters.test(data)) {
             return false;
         }
     }
 
-    $("#btnRoleCreate").on("click", function () {
+    function validateRoleExists(RoleName,id) {
+        var Status = true;        
+        $.ajax({
+            url: '@Url.Action("CheckRole","Role")',
+            //type: "GET",
+            data: { name: RoleName, id: id },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != "success")
+                {
+                    Status = false;
+                }
+            }
+        });
+        return Status;
+    }
 
+    $("#btnRoleCreate").on("click", function () {
         var RoleName = $("#txtRoleName").val().trim();
         if (RoleName == "" || validateRolename(RoleName) == false) {
             $("#lblRoleName").html("Please enter the Valid Role").show().fadeOut(5000);
-            //alert("Please enter the Team Name")
+        }
+        else if (validateRoleExists(RoleName,null) == false)
+        {
+            $("#lblRoleName").html("Role Name is already in use").show().fadeOut(5000);
         }
         else {
-
-            $.ajax({
-                url: '@Url.Action("CheckRole","Role")',
-                type: "GET",
-                data: { name: RoleName, id: null },
-                dataType: "json",
-                success: function (data) {
-                    if (data != "success") {
-                        $("#lblRoleName").html("This Role name is already in use").show().fadeOut(5000);
-                        //$("#txtTeamName").val("");
+              $.ajax({
+                   type: "POST",
+                   url: '@Url.Action("Create","Role")',
+                  data: { RoleName: RoleName },
+                  success: function (response) {
+                    if (response == "success") {
+                       Notiflix.Notify.Success('Role Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                       resetRole();
+                       loadRole();
                     }
-                    else {
-
-                        $.ajax({
-                            type: "POST",
-                            url: '@Url.Action("Create","Role")',
-                            data: { RoleName: RoleName },
-                            success: function (response) {
-                                if (response == "success") {
-                                    Notiflix.Notify.Success('Role Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                                    resetRole();
-                                    loadRole();
-                                    //$.alert({
-                                    //    title: 'Success !',
-                                    //    content: 'Role Saved successfully..!',
-                                    //    icon: 'fa fa-rocket',
-                                    //    animation: 'scale',
-                                    //    closeAnimation: 'scale',
-                                    //    buttons: {
-                                    //        okay: {
-                                    //            text: 'Okay',
-                                    //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                                    //            action: function (event, ui) {
-                                    //                resetRole();
-                                    //                loadRole();
-                                    //            }
-                                    //        }
-                                    //    }
-                                    //});
-                                }
-                            },
-                            failure: function (response) {
-                                alert(response.responseText);
-                            },
-                            error: function (response) {
-                                alert(response.responseText);
-                            }
-                        })
-
-                    }
-                }
-            });
-        }
+                  },
+                  failure: function (response) {
+                       alert(response.responseText);
+                  },
+                  error: function (response) {
+                       alert(response.responseText);
+                  }
+              })
+             }
     });
 
     $("#btnRoleUpdate").on("click", function () {
@@ -152,75 +135,35 @@
              Cre_By: cre_By
         }
         if (RoleName == "" || validateRolename(RoleName) == false) {
-            //alert("Please enter the Team Name")
             $("#lblRoleName").html("Please enter the Role").show().fadeOut(5000);
         }
-        else {
-
-            $.ajax({
-              url: '@Url.Action("CheckRole","Role")',
-              type: "GET",
-              data: { name: RoleName, id:id },
-              dataType: "json",
-              success: function (data) {
-                  if (data != "success") {
-                      $("#lblRoleName").html("This Role name is already in use").show().fadeOut(5000);
-                  }
-                  else {
-
-                      $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("Edit","Role")',
-                    data: { model : model},
-                    success: function (response) {
-                        if (response == "success") {
-                             Notiflix.Notify.Success('Role Updated successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                                    resetRole();
-                            loadRole();
-                            $("#RoleCreation").show();
-                                            $("#RoleUpdation").hide();
-                            //$.alert({
-                            //   title: 'Success !',
-                            //   content: 'Role Edited successfully..!',
-                            //   icon: 'fa fa-rocket',
-                            //   animation: 'scale',
-                            //   closeAnimation: 'scale',
-                            //   buttons: {
-                            //      okay: {
-                            //         text: 'Okay',
-                            //          btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            //           action: function (event, ui) {
-                            //              resetRole();
-                            //               loadRole();
-                            //               $("#RoleCreation").show();
-                            //                $("#RoleUpdation").hide();
-                            //           }
-                            //      }
-                            //   }
-                            //});
-
-                            //alert("Role Edited successfully!");
-                            //resetRole();
-                            //loadRole();
-                            // $("#RoleCreation").show();
-                            // $("#RoleUpdation").hide();
-                        }
-                    },
-                    failure: function (response) {
-                       alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    }
-            });
-                  }
-              },
-              error: function (err) {
-
-                     alert(err);
-               }
-            });
+        else if (validateRoleExists(RoleName,id) == false)
+        {
+             $("#lblRoleName").html("Role Name is already in use").show().fadeOut(5000);
         }
+        else {
+                $.ajax({
+                   type: "POST",
+                   url: '@Url.Action("Edit","Role")',
+                   data: { model : model},
+                   success: function (response) {
+                      if (response == "success") {
+                         Notiflix.Notify.Success('Role Updated successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                         resetRole();
+                         loadRole();
+                         $("#RoleCreation").show();
+                         $("#RoleUpdation").hide();                            
+                      }
+                   },
+                   failure: function (response) {
+                       alert(response.responseText);
+                   },
+                   error: function (response) {
+                       alert(response.responseText);
+                   }
+                });
+          
+             }
     });
 
     function resetRole() {

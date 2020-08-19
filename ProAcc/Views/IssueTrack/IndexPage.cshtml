@@ -15,12 +15,15 @@
         <thead>
             <tr>
                 <th style="width:70px">Issue ID</th>
-                <th style="width:130px">Issue Name</th>
+                <th style="width:180px">Issue Name</th>
                 <th style="width:89px">Phase</th>
-                <th>Task</th>
+                <th style="width:130px">Task</th>
                 <th>Assigned</th>
                 <th style="width:130px">Status</th>
-                <th style="width:89px">Created Date</th>
+                <th>Created</th>
+                <th>Instance</th>
+                <th>Project</th>
+                <th style="width:89px">Customer</th>
                 @*<th>Running ID</th>*@
                 <th>Actions</th>
             </tr>
@@ -48,7 +51,16 @@
                         <a class="txtG" value="@item.Status">@item.Status</a>
                     </td>
                     <td>
-                        <a class="txtG" value="@item.StartDate">@item.StartDate.ToString("dd/MM/yyyy")</a>
+                        <a class="txtG" value="@item.StartDate">@item.StartDate.ToLocalTime()</a> @*ToString("dd/MM/yyyy")*@
+                    </td> 
+                    <td>
+                        <a class="txtG" value="@item.Instance">@item.Instance</a>
+                    </td>     
+                    <td>
+                        <a class="txtG" value="@item.Project">@item.Project</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Customer">@item.Customer</a>
                     </td>
                     @*<td>
                         <a class="txtG" value="@item.RunningID">@item.RunningID</a>

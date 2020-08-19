@@ -161,8 +161,10 @@ namespace ProAcc.Controllers
             }
             Guid ProjectID = Guid.Empty;
             Guid IDInstanceID = Guid.Parse(IDInstance);
+            Session["Instance_ID"] = IDInstanceID;
             Session["Instance_Name"] = db.Instances.FirstOrDefault(x => x.Instance_id == IDInstanceID).InstaceName;
             ProjectID = db.Instances.FirstOrDefault(y => y.Instance_id == IDInstanceID).Project_ID;
+            Session["Project_ID"] = ProjectID;
             Session["Project_Name"] = db.Projects.FirstOrDefault(x => x.Project_Id == ProjectID).Project_Name;
             //var d = db.FileUploadMasters.FirstOrDefault(x => x.InstanceID == IDInstanceID).Id;
             bool Res = false;

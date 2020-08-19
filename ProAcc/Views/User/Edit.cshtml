@@ -28,13 +28,11 @@
             <input type="hidden" id="UserId" value="@Model.UserId" />
             <input type="hidden" id="pcre_on" value="@Model.Cre_on" />
             <input type="hidden" id="pcre_By" value="@Model.Cre_By" />
-            @*<input type="hidden" id="UserId" value="@Model.Password" />*@
 
             <div class="form-group">
-                <label class="control-label col-md-4 required">Customer Name</label>
+                <label class="control-label col-md-4 required">User Name</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="userMasterName" value="@Model.Name" />
-                    @*<span id="lblCompanyName" style="color:red" />*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblName1">&nbsp;</span>
@@ -71,7 +69,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                     <label class="control-label col-md-5 required">Contact Person Phone</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" maxlength="10" id="txtMobile" value="@Model.Phone" />
@@ -79,19 +77,18 @@
                     <div>
                         &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblMobile">&nbsp;</span>
                     </div>
-            </div>
+            </div>*@
 
-            @*<div class="form-group">
+            <div class="form-group">
                 <label class="control-label col-md-5 required">Contact Person Phone</label>
                 <div class="col-md-10">
                     <input type="hidden" class="form-control" value="@Model.Countrycode" id="selectedCountry">
-                    <input type="tel" class="form-control" id="txtMobile" value="@Model.Phone" style="width: 135%;">
+                    <input type="tel" class="form-control" id="txtMobile" value="@Model.Phone" maxlength="15" style="width: 135%;">
                 </div>
-                <div>
-                    &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
+                <div>                    
                     &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
-            </div>*@
+            </div>
 
         </div>
 
@@ -234,8 +231,7 @@
         else if (Id = 3) {
             $("#divRole").show();
             $("#divCust").show();
-        }
-         ValidateUser();
+        }         
     });
 
         $("#userMasterName").keypress(function(event){
@@ -243,47 +239,28 @@
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                     event.preventDefault();
-                $("#lblName1").html("Not Allowed").show().fadeOut(3000);
-            }
-            ValidateUser();
+            }           
          });
 
-          var typingTimer;                //timer identifier
+        var typingTimer;                //timer identifier
         var doneTypingInterval = 1000;  //time in ms, 1 second for example
-
-       // on keyup, start the countdown
-         $('#userMasterName').on('keyup', function () {
-          clearTimeout(typingTimer);
-          typingTimer = setTimeout(userMasterNameCheck, doneTypingInterval);
-        });
 
         //on keydown, clear the countdown
          $('#userMasterName').on('keydown', function () {
           clearTimeout(typingTimer);
          });
 
-        function userMasterNameCheck() {
-            var userMasterName = $("#userMasterName").val().trim();
-             userMasterName = userMasterName.replace(/,/g, " ");
-            var id = $("#UserId").val().trim();
-            if (userMasterName == "") {
-                $("#lblName1").html("Please Enter valid Name").show();
-                ValidateUser();
-            }
-            else {
-                $.ajax({
+        function userMasterNameCheck(userMasterName,id) {
+            var status = true;
+            //var id = $("#UserId").val().trim();
+            $.ajax({
                 url: '@Url.Action("NameAvailability", "User")',
                 type: "GET",
                 data: { namedata: userMasterName,id:id },
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblName1").html("This Name is already taken,please Try another").show();
-                        ValidateUser();
-                    }
-                    else {
-                        $("#lblName1").html("");
-                        ValidateUser();
+                       status= false
                     }
                 },
                 error: function (err) {
@@ -291,95 +268,65 @@
                     alert(err);
                 }
             });
-            }
-
+            return status;
         }
-
-        //$('#userMasterName').on('focusout', function () {
-
-
-        // });
-    });
+   
 
 
      $("#txtMobile").keypress(function (e) {
             //if the letter is not digit then display error and don't type anything
          if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
               event.preventDefault();
-             //display error message
-             $("#lblMobile").html("Numbers Only").show().fadeOut(2000);
          }
-         else {
-              $("#lblMobile").html("").show();
-         }
-         ValidateUser()
      });
 
-    //$("#txtMobile").blur(function () {
+   
+    var input = document.querySelector("#txtMobile"),
+        errorMsg = document.querySelector("#error-msg");
 
-    //        phone = $(this).val();
-    //        phone = phone.replace(/[^0-9]/g,'');
-    //        if (phone.length != 10) {
-    //            $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
-    //             ValidateUser();
-    //        }
-    //        else {
-    //            $("#lblMobile").html("").hide();
-    //             ValidateUser();
-    //        }
-    //        ValidateUser();
-    // });
+    // Error messages based on the code returned from getValidationError   
+    var errorMap = ["Please enter a valid mobile number", "Invalid country code", "Please enter a valid mobile number", "Please enter a valid mobile number", "Invalid number"];
 
-    //var input = document.querySelector("#txtMobile"),
-    //    errorMsg = document.querySelector("#error-msg"),
-    //    validMsg = document.querySelector("#valid-msg");
+    var intl = window.intlTelInput(input, {
+        utilsScript: "../../Asset/js/utils.js",
+        separateDialCode: true,
+        preferredCountries: ["in", "us", "dk", "gb"]
+    });
 
-    //// Error messages based on the code returned from getValidationError
-    //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-    ////input.setCountry("gb");
-    //var intl = window.intlTelInput(input, {
-    //    utilsScript: "../../Asset/js/utils.js",
-    //    separateDialCode: true
-    //});
+    var reset = function () {
+        input.classList.remove("error");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+    };
 
-    //var reset = function () {
-    //    input.classList.remove("error");
-    //    errorMsg.innerHTML = "";
-    //    errorMsg.classList.add("hide");
-    //    validMsg.classList.add("hide");
-    //};
+    var iti = window.intlTelInputGlobals.getInstance(input);
+    var a = $("#selectedCountry").val();
+    iti.setCountry(a);
 
-    //var iti = window.intlTelInputGlobals.getInstance(input);
-    ////iti.setCountry("in");
-    //var a = $("#selectedCountry").val();
-    //iti.setCountry(a);
+    var countryCode;
+    input.addEventListener('countrychange', function () {
+        countryCode = intl.getSelectedCountryData().iso2;
+        $("#selectedCountry").val(countryCode);
+         $("#txtMobile").val("");
+    })
 
-    //var countryCode;
-    //input.addEventListener('countrychange', function () {
-    //    countryCode = intl.getSelectedCountryData().iso2;
-    //    $("#selectedCountry").val(countryCode);
-    //    //alert(countryCode)
-    //})
-    // // Validate on blur event
-    //input.addEventListener('blur', function () {
-
-    //    reset();
-    //    if (input.value.trim()) {
-    //        if (intl.isValidNumber()) {
-    //            validMsg.classList.remove("hide");
-    //        } else {
-    //            input.classList.add("error");
-    //            var errorCode = intl.getValidationError();
-    //            errorMsg.innerHTML = errorMap[errorCode];
-    //            errorMsg.classList.remove("hide");
-    //        }
-    //    }
-    //    ValidateUser();
-    //});
-
-    //    // Reset on keyup/change event
-    //    input.addEventListener('change', reset);
-    //        input.addEventListener('keyup', reset);
+    function TaskMobile() {
+          reset();
+        if (input.value.trim()) {
+            if (intl.isValidNumber()) {
+                
+            } else {
+                input.classList.add("error");
+                var errorCode = intl.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
+                return false
+            }
+        }       
+    }
+        // Reset on keyup/change event
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
 
     
 
@@ -387,13 +334,9 @@
             e.preventDefault();
      });
 
-    $("#txtPassword").on("keypress", function (e) {
+    $("#userMasterName,#txtPassword,#txtCnfmPassword").on("keypress", function (e) {
         if (e.which === 44) {
             e.preventDefault();
-            $("#lblPassword").html("Not Allowed").show().fadeOut(5000);
-        }
-        else {
-            $("#lblPassword").html("").show();
         }
     });
 
@@ -407,29 +350,32 @@
     });
 
     //on keydown, clear the countdown
-    $('#txtPassword','#txtCnfmPassword','#txtUserEmail','#txtMobile').on('keydown', function () {
+    $('#txtPassword','#txtCnfmPassword').on('keydown', function () {
         clearTimeout(typingTimer);
     });
 
     function TaskPwd() {
+        var status = true;
         var str = $("#txtPassword").val();
         //var filter = /^(?=.*\d)(?=.*[a-zA-Z])(?!.*\s).{6,8}$/;
          var filter = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
         if (str.length < 6) {
             $("#lblPassword").html("Password char should be 6-8").show();
+            status = false;
         }
         else if (!filter.test(str)) {
             $("#lblPassword").html("password should contain at least one character,Special char and number").show();
+             status = false;
         }
         else {
             $("#lblPassword").html("");
+            status = true;
         }
-        ValidateUser();
+        return status;
     }
 
     
     $("#txtPassword").focusout(function () {
-        //debugger;
         var str = $("#txtPassword").val().trim();
         var str1 = $("#txtCnfmPassword").val().trim();
         if (str != str1) {
@@ -440,7 +386,6 @@
                 'Yes', 'No',
                 function () {
                      $("#txtCnfmPassword").val("");
-                            ValidateUser();
                 }, function () {
                     location.reload();
                     // No button callback
@@ -451,131 +396,33 @@
     });
 
      // on keyup, start the countdown
-    $('#txtCnfmPassword').on('keyup', function () {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(TaskCnfmPwd, doneTypingInterval);
-    });
+    //$('#txtCnfmPassword').on('keyup', function () {
+    //    clearTimeout(typingTimer);
+    //    typingTimer = setTimeout(TaskCnfmPwd, doneTypingInterval);
+    //});
+
     function TaskCnfmPwd() {
          var str = $("#txtPassword").val().trim();
         var str1 = $("#txtCnfmPassword").val().trim();
         if (str != str1) {
-            $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(2000);
-        }
-        else {
-            $("#lblCnfmPassword").html("").show();            
-        }
-        ValidateUser();
+            return false;
+        }       
     }
 
      // on keyup, start the countdown
-    $('#txtUserEmail').on('keyup', function () {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(TaskEmail, doneTypingInterval);
-    });
+    //$('#txtUserEmail').on('keyup', function () {
+    //    clearTimeout(typingTimer);
+    //    typingTimer = setTimeout(TaskEmail, doneTypingInterval);
+    //});
+
     function TaskEmail() {
          var str = $("#txtUserEmail").val();
-           var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+         var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
         if (!filter.test(str)) {
-            $("#lblUserEmail").html("Email is not valid").show().fadeOut(5000);
+            return false
         }
-        else {
-            $("#lblUserEmail").html("").show();            
-        }
-        ValidateUser();
-    }
-
-     $('#txtMobile').on('keyup', function () {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(TaskMobile, doneTypingInterval);
-     });
-
-    function TaskMobile() {
-        phone = $("#txtMobile").val();
-        phone = phone.replace(/[^0-9]/g, '');
-        if (phone.length != 10) {
-            $("#lblMobile").html("Phone number must be 10 digits").show().fadeOut(2000);
-        }
-        else {
-            $("#lblMobile").html("").show();
-        }
-        ValidateUser();
-    }
-    
-    //$("#txtCnfmPassword").focusout(function () {
-    //    var str = $("#txtPassword").val().trim();
-    //    var str1 = $("#txtCnfmPassword").val().trim();
-    //    if (str != str1) {
-    //        $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(5000);
-    //        ValidateUser();
-    //    }
-    //    else {
-    //        $("#lblCnfmPassword").html("");
-    //        ValidateUser();
-    //    }
-    //})
-    // function Onchangepassword() {
-    //    var str = document.getElementById("txtcnfmPassword").value;
-    //    var str2 = document.getElementById("txtPassword").value;
-    //    var str3 = document.getElementById("lblCnfmPassword");
-    //    if (str2 != str) {
-    //        $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(5000);
-    //        //result = "error";
-    //        $.alert({
-    //            title: 'Info !',
-    //            content: 'Do you want to update password?',
-    //            icon: 'fa fa-trash-o',
-    //            animation: 'scale',
-    //            closeAnimation: 'scale',
-    //            opacity: 0.5,
-    //            draggable: false,
-    //            buttons: {
-    //                'confirm': {
-    //                    text: 'Yes',
-    //                    btnClass: 'btn-danger',
-    //                }
-    //            },
-    //        });
-    //    }
-    //}
-    //function Onchangeconfirmpassword() {
-    //     var str = $("#txtPassword").val().trim();
-    //    var str2 = $("#txtCnfmPassword").val().trim();
-
-    //    if (str != str2) {
-    //        $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(5000);
-    //        ValidateUser()
-    //        return true;
-    //    }
-    //    else {
-    //        $("#lblPassword").html("")
-    //        $("#lblCnfmPassword").html("");
-    //        ValidateUser()
-    //        return false;
-    //    }
-    //}
-
-    function ValidateUser() {
-
-        var id = $("#UserId").val().trim();
-        var userMasterName = $("#userMasterName").val().trim();
-        var Mobile = $("#txtMobile").val().trim();
-        var Email = $("#txtUserEmail").val().trim();
-        var Password = $("#txtPassword").val().trim();
-
-        var lblName = $("#lblName1").text().trim();
-        //var lblMobile = $("#lblMobile").text().trim();
-        var lblMobile = $("#error-msg").text().trim();
-        var lblEmail = $("#lblUserEmail").text().trim();
-        var lblPassword = $("#lblPassword").text().trim();
-        var lblCnfmPassword = $("#lblCnfmPassword").text().trim();
-
-        if (userMasterName != "" && Mobile != "" && Email != ""&& Password!="" && lblName == "" && lblMobile == "" && lblEmail ==""&&lblPassword=="" &&lblCnfmPassword=="" ) {
-            $("#btnsaveUser").prop("disabled", false);
-        }
-        else {
-            $("#btnsaveUser").prop("disabled", true);
-        }
+       
     }
 
      function ValidateName(data) {
@@ -618,49 +465,45 @@
         if (userMasterName == "" || ValidateName(userMasterName) == false) {
             $("#lblName1").html("Please enter the User Name").show().fadeOut(5000);
         }
-         else if (Mobile =="")
+        else if (userMasterNameCheck(userMasterName,id) == false)
         {
-            //$("#lblMobile").html("Please enter the Mobile Number").show().fadeOut(5000);
-            $("#error-msg").html("Please enter the Mobile Number").show().fadeOut(5000);
-        }
-        else if (Email == "")
-        {
-            $("#lblUserEmail").html("Please enter the Email Phone").show().fadeOut(5000);
+             $("#lblName1").html("User Name is already in use").show().fadeOut(5000);
         }
         else if (Password=="")
         {
-            $("#lblPassword").html("Please enter the correct Password and confirm password").show().fadeOut(5000);
-            $("#txtPassword").val("");
+            $("#lblPassword").html("Please enter the Password").show().fadeOut(5000);            
             $("#txtCnfmPassword").val("");
         }
+        else if (TaskPwd() == false)
+        {
+             $("#lblPassword").html("Password should contain at least one character,Special char and number").show().fadeOut(5000); 
+        }
+        else if (TaskCnfmPwd() == false)
+        {
+             $("#lblCnfmPassword").html("Password Does not match kindly check").show().fadeOut(5000); 
+        }
+        else if (Email == "" || TaskEmail() == false)
+        {
+            $("#lblUserEmail").html("Please enter the valid Email").show().fadeOut(5000);
+        }
+        else if (Mobile == "")
+        {
+            $("#error-msg").html("Please enter the mobile number").show().fadeOut(5000);
+        }
+        else if (TaskMobile() == false)
+        {
+             $("#error-msg").html("Please enter a valid mobile number").show().fadeOut(5000);
+        }       
         else {
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("Edit","User")',
-                //data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail ,Contact:Contact},
+                url: '@Url.Action("Edit","User")',                
                 data: {userMaster:model},
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('User Updated successfully..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
-                   setTimeout(Redirect, 3000);
-                            //$.alert({
-                            //    title: 'Success !',
-                            //    content: 'User Edited successfully..!',
-                            //    icon: 'fa fa-rocket',
-                            //    animation: 'scale',
-                            //    closeAnimation: 'scale',
-                            //    buttons: {
-                            //        okay: {
-                            //            text: 'Okay',
-                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            //            action: function (event, ui) {
-                            //                $(this).remove();
-                            //                var url = $("#RedirectToUserList").val();
-                            //                location.href = url;
-                            //            }
-                            //        }
-                            //    }
-                            //});
+                            //setTimeout(Redirect, 3000);
+                           location.href=$("#RedirectToUserList").val();
                         }
                     },
                     failure: function (response) {
@@ -683,4 +526,5 @@
         alert("Enter the Details");
         }
     });
+});
 </script>

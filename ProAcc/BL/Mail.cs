@@ -152,6 +152,11 @@ namespace ProAcc.BL
                                      select P.ProjectManager_Id ).FirstOrDefault();
                     var cc = db.UserMasters.Where(x => x.isActive == true&&x.RoleID==RoleId && x.UserId== managerid).FirstOrDefault().EMail;
                     msg.CC.Add(cc);
+                    string CCAddress = Mail_CCAddress;
+                    foreach (var CCAdd in CCAddress.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        msg.CC.Add(CCAdd);
+                    }
                 }
                 else
                 {
