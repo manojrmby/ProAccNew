@@ -56,20 +56,11 @@
 </div>
 
 @Html.Hidden("RedirectTo", Url.Action("Home", "Home"))
-@if (ViewBag.Message != null)
-{
-
-    <a id="Msg" style="display:none">@ViewBag.Message</a>
-    <script type="text/javascript">
-        var info = $('#Msg').text();
-       
-        });
-    </script>
-
-}
 
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
+        var Path = "@ViewBag.PDFfilepath";
+        Path = Path.replace("~/", "../");
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("PMReportData", "Report")',
@@ -90,7 +81,8 @@
                             var name = data[i].C_FileName;
                             var idiv = document.createElement('iframe');
                             idiv.id = 'pdf-js-viewer' + i;
-                            idiv.src = '/Asset/UploadedFiles/' + name + '.pdf';
+                            //idiv.src = '/Asset/UploadedFiles/' + name + '.pdf';
+                            idiv.src = Path + name + '.pdf';
                             idiv.title = 'Landscape & System Management';
                             idiv.frameborder = '0';
 
@@ -112,7 +104,7 @@
                             dimention();
                         }
                     }
-                    
+
                 },
                 error: function (a) {
                     debugger;

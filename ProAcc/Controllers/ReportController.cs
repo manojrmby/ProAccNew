@@ -192,6 +192,7 @@ namespace ProAcc.Controllers
 
         public ActionResult PMReport()
         {
+            ViewBag.PDFfilepath = ConfigurationManager.AppSettings["Upload_filePath"].ToString();
             return View();
         }
 

@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-4"></label>
                     <div class="col-md-10">
-                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload1" />
+                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload1" accept="application/pdf" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -42,44 +42,6 @@
         $("#IDInstance").prop("disabled", true);
         $("#SubmitInstance").hide();
 
-        $('#IDProject').change(function () {
-
-            var id = $(this).val();
-             var select = $("#IDInstance");
-                    select.empty();
-                    select.append($('<option/>', {
-                        value: 0,
-                        text: "Select a Instance"
-                    }));
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("LoadCreateAnalysisInstance","Assessment")',
-                data: { 'ProjectId' : id},
-                success: function (data) {
-                    var select = $("#IDInstance");
-                    select.empty();
-                    select.append($('<option/>', {
-                        value: 0,
-                        text: "Select a Instance"
-                    }));
-
-                    $.each(data, function (index, itemData) {
-                        select.append($('<option/>', {
-                            value: itemData.Value,
-                            text: itemData.Text
-                        }));
-                    });
-                    $("#IDInstance").prop("disabled", false);
-                },
-                error: function (a) {
-                    debugger;
-                    Notiflix.Notify.Failure(a, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                    //alert(a);
-                }
-
-
-            });
-        });
         $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);
             var id = $(this).val();
@@ -87,18 +49,18 @@
                     select.empty();
                     select.append($('<option/>', {
                         value: 0,
-                        text: "Select a Project"
+                        text: "-Select-"
                     }));
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("LoadProject","Assessment")',
+                url: '@Url.Action("LoadProject","Home")',
                 data: { 'CustomerId' : id},
                 success: function (data) {
                     var select = $("#IDProject");
                     select.empty();
                     select.append($('<option/>', {
                         value: 0,
-                        text: "Select a Project"
+                        text: "-Select-"
                     }));
                     $.each(data, function (index, itemData) {
                         select.append($('<option/>', {
@@ -108,17 +70,54 @@
                     });
                     $("#IDProject").prop("disabled", false);
                     $("#IDInstance").prop("disabled", true);
-                    $('#btnUpload').prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
                 },
                 error: function (a) {
-                    debugger;
-                    Notiflix.Notify.Failure(a, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    //debugger;
                     //alert(a);
                 }
-
-
             });
         });
+            $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstance","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+            });
         $("#IDInstance").change(function () {
             var IDInstance = $("#IDInstance").val();
             GetFiletype(IDInstance);
@@ -156,67 +155,45 @@
             var fileUpload1 = $("#FileUpload1").get(0);
             var filetype = $('#drpFiletype').children("option:selected").text();
             var ft = $('#drpFiletype').val();
-            if (InstanceId != "" && InstanceId != 0 && fileUpload1.files.length != 0 && ft!="0") {
-                //var IDProject = $("select#IDProject").val();
-                var InstanceID = $("select#IDInstance").val();
-                var files = [
-                    fileUpload1.files];
-
-                var fileData = new FormData();
-                //fileData.append("Cust_ID", Cust_ID);
-                //fileData.append("IDProject", IDProject);
-                fileData.append("InstanceID", InstanceID);
-                fileData.append("filetype", filetype);
-
-                // Looping over all files and add it to FormData object
-                for (var i = 0; i < files.length; i++) {
-                    if (files[i][0] != null)
-                        fileData.append(i, files[i][0]);
+            if (InstanceId != "" && InstanceId != 0 && fileUpload1.files.length != 0 && ft != "0") {
+                debugger;
+                var ext = $('#FileUpload1').val().split('.').pop().toLowerCase();
+                if (ext !== 'pdf') {
+                    Notiflix.Notify.Failure('Select Valid file..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    $("#FileUpload1").val('');
                 }
-                $.ajax({
-                    //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
-                    url: '@Url.Action("Upload", "ProjectMonitor")',
-                    type: "POST",
-                    contentType: false, // Not to set any content header
-                    processData: false, // Not to process data
-                    data: fileData,
-                    async: false,
-                    success: function (result) {
-                        var IDInstance = $("#IDInstance").val();
-                        GetFiletype(IDInstance);
-                        Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //if (result == 'File Uploaded Successfully!') {
-                        //    Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                            
-                        //}
-                        //else if (result == 'Please Upload all files.') {
-                        //    Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //}
-                        //else {
-                        //    @*Notiflix.Report.Info("ProAcc Info !", result, "Click", function () {
+                else {
+                    var InstanceID = $("select#IDInstance").val();
+                    var files = [
+                        fileUpload1.files];
 
-                                $.ajax({
-                                url: '@Url.Action("UploadRevert", "Assessment")',
-                                type: "POST",
-                                contentType: false, // Not to set any content header
-                                processData: false, // Not to process data
-                                data: fileData,
-                                success: function (result) {
-                                    Notiflix.Notify.Failure(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                                    //alert(result);
-                                }
-                                });
+                    var fileData = new FormData();
+                    fileData.append("InstanceID", InstanceID);
+                    fileData.append("filetype", filetype);
 
-                            });*@
-                        //    // Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-
-                        //}
-                    },
-                    error: function (err) {
-                        Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert(err.statusText);
+                    for (var i = 0; i < files.length; i++) {
+                        if (files[i][0] != null)
+                            fileData.append(i, files[i][0]);
                     }
-                });
+                    $.ajax({
+                        url: '@Url.Action("Upload", "ProjectMonitor")',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        async: false,
+                        success: function (result) {
+                            var IDInstance = $("#IDInstance").val();
+                            GetFiletype(IDInstance);
+                            Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+
+                        },
+                        error: function (err) {
+                            Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+
+                        }
+                    });
+                }
             }
             else {
                 Notiflix.Notify.Failure('Select FileType & Add File', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });

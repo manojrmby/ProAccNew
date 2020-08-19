@@ -232,7 +232,7 @@
                                         SAP Readiness Check
                                     </td>
                                     <td>
-                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload7" />
+                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload7" accept="application/pdf" />
                                     </td>
                                 </tr>
                             </table>
@@ -936,7 +936,7 @@
                 fileUpload = $("#FileUpload7").get(0);
                 files = fileUpload.files;
                 for (var i = 0; i < files.length; i++) {
-                    if (files[0].name != "SAP Readiness Check.docx") {
+                    if (files[0].name != "SAP Readiness Check.pdf") {
                         Notiflix.Notify.Failure("Enter Readiness Check file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                         $("#FileUpload7").val('');
                     }
