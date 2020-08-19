@@ -100,7 +100,7 @@
         <div class="col-lg-12">
 
             <div class="col-md-offset-2 col-md-12">
-                <button type="button" id="btnCustomerCreate" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')">
+                <button type="button" id="btnCustomerCreate" class="btn btn-primary ld-ext-right">  @*onclick="this.classList.toggle('running')"*@
                     Create
                     <div class="ld ld-ring ld-spin"></div>
                 </button>
@@ -120,137 +120,76 @@
 <script>
 
     $(document).ready(function () {
-        $("#btnCustomerCreate").prop('disabled', true);
 
         $("#txtCompanyName").keypress(function (event) {
-
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                 event.preventDefault();
-                $("#lblCompanyName").html("Not Allowed").show().fadeOut(5000);
-                validatecustomer()
-            }
-            else {
-                $("#lblCompanyName").html("").show();
-                validatecustomer()
-            }
+            }            
         });
 
-
-        $('#txtCompanyName').on('focusout', function () {
-
-            var CompName = $("#txtCompanyName").val().trim();
-            CompName = CompName.replace(/,/g, " ");
-            var id = $("#customerid").val();
-            if (CompName == "") {
-                $("#lblCompanyName").html("Please Enter valid Customer Name").show().fadeOut(5000);
-                validatecustomer()
-            }
-            else {
-                $.ajax({
+        function CompanyNameExists(CompanyName, id) {
+            var status = true;
+              $.ajax({
                 url: '@Url.Action("CheckCustomersNameAvailability", "Customers")',
-                type: "GET",
-                data: { namedata: CompName,id:id },
+                //type: "GET",
+                data: { namedata: CompanyName,id:id },
                 dataType: "json",
+                async: false,
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblCompanyName").html("This Customer Name is already in use").show();
-                       validatecustomer()
-                    }
-                    else {
-                        $("#lblCompanyName").html("").show();
-                       validatecustomer()
-                    }
-
+                        status = false;
+                    }                   
                 },
                 error: function (err) {
-
                     alert(err);
                 }
-            });
-            }
+              });
+            return status;
+        }
 
-        });
+        //$('#txtCompanyName').on('focusout', function () {
+
+        //    var CompName = $("#txtCompanyName").val().trim();
+        //    CompName = CompName.replace(/,/g, " ");
+        //    var id = $("#customerid").val();
+        //    if (CompName == "") {
+        //        $("#lblCompanyName").html("Please Enter valid Customer Name").show().fadeOut(5000);
+        //        validatecustomer()
+        //    }
+        //    else {
+              
+        //    }
+        //});
 
 
         $("#txtIndustrySector").keypress(function (event) {
-
             var inputValue = event.which;
             // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                 event.preventDefault();
-                $("#lblIndustrySector").html("Not Allowed").show().fadeOut(2000);
-                validatecustomer()
-            }
-            else {
-                $("#lblIndustrySector").html("").show();
-                validatecustomer()
             }
         });
 
         $("#txtContact").keypress(function (event) {
-
             var inputValue = event.which;
-            // allow letters and whitespaces only.
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
-                event.preventDefault();
-                $("#lblContact").html("Not Allowed").show().fadeOut(5000);
-                validatecustomer()
+                event.preventDefault();              
             }
-            else {
-                $("#lblContact").html("").show();
-                validatecustomer()
-            }
-        });
-
-        $('#txtContact').on('focusout', function () {
-
-            var ContactName = $("#txtContact").val().trim();
-            ContactName = ContactName.replace(/,/g, " ");
-            if (ContactName == "") {
-                $("#lblContact").html("Please Enter valid Contact Person Name").show().fadeOut(5000);
-                validatecustomer()
-            }
-            else {
-                 $("#lblContact").html("").show().fadeOut(5000);
-                validatecustomer()
-            }
-
         });
 
         $("#txtCustomerPhone").keypress(function (e) {
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 event.preventDefault();
-                $("#lblCustomerPhone").html("Numbers Only").show();
-            }
-            else {
-                $("#lblCustomerPhone").html("").show();
-            }
-             validatecustomer()
+            }           
         });
 
-       // $("#txtCustomerPhone").blur(function () {
 
-       //     phone = $(this).val();
-       //     phone = phone.replace(/[^0-9]/g,'');
-       //     if (phone.length != 10) {
-       //         $("#lblCustomerPhone").html("Phone number must be 10 digits").show().fadeOut(2000);
-       //         validatecustomer();
-       //     }
-       //     else {
-       //         $("#lblCustomerPhone").html("").hide();
-       //         validatecustomer();
-       //     }
-
-       //});
-
-        var input = document.querySelector("#txtCustomerPhone"),
-        errorMsg = document.querySelector("#error-msg");
-        //validMsg = document.querySelector("#valid-msg");
-
+      var input = document.querySelector("#txtCustomerPhone"),
+      errorMsg = document.querySelector("#error-msg");
+       
     // Error messages based on the code returned from getValidationError
-    //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
     var errorMap = ["Please enter a valid mobile number", "Invalid country code", "Please enter a valid mobile number", "Please enter a valid mobile number", "Invalid number"];
 
     var intl = window.intlTelInput(input, {
@@ -266,7 +205,6 @@
         input.classList.remove("error");
         errorMsg.innerHTML = "";
         errorMsg.classList.add("hide");
-        //validMsg.classList.add("hide");
         };
 
         var countryCode;
@@ -276,22 +214,6 @@
             $("#txtCustomerPhone").val("");
         })
 
-       //// Validate on blur event
-       // input.addEventListener('blur', function () {
-       // reset();
-       // if(input.value.trim()){
-       //     if(intl.isValidNumber()){
-       //         validMsg.classList.remove("hide");
-
-       //     }else{
-       //         input.classList.add("error");
-       //         var errorCode = intl.getValidationError();
-       //         errorMsg.innerHTML = errorMap[errorCode];
-       //         errorMsg.classList.remove("hide");
-       //     }
-       // }
-       //   validatecustomer();
-       // });
         function TaskPhone() {
             reset();
             if (input.value.trim()) {
@@ -303,48 +225,30 @@
                     var errorCode = intl.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
+                    return false
                 }
             }
-            validatecustomer();
+           // validatecustomer();
         }
 
     // Reset on keyup/change event
     input.addEventListener('change', reset);
     input.addEventListener('keyup', reset);
 
-
-            var typingTimer;            //timer identifier
-        var doneTypingInterval = 500;  //time in ms, 0.5 second for example
-
-       // on keyup, start the countdown
-        $('#txtCustomerEmail').on('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(TaskEmailCheck, doneTypingInterval);
-        });
-
-        //on keydown, clear the countdown
-        $('#txtCustomerEmail','#txtCustomerPhone').on('keydown', function () {
-            clearTimeout(typingTimer);
-        });
-
         function TaskEmailCheck() {
             var str = $("#txtCustomerEmail").val().trim();
             var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
             if (!filter.test(str)) {
-                $("#lblCustomerEmail").html("Email is not valid").show().fadeOut(2000);
-            }
-            else {
-                $("#lblCustomerEmail").html("").show();                
-            }
-            validatecustomer();
+                return false
+            }           
         }
 
         // on keyup, start the countdown
-        $('#txtCustomerPhone').on('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(TaskPhone, doneTypingInterval);
-        });
+        //$('#txtCustomerPhone').on('keyup', function () {
+        //    clearTimeout(typingTimer);
+        //    typingTimer = setTimeout(TaskPhone, doneTypingInterval);
+        //});
 
         //function TaskPhone() {
         //    phone = $("#txtCustomerPhone").val();
@@ -358,56 +262,14 @@
         //    validatecustomer();
         //}
         
-        //$("#txtCustomerEmail").on("blur", function (event) {
-
-        //   var str = $(this).val();
-        //   var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-
-        //    if (!filter.test(str)) {
-        //        $("#lblCustomerEmail").html("Email is not valid").show().fadeOut(2000);
-        //        validatecustomer();
-        //    }
-        //    else {
-        //        $("#lblCustomerEmail").html("").hide();
-        //        validatecustomer();
-        //    }
-        //});
-
-        function validatecustomer() {
-
-           var CompanyName = $("#txtCompanyName").val().trim();
-            var IndustrySector = $("#drpIndustrySector").val();
-            var Contact=$("#txtContact").val().trim();
-            var custphone = $("#txtCustomerPhone").val().trim();
-            var custEmail = $("#txtCustomerEmail").val().trim();
-
-            var lblCompanyName = $("#lblCompanyName").text().trim();
-            var lblIndustrySector = $("#lblIndustrySector").text().trim();
-            //var lblcustphone = $("#lblCustomerPhone").text().trim();
-            var lblcustphone = $("#error-msg").text().trim();
-            var lblcustEmail = $("#lblCustomerEmail").text().trim();
-
-            if (CompanyName.length > 0 && IndustrySector.length > 0 && Contact.length > 0 && custphone.length > 0 && custEmail.length > 0 &&
-                lblCompanyName == "" && lblIndustrySector == "" && lblcustphone == "" && lblcustEmail == "" ) {
-
-                $("#btnCustomerCreate").prop("disabled", false);
-            }
-            else {
-                $("#btnCustomerCreate").prop("disabled", true);
-            }
-        }
-    });
-
-
-    function ValidateName(data) {
+               function ValidateName(data) {
              var letters = /^[A-Za-z._, ]+$/;
             if (!letters.test(data)) {
                 return false;
             }
     }
 
-    $("#btnCustomerCreate").on("click", function () {
-        //debugger;
+    $("#btnCustomerCreate").on("click", function () {        
         var CompanyName = $("#txtCompanyName").val().trim();
          CompanyName = CompanyName.replace(/,/g, " ");
         var IndustrySector = $("#drpIndustrySector").val();
@@ -419,25 +281,34 @@
         var custEmail=$("#txtCustomerEmail").val().trim();
 
         if (CompanyName == "" || ValidateName(CompanyName) == false) {
-            $("#lblCompanyName").html("Please enter the Company Name").show().fadeOut(2000);
+            $("#lblCompanyName").html("Please enter the Customer Name").show().fadeOut(5000);
+        }
+        else if (CompanyNameExists(CompanyName,null) == false)
+        {
+            $("#lblCompanyName").html("Company Name already exists").show().fadeOut(5000);
         }
         else if (IndustrySector ==0)
         {
-            $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(2000);
+            $("#lblIndustrySector").html("Please enter the Industry Sector").show().fadeOut(5000);
         }
-         else if (Contact ==""|| ValidateName(Contact) == false)
+        else if (Contact ==""|| ValidateName(Contact) == false)
         {
-            $("#lblContact").html("Please enter the Contact Person").show().fadeOut(2000);
+            $("#lblContact").html("Please enter the Contact Person").show().fadeOut(5000);
+        }
+        else if (custEmail == "" || TaskEmailCheck() == false)
+        {
+            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(5000);
         }
         else if (custphone == "")
         {
            // $("#lblCustomerPhone").html("Please enter the Customer Phone").show();
-            $("#error-msg").html("Please enter a valid mobile number").show().fadeOut(2000);
+            $("#error-msg").html("Please enter a valid mobile number").show().fadeOut(5000);
         }
-        else if (custEmail=="")
+        else if (TaskPhone() == false)
         {
-            $("#lblCustomerEmail").html("Please enter the Customer Email").show().fadeOut(2000);
+             $("#error-msg").html("Please enter a valid mobile number").show().fadeOut(5000);
         }
+       
         else {
             $.ajax({
                     type: "POST",
@@ -446,7 +317,8 @@
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('Customer Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                             setTimeout(Redirect, 3000);
+                             //setTimeout(Redirect, 500);
+                            location.href = $("#RedirectToCustomerList").val();
                         }
                     },
                     failure: function (response) {
@@ -457,7 +329,11 @@
                     }
             });
         }
+    });  
     });
+
+
+  
 
     function Redirect() {
        var url = $("#RedirectToCustomerList").val();

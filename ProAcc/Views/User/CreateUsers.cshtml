@@ -16,10 +16,6 @@
     <div class="row">
         <div class="col-6">
 
-            @*<input type="hidden" id="customerid" />
-                <input type="hidden" id="pcre_on" />
-                <input type="hidden" id="pcre_By" />*@
-
             <div class="form-group">
                 <label class="control-label col-md-4 required">Name</label>
                 <div class="col-md-10">
@@ -91,7 +87,6 @@
                     <input type="tel" class="form-control" id="txtMob" maxlength="15" style="width: 135%;">
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp; <span id="valid-msg" class="hide Class_span">&nbsp;</span>
                     &nbsp;&nbsp;&nbsp;<span id="error-msg" class="hide Class_span">&nbsp;</span>
                 </div>
             </div>
@@ -152,7 +147,7 @@
         <div class="col-lg-12">
 
             <div class="col-md-offset-2 col-md-12">
-                <button type="button" class="btn btn-primary ld-ext-right" onclick="this.classList.toggle('running')" id="btnConsultantCreate">
+                <button type="button" class="btn btn-primary ld-ext-right"  id="btnConsultantCreate"> @*onclick="this.classList.toggle('running')"*@
                     Create
                     <div class="ld ld-ring ld-spin"></div>
                 </button>
@@ -166,7 +161,6 @@
 @Html.Hidden("RedirectToUserList", Url.Action("Index", "User"))
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#btnConsultantCreate").prop("disabled", true);
 
         $("#txtName1").keypress(function(event){
             var inputValue = event.which;
@@ -174,114 +168,68 @@
 
             if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
                 event.preventDefault();
-                $("#lblName1").html("Not Allowed").show().fadeOut(5000);
-                //SubmitConsultant();
-            }
-            else {
-                $("#lblName1").html("").show();
-                SubmitConsultant();
             }
         });
 
-         $('#txtName1').on('focusout', function () {
-
-             var CnstName = $("#txtName1").val().trim();
-              CnstName = CnstName.replace(/,/g, " ");
-            if (CnstName == "") {
-                $("#lblName1").html("Please Enter valid Name").show();
-                SubmitConsultant();
-            }
-            else {
-                $.ajax({
+        function NameExists(CnstName) {
+            var status = true;
+             $.ajax({
                 url: '@Url.Action("NameAvailability", "User")',
-                type: "GET",
-                data: { namedata: CnstName },
+               // type: "GET",
+                data: { namedata: CnstName,id:null },
                 dataType: "json",
+                async: false,
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblName1").html("This Name is already in use").show();
-                        SubmitConsultant();
+                        status =false
                     }
-                    else {
-                        $("#lblName1").html("");
-                        SubmitConsultant();
-                    }
-
                 },
                 error: function (err) {
-
                     alert(err);
                 }
-            });
-            }
+             });
+            return status;
+        }
 
-         });
-
-         $('#LoginID').on('keypress', function (e) {
+         $('#LoginID,#Passwd,#txtConsCnfmPassword').on('keypress', function (e) {
             if (e.which === 44) {
                 e.preventDefault();
-                $("#StatusConsultant").html("Not Allowed").show().fadeOut(5000);
             }
-            else {
-                $("#StatusConsultant").html("").show();
-            }
-
          });
 
-        $('#LoginID').on('focusout', function () {
-
-            var CnstUserName = $("#LoginID").val().trim();
-             CnstUserName = CnstUserName.replace(/,/g, "");
-            if (CnstUserName == "") {
-                $("#StatusConsultant").html("Please Enter valid LoginId").show().fadeOut(5000);
-                SubmitConsultant()
-            }
-            else {
-                $.ajax({
+        function LoginIDExists(CnstUserName) {
+            var status = true;
+             $.ajax({
                 url: '@Url.Action("UsernameAvailability", "User")',
-                type: "GET",
+               // type: "GET",
                 data: { userdata: CnstUserName },
-                dataType: "json",
+                 dataType: "json",
+                async: false,
                 success: function (data) {
                     if (data != "success") {
-                        $("#StatusConsultant").html("This LoginId is already taken , please select another").show().fadeOut(5000);
-                        SubmitConsultant()
+                        status= false
                     }
-                    else {
-                        $("#StatusConsultant").html("");
-                        SubmitConsultant();
-                    }
-
                 },
                 error: function (err) {
 
                     alert(err);
                 }
-            });
-            }
-
-        });
+             });
+            return status;
+        }
 
          $("#txtMob").keypress(function (e) {
             //if the letter is not digit then display error and don't type anything
              if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                  e.preventDefault();
-                 $("#lblMob1").html("Numbers Only").show().fadeOut("slow");
              }
-             else {
-                  $("#lblMob1").html("").show();
-             }
-             SubmitConsultant();
+
          });
 
-        
-
         var input = document.querySelector("#txtMob"),
-            errorMsg = document.querySelector("#error-msg"),
-            validMsg = document.querySelector("#valid-msg");
+            errorMsg = document.querySelector("#error-msg");
 
         // Error messages based on the code returned from getValidationError
-        //var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         var errorMap = ["Please enter a valid mobile number", "Invalid country code", "Please enter a valid mobile number", "Please enter a valid mobile number", "Invalid number"];
 
         var intl = window.intlTelInput(input, {
@@ -297,7 +245,6 @@
             input.classList.remove("error");
             errorMsg.innerHTML = "";
             errorMsg.classList.add("hide");
-            validMsg.classList.add("hide");
         };
 
         var countryCode;
@@ -305,41 +252,21 @@
             countryCode = intl.getSelectedCountryData().iso2;
             $("#selectedCountry").val(countryCode);
              $("#txtMob").val("");
-            //alert(countryCode)
         })
-
-        //// Validate on blur event
-        //input.addEventListener('blur', function () {
-        //    //debugger;
-        //    reset();
-        //    if (input.value.trim()) {
-        //        if (intl.isValidNumber()) {
-        //            validMsg.classList.remove("hide");
-
-        //        } else {
-        //            input.classList.add("error");
-        //            var errorCode = intl.getValidationError();
-        //            errorMsg.innerHTML = errorMap[errorCode];
-        //            errorMsg.classList.remove("hide");
-        //        }
-        //    }
-        //    SubmitConsultant();
-        //});
 
         function TaskPhone() {
              reset();
             if (input.value.trim()) {
                 if (intl.isValidNumber()) {
-                    validMsg.classList.remove("hide");
 
                 } else {
                     input.classList.add("error");
                     var errorCode = intl.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
+                    return false;
                 }
             }
-            SubmitConsultant();
         }
         // Reset on keyup/change event
         input.addEventListener('change', reset);
@@ -347,16 +274,6 @@
 
         $("#Passwd,#txtConsCnfmPassword").bind('copy paste cut', function (e) {
             e.preventDefault();
-        });
-
-        $("#Passwd").on("keypress", function (e) {
-            if (e.which === 44) {
-                e.preventDefault();
-                $("#lblPwd").html("Not Allowed").show().fadeOut(1000);
-            }
-            else {
-                 $("#lblPwd").html("").show();
-            }           
         });
 
        var typingTimer;                //timer identifier
@@ -369,53 +286,51 @@
         });
 
         //on keydown, clear the countdown
-         $('#Passwd','#txtEmail1','#txtMob','#txtConsCnfmPassword').on('keydown', function () {
+         $('#Passwd','#txtConsCnfmPassword').on('keydown', function () {
           clearTimeout(typingTimer);
         });
 
         function TaskPwd() {
-           
+            var status = true;
            var str = $("#Passwd").val();
             //var filter = /^(?=.*\d)(?=.*[a-zA-Z])(?!.*\s).{6,8}$/; //{IMP}
-            @*var filter = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;*@
             var filter = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
             //var filter = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
             if (str.length < 6) {
-                 $("#lblPwd").html("Password should contain 6-8 characters").show();
+                $("#lblPwd").html("Password should contain 6-8 characters").show();
+                status = false;
             }
             else if (!filter.test(str)) {
                 $("#lblPwd").html("Password should contain at least one character,Special char and number").show();
+                status = false;
             }
             else {
-                $("#lblPwd").html("");
+                $("#lblPwd").html("").show();
+                status = true
             }
-            SubmitConsultant()           
+            return status
         }
-                
-        // on keyup, start the countdown
-        $('#txtEmail1').on('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(TaskEmail, doneTypingInterval);
-        });
+
+        //// on keyup, start the countdown
+        //$('#txtEmail1').on('keyup', function () {
+        //    clearTimeout(typingTimer);
+        //    typingTimer = setTimeout(TaskEmail, doneTypingInterval);
+        //});
 
         function TaskEmail() {
              var str = $("#txtEmail1").val();
              var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
             if (!filter.test(str)) {
-                $("#lblEmail1").html("Email is not valid").show().fadeOut(1000);
+                return false
             }
-            else {
-                $("#lblEmail1").html("").show();
-            }
-            SubmitConsultant()
-        }      
+        }
 
-        // on keyup, start the countdown
-        $('#txtMob').on('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(TaskPhone, doneTypingInterval);
-        });
+        //// on keyup, start the countdown
+        //$('#txtMob').on('keyup', function () {
+        //    clearTimeout(typingTimer);
+        //    typingTimer = setTimeout(TaskPhone, doneTypingInterval);
+        //});
 
         //function TaskPhone() {
         //     phone = $("#txtMob").val();
@@ -430,32 +345,21 @@
         //}
 
         // on keyup, start the countdown
-        $('#txtConsCnfmPassword').on('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(TaskCnfmPassword, doneTypingInterval);
-        });
+        //$('#txtConsCnfmPassword').on('keyup', function () {
+        //    clearTimeout(typingTimer);
+        //    typingTimer = setTimeout(TaskCnfmPassword, doneTypingInterval);
+        //});
 
         function TaskCnfmPassword() {
             var str = $("#Passwd").val().trim();
             var str1 = $("#txtConsCnfmPassword").val().trim();
             if (str != str1) {
-                $("#lblAltConsPwd").html("Password Does not match kindly check").show().fadeOut(1000);
+                return false;
             }
-            else {
-                $("#lblAltConsPwd").html("");
-            }
-            SubmitConsultant()
         }
 
-        //$("#txtConsCnfmPassword").focusout(function () {
-        
-        //})
 
-    });
 
-</script>
-
-<script>
     $("#UserTypeID").change(function () {
         var Id = $(this).val();
         if (Id == 1 || Id == 4||Id == 0) {
@@ -470,54 +374,7 @@
             $("#divRole").show();
             $("#divCust").show();
         }
-        SubmitConsultant();
     });
-
-   
-   
-    //$("#txtConsCnfmPassword").focusout(function () {
-    //    var str = $("#Passwd").val().trim();
-    //    var str1 = $("#txtConsCnfmPassword").val().trim();
-    //    if (str != str1) {
-    //        $("#lblAltConsPwd").html("Password Does not match kindly check").show().fadeOut(5000);
-    //    }
-    //    else {
-    //        $("#lblAltConsPwd").html("");
-    //    }
-    //     SubmitConsultant()
-    //})
-
-    function SubmitConsultant() {
-        //debugger;
-        //alert("HI");
-        var Name1 = $("#txtName1").val().trim();
-        var Mob = $("#txtMob").val().trim();
-        var Email1 = $("#txtEmail1").val().trim();
-        var LoginID = $("#LoginID").val().trim();
-        var Passwd = $("#Passwd").val().trim();
-        var UserTypeID = $("#UserTypeID").val().trim();
-        var RoleID = $("#RoleID").val().trim();
-        var Customer_Id = $("#Customer_Id").val(); 
-
-        var lblName1 = $("#lblName1").text().trim();
-        //var lblMob1 = $("#lblMob1").text().trim();
-        var lblMob1 = $("#error-msg").text().trim();
-        var lblEmail1 = $("#lblEmail1").text().trim();
-        var Status1 = $("#StatusConsultant").text().trim();
-        var lblAltConsPwd = $("#lblAltConsPwd").text().trim();
-        var lblPwd = $("#lblPwd").text().trim();
-
-
-
-        if (Name1.length > 0 && Mob.length > 0 && Email1.length > 0 && LoginID.length > 0 && Passwd.length > 0 && UserTypeID!=0 &&
-            lblName1 == "" && lblMob1 == "" && lblEmail1 == "" && Status1 == "" && lblAltConsPwd == "" && lblPwd=="") {
-
-            $("#btnConsultantCreate").prop("disabled", false);
-        }
-        else {
-            $("#btnConsultantCreate").prop("disabled", true);
-        }
-    }
 
     function ValidateName(data) {
        var letters = /^[A-Za-z._, ]+$/;
@@ -526,8 +383,8 @@
        }
     }
 
-    $("#btnConsultantCreate").on("click", function () {
-
+        $("#btnConsultantCreate").on("click", function () {
+            
         var Name1 = $("#txtName1").val();
          Name1 = Name1.replace(/,/g, " ");
         var SelectedCountrycode = $("#selectedCountry").val();
@@ -543,25 +400,44 @@
         if (Name1 == "" || ValidateName(Name1) == false) {
             $("#lblName1").html("Please enter the User Name").show().fadeOut(5000);
         }
-         else if (Mob =="")
+        else if (NameExists(Name1) == false)
         {
-            //$("#lblMob1").html("Please enter the Mobile Number").show().fadeOut(5000);
-            $("#error-msg").html("Please enter the Mobile Number").show().fadeOut(5000);
-        }
-        else if (Email1 == "")
-        {
-            $("#lblEmail1").html("Please enter the Email Phone").show().fadeOut(5000);
+             $("#lblName1").html("User Name is already in use").show().fadeOut(5000);
         }
         else if (LoginID=="")
         {
-            $("#StatusConsultant").html("Please enter the Login").show().fadeOut(5000);
+            $("#StatusConsultant").html("Please enter a Proper Login").show().fadeOut(5000);
         }
-        else if (Passwd=="")
+        else if (LoginIDExists(LoginID) == false)
+        {
+            $("#StatusConsultant").html("Login ID is already in use").show().fadeOut(5000);
+        }
+        else if (Passwd == "")
         {
             $("#lblPwd").html("Please enter the Password").show().fadeOut(5000);
             $("#txtConsCnfmPassword").val("");
         }
-        else if (UserTypeID.val==0)
+        else if (TaskPwd() == false)
+        {
+           $("#lblPwd").html("Password should contain at least one character,Special char and number").show().fadeOut(5000);
+        }
+        else if (TaskCnfmPassword() == false)
+        {
+           $("#lblAltConsPwd").html("Password Does not match kindly check").show().fadeOut(5000);
+        }
+        else if (Email1 == "" || TaskEmail() == false)
+        {
+            $("#lblEmail1").html("Please enter a valid Email").show().fadeOut(5000);
+        }
+         else if (Mob =="")
+        {
+            $("#error-msg").html("Please enter a valid mobile number").show().fadeOut(5000);
+        }
+        else if (TaskPhone() == false)
+        {
+             $("#error-msg").html("Please enter a valid mobile number").show().fadeOut(5000);
+        }
+        else if (UserTypeID==0)
         {
             $("#lblUserTypeID").html("Please select the User Type").show().fadeOut(5000);
         }
@@ -569,33 +445,12 @@
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Create","User")',
-                //data: { Company_Name: CompanyName, IndustrySector_ID: IndustrySector, Phone: custphone, Email: custEmail ,Contact:Contact},
                 data: { Name: Name1, EMail: Email1, Phone: Mob, LoginId: LoginID, Password: Passwd, RoleID: RoleID, UserTypeID: UserTypeID, Customer_Id:Customer_Id,Countrycode: SelectedCountrycode },
                     success: function (response) {
                         if (response == "success") {
                             Notiflix.Notify.Success('User Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-
-                            setTimeout(Redirect, 3000);
-
-
-                            //$.alert({
-                            //    title: 'Success !',
-                            //    content: 'User Saved successfully..!',
-                            //    icon: 'fa fa-rocket',
-                            //    animation: 'scale',
-                            //    closeAnimation: 'scale',
-                            //    buttons: {
-                            //        okay: {
-                            //            text: 'Okay',
-                            //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                            //            action: function (event, ui) {
-                            //                $(this).remove();
-                            //                var url = $("#RedirectToUserList").val();
-                            //                location.href = url;
-                            //            }
-                            //        }
-                            //    }
-                            //});
+                           // setTimeout(Redirect, 3000);
+                           location.href = $("#RedirectToUserList").val();
                         }
                     },
                     failure: function (response) {
@@ -610,7 +465,8 @@
     function Redirect() {
         var url = $("#RedirectToUserList").val();
         location.href = url;
-    }
+        }
+});
 </script>
 
 <script type="text/javascript">
@@ -622,8 +478,7 @@
         }
     });
 
-    $(document).ready(function () {
-        $("#btnConsultantCreate").prop('disabled', true);
+    $(document).ready(function () {       
         $("#divRole").hide();
         $("#divCust").hide();
     });
