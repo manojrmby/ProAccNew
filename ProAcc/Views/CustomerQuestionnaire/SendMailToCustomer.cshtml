@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "SendMailToCustomer";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<a class="card-title">SendMailToCustomer</a>
+<div style="padding:1em;">
+
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="ToName" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblName">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 required">Email</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="ToEmail" />
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEmail">&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="col-md-offset-2 col-md-12">
+                <button type="button" id="btnsendMailCreate" class="btn btn-primary ld-ext-right"> @*onclick="this.classList.toggle('running')"*@
+                    Send
+                    <div class="ld ld-ring ld-spin"></div>
+                </button>
+            </div>
+        </div>
+    </div>   
+</div>
+
+<script>
+    $(document).ready(function () {
+       
+        $("#btnsendMailCreate").on("click", function () {
+            var Name = $("#ToName").val();
+             Name = Name.replace(/,/g, " ");
+            var ToEmail = $("#ToEmail").val();
+
+            debugger
+            if (Name == "" || ValidateName(Name) == false) {
+                $("#lblName").html("Please enter the Name").show().fadeOut(5000);
+            }
+            else if (ToEmail == "" || TaskEmail(ToEmail) == false) {
+                $("#lblEmail").html("Please enter the valid Email").show().fadeOut(5000);
+            }
+            else {
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("UpdateSendMailToCustomer","CustomerQuestionnaire")',
+                data: { Name: Name, Email: ToEmail},
+                    success: function (response) {
+                        if (response == "success") {
+                            Notiflix.Notify.Success('Mail sent successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                       alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
+            }
+        })
+
+        function ValidateName(data) {
+            var letters = /^[A-Za-z._, ]+$/;
+            if (!letters.test(data)) {
+                return false;
+            }
+        }
+
+        function TaskEmail(data) {
+             var filter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+            if (!filter.test(data)) {
+                return false
+            }
+        }
+    })
+</script>
