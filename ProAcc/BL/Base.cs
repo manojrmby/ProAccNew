@@ -2729,6 +2729,90 @@ namespace ProAcc.BL
         //}
         #endregion
 
+        #region PMUpload
+        public Boolean PMUpload(string filetype, string fileName, Guid Instance_ID, Guid User_ID)
+        {
+            Boolean status = false;
+
+
+            DBHelper dB = new DBHelper("SP_FileUpload", CommandType.StoredProcedure);
+
+            dB.addIn("@Type", "up_PMupload");
+            //dB.addIn("@tblSimplification", CustomTable);
+            dB.addIn("@File_Type", filetype);
+            dB.addIn("@FileUploadID", Guid.NewGuid());
+            dB.addIn("@instanceId", Instance_ID);
+            dB.addIn("@fileName", fileName);
+            dB.addIn("@Createdby", User_ID);
+
+            dB.ExecuteScalar();
+            status = true;
+            return status;
+
+        }
+
+        public List<FileUploadMaster> GetPMuploadlist(Guid Instance_ID)
+        {
+            List<FileUploadMaster> Fu = new List<FileUploadMaster>();
+            try
+            {
+                
+                DataTable dt = new DataTable();
+                DBHelper dB = new DBHelper("SP_FileUpload", CommandType.StoredProcedure);
+                dB.addIn("@Type", "GetPMuploadlist");
+                dB.addIn("@instanceId", Instance_ID);
+                dt = dB.ExecuteDataTable();
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        FileUploadMaster M = new FileUploadMaster();
+                        M.C_FileName = dr["_FileName"].ToString();
+                        M.FileType = Convert.ToInt32(dr["FileType"].ToString());
+                        Fu.Add(M);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
+            return Fu;
+        }
+        public List<FileMaster> GetPMFileList(Guid Instance_ID)
+        {
+            List<FileMaster> Fu = new List<FileMaster>();
+            try
+            {
+
+                DataTable dt = new DataTable();
+                DBHelper dB = new DBHelper("SP_FileUpload", CommandType.StoredProcedure);
+                dB.addIn("@Type", "GetPMFileList");
+                dB.addIn("@instanceId", Instance_ID);
+                dt = dB.ExecuteDataTable();
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        FileMaster M = new FileMaster();
+                        M.File = dr["File"].ToString();
+                        M.Id = Convert.ToInt32(dr["Id"].ToString());
+                        Fu.Add(M);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return Fu;
+        }
+        #endregion
+
 
         public string Phase_Assessment = "Assessment";
         public string Phase_PreConversion = "Pre Conversion";

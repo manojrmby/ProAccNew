@@ -1,9 +1,13 @@
-﻿using ProAcc.BL;
+﻿using DocumentFormat.OpenXml.Drawing.ChartDrawing;
+using ProAcc.BL;
 using ProAcc.BL.Model;
 using ProACC_DB;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using static ProAcc.BL.Model.Common;
 
@@ -67,7 +71,7 @@ namespace ProAcc.Controllers
             // InstanceID = Guid.Parse("52b6d7fa-18e2-4101-8040-1f8fcfd3bdaa");
             string LoginID = Session["loginid"].ToString();
             List<ProjectMonitorModel> Result = new List<ProjectMonitorModel>();
-            if (Phase_ID!=1)
+            if (Phase_ID != 1)
             {
                 var query = from u in db.Instances
                             where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true)
@@ -97,13 +101,13 @@ namespace ProAcc.Controllers
                         projM = PM[i];
                         Result.Add(projM);
                     }
-                   
+
                 }
             }
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SubmitProjectMonitor(int Phase_ID,Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, double EST_hours, double Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
+        public ActionResult SubmitProjectMonitor(int Phase_ID, Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, double EST_hours, double Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
         {
 
             int PhaseId = Phase_ID;
@@ -144,7 +148,7 @@ namespace ProAcc.Controllers
         {
             List<PhaseMaster> P = _Base.GetPhaseMasters();
             return Json(P, JsonRequestBehavior.AllowGet);
-        } 
+        }
         public ActionResult GetApplicationArea()
         {
             List<ApplicationAreaMaster> P = _Base.GetApplicationAreaMasters();
@@ -165,7 +169,7 @@ namespace ProAcc.Controllers
         public ActionResult GetBlocks()
         {
             List<Buldingblock> B = new List<Buldingblock>();
-           B = _Base.GetBuldingblock();
+            B = _Base.GetBuldingblock();
             return Json(B, JsonRequestBehavior.AllowGet);
         }
 
@@ -314,7 +318,7 @@ namespace ProAcc.Controllers
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
-            TempData["PhaseID"]= (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             //ViewBag.PhaseID= (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
@@ -390,7 +394,7 @@ namespace ProAcc.Controllers
             }
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
-            TempData["Customer"]  = new SelectList(sP_._List, "Value", "Name");
+            TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
             TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
@@ -443,7 +447,7 @@ namespace ProAcc.Controllers
                 }
             }
             //ViewBag.Project = Project;
-            TempData["Project"]  = Project;
+            TempData["Project"] = Project;
             return View();
         }
         #endregion
@@ -466,7 +470,7 @@ namespace ProAcc.Controllers
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
-            TempData["PhaseID"]=  (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)
@@ -542,7 +546,7 @@ namespace ProAcc.Controllers
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
-            TempData["PhaseID"]=  (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)
@@ -617,7 +621,7 @@ namespace ProAcc.Controllers
             GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
-            TempData["PhaseID"]=  (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)
@@ -706,7 +710,7 @@ namespace ProAcc.Controllers
 
         public ActionResult GetTaskName()
         {
-            var PMTasklist = db.PMTaskMasters.Where(x => x.isActive == true ).ToList();
+            var PMTasklist = db.PMTaskMasters.Where(x => x.isActive == true).ToList();
             List<PMTaskMaster> PM = new List<PMTaskMaster>();
             foreach (var item in PMTasklist)
             {
@@ -740,7 +744,7 @@ namespace ProAcc.Controllers
 
             PMTask.EST_hours = PM.EST_hours;
             PMTask.Actual_St_hours = PM.Actual_St_hours;
-            
+
             PMTask.Actual_St_Date = PM.Actual_St_Date;
             PMTask.Actual_En_Date = PM.Actual_En_Date;
 
@@ -754,6 +758,169 @@ namespace ProAcc.Controllers
             db.SaveChanges();
             Result = true;
             return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region FileUpload
+        public ActionResult PMUPload()
+        {
+            int userType = 0;
+            if (User.IsInRole("Admin"))
+            {
+                userType = 1;
+            }
+            else if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;
+            }
+            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+            //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+            TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
+            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            int inst = 0;
+            if (InstanceID != Guid.Empty)
+            {
+                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true && u.isActive == true) select u;
+                if (q.Count() > 0)
+                {
+                    inst = 1;
+                }
+                else { inst = 0; }
+
+            }
+            //ViewBag.Instance = inst;
+            TempData["Instance"] = inst;
+            List<SelectListItem> Project = new List<SelectListItem>();
+
+            if (User.IsInRole("Customer"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                var Data = (from a in db.UserMasters
+                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                            where a.UserId == LoginId && b.isActive == true
+                            orderby b.Project_Name
+                            select new { b.Project_Id, b.Project_Name }).ToList();
+                if (Data.Count() > 0)
+                {
+                    foreach (var v in Data)
+                    {
+                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                    }
+
+                }
+            }
+            //ViewBag.Project = Project;
+            TempData["Project"] = Project;
+           
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Project Manager")]
+        public ActionResult Upload()
+        {
+            //string IDProject = Request.Params["IDProject"].ToString();
+            string InstanceName = Request.Params["InstanceID"].ToString();
+            string filetype = Request.Params["filetype"].ToString();
+            if (InstanceName != "" && filetype != "")
+            {
+
+
+                Guid Instance_ID = Guid.Parse(InstanceName);
+                Guid User_Id = Guid.Parse(Session["loginid"].ToString());
+                if (Request.Files.Count == 1)
+                {
+                    try
+                    {
+                        Boolean Result_Process = false;
+                        HttpFileCollectionBase files = Request.Files;
+                        HttpPostedFileBase file = files[0];
+                        string fname;
+                        string ext;
+                        string NewID = Guid.NewGuid().ToString();
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                            fname = testfiles[testfiles.Length - 1];
+                            ext = System.IO.Path.GetExtension(fname);
+                        }
+                        else
+                        {
+                            fname = file.FileName;
+                            ext = System.IO.Path.GetExtension(fname);
+                        }
+                        String _fname = NewID + ext;
+                        FileUpload _fileUpload = new FileUpload();
+                        string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath"].ToString());
+                        _Base.CreateIfMissing(Folder_Path);
+                        fname = Path.Combine(Folder_Path, _fname);
+                        file.SaveAs(fname);
+                        Result_Process = _Base.PMUpload(filetype, NewID, Instance_ID, User_Id);
+                        return Json("File Uploaded Successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
+                }
+
+            }
+            else
+            {
+                return Json("Please Instance & check the files");
+            }
+            return Json("Please check the files.");
+
+        }
+
+
+        public JsonResult GetFiletype(string IDInstance)
+        {
+            if (IDInstance != "")
+            {
+                Session["InstanceId"] = IDInstance;
+            }
+            Guid ProjectID = Guid.Empty;
+            Guid IDInstanceID = Guid.Parse(IDInstance);
+            Session["Instance_Name"] = db.Instances.FirstOrDefault(x => x.Instance_id == IDInstanceID).InstaceName;
+            ProjectID = db.Instances.FirstOrDefault(y => y.Instance_id == IDInstanceID).Project_ID;
+            Session["Project_Name"] = db.Projects.FirstOrDefault(x => x.Project_Id == ProjectID).Project_Name;
+
+
+            Guid InstanceID = Guid.Parse(IDInstance);
+            List<FileMaster> PM = _Base.GetPMFileList(InstanceID);
+            List<SelectListItem> obj = new List<SelectListItem>();
+            if (PM.Count() > 0)
+            {
+                foreach (var v in PM)
+                {
+                    obj.Add(new SelectListItem { Text = v.File, Value = v.Id.ToString() });
+                }
+            }
+            return Json(obj, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

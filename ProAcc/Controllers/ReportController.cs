@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using static ProAcc.BL.Model.Common;
 
 namespace ProAcc.Controllers
@@ -114,11 +115,11 @@ namespace ProAcc.Controllers
                 //Boolean A= _Base.Proceess_WordAddImage();
                 //Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
                 var fileName = (from u in db.FileUploadMasters
-                where
-                u.InstanceID == InstanceId &&
-                u.isActive == true &&
-                u.File_Type == _Base.SAPReportFileName// "SAPReadinessCheck"
-                select u.C_FileName).FirstOrDefault();
+                                where
+                                u.InstanceID == InstanceId &&
+                                u.isActive == true &&
+                                u.File_Type == _Base.SAPReportFileName// "SAPReadinessCheck"
+                                select u.C_FileName).FirstOrDefault();
 
                 CreatePDF P = new CreatePDF();
                 string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath"].ToString());
@@ -131,16 +132,16 @@ namespace ProAcc.Controllers
                 //}
                 //else
                 //{
-                    Boolean Result = P.convertDOCtoPDF(PathDoc, PathPdf);
-                    ViewBag.Status = Result;
-               // }
-                    
+                Boolean Result = P.convertDOCtoPDF(PathDoc, PathPdf);
+                ViewBag.Status = Result;
+                // }
+
 
                 //P.convertDOCtoPDF(PathDoc, PathPdf);
                 ViewBag.PDFfileName = ConfigurationManager.AppSettings["Upload_filePath_Temp"].ToString() + "/Pdf/" + fileName + ".pdf";
             }
 
-            
+
             return View();
         }
 
@@ -188,5 +189,18 @@ namespace ProAcc.Controllers
             return Json(PM, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult PMReport()
+        {
+            return View();
+        }
+
+        public JsonResult PMReportData()
+        {
+            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+            List<FileUploadMaster> PM = _Base.GetPMuploadlist(InstanceID);
+            var obj = new { data = PM };
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
     }
 }
