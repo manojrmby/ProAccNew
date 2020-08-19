@@ -253,6 +253,7 @@
     <Content Include="Asset\MailTemplate\T4.HTML" />
     <Content Include="Asset\MailTemplate\T5.HTML" />
     <Content Include="Asset\MailTemplate\T6.HTML" />
+    <Content Include="Asset\MailTemplate\T7.html" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.css" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.js" />
     <Content Include="Asset\Notiflix\notiflix-aio-2.3.1.min.js" />
@@ -623,6 +624,7 @@
       <DependentUpon>CrystalReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="BL\Model\CustomerQuestionnaireViewModel.cs" />
     <Compile Include="BL\Model\IssueTrackModel.cs" />
     <Compile Include="BL\Model\LogedUser.cs" />
     <Compile Include="BL\Model\MailModel.cs" />
@@ -640,6 +642,7 @@
     <Compile Include="BL\URIHandler.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
+    <Compile Include="Controllers\CustomerQuestionnaireController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ErrorLogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -760,8 +763,6 @@
     <Content Include="Views\IssueTrack\Index.cshtml" />
     <Content Include="Views\IssueTrack\IndexPage.cshtml" />
     <Content Include="Views\IssueTrack\GetIssueTrackById.cshtml" />
-    <Content Include="Views\ProjectMonitor\PMUPload.cshtml" />
-    <Content Include="Views\Report\PMReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

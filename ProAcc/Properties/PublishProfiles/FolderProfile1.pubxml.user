@@ -49,7 +49,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/18/2020 10:26:12</publishTime>
     </File>
     <File Include="Asset/css/Temp.css">
-      <publishTime>07/01/2020 11:08:14</publishTime>
+      <publishTime>01/07/2020 11:08:14</publishTime>
     </File>
     <File Include="Asset/images/11.png">
       <publishTime>05/18/2020 10:26:12</publishTime>
@@ -79,7 +79,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/22/2020 12:55:43</publishTime>
     </File>
     <File Include="Asset/images/icons/favicon.ico">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Asset/images/image_2020_04_26T06_25_25_806Z.png">
       <publishTime>05/18/2020 10:26:12</publishTime>
@@ -112,7 +112,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/22/2020 10:50:59</publishTime>
     </File>
     <File Include="Asset/images/ProACCTool.png">
-      <publishTime>07/01/2020 11:08:14</publishTime>
+      <publishTime>01/07/2020 11:08:14</publishTime>
     </File>
     <File Include="Asset/images/promantus-new-logo.png">
       <publishTime>05/18/2020 10:26:12</publishTime>
@@ -175,7 +175,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/18/2020 10:26:12</publishTime>
     </File>
     <File Include="Asset/Jquery/jqGrid/css/octicons.css">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap-ui.css">
       <publishTime>05/18/2020 10:26:12</publishTime>
@@ -184,7 +184,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/18/2020 10:26:12</publishTime>
     </File>
     <File Include="Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css">
-      <publishTime>06/02/2020 20:38:27</publishTime>
+      <publishTime>02/06/2020 20:38:27</publishTime>
     </File>
     <File Include="Asset/Jquery/jqGrid/css/ui.jqgrid.css">
       <publishTime>05/18/2020 10:26:12</publishTime>
@@ -277,16 +277,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/22/2020 10:50:59</publishTime>
     </File>
     <File Include="Asset/MailTemplate/T4.HTML">
-      <publishTime>08/05/2020 13:24:52</publishTime>
+      <publishTime>05/08/2020 13:24:52</publishTime>
     </File>
     <File Include="Asset/MailTemplate/T5.HTML">
       <publishTime>08/12/2020 11:25:06</publishTime>
     </File>
     <File Include="Asset/MailTemplate/T6.HTML">
-      <publishTime>08/18/2020 15:21:41</publishTime>
+      <publishTime>08/19/2020 15:45:54</publishTime>
+    </File>
+    <File Include="Asset/MailTemplate/T7.html">
+      <publishTime>08/19/2020 15:20:15</publishTime>
     </File>
     <File Include="Asset/Notiflix/notiflix-2.3.1.min.css">
-      <publishTime>07/01/2020 11:08:14</publishTime>
+      <publishTime>01/07/2020 11:08:14</publishTime>
     </File>
     <File Include="Asset/Notiflix/notiflix-2.3.1.min.js">
       <publishTime>07/08/2020 15:33:04</publishTime>
@@ -472,22 +475,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>08/18/2020 18:02:38</publishTime>
+      <publishTime>08/19/2020 15:55:21</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
-      <publishTime>08/18/2020 18:01:09</publishTime>
+      <publishTime>08/19/2020 15:48:44</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>08/18/2020 18:02:38</publishTime>
+      <publishTime>08/19/2020 15:55:21</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
-      <publishTime>08/18/2020 18:02:35</publishTime>
+      <publishTime>08/19/2020 15:55:20</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll.config">
       <publishTime>07/19/2020 13:10:27</publishTime>
     </File>
     <File Include="bin/ProACC_DB.pdb">
-      <publishTime>08/18/2020 18:02:35</publishTime>
+      <publishTime>08/19/2020 15:55:20</publishTime>
     </File>
     <File Include="bin/Release/Publish/Asset/css/main_Login.css">
       <publishTime>05/12/2020 18:37:12</publishTime>
@@ -1249,37 +1252,37 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/22/2020 10:50:59</publishTime>
     </File>
     <File Include="Content/fonts/fa-solid-900.eot">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/fa-solid-900.svg">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/fa-solid-900.ttf">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/fa-solid-900.woff">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/fa-solid-900.woff2">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/font-awesome-4.7.0/css/font-awesome.css">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/Pe-icon-7-stroke.eot">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/Pe-icon-7-stroke.svg">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/Pe-icon-7-stroke.ttf">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/fonts/Pe-icon-7-stroke.woff">
-      <publishTime>06/04/2020 10:14:24</publishTime>
+      <publishTime>04/06/2020 10:14:24</publishTime>
     </File>
     <File Include="Content/PagedList.css">
       <publishTime>05/18/2020 10:26:12</publishTime>
@@ -1348,7 +1351,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/19/2020 16:43:22</publishTime>
     </File>
     <File Include="Views/Assessment/CreateAnalysis.cshtml">
-      <publishTime>08/15/2020 10:39:43</publishTime>
+      <publishTime>08/19/2020 15:48:44</publishTime>
     </File>
     <File Include="Views/Assessment/CustomReport.cshtml">
       <publishTime>06/19/2020 16:43:22</publishTime>
@@ -1378,10 +1381,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/18/2020 10:26:12</publishTime>
     </File>
     <File Include="Views/Customers/Create.cshtml">
-      <publishTime>08/18/2020 18:01:09</publishTime>
+      <publishTime>08/19/2020 00:09:09</publishTime>
     </File>
     <File Include="Views/Customers/GetCustomerById.cshtml">
-      <publishTime>08/18/2020 15:48:21</publishTime>
+      <publishTime>08/19/2020 00:08:58</publishTime>
     </File>
     <File Include="Views/Customers/Index.cshtml">
       <publishTime>08/15/2020 10:39:44</publishTime>
@@ -1405,7 +1408,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/18/2020 16:49:17</publishTime>
     </File>
     <File Include="Views/IssueTrack/Create.cshtml">
-      <publishTime>08/18/2020 14:50:12</publishTime>
+      <publishTime>08/19/2020 12:43:13</publishTime>
     </File>
     <File Include="Views/IssueTrack/GetIssueTrackById.cshtml">
       <publishTime>08/18/2020 11:08:35</publishTime>
@@ -1486,7 +1489,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/10/2020 11:45:14</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_ProjectCreationCreate.cshtml">
-      <publishTime>08/05/2020 20:21:30</publishTime>
+      <publishTime>05/08/2020 20:21:30</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_ProjectCreationIndex.cshtml">
       <publishTime>08/15/2020 10:39:44</publishTime>
@@ -1534,10 +1537,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/18/2020 13:52:33</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/ValidationMonitor.cshtml">
-      <publishTime>08/05/2020 15:01:46</publishTime>
+      <publishTime>05/08/2020 15:01:46</publishTime>
     </File>
     <File Include="Views/Report/AssessmentReport.cshtml">
-      <publishTime>08/15/2020 10:39:44</publishTime>
+      <publishTime>08/19/2020 15:48:44</publishTime>
     </File>
     <File Include="Views/Report/AuditReport.cshtml">
       <publishTime>07/08/2020 16:33:04</publishTime>
@@ -1573,25 +1576,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/22/2020 10:50:59</publishTime>
     </File>
     <File Include="Views/Role/Create.cshtml">
-      <publishTime>08/18/2020 18:01:09</publishTime>
+      <publishTime>08/18/2020 19:03:51</publishTime>
     </File>
     <File Include="Views/Role/_RoleIndex.cshtml">
       <publishTime>08/15/2020 10:39:44</publishTime>
     </File>
     <File Include="Views/shared/_Layout.cshtml">
-      <publishTime>08/15/2020 15:31:30</publishTime>
+      <publishTime>08/19/2020 15:48:44</publishTime>
     </File>
     <File Include="Views/Test/CommingSoon.cshtml">
       <publishTime>05/18/2020 10:26:12</publishTime>
     </File>
     <File Include="Views/User/CreateUsers.cshtml">
-      <publishTime>08/18/2020 15:45:11</publishTime>
+      <publishTime>08/19/2020 00:08:50</publishTime>
     </File>
     <File Include="Views/User/CreateUsers_Old.cshtml">
       <publishTime>06/12/2020 17:03:27</publishTime>
     </File>
     <File Include="Views/User/Edit.cshtml">
-      <publishTime>08/18/2020 15:49:51</publishTime>
+      <publishTime>08/19/2020 00:10:05</publishTime>
     </File>
     <File Include="Views/User/Edit_Old.cshtml">
       <publishTime>06/12/2020 17:20:50</publishTime>
@@ -1621,10 +1624,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/19/2020 18:10:46</publishTime>
     </File>
     <File Include="Views/web.config">
-      <publishTime>07/03/2020 10:50:03</publishTime>
+      <publishTime>03/07/2020 10:50:03</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/18/2020 18:02:39</publishTime>
+      <publishTime>08/19/2020 15:55:22</publishTime>
     </File>
   </ItemGroup>
 </Project>
