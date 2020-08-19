@@ -68,6 +68,20 @@
           <Property Name="Modified_by" Type="uniqueidentifier" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="FileMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="File" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Filefor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_by" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="FileUploadMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -560,6 +574,7 @@
           <EntitySet Name="ApplicationAreaMaster" EntityType="Self.ApplicationAreaMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Buldingblock" EntityType="Self.Buldingblock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FileMaster" EntityType="Self.FileMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileUploadMaster" EntityType="Self.FileUploadMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistoryLog" EntityType="Self.HistoryLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IndustrySector" EntityType="Self.IndustrySector" Schema="dbo" store:Type="Tables" />
@@ -740,6 +755,7 @@
             <End Role="Issuetrack" EntitySet="Issuetracks" />
             <End Role="HistoryLog" EntitySet="HistoryLogs" />
           </AssociationSet>
+          <EntitySet Name="FileMasters" EntityType="ProAccModel.FileMaster" />
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
           <Property Type="Int32" Name="RC" Nullable="true" />
@@ -1323,6 +1339,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FileMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="File" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Filefor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1723,6 +1753,21 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="IssueTrackId" ColumnName="IssueTrackId" />
                 <ScalarProperty Name="HistoryLogId" ColumnName="HistoryLogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileMasters">
+            <EntityTypeMapping TypeName="ProAccModel.FileMaster">
+              <MappingFragment StoreEntitySet="FileMaster">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Filefor" ColumnName="Filefor" />
+                <ScalarProperty Name="File" ColumnName="File" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8e2369ce9df44ff58790c5c178865d31" Name="Diagram1" ZoomLevel="36">
+      <Diagram DiagramId="8e2369ce9df44ff58790c5c178865d31" Name="Diagram1" ZoomLevel="54">
         <EntityTypeShape EntityType="ProAccModel.Instance" Width="1.5" PointX="5.25" PointY="10" />
         <EntityTypeShape EntityType="ProAccModel.PhaseMaster" Width="1.5" PointX="5.75" PointY="1.5" />
         <EntityTypeShape EntityType="ProAccModel.ProjectMonitor" Width="1.5" PointX="7.75" PointY="8.75" />
@@ -41,6 +41,7 @@
         <AssociationConnector Association="ProAccModel.FK_PMTaskMaster_PMTaskCategory" />
         <EntityTypeShape EntityType="ProAccModel.HistoryLog" Width="1.5" PointX="9.75" PointY="22" />
         <AssociationConnector Association="ProAccModel.FK_HistoryLog_Issuetrack" />
+        <EntityTypeShape EntityType="ProAccModel.FileMaster" Width="1.5" PointX="15.375" PointY="6.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
