@@ -763,6 +763,10 @@
     <Content Include="Views\IssueTrack\Index.cshtml" />
     <Content Include="Views\IssueTrack\IndexPage.cshtml" />
     <Content Include="Views\IssueTrack\GetIssueTrackById.cshtml" />
+    <Content Include="Views\CustomerQuestionnaire\CustomerNeedHelpIndex.cshtml" />
+    <Content Include="Views\CustomerQuestionnaire\SendMailToCustomer.cshtml" />
+    <Content Include="Views\ProjectMonitor\PMUPload.cshtml" />
+    <Content Include="Views\Report\PMReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

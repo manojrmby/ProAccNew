@@ -38,7 +38,6 @@ namespace ProACC_DB
         public virtual DbSet<FileUploadMaster> FileUploadMasters { get; set; }
         public virtual DbSet<ApplicationAreaMaster> ApplicationAreaMasters { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
         public virtual DbSet<Buldingblock> Buldingblocks { get; set; }
         public virtual DbSet<MailMaster> MailMasters { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
@@ -49,6 +48,7 @@ namespace ProACC_DB
         public virtual DbSet<PMTaskMaster> PMTaskMasters { get; set; }
         public virtual DbSet<HistoryLog> HistoryLogs { get; set; }
         public virtual DbSet<FileMaster> FileMasters { get; set; }
+        public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {

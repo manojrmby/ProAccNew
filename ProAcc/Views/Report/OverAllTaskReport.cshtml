@@ -711,7 +711,8 @@
             caption: '',
             sortable: false,
             grouping: false,
-            rownumbers: true,
+             rownumbers: true,
+            rownumWidth: 45,
             reload: true,
             reloadAfterSubmit: true,
             pager: false,
@@ -721,7 +722,7 @@
 
             loadComplete: function () {
                 //alert("mm");
-
+                  $("#jqGrid").jqGrid("setLabel", "rn", "S.No");
 
             },
             gridComplete: function () {

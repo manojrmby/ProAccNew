@@ -4,7 +4,7 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
-<a class="card-title">SendMailToCustomer</a>
+    <a class="card-title">ProAcc Survey Mail</a>
 <div style="padding:1em;">
 
     <hr />
@@ -48,7 +48,6 @@
              Name = Name.replace(/,/g, " ");
             var ToEmail = $("#ToEmail").val();
 
-            debugger
             if (Name == "" || ValidateName(Name) == false) {
                 $("#lblName").html("Please enter the Name").show().fadeOut(5000);
             }

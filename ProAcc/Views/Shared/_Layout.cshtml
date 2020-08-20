@@ -772,9 +772,27 @@
                                 </a>
 
                             </li>
+                            @if (User.IsInRole("Consultant"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("CustomerNeedHelpIndex", "CustomerQuestionnaire")">
+                                        <i class="metismenu-icon fa fa-check-square"></i>
+                                        Customer Need Help
+                                        <i class="metismenu-state-icon fa caret-left"></i>
+                                    </a>
 
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("SendMailToCustomer", "CustomerQuestionnaire")">
+                                        <i class="metismenu-icon fa fa-check-square"></i>
+                                        ProAcc Survey Mail
+                                        <i class="metismenu-state-icon fa caret-left"></i>
+                                    </a>
 
-                        </ul>
+                                </li>
+                            }
+
+                            </ul>
                         }
                     </div>
                 </div>

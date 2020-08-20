@@ -158,6 +158,17 @@ namespace ProAcc.BL
                         msg.CC.Add(CCAdd);
                     }
                 }
+                else if (SM.subject == "ProAcc Survey Mail")
+                {
+                    MailAddress toAddress = new MailAddress(To, Name);
+                    msg.To.Add(toAddress);
+
+                    string CCAddress = Mail_CCAddress;
+                    foreach (var CCAdd in CCAddress.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        msg.CC.Add(CCAdd);
+                    }
+                }
                 else
                 {
                     MailAddress toAddress = new MailAddress(To, Name);
@@ -251,6 +262,13 @@ namespace ProAcc.BL
                     body = body.Replace("{PhaseName}", Phase);
                     body = body.Replace("{InstanceName}", Instance);
                     body = body.Replace("{projectName}", projectName);
+                }
+                else if (TemplateName.Trim() == "T7")
+                {
+                    string[] substrings = regex.Split(input);
+                    Issue = substrings[0].ToString();
+
+                    body = body.Replace("{Name}", Issue);
                 }
                 else
                 {
