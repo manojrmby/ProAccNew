@@ -161,7 +161,7 @@
 @Html.Hidden("RedirectToUserList", Url.Action("Index", "User"))
 <script type="text/javascript">
     $(document).ready(function () {
-
+     $("#prt").hide();
         $("#txtName1").keypress(function(event){
             var inputValue = event.which;
             // allow letters and whitespaces only.

@@ -465,11 +465,11 @@
                                                         <i class="metismenu-icon"> </i>FioriApps Report
                                                     </a>
                                                 </li>
-                                                <li>
-                                                    <a href="@Url.Action("AssessmentReport", "Report")">
-                                                        <i class="metismenu-icon"> </i>Assessment Report
-                                                    </a>
-                                                </li>
+                                                @*<li>
+                                <a href="@Url.Action("AssessmentReport", "Report")">
+                                    <i class="metismenu-icon"> </i>Assessment Report
+                                </a>
+                            </li>*@
                                             </ul>
                                         </li>
                                     </ul>
@@ -725,15 +725,15 @@
                                             </a>
                                         </li>
                                     }
-                                    @if (User.IsInRole("Project Manager"))
-                                    {
-                                        <li>
-                                            <a href="@Url.Action("PMReport", "Report")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                PM Report's
-                                            </a>
-                                        </li>
-                                    }
+                                    @*@if (User.IsInRole("Project Manager"))
+                {*@
+                                    <li>
+                                        <a href="@Url.Action("PMReport", "Report")">
+                                            <i class="metismenu-icon pe-7s-diamond"></i>
+                                            Assessment Report
+                                        </a>
+                                    </li>
+                                    @*}*@
                                 </ul>
                             </li>
                             @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
@@ -782,6 +782,9 @@
                                     </a>
 
                                 </li>
+                            }
+                            @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Admin"))
+                            { 
                                 <li>
                                     <a href="@Url.Action("SendMailToCustomer", "CustomerQuestionnaire")">
                                         <i class="metismenu-icon fa fa-check-square"></i>
@@ -792,7 +795,7 @@
                                 </li>
                             }
 
-                            </ul>
+                        </ul>
                         }
                     </div>
                 </div>
@@ -801,16 +804,20 @@
                 <div  class="app-main_Scroll">
                     <div class="app-main__inner">
                         <hr />
-                        <div style="max-width:99%;">
-                            <div class="row">
-                                <div class="col-6">
-                                    <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
-                                </div>
-                                <div class="col-6">
-                                    <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+                        @*@if (ViewContext.RouteData.Values["Controller"].ToString() != "IssueTrack")
+                        {*@
+                            <div style="max-width:99%;" id="prt">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @*}*@
+
                         @RenderBody()
                         @RenderSection("scripts", required: false)
                     </div>

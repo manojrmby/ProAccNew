@@ -34,7 +34,10 @@
 @Html.Hidden("RedirectToCustomer", Url.Action("Create", "Customers"))
 
 <script type="text/javascript">
+    $(document).ready(function () {
 
+        $("#prt").hide();
+    });
     @*function loadCustomer() {
         $.ajax({
             type: "GET",

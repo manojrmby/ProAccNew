@@ -44,27 +44,47 @@
     </div>
 </div>
 @*<div class="row">
-    <div class="col-6">
-        <a class="card-title" style="float: left;">Project Name :</a>
-        <input id="Project_Name">
-    </div>
-    <div class="col-6">
-        <a class="card-title " style="float: right;">Instance Name :</a>
-    </div>
-</div>*@
+        <div class="col-6">
+            <a class="card-title" style="float: left;">Project Name :</a>
+            <input id="Project_Name">
+        </div>
+        <div class="col-6">
+            <a class="card-title " style="float: right;">Instance Name :</a>
+        </div>
+    </div>*@
 @{
     Html.RenderAction("ResourceAllocation", "Resource");
 }
-
+<input type="hidden" id="hdnSessionProject_ID" value="@Session["Project_ID"]" />
+<input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />
 <script>
     $(document).ready(function () {
         $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
 
         $(window).on("resize", function () {
-        var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
-        $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
+            var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
+            $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
         });
+
+        var Instance=$("#hdnSessionInstance_ID").val();
+        if (Instance != "") {
+            var IDInstance = $("#hdnSessionInstance_ID").val();
+            $.ajax({
+                url: '@Url.Action("SubmitInstance", "Home")',
+                type: "POST",
+                data: { 'IDInstance': IDInstance },
+                success: function (result) {
+                    Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    LoadTable(IDInstance);
+
+                    $('#jqGrid').trigger('reloadGrid');
+
+                }
+            });
+        }
+         
+
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);

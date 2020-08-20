@@ -10,51 +10,51 @@
     <link href="~/Asset/Jquery/jqGrid/css/ui.jqgrid-bootstrap4.css" rel="stylesheet" />*@
 
 @*@Styles.Render("~/Content/css/jqGrid")
-@Scripts.Render("~/bundles/Scripts/jqGrid")*@
+    @Scripts.Render("~/bundles/Scripts/jqGrid")*@
 <a class="card-title">Resource Allocation</a>
 @*<script>
-    //$.jgrid.defaults.width =1000;
-    $.jgrid.defaults.responsive = true;
-    $.jgrid.defaults.styleUI = 'Bootstrap4';
-    $.jgrid.defaults.iconSet = "Octicons";
-</script>
-<style>
-    /*.ui-jqgrid {
-        font-size: 0.8rem
-    }
+        //$.jgrid.defaults.width =1000;
+        $.jgrid.defaults.responsive = true;
+        $.jgrid.defaults.styleUI = 'Bootstrap4';
+        $.jgrid.defaults.iconSet = "Octicons";
+    </script>
+    <style>
+        /*.ui-jqgrid {
+            font-size: 0.8rem
+        }
 
-    th.ui-th-column div {
-        white-space: normal !important;
-        height: auto !important;
-        padding: 2px;
-    }
+        th.ui-th-column div {
+            white-space: normal !important;
+            height: auto !important;
+            padding: 2px;
+        }
 
-    .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
-        font-size: 11px !important;
-    }
+        .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
+            font-size: 11px !important;
+        }
 
-    .ui-jqgrid .ui-jqgrid-bdiv {
-        overflow-y: scroll
-    }*/
+        .ui-jqgrid .ui-jqgrid-bdiv {
+            overflow-y: scroll
+        }*/
 
-    #jqGridPager_center {
-        visibility: hidden;
-    }
-</style>
-<style>
-    .wrapColumnText {
-        white-space: normal !important;
-        height: auto;
-        vertical-align: text-top;
-    }
-    /*div.centered {
-        position: fixed;
-        top: 40%!important;
-        left: 50%!important;
-        margin-top: -50px;
-        margin-left: -100px;
-    }*/
-</style>*@
+        #jqGridPager_center {
+            visibility: hidden;
+        }
+    </style>
+    <style>
+        .wrapColumnText {
+            white-space: normal !important;
+            height: auto;
+            vertical-align: text-top;
+        }
+        /*div.centered {
+            position: fixed;
+            top: 40%!important;
+            left: 50%!important;
+            margin-top: -50px;
+            margin-left: -100px;
+        }*/
+    </style>*@
 
 <div class="row" style="padding: 1em;">
     <div class="col-lg-12 card">
@@ -99,6 +99,8 @@
 @{
     Html.RenderAction("ResourceAllocation", "Resource");
 }
+<input type="hidden" id="hdnSessionProject_ID" value="@Session["Project_ID"]" />
+<input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />
 <script>
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
@@ -108,6 +110,23 @@
         var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
              $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
          });
+
+        var Instance = $("#hdnSessionInstance_ID").val();
+        if (Instance != "") {
+            var IDInstance = $("#hdnSessionInstance_ID").val();
+            $.ajax({
+                url: '@Url.Action("SubmitInstance", "Home")',
+                type: "POST",
+                data: { 'IDInstance': IDInstance },
+                success: function (result) {
+                    Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    LoadTable(IDInstance);
+
+                    $('#jqGrid').trigger('reloadGrid');
+
+                }
+            });
+        }
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);

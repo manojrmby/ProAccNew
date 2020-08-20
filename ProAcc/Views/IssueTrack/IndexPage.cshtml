@@ -2,12 +2,13 @@
 @{
     ViewBag.Title = "IndexPage";
     Layout = "~/Views/shared/_Layout.cshtml";
+    
 }
 
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
-<div style="max-width:99.5%;">
+<div>@*style="max-width:99.5%;"*@
     <a class="card-title">Issue List</a>
     <hr />
     <table class="table" id="tblIssue">
@@ -85,7 +86,8 @@
     $(document).ready(function () {
 
         $("#tblIssue").dataTable();
-
+        $("#prt").hide();
+    
         //$("#tblIssue").dataTable({
         //    "order": [[8, 'desc']],
         //    "columnDefs": [
