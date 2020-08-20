@@ -8,17 +8,24 @@
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
-<div>@*style="max-width:99.5%;"*@
+<div>
     <a class="card-title">Issue List</a>
     <hr />
     <table class="table" id="tblIssue">
 
         <thead>
             <tr>
-                <th style="width:70px">Issue ID</th>
-                <th style="width:180px">Issue Name</th>
+                @*<th style="width:70px">Issue ID</th>
+                <th style="width:1800px">Issue Name</th>
                 <th style="width:89px">Phase</th>
-                <th style="width:130px">Task</th>
+                <th style="width:130px">Task</th>*@
+
+
+		<th>Issue ID</th>
+                <th>Issue Name</th>
+                <th>Phase</th>
+                <th>Task</th>
+
                 <th>Assigned</th>
                 <th style="width:130px">Status</th>
                 <th>Created</th>
@@ -85,7 +92,11 @@
 
     $(document).ready(function () {
 
-        $("#tblIssue").dataTable();
+        $("#tblIssue").dataTable({
+"columnDefs": [
+    { "width": "20%", "targets": 1 }
+  ]
+});
         $("#prt").hide();
     
         //$("#tblIssue").dataTable({

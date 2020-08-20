@@ -130,6 +130,10 @@
                 opacity: 1;
                 /*background: rgba(255,0,0,0.4);*/
             }
+ .vertical-nav-menu ul > li > a
+            {
+                padding:0 0.75rem 0
+            }
     </style>
     @*<link href="~/Asset/css/Loader.css" rel="stylesheet" />*@
 
@@ -385,7 +389,7 @@
                                     <a href="@Url.Action("PMUPload", "ProjectMonitor")">
                                         <!-- <i class="metismenu-icon pe-7s-home"></i> -->
                                         <i class="metismenu-icon fa fa-american-sign-language-interpreting"></i>
-                                        PM File upload
+                                        PM File Upload
                                     </a>
                                 </li>
                             }
@@ -466,10 +470,10 @@
                                                     </a>
                                                 </li>
                                                 @*<li>
-                                <a href="@Url.Action("AssessmentReport", "Report")">
-                                    <i class="metismenu-icon"> </i>Assessment Report
-                                </a>
-                            </li>*@
+                                                    <a href="@Url.Action("AssessmentReport", "Report")">
+                                                        <i class="metismenu-icon"> </i>Assessment Report
+                                                    </a>
+                                                </li>*@
                                             </ul>
                                         </li>
                                     </ul>
@@ -726,13 +730,13 @@
                                         </li>
                                     }
                                     @*@if (User.IsInRole("Project Manager"))
-                {*@
-                                    <li>
-                                        <a href="@Url.Action("PMReport", "Report")">
-                                            <i class="metismenu-icon pe-7s-diamond"></i>
-                                            Assessment Report
-                                        </a>
-                                    </li>
+                                    {*@
+                                        <li>
+                                            <a href="@Url.Action("PMReport", "Report")">
+                                                <i class="metismenu-icon pe-7s-diamond"></i>
+                                                Assessment Report
+                                            </a>
+                                        </li>
                                     @*}*@
                                 </ul>
                             </li>
@@ -784,7 +788,7 @@
                                 </li>
                             }
                             @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Admin"))
-                            { 
+                            {
                                 <li>
                                     <a href="@Url.Action("SendMailToCustomer", "CustomerQuestionnaire")">
                                         <i class="metismenu-icon fa fa-check-square"></i>
@@ -795,7 +799,7 @@
                                 </li>
                             }
 
-                        </ul>
+                            </ul>
                         }
                     </div>
                 </div>
