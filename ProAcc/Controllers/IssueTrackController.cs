@@ -25,7 +25,22 @@ namespace ProAcc.Controllers
 
         public ActionResult IndexPage()
         {
-            List<IssueTrackModel> ITM = _Base.Sp_GetIssueTrackData();
+            int userType = 0;
+            List<IssueTrackModel> ITM= new List<IssueTrackModel>();
+            if (User.IsInRole("Consultant"))
+            {
+                userType = 2;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                userType = 3;                
+            }
+            else if (User.IsInRole("Project Manager"))
+            {
+                userType = 4;
+            }
+
+            ITM = _Base.Sp_GetIssueTrackData(Session["loginid"].ToString(), userType);
             ViewBag.ITM = ITM;
             return View();
         }
@@ -180,13 +195,13 @@ namespace ProAcc.Controllers
             List<UserMaster> B = _Base.Sp_AssignedTo(Pid);
             return Json(B, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Getdata()
-        {
-            List<IssueTrackModel> ITM= _Base.Sp_GetIssueTrackData();
+        //public ActionResult Getdata()
+        //{
+        //    List<IssueTrackModel> ITM= _Base.Sp_GetIssueTrackData(Session["loginid"].ToString());
             
 
-            return Json(ITM, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(ITM, JsonRequestBehavior.AllowGet);
+        //}
 
         public ActionResult SubmitIssueTrack(Guid Issuetrack_Id,  String Status, Guid AssignedTo,String Comments,String Description) //DateTime EndDate,
         {

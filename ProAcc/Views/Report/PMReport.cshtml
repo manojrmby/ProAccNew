@@ -17,13 +17,18 @@
 </style>
 
 <ul class="tabs-animated-shadow nav-justified tabs-animated nav">
+    <li class="nav-item Hideme" id="Nav_4">
+        <a role="tab" class="nav-link" id="tab-c1-4" data-toggle="tab" href="#tab-animated1-4" aria-selected="false">
+            <span class="nav-text">SAP S4HANA Comprehensive Assessment and Readiness Check Report</span>
+        </a>
+    </li>
     <li class="nav-item Hideme" id="Nav_0">
         <a role="tab" class="nav-link" id="tab-c1-0" data-toggle="tab" href="#tab-animated1-0" aria-selected="false">
             <span class="nav-text">Landscape & System Management</span>
         </a>
     </li>
     <li class="nav-item Hideme" id="Nav_1">
-        <a role="tab" class="nav-link show active" id="tab-c1-1" data-toggle="tab" href="#tab-animated1-1" aria-selected="true">
+        <a role="tab" class="nav-link show active" id="tab-c1-1" data-toggle="tab" href="#tab-animated1-1" aria-selected="false">
             <span class="nav-text">Custom Code Analysis</span>
         </a>
     </li>
@@ -41,6 +46,9 @@
 
 </ul>
 <div class="tab-content ">
+    <div class="tab-pane" id="tab-animated1-4" role="tabpanel">
+        <div id="Parent4"></div>
+    </div>
     <div class="tab-pane" id="tab-animated1-0" role="tabpanel">
         <div id="Parent0"></div>
     </div>
@@ -66,6 +74,7 @@
                 url: '@Url.Action("PMReportData", "Report")',
                 async: false,
                 success: function (data) {
+                    debugger;
                     data = data.data;
                     var length = data.length;
                     if (length <= 0) {
@@ -87,19 +96,22 @@
                             idiv.frameborder = '0';
 
 
-                            if (filetype == 9) {
+                            if (filetype == 10) {
                                 $("#Parent0").append(idiv);
                                 $('#Nav_0').addClass('showMe').removeClass('Hideme');
-                            } else if (filetype == 10) {
+                            } else if (filetype == 11) {
                                 $("#Parent1").append(idiv);
                                 $('#Nav_1').addClass('showMe').removeClass('Hideme');
-                            } else if (filetype == 11) {
+                            } else if (filetype == 12) {
                                 $("#Parent2").append(idiv);
                                 $('#Nav_2').addClass('showMe').removeClass('Hideme');
-
-                            } else if (filetype == 12) {
+                            } else if (filetype == 13) {
                                 $("#Parent3").append(idiv);
                                 $('#Nav_3').addClass('showMe').removeClass('Hideme');
+                            }
+                            else if (filetype == 9) {
+                                $("#Parent4").append(idiv);
+                                $('#Nav_4').addClass('showMe').removeClass('Hideme');
                             }
                             dimention();
                         }

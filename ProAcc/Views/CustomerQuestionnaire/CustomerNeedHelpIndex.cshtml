@@ -41,8 +41,11 @@
                     <a class="txtG" value="@item.Phone_No">@item.Phone_No</a>
                 </td>
                 <td>
-                    @*<a class="txtG" type="button" value="@item.Need_Help">@item.Need_Help</a>*@
                     <a href="#" id="Customerhelp" class="Customerhelp fa fa-tram"></a><input type="hidden" value="@item.User_ID" />
+                    @*<button type="button" id="Customerhelp" class="Customerhelp btn btn-primary ld-ext-right" value="@item.User_ID">
+                        Help
+                        <div class="ld ld-ring ld-spin"></div>
+                    </button>*@
                 </td>
 
             </tr>
@@ -68,6 +71,7 @@
          });
 
          $(".Customerhelp").on("click", function () {
+             
              var id = $(this).next().val();
               Notiflix.Confirm.Show(
                 'Confirm',

@@ -347,6 +347,7 @@
             sortable: false,
             grouping: false,
             rownumbers: true,
+            rownumWidth: 45,
             reload: true,
             reloadAfterSubmit:true,
             pager: "#jqGridPager",
@@ -452,9 +453,9 @@
             },
 
             loadComplete: function () {
-                //alert("mm");
+               
+                 $("#jqGrid").jqGrid("setLabel", "rn", "S.No");
                 var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
-                //debugger;
                 for (var i = 0; i < ids.length; i++) {
                     var EST_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'EST_hours')
                     EST_hours = EST_hours.replace(".", ":")
@@ -467,7 +468,7 @@
 
             },
             gridComplete: function () {
-               // alert("tdyt");
+              
                 var recs = $('#jqGrid').jqGrid('getGridParam', 'reccount');
 
                 if (isNaN(recs) || recs == 0) {

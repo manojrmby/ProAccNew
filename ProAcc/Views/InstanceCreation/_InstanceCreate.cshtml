@@ -5,7 +5,7 @@
 }
 
 
-<a class="card-title">Create Instance</a>
+<a class="card-title">Instance Creation</a>
 <hr />
 <div style="padding:1em;">
     <div class="row">
@@ -58,6 +58,7 @@
 <script>
 
     $(document).ready(function () {
+         $("#prt").hide();
         $("#btnInstanceCreate").prop('disabled', true);
 
         $("#txtInstanceName").keypress(function (event) {

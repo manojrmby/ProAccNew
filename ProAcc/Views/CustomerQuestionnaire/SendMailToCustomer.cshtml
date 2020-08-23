@@ -4,7 +4,7 @@
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
-<a class="card-title">SendMailToCustomer</a>
+    <a class="card-title">ProAcc Survey Mail</a>
 <div style="padding:1em;">
 
     <hr />
@@ -42,13 +42,25 @@
 
 <script>
     $(document).ready(function () {
-       
+
+        $("#ToName").keypress(function (event) {
+            var inputValue = event.which;
+            if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+                event.preventDefault();
+            }            
+        });
+
+        $("#ToEmail,#ToName").keypress(function (event) {
+            if (event.which === 44) {
+                event.preventDefault();
+            }
+        });
+
         $("#btnsendMailCreate").on("click", function () {
             var Name = $("#ToName").val();
              Name = Name.replace(/,/g, " ");
             var ToEmail = $("#ToEmail").val();
 
-            debugger
             if (Name == "" || ValidateName(Name) == false) {
                 $("#lblName").html("Please enter the Name").show().fadeOut(5000);
             }

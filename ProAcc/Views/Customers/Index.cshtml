@@ -65,7 +65,7 @@
 
 
     $(document).ready(function () {
-
+         $("#prt").hide();
         $("#tblCustomer").dataTable({
             "order": [[6, 'desc']],
             "columnDefs": [
@@ -97,7 +97,7 @@
         })
     });
     $(".editCustomer").on("click", function () {
-        debugger;
+       
         var id = $(this).next().val();
         $.ajax({
             url: '@Url.Action("GetCustomerById","Customers")',

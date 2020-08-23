@@ -2263,14 +2263,28 @@ namespace ProAcc.BL
 
        
 
-        public List<IssueTrackModel> Sp_GetIssueTrackData()
+        public List<IssueTrackModel> Sp_GetIssueTrackData(String Id,int type)
         {
             List<IssueTrackModel> ITM = new List<IssueTrackModel>();
             DataTable dt = new DataTable();
             //if (Status)
             {
                 DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
-                dB.addIn("@Type", "PullData");
+                if (type == 2)
+                {
+                    dB.addIn("@Type", "Pull_Consultant_Data");
+                    dB.addIn("@Id", Id);
+                }
+                if (type == 3)
+                {
+                    dB.addIn("@Type", "PullData");
+                    dB.addIn("@Id", Id);
+                }
+                if (type == 4)
+                {
+                    dB.addIn("@Type", "Pull_PM_Data");
+                    dB.addIn("@Id", Id);
+                }
                 //dB.addIn("@Issuetrack_Id", InstanceId);
                 dt = dB.ExecuteDataTable();
 
@@ -2319,10 +2333,6 @@ namespace ProAcc.BL
                         if (P.PhaseID == 5)
                         {
                             P.IssueID = "Val_" + P.RunningID;
-                        }
-                        if (P.PhaseID == 0)
-                        {
-                            P.IssueID = "Com_" + P.RunningID;
                         }
 
                         ITM.Add(P);

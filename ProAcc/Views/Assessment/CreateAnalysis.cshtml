@@ -27,14 +27,14 @@
 @*<script src="~/Asset/Scripts/Chart.js"></script>
     <script src="~/Asset/Scripts/Chart.RadialGauge.umd.js"></script>*@
 @*<link href="~/Asset/css/jBox.all.css" rel="stylesheet" />*@
-<div class="row">
+@*<div class="row">
     <div class="col-6">
         <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
     </div>
     <div class="col-6">
         <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
     </div>
-</div>
+</div>*@
 <a class="card-title">Create Analysis</a>
 <div style="padding: 1em;">
 
@@ -321,7 +321,7 @@
 
     $(document).ready(function () {
 
-
+ $("#prt").hide();
         $('#btnUpload').click(function () {
             var RedirectTo = $("#RedirectTo").val();
             var ProjectID = $("#IDProject").val();

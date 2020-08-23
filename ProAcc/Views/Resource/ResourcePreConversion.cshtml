@@ -42,12 +42,12 @@
     }
 </style>
 <style>
-        .wrapColumnText {
-            white-space: normal !important;
-            height: auto;
-            vertical-align: text-top;
-        }
-        /*div.centered {
+    .wrapColumnText {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+    }
+    /*div.centered {
         position: fixed;
         top: 40%!important;
         left: 50%!important;
@@ -99,7 +99,8 @@
 @{
     Html.RenderAction("ResourceAllocation", "Resource");
 }
-
+<input type="hidden" id="hdnSessionProject_ID" value="@Session["Project_ID"]" />
+<input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />
 <script>
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
@@ -109,6 +110,23 @@
         var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
              $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
          });
+
+        var Instance=$("#hdnSessionInstance_ID").val();
+        if (Instance != "") {
+            var IDInstance = $("#hdnSessionInstance_ID").val();
+            $.ajax({
+                url: '@Url.Action("SubmitInstance", "Home")',
+                type: "POST",
+                data: { 'IDInstance': IDInstance },
+                success: function (result) {
+                    Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    LoadTable(IDInstance);
+
+                    $('#jqGrid').trigger('reloadGrid');
+
+                }
+            });
+        }
     });
      $('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);

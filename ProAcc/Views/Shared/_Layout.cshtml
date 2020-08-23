@@ -130,6 +130,10 @@
                 opacity: 1;
                 /*background: rgba(255,0,0,0.4);*/
             }
+ .vertical-nav-menu ul > li > a
+            {
+                padding:0 0.75rem 0
+            }
     </style>
     @*<link href="~/Asset/css/Loader.css" rel="stylesheet" />*@
 
@@ -385,7 +389,7 @@
                                     <a href="@Url.Action("PMUPload", "ProjectMonitor")">
                                         <!-- <i class="metismenu-icon pe-7s-home"></i> -->
                                         <i class="metismenu-icon fa fa-american-sign-language-interpreting"></i>
-                                        PM File upload
+                                        PM File Upload
                                     </a>
                                 </li>
                             }
@@ -465,11 +469,11 @@
                                                         <i class="metismenu-icon"> </i>FioriApps Report
                                                     </a>
                                                 </li>
-                                                <li>
+                                                @*<li>
                                                     <a href="@Url.Action("AssessmentReport", "Report")">
                                                         <i class="metismenu-icon"> </i>Assessment Report
                                                     </a>
-                                                </li>
+                                                </li>*@
                                             </ul>
                                         </li>
                                     </ul>
@@ -725,15 +729,15 @@
                                             </a>
                                         </li>
                                     }
-                                    @if (User.IsInRole("Project Manager"))
-                                    {
+                                    @*@if (User.IsInRole("Project Manager"))
+                                    {*@
                                         <li>
                                             <a href="@Url.Action("PMReport", "Report")">
                                                 <i class="metismenu-icon pe-7s-diamond"></i>
-                                                PM Report's
+                                                Assessment Report
                                             </a>
                                         </li>
-                                    }
+                                    @*}*@
                                 </ul>
                             </li>
                             @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
@@ -772,9 +776,30 @@
                                 </a>
 
                             </li>
+                            @if (User.IsInRole("Consultant"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("CustomerNeedHelpIndex", "CustomerQuestionnaire")">
+                                        <i class="metismenu-icon fa fa-check-square"></i>
+                                        Customer Need Help
+                                        <i class="metismenu-state-icon fa caret-left"></i>
+                                    </a>
 
+                                </li>
+                            }
+                            @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Admin"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("SendMailToCustomer", "CustomerQuestionnaire")">
+                                        <i class="metismenu-icon fa fa-check-square"></i>
+                                        ProAcc Survey Mail
+                                        <i class="metismenu-state-icon fa caret-left"></i>
+                                    </a>
 
-                        </ul>
+                                </li>
+                            }
+
+                            </ul>
                         }
                     </div>
                 </div>
@@ -783,16 +808,20 @@
                 <div  class="app-main_Scroll">
                     <div class="app-main__inner">
                         <hr />
-                        <div style="max-width:99%;">
-                            <div class="row">
-                                <div class="col-6">
-                                    <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
-                                </div>
-                                <div class="col-6">
-                                    <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+                        @*@if (ViewContext.RouteData.Values["Controller"].ToString() != "IssueTrack")
+                        {*@
+                            <div style="max-width:99%;" id="prt">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @*}*@
+
                         @RenderBody()
                         @RenderSection("scripts", required: false)
                     </div>

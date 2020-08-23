@@ -11,7 +11,8 @@
 
 <a class="card-title">User List</a>
 <hr />
-<table class="table" id="tblUserTable" style="max-width: 99.5%;">
+<div style="max-width: 99.5%;">
+<table class="table" id="tblUserTable">
     <thead>
         <tr>
             <th>
@@ -108,10 +109,10 @@
         }
     </tbody>
 </table>
-
+</div>
 <script>
     $(document).ready(function () {
-       
+        $("#prt").hide();
         $("#tblUserTable").dataTable({
            "order": [[1, 'desc']],
             //"ordering": false,

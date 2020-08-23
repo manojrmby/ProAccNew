@@ -21,13 +21,13 @@ namespace ProACC_DB
         public Nullable<int> Sequence_Num { get; set; }
         public int ApplicationAreaID { get; set; }
         public int RoleID { get; set; }
+        public Nullable<decimal> EST_hours { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }
         public Nullable<System.DateTime> Modified_On { get; set; }
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
-        public Nullable<double> EST_hours { get; set; }
     
         public virtual ApplicationAreaMaster ApplicationAreaMaster { get; set; }
         public virtual Buldingblock Buldingblock { get; set; }
