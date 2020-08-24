@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ProAcc.BL.Model.IssueTrackModel>
+
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+<div>
+    <a class="card-title">Issue List</a>
+    <hr />
+    <table class="table" id="tblIssue">
+        @*style="width: 1500px;"*@
+
+        <thead>
+            <tr>
+                <th style="width:60px">Issue ID</th>
+                <th style="width:130px">Issue Name</th>
+                <th>Phase</th>
+                <th style="width:130px">Task</th>
+                <th>Assigned To</th>
+                <th>Instance</th>
+                <th>Status</th>
+                <th>Created</th>
+                @*<th>Running ID</th>*@
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="txtG" value="@item.IssueID">@item.IssueID</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.IssueName">@item.IssueName</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Phase">@item.Phase</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Task">@item.Task</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Assigned">@item.Assigned</a>
+                    </td> 
+                    <td>
+                        <a class="txtG" value="@item.Instance">@item.Instance</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.Status">@item.Status</a>
+                    </td>
+                    <td>
+                        <a class="txtG" value="@item.StartDate">@item.StartDate.ToLocalTime()</a> @*ToString("dd/MM/yyyy")*@
+                    </td>
+                    @*<td>
+                            <a class="txtG" value="@item.RunningID">@item.RunningID</a>
+                        </td>*@
+                    <td>
+                        @if (item.Status != "Completed")
+                        {
+                            <a class="fa fa-edit" data-placement="top" href="@Url.Action("GetIssueTrackById", "IssueTrack", new { id = item.Issuetrack_Id })"></a>
+                        }
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $("#tblIssue").dataTable({
+            "columnDefs": [
+                { "width": "20%", "targets": 1 }
+            ]
+        });
+    });
+</script>

@@ -1,89 +1,51 @@
-﻿@model IEnumerable<ProACC_DB.Issuetrack>
+﻿@*@model IEnumerable<ProACC_DB.Issuetrack>*@
 @{
     ViewBag.Title = "IndexPage";
     Layout = "~/Views/shared/_Layout.cshtml";
-    
+
 }
 
-<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
-<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
-<div>
-    <a class="card-title">Issue List</a>
-    <hr />
-    <table class="table" id="tblIssue">
+    <div class="row instanceRow" style="padding: 1em;">
+        <div class="col-lg-12 card">
+            <div class="row">
+                @if (User.IsInRole("Consultant") || User.IsInRole("Admin"))
+                {
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <label for="exampleEmail" class="">Customer Name</label>
+                            @Html.DropDownList("Customer", (IEnumerable<SelectListItem>)ViewBag.Customer, "-Select-", new { id = "IDCustomer", @class = "form-control" })                            
+                        </div>
+                    </div>
+                }
+                <div class="col-md-4">
+                    <label class="">Project Name</label>
+                    @if (User.IsInRole("Customer") || User.IsInRole("Project Manager"))
+                    {
+                        @Html.DropDownList("Project", (IEnumerable<SelectListItem>)ViewBag.Project, "-Select-", new { id = "IDProject", @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.DropDownList("Project", new SelectList(Enumerable.Empty<SelectListItem>(), "IDProject", "ProjectName"),
+                               "Select a Customer", new { id = "IDProject", @class = "form-control" })
+                    }
+                </div>
+                <div class="col-md-2">
+                    <label for="exampleEmail" class="">Instance Name</label>
+                    @Html.DropDownList("Instance", new SelectList(Enumerable.Empty<SelectListItem>(), "IDInstance", "InstanceName"),
+                    "-Select-", new { id = "IDInstance", @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <label for="exampleEmail" class="">.</label>
+                    <button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="SubmitInstance">
+                        Select Instance
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <thead>
-            <tr>
-                @*<th style="width:70px">Issue ID</th>
-                <th style="width:1800px">Issue Name</th>
-                <th style="width:89px">Phase</th>
-                <th style="width:130px">Task</th>*@
+<div id="divIssueTrackIndex" style="max-width: 99.5%;">
 
-
-		<th>Issue ID</th>
-                <th>Issue Name</th>
-                <th>Phase</th>
-                <th>Task</th>
-
-                <th>Assigned</th>
-                <th style="width:130px">Status</th>
-                <th>Created</th>
-                <th>Instance</th>
-                <th>Project</th>
-                <th style="width:89px">Customer</th>
-                @*<th>Running ID</th>*@
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ViewBag.ITM)
-            {
-                <tr>
-                    <td>
-                        <a class="txtG" value="@item.IssueID">@item.IssueID</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.IssueName">@item.IssueName</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Phase">@item.Phase</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Task">@item.Task</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Assigned">@item.Assigned</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Status">@item.Status</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.StartDate">@item.StartDate.ToLocalTime()</a> @*ToString("dd/MM/yyyy")*@
-                    </td> 
-                    <td>
-                        <a class="txtG" value="@item.Instance">@item.Instance</a>
-                    </td>     
-                    <td>
-                        <a class="txtG" value="@item.Project">@item.Project</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Customer">@item.Customer</a>
-                    </td>
-                    @*<td>
-                        <a class="txtG" value="@item.RunningID">@item.RunningID</a>
-                    </td>*@
-                    <td>
-                        @if (item.Status != "Completed")
-                        {
-                            <a class="fa fa-edit" data-placement="top" href="@Url.Action("GetIssueTrackById", "IssueTrack", new { id = item.Issuetrack_Id })"></a>
-                        }
-                    </td>
-
-                </tr>
-            }
-        </tbody>
-    </table>
 </div>
 
 
@@ -92,44 +54,133 @@
 
     $(document).ready(function () {
 
-        $("#tblIssue").dataTable({
-"columnDefs": [
-    { "width": "20%", "targets": 1 }
-  ]
-});
-        $("#prt").hide();
-    
         //$("#tblIssue").dataTable({
-        //    "order": [[8, 'desc']],
         //    "columnDefs": [
-        //        {
-        //            "targets": [7],
-        //            "visible": false
-        //        }
+        //        { "width": "20%", "targets": 1 }
         //    ]
         //});
-    });
+        $("#prt").hide();
+         $("#IDInstance").prop("disabled", true);
 
-     @*$(".editIssueTrack").on("click", function () {
-              
-        var id = $(this).next().val();
-        $.ajax({
-            url: '@Url.Action("GetIssueTrackById","IssueTrack")',
-            type: "GET",
-            data: { id: id },
-            
-            success: function (result) {
-                
-                $("#txtIssueName").val("");
-                $("#PhaseMaster").val(0);
-                $("#TaskList").val(0);
-                $("#drpAssignedTo").val(0);
-                $("#txtComments").val("");
-            },
-            error: function (err) {
-                alert(err.responseText);
-            }
+         $('#IDCustomer').change(function () {
+                $("#IDInstance").prop("disabled", false);
+                var id = $(this).val();
+                 var select = $("#IDProject");
+                        select.empty();
+                        select.append($('<option/>', {
+                            value: 0,
+                            text: "-Select-"
+                        }));
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadProject","Home")',
+                    data: { 'CustomerId' : id},
+                    success: function (data) {
+                        var select = $("#IDProject");
+                        select.empty();
+                        select.append($('<option/>', {
+                            value: 0,
+                            text: "-Select-"
+                        }));
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDProject").prop("disabled", false);
+                        $("#IDInstance").prop("disabled", true);
+                        //$('#SubmitInstance').prop("disabled", true);
+                    },
+                    error: function (a) {
+                        //debugger;
+                        alert(a);
+                    }
+                });
+            });
+        $('#IDProject').change(function () {
+
+                var id = $(this).val();
+			    //$('#SubmitInstance').prop("disabled", true);
+                 var select = $("#IDInstance");
+                        select.empty();
+                        select.append($('<option/>', {
+                            value: 0,
+                            text: "-Select-"
+                        }));
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadInstanceforResource","Home")',
+                    data: { 'ProjectId' : id},
+                    success: function (data) {
+                        var select = $("#IDInstance");
+                        select.empty();
+                        select.append($('<option/>', {
+                            value: 0,
+                            text: "-Select-"
+                        }));
+                        if (data.length > 0) {
+                            $.each(data, function (index, itemData) {
+                                select.append($('<option/>', {
+                                    value: itemData.Value,
+                                    text: itemData.Text
+                                }));
+                            });
+                            $("#IDInstance").prop("disabled", false);
+                        }
+                        else {
+                            $("#IDInstance").prop("disabled", true);
+						   // $('#SubmitInstance').prop("disabled", true);
+                        }
+                    },
+                    error: function (a) {
+                        alert(a);
+                    }
+                });
+                });
+        $('#IDInstance').change(function () {
+                var id = $(this).val();
+     //           if (id == ""||id =="0") {
+     //                $('#SubmitInstance').prop("disabled", true);
+     //           } else {
+					//$('#SubmitInstance').prop("disabled", false);
+     //           }
+            });
+
+        $("#SubmitInstance").click(function () {
+            loadIssueTrackReport()
         });
-       
-    });*@
+
+         loadIssueTrackReport()
+
+    });
+    function loadIssueTrackReport()
+    {
+         var Customer =$("#IDCustomer").val();
+           var Project =$("#IDProject").val().trim();
+            var Instance = $("#IDInstance").val().trim();
+
+            model = {
+                Customer_Id: Customer,
+                Project_Id:Project,
+                Instance_Id: Instance
+            }
+
+             $.ajax({
+                type: "GET",
+                //data: null,
+                 data: model,
+                url: '@Url.Action("IssueTrackDatas","IssueTrack")',
+                success: function (response) {
+                 $("#divIssueTrackIndex").html(response);
+                },
+                failure: function (response) {
+                alert(response.responseText);
+                },
+                error: function (response) {
+                alert(response.responseText);
+                }
+             });
+        }
+
 </script>

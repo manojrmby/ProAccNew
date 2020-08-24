@@ -2263,7 +2263,7 @@ namespace ProAcc.BL
 
        
 
-        public List<IssueTrackModel> Sp_GetIssueTrackData(String Id,int type)
+        public List<IssueTrackModel> Sp_GetIssueTrackData(String Id,int type,IssueTrackModel Model)
         {
             List<IssueTrackModel> ITM = new List<IssueTrackModel>();
             DataTable dt = new DataTable();
@@ -2273,19 +2273,20 @@ namespace ProAcc.BL
                 if (type == 2)
                 {
                     dB.addIn("@Type", "Pull_Consultant_Data");
-                    dB.addIn("@Id", Id);
                 }
                 if (type == 3)
                 {
                     dB.addIn("@Type", "PullData");
-                    dB.addIn("@Id", Id);
                 }
                 if (type == 4)
                 {
-                    dB.addIn("@Type", "Pull_PM_Data");
-                    dB.addIn("@Id", Id);
+                    dB.addIn("@Type", "Pull_PM_Data");                                       
                 }
-                //dB.addIn("@Issuetrack_Id", InstanceId);
+                dB.addIn("@Id", Id);
+                dB.addIn("@Customer_Id", Model.Customer_Id);
+                dB.addIn("@Project_Id", Model.Project_Id);
+                dB.addIn("@ProjectInstance_Id", Model.Instance_Id);
+
                 dt = dB.ExecuteDataTable();
 
                 if (dt.Rows.Count > 0)

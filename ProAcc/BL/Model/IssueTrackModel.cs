@@ -39,6 +39,9 @@ namespace ProAcc.BL.Model
         public String Instance { get; set; }
         public String Project { get; set; }
         public String Customer { get; set; }
+        public System.Guid Customer_Id { get; set; }
+        public System.Guid Project_Id { get; set; }
+        public System.Guid Instance_Id { get; set; }
         public virtual ProACC_DB.UserMaster UserMaster { get; set; }
 
         public virtual ProACC_DB.PhaseMaster phaseMaster { get; set; }
