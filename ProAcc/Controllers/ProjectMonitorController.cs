@@ -28,8 +28,6 @@ namespace ProAcc.Controllers
         }
         public ActionResult PMAdminCreate()
         {
-
-
             int userType = 0;
             if (User.IsInRole("Admin"))
             {
@@ -765,76 +763,85 @@ namespace ProAcc.Controllers
         #region FileUpload
         public ActionResult PMUPload()
         {
-            int userType = 0;
-            if (User.IsInRole("Admin"))
+            LogHelper _log = new LogHelper();
+            try
             {
-                userType = 1;
-            }
-            else if (User.IsInRole("Consultant"))
-            {
-                userType = 2;
-            }
-            else if (User.IsInRole("Customer"))
-            {
-                userType = 3;
-            }
-            GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
-            //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
-            TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
-            TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
-            Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-            int inst = 0;
-            if (InstanceID != Guid.Empty)
-            {
-                var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true && u.isActive == true) select u;
-                if (q.Count() > 0)
+                int userType = 0;
+                if (User.IsInRole("Admin"))
                 {
-                    inst = 1;
+                    userType = 1;
                 }
-                else { inst = 0; }
-
-            }
-            //ViewBag.Instance = inst;
-            TempData["Instance"] = inst;
-            List<SelectListItem> Project = new List<SelectListItem>();
-
-            if (User.IsInRole("Customer"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.Customer_Id equals b.Customer_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            orderby b.Project_Name
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
+                else if (User.IsInRole("Consultant"))
                 {
-                    foreach (var v in Data)
+                    userType = 2;
+                }
+                else if (User.IsInRole("Customer"))
+                {
+                    userType = 3;
+                }
+                GeneralList sP_ = _Base.spCustomerDropdown(Session["loginid"].ToString(), userType);
+                //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
+                TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
+                TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
+                Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+                int inst = 0;
+                if (InstanceID != Guid.Empty)
+                {
+                    var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true && u.isActive == true) select u;
+                    if (q.Count() > 0)
                     {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                        inst = 1;
                     }
+                    else { inst = 0; }
 
                 }
-            }
-            else if (User.IsInRole("Project Manager"))
-            {
-                Guid LoginId = Guid.Parse(Session["loginid"].ToString());
-                var Data = (from a in db.UserMasters
-                            join b in db.Projects on a.UserId equals b.ProjectManager_Id
-                            where a.UserId == LoginId && b.isActive == true
-                            orderby b.Project_Name
-                            select new { b.Project_Id, b.Project_Name }).ToList();
-                if (Data.Count() > 0)
+                //ViewBag.Instance = inst;
+                TempData["Instance"] = inst;
+                List<SelectListItem> Project = new List<SelectListItem>();
+
+                if (User.IsInRole("Customer"))
                 {
-                    foreach (var v in Data)
+                    Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                    var Data = (from a in db.UserMasters
+                                join b in db.Projects on a.Customer_Id equals b.Customer_Id
+                                where a.UserId == LoginId && b.isActive == true
+                                orderby b.Project_Name
+                                select new { b.Project_Id, b.Project_Name }).ToList();
+                    if (Data.Count() > 0)
                     {
-                        Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
-                    }
+                        foreach (var v in Data)
+                        {
+                            Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                        }
 
+                    }
                 }
+                else if (User.IsInRole("Project Manager"))
+                {
+                    Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+                    var Data = (from a in db.UserMasters
+                                join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                                where a.UserId == LoginId && b.isActive == true
+                                orderby b.Project_Name
+                                select new { b.Project_Id, b.Project_Name }).ToList();
+                    if (Data.Count() > 0)
+                    {
+                        foreach (var v in Data)
+                        {
+                            Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                        }
+
+                    }
+                }
+                //ViewBag.Project = Project;
+                TempData["Project"] = Project;
             }
-            //ViewBag.Project = Project;
-            TempData["Project"] = Project;
-           
+            catch (Exception ex)
+            {
+               
+                _log.createLog(ex, "");
+                
+            }
             return View();
         }
 
@@ -867,57 +874,67 @@ namespace ProAcc.Controllers
         [Authorize(Roles = "Project Manager")]
         public ActionResult Upload()
         {
-            //string IDProject = Request.Params["IDProject"].ToString();
-            string InstanceName = Request.Params["InstanceID"].ToString();
-            string filetype = Request.Params["filetype"].ToString();
-            if (InstanceName != "" && filetype != "")
+            LogHelper _log = new LogHelper();
+            try
             {
-
-
-                Guid Instance_ID = Guid.Parse(InstanceName);
-                Guid User_Id = Guid.Parse(Session["loginid"].ToString());
-                if (Request.Files.Count == 1)
+                //string IDProject = Request.Params["IDProject"].ToString();
+                string InstanceName = Request.Params["InstanceID"].ToString();
+                string filetype = Request.Params["filetype"].ToString();
+                if (InstanceName != "" && filetype != "")
                 {
-                    try
-                    {
-                        Boolean Result_Process = false;
-                        HttpFileCollectionBase files = Request.Files;
-                        HttpPostedFileBase file = files[0];
-                        string fname;
-                        string ext;
-                        string NewID = Guid.NewGuid().ToString();
-                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                        {
-                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                            fname = testfiles[testfiles.Length - 1];
-                            ext = System.IO.Path.GetExtension(fname);
-                        }
-                        else
-                        {
-                            fname = file.FileName;
-                            ext = System.IO.Path.GetExtension(fname);
-                        }
-                        String _fname = NewID + ext;
-                        FileUpload _fileUpload = new FileUpload();
-                        string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath"].ToString());
-                        _Base.CreateIfMissing(Folder_Path);
-                        fname = Path.Combine(Folder_Path, _fname);
-                        file.SaveAs(fname);
-                        Result_Process = _Base.PMUpload(filetype, NewID, Instance_ID, User_Id);
-                        return Json("File Uploaded Successfully.");
-                    }
-                    catch (Exception ex)
-                    {
 
-                        throw;
+
+                    Guid Instance_ID = Guid.Parse(InstanceName);
+                    Guid User_Id = Guid.Parse(Session["loginid"].ToString());
+                    if (Request.Files.Count == 1)
+                    {
+                        try
+                        {
+                            Boolean Result_Process = false;
+                            HttpFileCollectionBase files = Request.Files;
+                            HttpPostedFileBase file = files[0];
+                            string fname;
+                            string ext;
+                            string NewID = Guid.NewGuid().ToString();
+                            if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                            {
+                                string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                                fname = testfiles[testfiles.Length - 1];
+                                ext = System.IO.Path.GetExtension(fname);
+                            }
+                            else
+                            {
+                                fname = file.FileName;
+                                ext = System.IO.Path.GetExtension(fname);
+                            }
+                            String _fname = NewID + ext;
+                            FileUpload _fileUpload = new FileUpload();
+                            string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath"].ToString());
+                            _Base.CreateIfMissing(Folder_Path);
+                            fname = Path.Combine(Folder_Path, _fname);
+                            file.SaveAs(fname);
+                            Result_Process = _Base.PMUpload(filetype, NewID, Instance_ID, User_Id);
+                            return Json("File Uploaded Successfully.");
+                        }
+                        catch (Exception ex)
+                        {
+
+                            throw;
+                        }
                     }
+
                 }
-
+                else
+                {
+                    return Json("Please Instance & check the files");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return Json("Please Instance & check the files");
+                _log.createLog(ex, "");
+                return Json("Something Went wrong.");
             }
+           
             return Json("Please check the files.");
 
         }

@@ -87,6 +87,9 @@
                 $("#btnCreate").hide();
                 $("#btnUpdate").show();
                 $("#btnAddNew").show();
+                $("#prjtCreate").hide();
+                $("#prjtUpdate").show();
+                $(".app-main_Scroll").animate({ scrollTop: 0 }, 1000);
             },
             error: function (err) {
                 alert(err.responseText);

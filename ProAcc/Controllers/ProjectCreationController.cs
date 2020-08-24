@@ -306,9 +306,7 @@ namespace ProAcc.Controllers
                 string Url = Request.Url.AbsoluteUri;
                 _Log.createLog(ex, "-->GetPMtaskById" + Url);
                 throw;
-            }
-
-            
+            }            
         }
 
 
@@ -317,7 +315,7 @@ namespace ProAcc.Controllers
         {
             try
             {
-                var name = db.PMTaskMasters.Where(p => p.PMTaskName == PMTask.PMTaskName).Where(x => x.isActive == true).ToList();
+                var name = db.PMTaskMasters.Where(p => p.PMTaskName == PMTask.PMTaskName).Where(x => x.PMTaskId != PMTask.PMTaskId).Where(x => x.isActive == true).ToList();
                 if (name.Count == 0)
                 {
                     PMTask.Modified_On = DateTime.UtcNow;

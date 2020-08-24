@@ -767,6 +767,7 @@
     <Content Include="Views\CustomerQuestionnaire\SendMailToCustomer.cshtml" />
     <Content Include="Views\ProjectMonitor\PMUPload.cshtml" />
     <Content Include="Views\Report\PMReport.cshtml" />
+    <Content Include="Views\IssueTrack\_IssueTrackIndex.cshtml" />
     <Content Include="Views\ProjectMonitor\PM_UPload.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
