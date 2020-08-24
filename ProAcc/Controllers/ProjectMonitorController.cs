@@ -19,6 +19,7 @@ namespace ProAcc.Controllers
     public class ProjectMonitorController : Controller
     {
         Base _Base = new Base();
+        LogHelper _logHelper = new LogHelper();
         private ProAccEntities db = new ProAccEntities();
         // GET: ProjectMonitor
         public ActionResult Create()
@@ -837,6 +838,31 @@ namespace ProAcc.Controllers
             return View();
         }
 
+        public ActionResult PM_UPload()
+        {
+
+            List<SelectListItem> Project = new List<SelectListItem>();
+            Guid LoginId = Guid.Parse(Session["loginid"].ToString());
+            var Data = (from a in db.UserMasters
+                        join b in db.Projects on a.UserId equals b.ProjectManager_Id
+                        where a.UserId == LoginId && b.isActive == true
+                        orderby b.Project_Name
+                        select new { b.Project_Id, b.Project_Name }).ToList();
+            if (Data.Count() > 0)
+            {
+                foreach (var v in Data)
+                {
+                    Project.Add(new SelectListItem { Text = v.Project_Name, Value = v.Project_Id.ToString() });
+                }
+
+            }
+            ViewBag.PDFfilepath = ConfigurationManager.AppSettings["Upload_filePath"].ToString();
+            ViewBag.Project = Project;
+            //TempData["Project"] = Project;
+
+            return View();
+        }
+
         [HttpPost]
         [Authorize(Roles = "Project Manager")]
         public ActionResult Upload()
@@ -896,6 +922,164 @@ namespace ProAcc.Controllers
 
         }
 
+
+        [HttpPost]
+        [Authorize(Roles = "Project Manager")]
+        public ActionResult PM_Upload()
+        {
+            //string Cust_ID = Request.Params["Cust_ID"].ToString();
+            //string IDProject = Request.Params["IDProject"].ToString();
+            string InstanceName = Request.Params["InstanceID"].ToString();
+            string filetype = "";
+            if (Request.Files.Count >0)
+            {
+                //if (Request.Files.Count ==7)
+                //{
+                try
+                {
+                    bool Result_Process = false, Result_Process_Bwextractors = false,
+                        Result_Process_CustomCode = false, Result_Processup_HanaDatabaseTables = false,
+                        Result_Process_FioriApps = false, Result_Process_Simplification = false,
+                        Result_Process_SAPReadinessCheck = false;
+                    Guid Instance_ID = Guid.Parse(InstanceName);
+                    Guid User_Id = Guid.Parse(Session["loginid"].ToString());
+                    //  Get all files from Request object  
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        int FileCount = 0;
+                        FileCount = Convert.ToInt32(files.AllKeys[i]) + 1;
+                        HttpPostedFileBase file = files[i];
+                        string fname;
+                        string ext;
+                        string NewID = Guid.NewGuid().ToString();
+                        //Checking for Internet Explorer
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                            fname = testfiles[testfiles.Length - 1];
+                            ext = System.IO.Path.GetExtension(fname);
+                        }
+                        else
+                        {
+                            fname = file.FileName;
+                            ext = System.IO.Path.GetExtension(fname);
+                        }
+                        String _fname = NewID + ext;
+                        FileUpload _fileUpload = new FileUpload();
+                        string Folder_Path = Server.MapPath(ConfigurationManager.AppSettings["Upload_filePath"].ToString());
+                        _Base.CreateIfMissing(Folder_Path);
+                        fname = Path.Combine(Folder_Path, _fname);
+                        file.SaveAs(fname);
+                        if (FileCount==1)//9
+                        {
+                            filetype = "Comprehensive Assessment & Readiness Check Report";
+                        }
+                        else if (FileCount == 2)//10
+                        {
+                            filetype = "Landscape & System Management";
+                        }
+                        else if (FileCount == 3)//11
+                        {
+                            filetype = "Custom Code Analysis";
+                        }
+                        else if (FileCount == 4)//12
+                        {
+                            filetype = "License Optimization";
+                        }
+                        Result_Process = _Base.PMUpload(filetype, NewID, Instance_ID, User_Id);
+                        //if (FileCount == 1)
+                        //{
+                        //    Result_Process_Activities = _fileUpload.Process_Activities(fname, NewID, Instance_ID, User_Id);
+                        //}
+                        //else if (FileCount == 2)
+                        //{
+                        //    Result_Process_Bwextractors = _Base.Upload_Bwextractors(NewID, Instance_ID, User_Id);
+                        //}
+                        //else if (FileCount == 3)
+                        //{
+                        //    Result_Process_CustomCode = _fileUpload.Process_CustomCode(fname, NewID, Instance_ID, User_Id);
+                        //}
+                        //else if (FileCount == 4)
+                        //{
+                        //    Result_Processup_HanaDatabaseTables = _Base.Upload_HanaDatabaseTables(NewID, Instance_ID, User_Id);
+                        //}
+                        //else if (FileCount == 5)
+                        //{
+                        //    Result_Process_FioriApps = _fileUpload.Process_FioriApps(fname, NewID, Instance_ID, User_Id);
+                        //}
+                        //else if (FileCount == 6)
+                        //{
+                        //    Result_Process_Simplification = _fileUpload.Process_Simplification(fname, NewID, Instance_ID, User_Id);
+                        //}
+                        //else if (FileCount == 7)
+                        //{
+                        //    Result_Process_SAPReadinessCheck = _Base.Upload_SAPReadinessCheck(NewID, Instance_ID, User_Id);
+                        //}
+                    }
+
+                    //if (Result_Process_Bwextractors & Result_Process_Bwextractors &
+                    //    Result_Process_CustomCode & Result_Processup_HanaDatabaseTables &
+                    //    Result_Process_FioriApps & Result_Process_Simplification &
+                    //    Result_Process_SAPReadinessCheck)
+                    //{
+
+                    //    //Result_Instance = _Base.AddInstance(IDProject, InstanceName, Instance_ID);
+
+                    //    return Json("File Uploaded Successfully!");
+                    //}
+                    //Session["IsCreateAnalysisDone"] = true;
+                    return Json("File Uploaded Successfully!");
+                    // Returns message that successfully uploaded  
+
+                }
+                catch (Exception ex)
+                {
+                    _logHelper.createLog(ex);
+                    String msg = ex.Message;
+                    if (msg.Contains("Activities"))
+                    {
+
+                    }
+                    else if (msg.Contains("Activities"))
+                    {
+
+                    }
+                    else if (msg.Contains("Activities"))
+                    {
+
+                    }
+                    else if (msg.Contains("Activities"))
+                    {
+
+                    }
+                    else if (msg.Contains("Activities"))
+                    {
+
+                    }
+                    else if (msg.Contains("Activities"))
+                    {
+
+                    }
+                    else if (msg.Contains("Activities"))
+                    {
+
+                    }
+                    return Json("Error occurred. Error details: " + ex.Message);
+                }
+                //}
+                //else
+                //{
+                //    return Json("Please upload all Files");
+                //}
+            }
+            else
+            {
+                return Json("Please choose at least one file...");
+            }
+
+
+        }
 
         public JsonResult GetFiletype(string IDInstance)
         {

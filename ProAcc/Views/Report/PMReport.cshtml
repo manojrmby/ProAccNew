@@ -74,7 +74,6 @@
                 url: '@Url.Action("PMReportData", "Report")',
                 async: false,
                 success: function (data) {
-                    debugger;
                     data = data.data;
                     var length = data.length;
                     if (length <= 0) {
@@ -119,7 +118,6 @@
 
                 },
                 error: function (a) {
-                    debugger;
                     alert(a);
                 }
             });

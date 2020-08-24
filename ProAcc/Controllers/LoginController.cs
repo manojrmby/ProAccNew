@@ -50,40 +50,40 @@ namespace ProAcc.Controllers
                 
                if (!String.IsNullOrEmpty(user.Username)&& (!String.IsNullOrEmpty(user.Password)))
                 {
-                    Boolean a = Convert.ToBoolean(ConfigurationManager.AppSettings["Enc"].ToString());
-                    if (a)
-                    {
-                        ProAccEntities db = new ProAccEntities();
-                        var aa = db.UserMasters.ToList();
-                        foreach (var item in aa)
-                        {
-                            ProAccEntities db1 = new ProAccEntities();
-                            UserMaster us = new UserMaster();
-                            us.UserId = item.UserId;
-                            us.Name = item.Name;
-                            us.EMail = item.EMail;
-                            us.Phone = item.Phone;
-                            us.LoginId = item.LoginId;
-                            us.Password = _Base.PasswordEncrypt(item.Password);
-                            us.RoleID = item.RoleID;
-                            us.UserTypeID = item.UserTypeID;
-                            us.Customer_Id = item.Customer_Id;
+                    //Boolean a = Convert.ToBoolean(ConfigurationManager.AppSettings["Enc"].ToString());
+                    //if (a)
+                    //{
+                    //    ProAccEntities db = new ProAccEntities();
+                    //    var aa = db.UserMasters.ToList();
+                    //    foreach (var item in aa)
+                    //    {
+                    //        ProAccEntities db1 = new ProAccEntities();
+                    //        UserMaster us = new UserMaster();
+                    //        us.UserId = item.UserId;
+                    //        us.Name = item.Name;
+                    //        us.EMail = item.EMail;
+                    //        us.Phone = item.Phone;
+                    //        us.LoginId = item.LoginId;
+                    //        us.Password = _Base.PasswordEncrypt(item.Password);
+                    //        us.RoleID = item.RoleID;
+                    //        us.UserTypeID = item.UserTypeID;
+                    //        us.Customer_Id = item.Customer_Id;
 
-                            us.isActive = item.isActive;
-                            us.IsDeleted = item.IsDeleted;
+                    //        us.isActive = item.isActive;
+                    //        us.IsDeleted = item.IsDeleted;
                             
                             
-                            us.Cre_on = item.Cre_on;
-                            us.Cre_By = item.Cre_By;
+                    //        us.Cre_on = item.Cre_on;
+                    //        us.Cre_By = item.Cre_By;
 
                             
-                            us.Modified_by = item.Modified_by;
-                            us.Modified_On = item.Modified_On;
-                            db1.Entry(us).State = EntityState.Modified;
-                            db1.SaveChanges();
+                    //        us.Modified_by = item.Modified_by;
+                    //        us.Modified_On = item.Modified_On;
+                    //        db1.Entry(us).State = EntityState.Modified;
+                    //        db1.SaveChanges();
 
-                        }
-                    }
+                    //    }
+                    //}
                     logedUser = _Base.UserValidation(logedUser);
                     if (logedUser.ID != Guid.Empty)
                     {

@@ -386,7 +386,7 @@
                                 </li>
                                 <li>
 
-                                    <a href="@Url.Action("PMUPload", "ProjectMonitor")">
+                                    <a href="@Url.Action("PM_UPload", "ProjectMonitor")">
                                         <!-- <i class="metismenu-icon pe-7s-home"></i> -->
                                         <i class="metismenu-icon fa fa-american-sign-language-interpreting"></i>
                                         PM File Upload
@@ -807,21 +807,22 @@
             <div class="app-main__outer">
                 <div  class="app-main_Scroll">
                     <div class="app-main__inner">
-                        <hr />
+                       
                         @*@if (ViewContext.RouteData.Values["Controller"].ToString() != "IssueTrack")
                         {*@
-                            <div style="max-width:99%;" id="prt">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
-                                    </div>
+                        <div style="max-width:99%;" id="prt">
+                            <hr />
+                            <div class="row">
+                                <div class="col-6">
+                                    <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
+                                </div>
+                                <div class="col-6">
+                                    <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
                                 </div>
                             </div>
+                        </div>
                         @*}*@
-
+                        <br />
                         @RenderBody()
                         @RenderSection("scripts", required: false)
                     </div>

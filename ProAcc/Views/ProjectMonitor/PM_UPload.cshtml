@@ -24,18 +24,11 @@
         position: absolute;
     }
 </style>
-
-<a class="card-title">Create Analysis</a>
+<a class="card-title">PM upload</a>
 <div style="padding: 1em;">
-
-
     <div class="row">
         <div class="card-body col-lg-12 card">
-
-            <hr />
             <div class="form-row">
-
-
                 <div class="col-md-4">
                     <div class="position-relative form-group">
                         <label for="exampleEmail" class="">Project Name</label>
@@ -59,133 +52,108 @@
                     </button>
                 </div>
                 <br />
-                <br />
             </div>
-           
-            <div class="row" style="text-align:left !important;margin:auto !important;">
-                <div class="main-card mb-3 card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="mb-0 table table-hover">
-                                <thead>
+            <div id="Table" style="padding-left:6%;">
+                <div class="row" style="text-align:left !important;margin:auto !important;">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="mb-0 table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th> FILES</th>
+                                            <th>Action</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
                                     <tr>
-                                        <th>S.No</th>
-                                        <th> FILES</th>
-                                        <th>Action</th>
-                                        <th></th>
+                                        <td>
+                                            1.
+                                        </td>
+                                        <td>
+                                            Comprehensive Assessment and Readiness Check Report
+                                        </td>
+                                        <td>
+                                            <input class="mb-2 mr-2 btn btn-info" type="file" name="files" id="FileUpload1" />
+
+                                        </td>
+
+                                        <td>
+                                            <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right invisible" id="FileUpload1_View">View</button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tr>
-                                    <td>
-                                        1.
-                                    </td>
-                                    <td>
-                                        SAP S4HANA Comprehensive Assessment and Readiness Check Report
-                                    </td>
-                                    <td>
-                                        <input class="mb-2 mr-2 btn btn-info" type="file" name="files" id="FileUpload1" />
+                                    <tr>
+                                        <td>
+                                            2.
+                                        </td>
+                                        <td>
+                                            Landscape & System Management
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload2" />
+                                        </td>
 
-                                    </td>
-                                    
-                                    <td>
-                                        <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right" id="FileUpload1_View">View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        2.
-                                    </td>
-                                    <td>
-                                        Landscape & System Management
-                                    </td>
-                                    <td>
-                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload2" />
-                                    </td>
-                                    
-                                    <td>
-                                        <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right" id="FileUpload2_View">View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        3.
-                                    </td>
-                                    <td>
-                                        Custom Code Analysis
-                                    </td>
-                                    <td>
-                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload3" />
-                                    </td>
-                                   
-                                    <td>
-                                        <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right" id="FileUpload3_View">View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        4.
-                                    </td>
-                                    <td>
-                                        Current State & Vision: Business Case
-                                    </td>
-                                    <td>
-                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload4" />
-                                    </td>
-                                    
-                                    <td>
-                                        <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right" id="FileUpload4_View">View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        5.
-                                    </td>
-                                    <td>
-                                        Current State & Vision: Road Map Guide & Migration Scenario
-                                    </td>
-                                    <td>
-                                        <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload5" />
-                                    </td>
-                                    
-                                    <td>
-                                        <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right" id="FileUpload5_View">View</button>
-                                    </td>
-                                </tr>
-                            </table>
+                                        <td>
+                                            <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right invisible" id="FileUpload2_View">View</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            3.
+                                        </td>
+                                        <td>
+                                            Custom Code Analysis
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload3" />
+                                        </td>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                        <td>
+                                            <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right invisible" id="FileUpload3_View">View</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            4.
+                                        </td>
+                                        <td>
+                                            License Optimization
+                                        </td>
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload4" />
+                                        </td>
 
-            <br />
-            <div class="row">
-                <div class="col-12">
-                    <div class="position-relative form-group">
+                                        <td>
+                                            <button class="btn-wide mb-2 mr-2 btn btn-primary form-control ld-ext-right invisible" id="FileUpload4_View">View</button>
+                                        </td>
+                                    </tr>
+                                </table>
 
-                       
-                        <br />
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div id="progressbar-5">
-                                    <div class="progress-label">
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <button class="btn-wide mb-2 mr-2 btn btn-primary" id="btnUpload">
-                                Add / Update
-                            </button>
-                        </div>
+                    </div>
 
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-12">
+                        <div class="position-relative form-group">
+                            <div class="text-center">
+                                <button class="btn-wide mb-2 mr-2 btn btn-primary" id="btnUpload">
+                                    Add / Update
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-   
-    @if (ViewBag.Message != null)
+
+    @*@if (ViewBag.Message != null)
     {
 
         <a id="Msg" style="display:none">@ViewBag.Message</a>
@@ -195,26 +163,28 @@
             Notiflix.Report.Info("ProAcc Info !", a);
         </script>
 
-    }
+    }*@
 </div>
-@Html.Hidden("RedirectTo", Url.Action("ReadinessReport", "Assessment"))
+<div id="Parent" style="min-height:500px;"></div>
+       
 <script>
 
-    $(document).ready(function () {
-        $('#IDProject').change(function () {
+    var FileUpload1_View = "", FileUpload2_View = "", FileUpload3_View = "", FileUpload4_View = "";
+
+         $('#IDProject').change(function () {
 
             var id = $(this).val();
-            $('#SubmitInstance').prop("disabled", true);
-            var select = $("#IDInstance");
-            select.empty();
-            select.append($('<option/>', {
-                value: 0,
-                text: "-Select-"
-            }));
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LoadInstance","Home")',
-                data: { 'ProjectId': id },
+                data: { 'ProjectId' : id},
                 success: function (data) {
                     var select = $("#IDInstance");
                     select.empty();
@@ -233,14 +203,14 @@
                     }
                     else {
                         $("#IDInstance").prop("disabled", true);
-                        $('#SubmitInstance').prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
                     }
                 },
                 error: function (a) {
                     alert(a);
                 }
             });
-        });
+            });
         $('#IDInstance').change(function () {
             var id = $(this).val();
             if (id == "" || id == "0") {
@@ -255,82 +225,116 @@
                 //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
                 url: '@Url.Action("SubmitInstance", "Home")',
                 type: "POST",
+                async: false,
                 data: { 'IDInstance': IDInstance },
                 success: function (result) {
                     //debugger;
+                    reset();
+                    $('#Table').show();
                     Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                    setTimeout(Redirect, 3000);
-
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("PMReportData", "Report")',
+                        async: false,
+                        success: function (data) {
+                            data = data.data;
+                            if (data.length > 0) {
+                                $.each(data, function (index, itemData) {
+                                    if (itemData.FileType == 9) {
+                                        $('#FileUpload1_View').removeClass('invisible').addClass('visible');
+                                        FileUpload1_View = itemData.C_FileName;
+                                    }
+                                    else if (itemData.FileType == 10) {
+                                        $('#FileUpload2_View').removeClass('invisible').addClass('visible');
+                                        FileUpload2_View = itemData.C_FileName;
+                                    }
+                                    else if (itemData.FileType == 11) {
+                                        $('#FileUpload3_View').removeClass('invisible').addClass('visible');
+                                        FileUpload3_View = itemData.C_FileName;
+                                    }
+                                    else if (itemData.FileType == 12) {
+                                        $('#FileUpload4_View').removeClass('invisible').addClass('visible');
+                                        FileUpload4_View = itemData.C_FileName;
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    //setTimeout(Redirect, 3000);
                 }
             });
 
 
         });
+    $('#FileUpload1_View').click(function () {
+        LoadPdf(FileUpload1_View);
+    });
+    $('#FileUpload2_View').click(function () {
+        LoadPdf(FileUpload2_View);
+    });
+    $('#FileUpload3_View').click(function () {
+        LoadPdf(FileUpload3_View);
+    });
+    $('#FileUpload4_View').click(function () {
+        LoadPdf(FileUpload4_View);
+    });
 
+    function LoadPdf(name) {
+        $("#Parent").empty();
+        $("#Parent").show();
+        var Path = "@ViewBag.PDFfilepath";
+        Path = Path.replace("~/", "../");
+
+        var idiv = document.createElement('iframe');
+        idiv.id = 'pdf-js-viewer' + name;
+        idiv.src = Path + name + '.pdf';
+        idiv.title = '';
+        idiv.width = "99%";
+        idiv.frameborder = '0';
+        $("#Parent").append(idiv);
+        dimention();
+    }
         $('#btnUpload').click(function () {
-            //var RedirectTo = $("#RedirectTo").val();
-            //var ProjectID = $("#IDProject").val();
             var InstanceId = '@Session["InstanceId"]';
-
-            //var n = $( "input:checked" ).length;
-            //var chkReadiness =$("#chkReadiness").val();
-            //var chkAcknowldge=$("#chkAcknowldge").val();
-            //debugger;
-            if (ProjectID != "" && InstanceId != "" && InstanceId != 0) {
-
+            if (InstanceId != "" && InstanceId != 0) {
                 var fileUpload1 = $("#FileUpload1").get(0);
                 var fileUpload2 = $("#FileUpload2").get(0);
-
                 var fileUpload3 = $("#FileUpload3").get(0);
                 var fileUpload4 = $("#FileUpload4").get(0);
-
-                var fileUpload5 = $("#FileUpload5").get(0);
-                var fileUpload6 = $("#FileUpload6").get(0);
-
-                var fileUpload7 = $("#FileUpload7").get(0);
-
-                //var Cust_ID = $("select#IDCustomer").val();
-                var IDProject = $("select#IDProject").val();
                 var InstanceID = $("select#IDInstance").val();
-                // debugger;
                 var files = [
                     fileUpload1.files, fileUpload2.files,
-                    fileUpload3.files, fileUpload4.files,
-                    fileUpload5.files, fileUpload6.files,
-                    fileUpload7.files
+                    fileUpload3.files, fileUpload4.files
                 ];
 
                 var fileData = new FormData();
-                //fileData.append("Cust_ID", Cust_ID);
-                fileData.append("IDProject", IDProject);
                 fileData.append("InstanceID", InstanceID);
+                if (fileUpload1 != "" || fileUpload2 != "" || fileUpload3 != "" || fileUpload4 != "") {
+                     // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        if (files[i][0] != null)
+                            fileData.append(i, files[i][0]);
+                    }
+                    $.ajax({
+                        url: '@Url.Action("PM_Upload", "ProjectMonitor")',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        async: false,
+                        success: function (result) {
 
-                // Looping over all files and add it to FormData object
-                for (var i = 0; i < files.length; i++) {
-                    if (files[i][0] != null)
-                        fileData.append(i, files[i][0]);
-                }
-                $.ajax({
-                    //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
-                    url: '@Url.Action("Upload", "Assessment")',
-                    type: "POST",
-                    contentType: false, // Not to set any content header
-                    processData: false, // Not to process data
-                    data: fileData,
-                    //async: false,
-                    success: function (result) {
+                            if (result == 'File Uploaded Successfully!') {
+                                Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                Redirect();
+                            }
+                            else if (result == 'Please Upload all files.') {
+                                Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            }
+                            else {
+                                Notiflix.Report.Info("ProAcc Info !", result, "Click", function () {
 
-                        if (result == 'File Uploaded Successfully!') {
-                            Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                            location.href = RedirectTo;
-                        }
-                        else if (result == 'Please Upload all files.') {
-                            Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        }
-                        else {
-                            Notiflix.Report.Info("ProAcc Info !", result, "Click", function () {
-
-                                $.ajax({
+                                @*$.ajax({
                                     url: '@Url.Action("UploadRevert", "Assessment")',
                                     type: "POST",
                                     contentType: false, // Not to set any content header
@@ -340,234 +344,225 @@
                                         Notiflix.Notify.Failure(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                                         //alert(result);
                                     }
+                                });*@
+
                                 });
+                                // Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
 
-                            });
-                            // Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-
+                            }
+                        },
+                        error: function (err) {
+                            Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            //alert(err.statusText);
                         }
-                    },
-                    error: function (err) {
-                        Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                        //alert(err.statusText);
-                    }
-                });
-
-
-
-
+                    });
+                }
+                else {
+                    Notiflix.Notify.Failure("Select at leaset one file .! ", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                }
 
             }
         });
-           
+
     function Redirect() {
         location.reload();
-    }
-</script>
-<script>
-    jQuery(document).ready(function ($) {
-        $("#IDInstance").prop("disabled", true);
-        $('#IDProject').change(function () {
-
-            var id = $(this).val();
-             var select = $("#IDInstance");
-                    select.empty();
-                    select.append($('<option/>', {
-                        value: 0,
-                        text: "Select a Instance"
-                    }));
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("LoadCreateAnalysisInstance","Assessment")',
-                data: { 'ProjectId' : id},
-                success: function (data) {
-                    var select = $("#IDInstance");
-                    select.empty();
-                    select.append($('<option/>', {
-                        value: 0,
-                        text: "Select a Instance"
-                    }));
-
-                    $.each(data, function (index, itemData) {
-                        select.append($('<option/>', {
-                            value: itemData.Value,
-                            text: itemData.Text
-                        }));
-                    });
-                    $("#IDInstance").prop("disabled", false);
-                },
-                error: function (a) {
-                    Notiflix.Notify.Failure(a, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                    //alert(a);
-                }
-
-
+            }
+            $(window).resize(function () {
+                dimention();
             });
-        });
-       
-    });
+            function dimention() {
+                var newHeight = $("#Parent").height();
+                var Width = $("#Parentr").width();
+                $("iframe").height(newHeight);
+                $("iframe").width(Width);
+            }
 </script>
+        <script>
+            $(document).ready(function ($) {
+                $('#prt').hide();
+                $("#Parent").hide();
+                $("#IDInstance").prop("disabled", true);
+                $('#Table').hide();
+            });
+            function reset() {
+                FileUpload1_View = "";
+                FileUpload2_View = "";
+                FileUpload3_View = "";
+                FileUpload4_View = "";
 
-<script>
+                $('#FileUpload1').val("");
+                $('#FileUpload2').val("");
+                $('#FileUpload3').val("");
+                $('#FileUpload4').val("");
 
+                $('#FileUpload1_View').removeClass('visible').addClass('invisible');
+                $('#FileUpload2_View').removeClass('visible').addClass('invisible');
+                $('#FileUpload3_View').removeClass('visible').addClass('invisible');
+                $('#FileUpload4_View').removeClass('visible').addClass('invisible');
+            }
 
-    //$(document).ready(function () {
-    //    var fileUpload;
-    //    var files;
-    //    $("#FileUpload1").on('blur', function () {
-    //        if (this.files.length > 0) {
-    //            fileUpload = $("#FileUpload1").get(0);
-    //            files = fileUpload.files;
-    //            for (var i = 0; i < files.length; i++) {
-    //                if (files[0].name != "Activities.xlsx") {
-    //                    Notiflix.Notify.Failure("Enter Activities file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-    //                    $("#FileUpload1").val('');
-    //                }
-    //                else {
-    //                    $(this).css("background-color", "#3ac47d");
-    //                    $(this).addClass('active')
-    //                }
-    //            }
-    //        }
-    //        else {
-    //            $(this).removeClass('active');
-    //            $(this).css("background-color", "#0090e2");
-    //        }
-    //    });
-    //    $("#FileUpload2").on('blur', function () {
-    //        if (this.files.length > 0) {
+        </script>
 
-    //            fileUpload = $("#FileUpload2").get(0);
-    //            files = fileUpload.files;
-    //            for (var i = 0; i < files.length; i++) {
-    //                if (files[0].name != "Bwextractors.xlsx") {
-    //                    Notiflix.Notify.Failure("Enter Bwextractors file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-    //                    $("#FileUpload2").val('');
-    //                }
-    //                else {
-    //                    $(this).css("background-color", "#3ac47d");
-    //                    $(this).addClass('active');
-    //                }
-    //            }
-    //        }
-    //        else {
-    //            $(this).removeClass('active');
-    //            $(this).css("background-color", "#0090e2");
-    //        }
-    //    });
-    //    $("#FileUpload3").on('blur', function () {
-    //        if (this.files.length > 0) {
-    //            fileUpload = $("#FileUpload3").get(0);
-    //            files = fileUpload.files;
-    //            for (var i = 0; i < files.length; i++) {
-    //                if (files[0].name != "CustomCode.xlsx") {
-    //                    Notiflix.Notify.Failure("Enter CustomCode file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-    //                    $("#FileUpload3").val('');
-    //                }
-    //                else {
-    //                    $(this).css("background-color", "#3ac47d");
-    //                    $(this).addClass('active');
-    //                }
-    //            }
-    //        }
-    //        else {
-    //            $(this).removeClass('active');
-    //            $(this).css("background-color", "#0090e2");
-    //        }
-    //    });
-    //    $("#FileUpload4").on('blur', function () {
-    //        if (this.files.length > 0) {
-    //            fileUpload = $("#FileUpload4").get(0);
-    //            files = fileUpload.files;
-    //            for (var i = 0; i < files.length; i++) {
-    //                if (files[0].name != "HanaDatabaseTables.xlsx") {
-    //                    Notiflix.Notify.Failure("Enter HanaDatabaseTables file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-    //                    $("#FileUpload4").val('');
-    //                }
-    //                else {
-    //                    $(this).css("background-color", "#3ac47d");
-    //                    $(this).addClass('active');
-    //                }
-    //            }
-    //        }
-    //        else {
-    //            $(this).removeClass('active');
-    //            $(this).css("background-color", "#0090e2");
-    //        }
-    //    });
-    //    $("#FileUpload5").on('blur', function () {
-    //        if (this.files.length > 0) {
-    //            fileUpload = $("#FileUpload5").get(0);
-    //            files = fileUpload.files;
-    //            for (var i = 0; i < files.length; i++) {
-    //                if (files[0].name != "RecommendedFioriApps.xlsx") {
-    //                    Notiflix.Notify.Failure("Enter RecommendedFioriApps file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-    //                    $("#FileUpload5").val('');
-    //                }
-    //                else {
-    //                    $(this).css("background-color", "#3ac47d");
-    //                    $(this).addClass('active');
-    //                }
-    //            }
-    //        }
-    //        else {
-    //            $(this).removeClass('active');
-    //            $(this).css("background-color", "#0090e2");
-    //        }
-    //    });
-    //    $("#FileUpload6").on('blur', function () {
-    //        if (this.files.length > 0) {
-    //            fileUpload = $("#FileUpload6").get(0);
-    //            files = fileUpload.files;
-    //            for (var i = 0; i < files.length; i++) {
-    //                if (files[0].name != "RelevantSimplificationItems.xlsx") {
-    //                    Notiflix.Notify.Failure("Enter RelevantSimplificationItems file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-    //                    $("#FileUpload6").val('');
-    //                }
-    //                else {
-    //                    $(this).css("background-color", "#3ac47d");
-    //                    $(this).addClass('active');
-    //                }
-    //            }
-    //        }
-    //        else {
-    //            $(this).removeClass('active');
-    //            $(this).css("background-color", "#0090e2");
-    //        }
-    //    });
-    //    $("#FileUpload7").on('blur', function () {
-    //        if (this.files.length > 0) {
-    //            fileUpload = $("#FileUpload7").get(0);
-    //            files = fileUpload.files;
-    //            for (var i = 0; i < files.length; i++) {
-    //                if (files[0].name != "SAP Readiness Check.pdf") {
-    //                    Notiflix.Notify.Failure("Enter Readiness Check file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-    //                    $("#FileUpload7").val('');
-    //                }
-    //                else {
-    //                    $(this).css("background-color", "#3ac47d");
-    //                    $(this).addClass('active');
-    //                }
-    //            }
-    //        }
-    //        else {
-    //            $(this).removeClass('active');
-    //            $(this).css("background-color", "#0090e2");
-    //        }
-    //    });
+        <script>
 
 
-    //});
+            //$(document).ready(function () {
+            //    var fileUpload;
+            //    var files;
+            //    $("#FileUpload1").on('blur', function () {
+            //        if (this.files.length > 0) {
+            //            fileUpload = $("#FileUpload1").get(0);
+            //            files = fileUpload.files;
+            //            for (var i = 0; i < files.length; i++) {
+            //                if (files[0].name != "Activities.xlsx") {
+            //                    Notiflix.Notify.Failure("Enter Activities file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            //                    $("#FileUpload1").val('');
+            //                }
+            //                else {
+            //                    $(this).css("background-color", "#3ac47d");
+            //                    $(this).addClass('active')
+            //                }
+            //            }
+            //        }
+            //        else {
+            //            $(this).removeClass('active');
+            //            $(this).css("background-color", "#0090e2");
+            //        }
+            //    });
+            //    $("#FileUpload2").on('blur', function () {
+            //        if (this.files.length > 0) {
 
-    //function OnFileuploadChange(Comp) {
-    //    //console.log(Comp);
-    //    var Onsuccess = Comp.Value;
-    //    if (Onsuccess != String.empty) {
-    //        $(Comp).css("background-color", "#3ac47d");
-    //        Comp.css("background-color", "#3ac47d");
-    //    }
-    //}
-</script>
+            //            fileUpload = $("#FileUpload2").get(0);
+            //            files = fileUpload.files;
+            //            for (var i = 0; i < files.length; i++) {
+            //                if (files[0].name != "Bwextractors.xlsx") {
+            //                    Notiflix.Notify.Failure("Enter Bwextractors file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            //                    $("#FileUpload2").val('');
+            //                }
+            //                else {
+            //                    $(this).css("background-color", "#3ac47d");
+            //                    $(this).addClass('active');
+            //                }
+            //            }
+            //        }
+            //        else {
+            //            $(this).removeClass('active');
+            //            $(this).css("background-color", "#0090e2");
+            //        }
+            //    });
+            //    $("#FileUpload3").on('blur', function () {
+            //        if (this.files.length > 0) {
+            //            fileUpload = $("#FileUpload3").get(0);
+            //            files = fileUpload.files;
+            //            for (var i = 0; i < files.length; i++) {
+            //                if (files[0].name != "CustomCode.xlsx") {
+            //                    Notiflix.Notify.Failure("Enter CustomCode file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            //                    $("#FileUpload3").val('');
+            //                }
+            //                else {
+            //                    $(this).css("background-color", "#3ac47d");
+            //                    $(this).addClass('active');
+            //                }
+            //            }
+            //        }
+            //        else {
+            //            $(this).removeClass('active');
+            //            $(this).css("background-color", "#0090e2");
+            //        }
+            //    });
+            //    $("#FileUpload4").on('blur', function () {
+            //        if (this.files.length > 0) {
+            //            fileUpload = $("#FileUpload4").get(0);
+            //            files = fileUpload.files;
+            //            for (var i = 0; i < files.length; i++) {
+            //                if (files[0].name != "HanaDatabaseTables.xlsx") {
+            //                    Notiflix.Notify.Failure("Enter HanaDatabaseTables file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            //                    $("#FileUpload4").val('');
+            //                }
+            //                else {
+            //                    $(this).css("background-color", "#3ac47d");
+            //                    $(this).addClass('active');
+            //                }
+            //            }
+            //        }
+            //        else {
+            //            $(this).removeClass('active');
+            //            $(this).css("background-color", "#0090e2");
+            //        }
+            //    });
+            //    $("#FileUpload5").on('blur', function () {
+            //        if (this.files.length > 0) {
+            //            fileUpload = $("#FileUpload5").get(0);
+            //            files = fileUpload.files;
+            //            for (var i = 0; i < files.length; i++) {
+            //                if (files[0].name != "RecommendedFioriApps.xlsx") {
+            //                    Notiflix.Notify.Failure("Enter RecommendedFioriApps file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            //                    $("#FileUpload5").val('');
+            //                }
+            //                else {
+            //                    $(this).css("background-color", "#3ac47d");
+            //                    $(this).addClass('active');
+            //                }
+            //            }
+            //        }
+            //        else {
+            //            $(this).removeClass('active');
+            //            $(this).css("background-color", "#0090e2");
+            //        }
+            //    });
+            //    $("#FileUpload6").on('blur', function () {
+            //        if (this.files.length > 0) {
+            //            fileUpload = $("#FileUpload6").get(0);
+            //            files = fileUpload.files;
+            //            for (var i = 0; i < files.length; i++) {
+            //                if (files[0].name != "RelevantSimplificationItems.xlsx") {
+            //                    Notiflix.Notify.Failure("Enter RelevantSimplificationItems file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            //                    $("#FileUpload6").val('');
+            //                }
+            //                else {
+            //                    $(this).css("background-color", "#3ac47d");
+            //                    $(this).addClass('active');
+            //                }
+            //            }
+            //        }
+            //        else {
+            //            $(this).removeClass('active');
+            //            $(this).css("background-color", "#0090e2");
+            //        }
+            //    });
+            //    $("#FileUpload7").on('blur', function () {
+            //        if (this.files.length > 0) {
+            //            fileUpload = $("#FileUpload7").get(0);
+            //            files = fileUpload.files;
+            //            for (var i = 0; i < files.length; i++) {
+            //                if (files[0].name != "SAP Readiness Check.pdf") {
+            //                    Notiflix.Notify.Failure("Enter Readiness Check file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            //                    $("#FileUpload7").val('');
+            //                }
+            //                else {
+            //                    $(this).css("background-color", "#3ac47d");
+            //                    $(this).addClass('active');
+            //                }
+            //            }
+            //        }
+            //        else {
+            //            $(this).removeClass('active');
+            //            $(this).css("background-color", "#0090e2");
+            //        }
+            //    });
+
+
+            //});
+
+            //function OnFileuploadChange(Comp) {
+            //    //console.log(Comp);
+            //    var Onsuccess = Comp.Value;
+            //    if (Onsuccess != String.empty) {
+            //        $(Comp).css("background-color", "#3ac47d");
+            //        Comp.css("background-color", "#3ac47d");
+            //    }
+            //}
+        </script>
 
 
 
