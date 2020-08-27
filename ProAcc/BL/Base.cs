@@ -2143,8 +2143,7 @@ namespace ProAcc.BL
                 if (dt.Rows.Count > 0)
                 {
                     foreach (DataRow dr in dt.Rows)
-                    {
-                       
+                    {                       
                         P.Issuetrack_Id = Guid.Parse(dr["Issuetrack_Id"].ToString());
                         P.RunningID = Convert.ToInt32(dr["RunningID"].ToString());
                         P.IssueName = dr["IssueName"].ToString();
@@ -2160,10 +2159,10 @@ namespace ProAcc.BL
                         //P.Comments = dr["Comments"].ToString();
                         P.Phase = dr["Phase"].ToString();
                         P.Assigned = dr["Assigned"].ToString();
-                       
-                        //ITM.Add(P);
-                       
-                    }
+                       P.Cre_By = Guid.Parse(dr["Cre_By"].ToString());
+                    //ITM.Add(P);
+
+                }
                 }
             return P;
             //return ITM;
@@ -2313,7 +2312,8 @@ namespace ProAcc.BL
                         P.Instance = dr["Instance"].ToString();
                         P.Project = dr["Project"].ToString();
                         P.Customer = dr["Customer"].ToString();
-
+                        P.Created_By = dr["Created_By"].ToString();
+                        P.Cre_By = Guid.Parse(dr["Cre_By"].ToString());
                        // P.IssueID = dr["IssueID"].ToString();
                         if (P.PhaseID == 1)
                         {
@@ -2744,20 +2744,26 @@ namespace ProAcc.BL
         public Boolean PMUpload(string filetype, string fileName, Guid Instance_ID, Guid User_ID)
         {
             Boolean status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_FileUpload", CommandType.StoredProcedure);
 
+                dB.addIn("@Type", "up_PMupload");
+                //dB.addIn("@tblSimplification", CustomTable);
+                dB.addIn("@File_Type", filetype);
+                dB.addIn("@FileUploadID", Guid.NewGuid());
+                dB.addIn("@instanceId", Instance_ID);
+                dB.addIn("@fileName", fileName);
+                dB.addIn("@Createdby", User_ID);
 
-            DBHelper dB = new DBHelper("SP_FileUpload", CommandType.StoredProcedure);
-
-            dB.addIn("@Type", "up_PMupload");
-            //dB.addIn("@tblSimplification", CustomTable);
-            dB.addIn("@File_Type", filetype);
-            dB.addIn("@FileUploadID", Guid.NewGuid());
-            dB.addIn("@instanceId", Instance_ID);
-            dB.addIn("@fileName", fileName);
-            dB.addIn("@Createdby", User_ID);
-
-            dB.ExecuteScalar();
-            status = true;
+                dB.ExecuteScalar();
+                status = true;
+            }
+            catch(Exception ex)
+            {
+                _log.createLog(ex, "-->PMUpload" + ex.Message.ToString());
+            }
             return status;
 
         }

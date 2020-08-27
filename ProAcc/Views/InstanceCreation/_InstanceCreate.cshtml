@@ -161,8 +161,9 @@
                         if (response == "success") {
                             Notiflix.Notify.Success('Instance Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             loadInstanceTable();
-                                            $("#txtInstanceName").val("")
-                                            $("#drpProject").val(0)
+                            $("#txtInstanceName").val("")
+                            $("#drpProject").val(0)
+                            $(".app-main_Scroll").animate({ scrollTop: 300 }, 1000);
                             //$.alert({
                             //    title: 'Success !',
                             //    content: 'Instance Saved successfully..!',// <br> with some <strong>HTML</strong> <em>contents</em>',

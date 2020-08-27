@@ -181,6 +181,7 @@
                         value: 0,
                         text: "-Select-"
                     }));
+             $('#IDProject').prop('title', $("#IDProject option:selected").text());
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LoadInstance","Home")',
@@ -218,6 +219,7 @@
             } else {
                 $('#SubmitInstance').prop("disabled", false);
             }
+            $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
         });
         $('#SubmitInstance').click(function () {
             var IDInstance = $("#IDInstance").val();
@@ -294,7 +296,8 @@
         $("#Parent").append(idiv);
         dimention();
     }
-        $('#btnUpload').click(function () {
+    $('#btnUpload').click(function () {
+        debugger
             var InstanceId = '@Session["InstanceId"]';
             if (InstanceId != "" && InstanceId != 0) {
                 var fileUpload1 = $("#FileUpload1").get(0);

@@ -40,14 +40,21 @@
             <div class="form-group" id="Status">
                 <label class="control-label col-md-4 required">Status</label>
                 <div class="col-md-10">
-                    <select class="form-control" id="ddllist">
+                    @if (Model.Cre_By.ToString() == Session["loginid"].ToString())
+                    {
+                        <input type="text" class="form-control" readonly value="@Model.Status" id="ddllist" />
+                    }
+                    else
+                    {
+                        <select class="form-control" id="ddllist">
 
-                        <option value="In progress">In progress</option>
-                        <option value="Completed">Completed</option>
-                        <option value="On hold">On hold</option>
-                        <option value="Resolved waiting for customer conformation">Resolved waiting for customer conformation</option>
-                    </select>
-                </div>
+                            <option value="In progress">In progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="On hold">On hold</option>
+                            <option value="Resolved waiting for customer confirmation">Resolved waiting for customer confirmation</option>
+                        </select>
+                    }
+                    </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblStatus">&nbsp;</span>
                 </div>
@@ -59,24 +66,35 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Assigned To</label>
                 <div class="col-md-10">
-                    <select class="form-control" id="drpAssignedTo">
-                        @foreach (var item in ViewBag.AssignedTo)
-                        {
-                            if (item.Name == Model.Assigned)
+                    @if (Model.Cre_By.ToString() == Session["loginid"].ToString())
+                    {
+                        <input type="hidden" class="form-control" value="@Model.AssignedTo" text="@Model.Assigned" id="drpAssignedTo" />
+                        <input type="hidden" class="form-control" value="@Model.Assigned" id="drpAssignedToText" />
+                        <input type="text" class="form-control" readonly value="@Model.Assigned" />
+                    }
+                    else
+                    {
+                        <select class="form-control" id="drpAssignedTo">
+                            @foreach (var item in ViewBag.AssignedTo)
                             {
-                                <option value="@item.UserId" selected>@item.Name</option>
+                                if (item.Name == Model.Assigned)
+                                {
+                                    <option value="@item.UserId" selected>@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.UserId">@item.Name</option>
+                                }
                             }
-                            else
-                            {
-                                <option value="@item.UserId">@item.Name</option>
-                            }
-                        }
-                    </select>
+                        </select>
+
+                    }
                 </div>
-                <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblAssignedTo">&nbsp;</span>
+
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblAssignedTo">&nbsp;</span>
+                    </div>
                 </div>
-            </div>
 
             <div class="form-group" id="Task1">
                 <label class="control-label col-md-4">Task</label>
@@ -137,18 +155,19 @@
         <tbody>
             @foreach (var item in ViewBag.ITM_Comments)
             {
-                <tr>
-                    <td>
-                        <a class="txtG" value="@item.CreatedDate">@item.CreatedDate.ToLocalTime()</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Description">@item.Description</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.HistoryComment">@item.HistoryComment</a>
-                    </td>
-
-                </tr>
+            <tr>
+                <td>
+                    @*<a class="txtG" value="@item.CreatedDate">@item.CreatedDate.ToLocalTime()</a> TimeZoneInfo.Local *@
+                    <a class="txtG" value="@item.CreatedDate">@TimeZoneInfo.ConvertTimeFromUtc(item.CreatedDate, TimeZoneInfo.Local)</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Description">@item.Description</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.HistoryComment">@item.HistoryComment</a>
+                </td>
+                a=Intl.DateTimeFormat().resolvedOptions().timeZone
+            </tr>
             }
         </tbody>
     </table>
@@ -197,10 +216,16 @@ $("#prt").hide();
         //var TaskList = $("#TaskList").val().trim();
         var Issuetrack_Id = $("#Issuetrack_Id").val().trim();
         var AssignedTo=$("#drpAssignedTo").val();
-        var Status = $("#ddllist").val().trim();
+        var Status = $("#ddllist").val();
         var Comments = $("#txtComments").val().trim();
         Comments = Comments.replace(",", " ");
-        var Assigned = $("#drpAssignedTo option:selected").text();
+        var Assigned = $("#drpAssignedToText").val();
+        if (Assigned == "" || Assigned == undefined) {
+            Assigned = $("#drpAssignedTo option:selected").text();
+        }
+        //else {
+        //    Assigned = $("#drpAssignedToText").val();
+        //}        
         var Description = 'AssignedTo:' + Assigned + ', Status:' + Status;
         //var ProjectInstance_Id=$("#IDInstance").val().trim();
 

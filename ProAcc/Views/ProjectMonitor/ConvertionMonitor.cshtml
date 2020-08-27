@@ -126,6 +126,7 @@
                         value: 0,
                         text: "-Select-"
                     }));
+         $('#IDCustomer').prop('title', $("#IDCustomer option:selected").text());
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LoadProject","Home")',
@@ -163,6 +164,7 @@
                         value: 0,
                         text: "-Select-"
                     }));
+        $('#IDProject').prop('title', $("#IDProject option:selected").text());
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LoadInstanceforResource","Home")',
@@ -199,7 +201,8 @@
                      $('#SubmitInstance').prop("disabled", true);
                 } else {
 					$('#SubmitInstance').prop("disabled", false);
-                }
+        }
+        $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
             });
    $('#SubmitInstance').click(function () {
         var IDInstance = $("#IDInstance").val();

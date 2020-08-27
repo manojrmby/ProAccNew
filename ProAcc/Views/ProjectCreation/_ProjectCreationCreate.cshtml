@@ -274,6 +274,7 @@
                             loadProjectCreation();
                             Reset();
                             $("#btnProjectCreate").show();
+                             $(".app-main_Scroll").animate({ scrollTop: 500 }, 1000);
                         }
                     },
                     failure: function (response) {
@@ -342,7 +343,7 @@
                             $("#btnProjectCreate").show();
                             $("#prjtCreate").show();
                             $("#prjtUpdate").hide();
-
+                            $(".app-main_Scroll").animate({ scrollTop: 500 }, 1000);
                         }
                     },
                     failure: function (response) {

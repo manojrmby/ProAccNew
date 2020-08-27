@@ -701,6 +701,7 @@ namespace ProAcc.Controllers
             return View();
         }
 
+       // [HttpGet]
         public ActionResult PMTaskGetData(String IDProject)
         {
             List<PMTaskMonitor_> PM = _Base.GetPMTask(IDProject);

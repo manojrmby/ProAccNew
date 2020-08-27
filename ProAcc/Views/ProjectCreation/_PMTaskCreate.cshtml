@@ -186,6 +186,7 @@
                             Reset();
                             //$("#btnCreate").show();
                             $("#btnCreate").prop('disabled', true);
+                            $(".app-main_Scroll").animate({ scrollTop: 350 }, 1000);
                         }
                     },
                     failure: function (response) {
@@ -241,7 +242,7 @@
                             $("#btnCreate").prop('disabled', true);
                             $("#prjtCreate").show();
                             $("#prjtUpdate").hide();
-
+                            $(".app-main_Scroll").animate({ scrollTop: 350 }, 1000);
                         }
                     },
                     failure: function (response) {

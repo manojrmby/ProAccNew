@@ -118,12 +118,6 @@
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
-    <Reference Include="slf4j-api, Version=1.7.5.4, Culture=neutral, PublicKeyToken=caeb68ac682d6c33, processorArchitecture=MSIL">
-      <HintPath>..\packages\slf4j-api.1.7.5.4\lib\net35\slf4j-api.dll</HintPath>
-    </Reference>
-    <Reference Include="slf4j-NetCommonLogging, Version=1.7.5.4, Culture=neutral, PublicKeyToken=caeb68ac682d6c33, processorArchitecture=MSIL">
-      <HintPath>..\packages\slf4j-NetCommonLogging.1.7.5.4\lib\net35\slf4j-NetCommonLogging.dll</HintPath>
-    </Reference>
     <Reference Include="Spire.Doc, Version=7.11.0.41040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <HintPath>..\packages\FreeSpire.Doc.7.11.0\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>

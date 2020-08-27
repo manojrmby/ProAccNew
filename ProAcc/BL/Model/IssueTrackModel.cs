@@ -39,6 +39,7 @@ namespace ProAcc.BL.Model
         public String Instance { get; set; }
         public String Project { get; set; }
         public String Customer { get; set; }
+        public String Created_By { get; set; }
         public System.Guid Customer_Id { get; set; }
         public System.Guid Project_Id { get; set; }
         public System.Guid Instance_Id { get; set; }

@@ -3,22 +3,25 @@
 <link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
 <script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
-<div>
-    <a class="card-title">Issue List</a>
-    <hr />
-    <table class="table" id="tblIssue">
+<div style="width: 1600px;">
+    @*<a class="card-title">Issue List</a>
+    <hr />*@
+    <table class="table" id="tblIssue" >
         @*style="width: 1500px;"*@
 
         <thead>
             <tr>
-                <th style="width:60px">Issue ID</th>
-                <th style="width:130px">Issue Name</th>
-                <th>Phase</th>
+                <th style="width:150px">Issue ID</th>
                 <th style="width:130px">Task</th>
-                <th>Assigned To</th>
-                <th>Instance</th>
-                <th>Status</th>
-                <th>Created</th>
+                <th style="width:500px">Issue Name</th>
+                <th style="width:100px">Customer</th>
+                <th style="width:200px">Project</th>
+                <th style="width:80px">Instance</th>
+                <th style="width:100px">Phase</th>
+                <th style="width:150px">Assignee</th>
+                <th style="width:150px">Assigned To</th>
+                <th style="width:130px">Status</th>
+                <th style="width:100px">Created</th>
                 @*<th>Running ID</th>*@
                 <th>Actions</th>
             </tr>
@@ -26,42 +29,52 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        <a class="txtG" value="@item.IssueID">@item.IssueID</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.IssueName">@item.IssueName</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Phase">@item.Phase</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Task">@item.Task</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Assigned">@item.Assigned</a>
-                    </td> 
-                    <td>
-                        <a class="txtG" value="@item.Instance">@item.Instance</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.Status">@item.Status</a>
-                    </td>
-                    <td>
-                        <a class="txtG" value="@item.StartDate">@item.StartDate.ToLocalTime()</a> @*ToString("dd/MM/yyyy")*@
-                    </td>
-                    @*<td>
-                            <a class="txtG" value="@item.RunningID">@item.RunningID</a>
-                        </td>*@
-                    <td>
-                        @if (item.Status != "Completed")
-                        {
-                            <a class="fa fa-edit" data-placement="top" href="@Url.Action("GetIssueTrackById", "IssueTrack", new { id = item.Issuetrack_Id })"></a>
-                        }
-                    </td>
+            <tr>
+                <td>
+                    <a class="txtG" value="@item.IssueID">@item.IssueID</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Task">@item.Task</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.IssueName">@item.IssueName</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Customer">@item.Customer</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Project">@item.Project</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Instance">@item.Instance</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Phase">@item.Phase</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Created_By">@item.Created_By</a>
+                </td> 
+                <td>
+                    <a class="txtG" value="@item.Assigned">@item.Assigned</a>
+                </td>
+                <td>
+                    <a class="txtG" value="@item.Status">@item.Status</a>
+                </td>
+                <td>
+                    @*<a class="txtG" value="@item.StartDate">@item.StartDate.ToLocalTime()</a>*@      
+                    <a class="txtG" value="@item.StartDate">@TimeZoneInfo.ConvertTimeFromUtc(item.StartDate, TimeZoneInfo.Local).ToUniversalTime()</a>
+                </td>
+                @*<td>
+                    <a class="txtG" value="@item.RunningID">@item.RunningID</a>
+                </td>*@
+                <td>
+                    @if (item.Status != "Completed")
+                    {
+                        <a class="fa fa-edit" data-placement="top" href="@Url.Action("GetIssueTrackById", "IssueTrack", new { id = item.Issuetrack_Id })"></a>
+                    }
+                </td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>

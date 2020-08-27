@@ -32,7 +32,7 @@
                     <a class="txtG" value="@item.ACTION">@item.ACTION</a>
                 </td>
                 <td>
-                    <a class="txtG" value="@item.CREATED_DATE">@item.CREATED_DATE.ToLocalTime()</a>
+                    <a class="txtG" value="@item.CREATED_DATE">@TimeZoneInfo.ConvertTimeFromUtc(item.CREATED_DATE, TimeZoneInfo.Local)</a> @*@item.CREATED_DATE.ToLocalTime()*@
                 </td>
                 <td>
                     <a class="txtG" value="@item.NAME">@item.NAME</a>

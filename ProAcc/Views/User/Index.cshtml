@@ -58,7 +58,8 @@
                 @Html.DisplayFor(modelItem => item.EMail)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Phone)
+                <a class="txtG" value="@item.Phone">@item.Phone.Replace(" ", "")</a>
+                @*@Html.DisplayFor(modelItem => item.Phone.Replace(" ", ""))*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LoginId)

@@ -118,28 +118,32 @@
 
 <script>
     $('#Submit').click(function () {
-        //debugger        
-        var IDProject = $("#IDProject").val();        
+            
+        
+        var IDProject = $("#IDProject option:selected").val();   
         LoadTable(IDProject);
-        $('#jqGrid').trigger('reloadGrid');
+       // $('#jqGrid').jqGrid('clearGridData');
+        //jQuery('grid').jqGrid('setGridParam', {data: LoadTable(IDProject)});
+        $('#jqGrid').trigger( 'reloadGrid' );
         Notiflix.Notify.Success('updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-        @*$.ajax({
-            //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
-            url: '@Url.Action("PMTaskGetData", "ProjectMonitor")',
-            type: "POST",
-            data: { 'IDProject': IDProject },
-            success: function (result) {
-                Notiflix.Notify.Success('updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                LoadTable(IDProject);
-                 $('#jqGrid').trigger('reloadGrid');
-            }
-        });*@
    });
 
+    $(document).ready(function () {
+        $("#prt").hide();
 
+         $('#IDProject').change(function () {
+             $('#IDProject').prop('title', $("#IDProject option:selected").text());
+             // = $('#IDProject').val();
+        });
+    });
+   
 </script>
 <script>
     function LoadTable(IDProject) {
+        
+        @*var Id = @Session["P_id"];*@
+        //var Id = '<%= Session["P_id"] %>';
+        var Id = IDProject;
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
 
         var Planed_StartDate = function (element, options) {
@@ -248,12 +252,14 @@
             });//.datepicker("setDate", new Date());
             // }).datepicker();
         };
-
+         
         $("#jqGrid").jqGrid({
-            // url: "@Url.Action("PMTaskGetData", "ProjectMonitor",new { IDProject = TempData["PhaseID"]})",
-            url: "@Url.Action("PMTaskGetData", "ProjectMonitor")?IDProject=" + IDProject,
-            //editurl: "@Url.Action("SubmitPMTaskMonitor","ProjectMonitor")",
+            url: "@Url.Action("PMTaskGetData", "ProjectMonitor")?IDProject=" + Id,
             datatype: "json",
+            data: {},
+            //type: "Get", 
+            //contentType: "application/json; charset=utf-8",  
+            async: false,
             colModel: [
                  {
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
@@ -637,67 +643,6 @@
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid
             { edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
-            // options for the Edit Dialog
-            {
-                editCaption: "The Edit Dialog",
-                recreateForm: true,
-                checkOnUpdate: true,
-                checkOnSubmit: true,
-                closeAfterEdit: true,
-                reloadAfterSubmit:true,
-                  //editParams: myEditOptions,
-                beforeShowForm: function (form) {
-
-
-
-                },
-                errorTextFormat: function (data) {
-                    alert("in" + data.responseText);
-                    return 'Error: ' + data.responseText
-                }
-            },
-            // options for the Add Dialog
-            {
-                closeAfterAdd: true,
-                recreateForm: true,
-                beforeShowForm: function (form) {
-
-                    //var nameColumnField = $('#tr_Task', form).show();
-                    //$('#tr_Task', form).show();
-
-                    //$('<tr class="FormData" id="tr_AddInfo"><td class="CaptionTD ui-widget-content"><b>Additional Information:</b></td></tr>').insertAfter (nameColumnField);
-                    // debugger;
-                    $('#PhaseId')
-                        .val(5)//AssumentID
-                        .prop("disabled", true);
-                    $("#tr_Task_Other_Environment").hide();
-                    $("#tr_Dependency").hide();
-                    $("#tr_Pending").hide();
-                    $("#tr_Delay_occurred").hide();
-                    $("#tr_StatusID").hide();
-                    $("#tr_EST_hours").hide();
-                    $("#tr_Actual_St_hours").hide();
-                    $("#tr_Planed__St_Date").hide();
-                    $("#tr_Actual_St_Date").hide();
-                    $("#tr_Planed__En_Date").hide();
-                    $("#tr_Actual_En_Date").hide();
-                    $("#tr_Notes").hide();
-                    // $grid.jqGrid('showCol', 'Id');
-                    //$grid.jqGrid(‘hideCol’, 'Task_Other_Environment');
-                    // debugger;
-                    //alert("Mano");
-                },
-
-                errorTextFormat: function (data) {
-                    return 'Error: ' + data.responseText
-                }
-            },
-            // options for the Delete Dailog
-            {
-                errorTextFormat: function (data) {
-                    return 'Error: ' + data.responseText
-                }
-            },
             {
                 multipleSearch: true,
                 showQuery: false

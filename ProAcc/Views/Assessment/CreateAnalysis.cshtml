@@ -486,6 +486,7 @@
                         value: 0,
                         text: "Select a Instance"
                     }));
+            $('#IDProject').prop('title', $("#IDProject option:selected").text());
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LoadCreateAnalysisInstance","Assessment")',
@@ -523,6 +524,7 @@
                         value: 0,
                         text: "Select a Project"
                     }));
+            $('#IDCustomer').prop('title', $("#IDCustomer option:selected").text());
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LoadProject","Assessment")',
@@ -552,6 +554,9 @@
 
             });
         });
+        $('#IDInstance').change(function () {
+             $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
+        })
     });
 </script>
 

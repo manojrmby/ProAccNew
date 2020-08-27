@@ -108,7 +108,8 @@
                     if (response == "success") {
                        Notiflix.Notify.Success('Role Saved successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                        resetRole();
-                       loadRole();
+                        loadRole();
+                        $(".app-main_Scroll").animate({ scrollTop: 200 }, 1000);
                     }
                   },
                   failure: function (response) {
@@ -152,7 +153,8 @@
                          resetRole();
                          loadRole();
                          $("#RoleCreation").show();
-                         $("#RoleUpdation").hide();                            
+                          $("#RoleUpdation").hide();    
+                          $(".app-main_Scroll").animate({ scrollTop: 200 }, 1000);
                       }
                    },
                    failure: function (response) {

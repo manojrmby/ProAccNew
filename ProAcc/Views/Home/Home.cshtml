@@ -1708,7 +1708,8 @@ background-attachment:local, local, scroll, scroll;
                     select.append($('<option/>', {
                         value: 0,
                         text: "-Select-"
-                    }));
+                    }));                
+                $('#IDCustomer').prop('title', $("#IDCustomer option:selected").text());
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LoadProject","Home")',
@@ -1735,6 +1736,8 @@ background-attachment:local, local, scroll, scroll;
                     //alert(a);
                 }
             });
+
+                
         });
             $('#IDProject').change(function () {
 
@@ -1746,6 +1749,7 @@ background-attachment:local, local, scroll, scroll;
                         value: 0,
                         text: "-Select-"
                     }));
+                $('#IDProject').prop('title', $("#IDProject option:selected").text());
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LoadInstance","Home")',
@@ -1783,6 +1787,7 @@ background-attachment:local, local, scroll, scroll;
                 } else {
 					$('#SubmitInstance').prop("disabled", false);
                 }
+                $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
             });
         $('#SubmitInstance').click(function () {
             var IDInstance = $("#IDInstance").val();
