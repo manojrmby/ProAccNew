@@ -134,6 +134,9 @@
             {
                 padding:0 0.75rem 0
             }
+ .app-footer__inner{
+     min-height:100%;
+ }
     </style>
     @*<link href="~/Asset/css/Loader.css" rel="stylesheet" />*@
 
@@ -399,7 +402,7 @@
 
                                 @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
                                 {
-                                    <a>
+                                    <a href="#">
                                         <!-- <i class="metismenu-icon pe-7s-hourglass"></i> -->
                                         <i class="metismenu-icon fa fa-cogs"></i>
                                         Assessment

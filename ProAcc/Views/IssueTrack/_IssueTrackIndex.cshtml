@@ -62,7 +62,7 @@
                 </td>
                 <td>
                     @*<a class="txtG" value="@item.StartDate">@item.StartDate.ToLocalTime()</a>*@      
-                    <a class="txtG" value="@item.StartDate">@TimeZoneInfo.ConvertTimeFromUtc(item.StartDate, TimeZoneInfo.Local).ToUniversalTime()</a>
+                    <a class="txtG" value="@item.StartDate">@TimeZoneInfo.ConvertTimeFromUtc(item.StartDate, TimeZoneInfo.Local)</a>
                 </td>
                 @*<td>
                     <a class="txtG" value="@item.RunningID">@item.RunningID</a>

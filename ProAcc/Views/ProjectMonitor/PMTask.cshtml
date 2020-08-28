@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "PMTask Monitor";
+    ViewBag.Title = "PM Task Monitor";
     Layout = "~/Views/shared/_Layout.cshtml";
 
 }
@@ -27,7 +27,7 @@
     }
 </style>
 
-<a class="card-title">PMTask Monitor</a>
+<a class="card-title">PM Task Monitor</a>
 <script>
     //$.jgrid.defaults.width =1000;
     $.jgrid.defaults.responsive = true;
@@ -133,14 +133,25 @@
 
          $('#IDProject').change(function () {
              $('#IDProject').prop('title', $("#IDProject option:selected").text());
-             // = $('#IDProject').val();
+
+             @*var Proj=$('#IDProject').val();
+             $.ajax({
+                 url:@Url.Action("SessionProj","ProjectMonitor"}) ,
+                 data: { 'IDProject': Proj },
+                 type: "post",
+                 cache: false,
+                 success: function (savingStatus) {
+                     $("#hdnOrigComments").val($('#txtComments').val());
+                     $('#lblCommentsNotification').text(savingStatus);
+                 },
+             })*@
         });
     });
    
 </script>
 <script>
     function LoadTable(IDProject) {
-        
+        debugger
         @*var Id = @Session["P_id"];*@
         //var Id = '<%= Session["P_id"] %>';
         var Id = IDProject;
@@ -256,9 +267,9 @@
         $("#jqGrid").jqGrid({
             url: "@Url.Action("PMTaskGetData", "ProjectMonitor")?IDProject=" + Id,
             datatype: "json",
-            data: {},
-            //type: "Get", 
-            //contentType: "application/json; charset=utf-8",  
+            //data: { 'IDProject': IDProject },
+            //type: "Post", 
+            //contentType: "application/json; charset=utf-8",
             async: false,
             colModel: [
                  {
@@ -457,7 +468,8 @@
             caption: '',
             sortable: false,
             grouping: false,
-            rownumbers: true,
+             rownumbers: true,
+            rownumWidth: 45,
             reload: true,
             reloadAfterSubmit:true,
             pager: "#jqGridPager",
@@ -570,6 +582,10 @@
 
                 Show_HideEdit();
 
+            },
+            loadComplete: function () {
+
+                $("#jqGrid").jqGrid("setLabel", "rn", "S.No");
             }
 
 
