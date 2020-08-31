@@ -106,7 +106,7 @@ namespace ProAcc.Controllers
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SubmitProjectMonitor(int Phase_ID, Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, double EST_hours, double Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
+        public ActionResult SubmitProjectMonitor(int Phase_ID, Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, decimal EST_hours, double Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
         {
 
             int PhaseId = Phase_ID;
@@ -707,7 +707,7 @@ namespace ProAcc.Controllers
             List<PMTaskMonitor_> PM = _Base.GetPMTask(IDProject);
             return Json(PM, JsonRequestBehavior.AllowGet);
         }
-
+       
         public ActionResult GetTaskName()
         {
             var PMTasklist = db.PMTaskMasters.Where(x => x.isActive == true).ToList();

@@ -27,7 +27,9 @@ namespace ProAcc.BL.Model
 		public int RoleID { get; set; }
 		public Guid UserID { get; set; }
 		public int StatusId { get; set; }
-		public double EST_hours { get; set; }
+		//public double EST_hours { get; set; }
+		public decimal EST_hours { get; set; }
+		public String EST_hrs { get; set; }
 		public double Actual_St_hours { get; set; }
 		
 		public DateTime Planed__St_Date { get; set; }

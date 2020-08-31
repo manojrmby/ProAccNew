@@ -85,10 +85,11 @@
 
     $(document).ready(function () {
 
-        $("#tblIssue").dataTable({
+       $("#tblIssue").dataTable({
             "columnDefs": [
                 { "width": "20%", "targets": 1 }
-            ]
+            ],
+            "order": [[11, "asc"]]
         });
     });
 </script>

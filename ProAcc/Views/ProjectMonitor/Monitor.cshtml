@@ -223,8 +223,8 @@
                     },
                 },
                 {
-                    label: 'Est.(hrs)', name: 'EST_hours', width: 55,
-                    editable: true,align: 'right',
+                    label: 'Est.(hrs)', name: 'EST_hrs', width: 55,
+                    editable: true, align: 'right', //formatter: 'string',
                     editrules: { },
                     editoptions: {
                         dataInit: function (element) {
@@ -359,7 +359,7 @@
 
                 var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 
-                var EST_hours = $("#jqGrid").jqGrid('getCell', ColValue, 'EST_hours');
+                var EST_hours = $("#jqGrid").jqGrid('getCell', ColValue, 'EST_hrs');
                 var Actual_St_hours=$("#jqGrid").jqGrid('getCell', ColValue, 'Actual_St_hours');
                 var Planed__St_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Planed__St_Date');
                 var Planed__En_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Planed__En_Date');
@@ -388,7 +388,7 @@
                 //}
                  var UserType ="@Session["UserType"].ToString()"
                 if (UserType == 'Project Manager') {
-                    EST_hours = postdata.EST_hours;
+                    EST_hours = postdata.EST_hrs;
                     EST_hours = EST_hours.replace(":", ".");
                     Actual_St_hours = Actual_St_hours;
                      Actual_St_hours = Actual_St_hours.replace(":", ".");
@@ -398,7 +398,7 @@
                     Actual_En_Date = Actual_En_Date;
                 }
                 else {
-                    EST_hours = EST_hours;
+                    //EST_hours = EST_hours;
                     EST_hours = EST_hours.replace(":", ".");
                      Actual_St_hours = postdata.Actual_St_hours;
                      Actual_St_hours = Actual_St_hours.replace(":", ".");
@@ -428,6 +428,7 @@
                                                 'Dependency': Dependency,
                                                 'Pending': Pending,
                                                 'Delay_occurred': Delay_occurred,
+                                                //'EST_hours': EST_hours,
                                                 'EST_hours': EST_hours,
                                                 'Actual_St_hours': Actual_St_hours,
                                                 'Planed__St_Date': Planed__St_Date,
@@ -457,9 +458,12 @@
                  $("#jqGrid").jqGrid("setLabel", "rn", "S.No");
                 var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
                 for (var i = 0; i < ids.length; i++) {
-                    var EST_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'EST_hours')
+                    //var EST_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'EST_hours')
+                    //EST_hours = EST_hours.replace(".", ":")
+                    //$('#jqGrid').jqGrid('setCell', ids[i], 'EST_hours', EST_hours);
+                    var EST_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'EST_hrs')
                     EST_hours = EST_hours.replace(".", ":")
-                    $('#jqGrid').jqGrid('setCell', ids[i], 'EST_hours', EST_hours);
+                    $('#jqGrid').jqGrid('setCell', ids[i], 'EST_hrs', EST_hours);
 
                     var Actual_St_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'Actual_St_hours')
                     Actual_St_hours = Actual_St_hours.replace(".", ":")
@@ -470,12 +474,13 @@
             gridComplete: function () {
               
                 var recs = $('#jqGrid').jqGrid('getGridParam', 'reccount');
-
+                var Phase_ID = @TempData["PhaseID"];
                 if (isNaN(recs) || recs == 0) {
                     $("#jqGrid").jqGrid('setGridState', 'hidden');
-                     var msg = 'one or more previous phase task\'s are not completed ,Please complete the task\'s and try..!';
-                    Notiflix.Report.Info("ProAcc Info !", msg);
-                    
+                    if (Phase_ID != 1) {
+                        var msg = 'one or more previous phase task\'s are not completed ,Please complete the task\'s and try..!';
+                        Notiflix.Report.Info("ProAcc Info !", msg);
+                    }
                 }
                 else {
                     $("#jqGrid").jqGrid('setGridState', 'visible');
@@ -772,10 +777,12 @@
             if ($('#jEditButton_' + ids[i]).is(":visible")) {a = a + 1;}
         }
         //debugger;
+        var b = false;
         if (UserType != 'Project Manager') {
-             if (a==0) {
+            if (a == 0 && b == false) {
                  //Notiflix.Report.Info("ProAcc Info !", "You dont have any Task to Perform");
-                 Notiflix.Notify.Info("You dont have any Task to Perform", {timeout:2000});
+                Notiflix.Notify.Info("You dont have any Task to Perform", { timeout: 2000 });
+                b = true;
              }
         }
        
