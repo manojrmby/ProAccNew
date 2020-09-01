@@ -458,7 +458,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="@Url.Action("ActivitieReport", "Assessment")">
+                                                    <a href="@Url.Action("ActivitiesReport", "Assessment")">
                                                         <i class="metismenu-icon"> </i>Activities Report
                                                     </a>
                                                 </li>
@@ -813,7 +813,7 @@
                        
                         @*@if (ViewContext.RouteData.Values["Controller"].ToString() != "IssueTrack")
                         {*@
-                        <div style="max-width:99%;" id="prt">
+                        @*<div style="max-width:99%;" id="prt">
                             <hr />
                             <div class="row">
                                 <div class="col-6">
@@ -823,7 +823,7 @@
                                     <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                         @*}*@
                         <br />
                         @RenderBody()

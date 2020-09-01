@@ -247,7 +247,7 @@ namespace ProAcc.Controllers
             return View();
         }
 
-        public ActionResult ActivitieReport()
+        public ActionResult ActivitiesReport()
         {
             InstanceId = Guid.Parse(Session["InstanceId"].ToString());
             if (InstanceId == Guid.Empty)

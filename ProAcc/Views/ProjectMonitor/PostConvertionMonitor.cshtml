@@ -118,14 +118,14 @@
     @*<table id="jqGrid"></table>
         <div id="jqGridPager"></div>*@
     @{
-        @*<div class="row">
+        <div class="row">
             <div class="col-6">
                 <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
             </div>
             <div class="col-6">
                 <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
             </div>
-        </div>*@
+        </div>
         Html.RenderAction("Monitor", "ProjectMonitor");
     }
 </div>

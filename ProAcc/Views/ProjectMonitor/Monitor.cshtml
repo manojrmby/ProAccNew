@@ -376,7 +376,7 @@
                 //var EST_hours = EST_hours;
                 //var Planed__St_Date = Planed__St_Date;
                 //var Planed__En_Date = Planed__En_Date;
-                var EST_hours;
+                //var EST_hours;
                 var Actual_St_hours;
                 var Planed__St_Date;
                 var Planed__En_Date;
@@ -398,7 +398,7 @@
                     Actual_En_Date = Actual_En_Date;
                 }
                 else {
-                    //EST_hours = EST_hours;
+                    EST_hours = EST_hours;
                     EST_hours = EST_hours.replace(":", ".");
                      Actual_St_hours = postdata.Actual_St_hours;
                      Actual_St_hours = Actual_St_hours.replace(":", ".");
@@ -428,7 +428,6 @@
                                                 'Dependency': Dependency,
                                                 'Pending': Pending,
                                                 'Delay_occurred': Delay_occurred,
-                                                //'EST_hours': EST_hours,
                                                 'EST_hours': EST_hours,
                                                 'Actual_St_hours': Actual_St_hours,
                                                 'Planed__St_Date': Planed__St_Date,
@@ -478,7 +477,7 @@
                 if (isNaN(recs) || recs == 0) {
                     $("#jqGrid").jqGrid('setGridState', 'hidden');
                     if (Phase_ID != 1) {
-                        var msg = 'one or more previous phase task\'s are not completed ,Please complete the task\'s and try..!';
+                         var msg = 'one or more previous phase task\'s are not completed ,Please complete the task\'s and try..!';
                         Notiflix.Report.Info("ProAcc Info !", msg);
                     }
                 }
@@ -713,7 +712,7 @@
 
         }
         else {
-            var EST_hours = jQuery("#jqGrid").jqGrid('getColProp', 'EST_hours');
+            var EST_hours = jQuery("#jqGrid").jqGrid('getColProp', 'EST_hrs');
                 EST_hours.editable = false;
              var Planed__St_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__St_Date');
                  Planed__St_Date.editable = false;
@@ -777,12 +776,12 @@
             if ($('#jEditButton_' + ids[i]).is(":visible")) {a = a + 1;}
         }
         //debugger;
-        var b = false;
+        var status=false;
         if (UserType != 'Project Manager') {
-            if (a == 0 && b == false) {
+            if (a == 0 &&status==false) {
                  //Notiflix.Report.Info("ProAcc Info !", "You dont have any Task to Perform");
                 Notiflix.Notify.Info("You dont have any Task to Perform", { timeout: 2000 });
-                b = true;
+                status = true;
              }
         }
        

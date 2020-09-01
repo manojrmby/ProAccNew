@@ -43,15 +43,14 @@
         </div>
     </div>
 </div>
-@*<div class="row">
+<div class="row">
         <div class="col-6">
-            <a class="card-title" style="float: left;">Project Name :</a>
-            <input id="Project_Name">
+            <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
         </div>
         <div class="col-6">
-            <a class="card-title " style="float: right;">Instance Name :</a>
+            <a class="card-title " style="float: right;">Instance Name :@Session["Instance_Name"]</a>
         </div>
-    </div>*@
+    </div>
 @{
     Html.RenderAction("ResourceAllocation", "Resource");
 }
