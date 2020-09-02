@@ -247,17 +247,21 @@ namespace ProAcc.Controllers
                 ViewBag.ITM_Comments = db.HistoryLogs.Where(x=>x.IssueTrackId==id && x.isActive==true).ToList();
                 List<UserMaster> B = _Base.Sp_EditAssignedTo(ITM.ProjectInstance_Id);
                 ViewBag.AssignedTo = B;
-                //ViewBag.status = false;
-
-                //var Cre_By = ITM.Cre_By;
-                //var a = (from i in db.Issuetracks
-                //         join p in db.Projects on i.Cre_By equals p.ProjectManager_Id
-                //         where i.Cre_By == Cre_By
-                //         select i).FirstOrDefault();
-                //if (ITM.Cre_By.ToString() == Session["loginid"].ToString() && a!=null)
-                //{
-                //    ViewBag.status = true;
-                //}
+                
+                var loginid = Guid.Parse(Session["loginid"].ToString());
+                var a = (from i in db.Issuetracks
+                         join p in db.Projects on i.Cre_By equals p.ProjectManager_Id
+                         where i.Cre_By == loginid
+                         select i).FirstOrDefault();
+                ViewBag.status = false;
+                if (ITM.Cre_By.ToString() == Session["loginid"].ToString())
+                {
+                    if (a == null)
+                    {
+                        ViewBag.status = true;
+                    }
+                }                   
+                
                 return View(ITM);
             }
             catch (Exception ex)

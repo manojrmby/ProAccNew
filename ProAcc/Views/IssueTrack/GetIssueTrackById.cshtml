@@ -40,7 +40,7 @@
             <div class="form-group" id="Status">
                 <label class="control-label col-md-4 required">Status</label>
                 <div class="col-md-10">
-                    @if (Model.Cre_By.ToString() == Session["loginid"].ToString())
+                    @if (ViewBag.status ==true)
                     {
                         <input type="text" class="form-control" readonly value="@Model.Status" id="ddllist" />
                     }
@@ -66,7 +66,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Assigned To</label>
                 <div class="col-md-10">
-                    @if (Model.Cre_By.ToString() == Session["loginid"].ToString())
+                    @if (ViewBag.status ==true)
                     {
                         <input type="hidden" class="form-control" value="@Model.AssignedTo" text="@Model.Assigned" id="drpAssignedTo" />
                         <input type="hidden" class="form-control" value="@Model.Assigned" id="drpAssignedToText" />
