@@ -668,13 +668,13 @@
             }
         }
     }
-
+    var status_show=false;
     function Show_HideEdit() {
         var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
         var User = '@Session["UserType"]';
         var loginid = '@Session["loginid"]';
         var j = 0;
-
+        
          var UserType ="@Session["UserType"].ToString()"
         if (UserType == 'Project Manager')
         {
@@ -776,12 +776,12 @@
             if ($('#jEditButton_' + ids[i]).is(":visible")) {a = a + 1;}
         }
         //debugger;
-        var status=false;
+        
         if (UserType != 'Project Manager') {
-            if (a == 0 &&status==false) {
-                 //Notiflix.Report.Info("ProAcc Info !", "You dont have any Task to Perform");
+            
+            if (a == 0 && status_show == false) {
                 Notiflix.Notify.Info("You dont have any Task to Perform", { timeout: 2000 });
-                status = true;
+                status_show = true;  
              }
         }
        

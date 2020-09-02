@@ -551,7 +551,14 @@ namespace ProAcc.Controllers
             //var q = from u in db.Instances where (u.Instance_id == InstanceID && u.AssessmentUploadStatus == true) orderby u.InstaceName select u;
 
             var Query = from u in db.ProjectMonitors where (u.InstanceID == InstanceId && u.PhaseId == 1 && u.StatusId!=1 && u.StatusId!=3)  select u;
-            if (Query.Count()>0)
+            var take = db.ProjectMonitors.Where(x => x.InstanceID == InstanceId).Take(1);
+           
+            if (Query.Count() > 0)
+            {
+                Status = false;
+            }
+
+            if (take.Count() == 0)
             {
                 Status = false;
             }
