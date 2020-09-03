@@ -600,6 +600,10 @@ namespace ProAcc.Controllers
             ViewBag.Project = Project;
             return View();
         }
+
+
+
+        
         #endregion
 
 
@@ -608,6 +612,14 @@ namespace ProAcc.Controllers
         public ActionResult ResourceAllocation()
         {
             return PartialView("ResourceAllocation");
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult ResourceAllocationAll()
+        {
+            //TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            return PartialView("ResourceAllocationAll");
         }
 
         public ActionResult MasterAdd(int Phase_ID)

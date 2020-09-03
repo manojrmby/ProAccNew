@@ -13,6 +13,7 @@
             <tr>
                 <th>Role Names</th>
                 <th>Actions</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,9 @@
                         <a href="#" id="btnEdit" class="editRole fa fa-edit"></a><input type="hidden" value="@item.RoleId" />
                         @*<a href="#" class="btnRoleDelete fa fa-trash"></a><input type="hidden" value="@item.RoleId" />*@
                     </td>
+                    <td>
+                        <a class="txtG" value="@item.Cre_on">@Convert.ToDateTime(item.Cre_on).ToString("yyyy-MM-dd HH:mm:ss")</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -35,7 +39,13 @@
 <script type="text/javascript">
      $(document).ready(function () {
          $("#tblRoleCreation").dataTable({
-             "ordering": false
+             "order": [[2, 'desc']],
+             "columnDefs": [
+                 {
+                     "targets": [2],
+                     "visible": true
+                 }
+             ]
          })
      })
     $(".btnRoleDelete").on("click", function () {

@@ -30,7 +30,7 @@
                     <a class="txtG" value="@item.PMTaskCategoryID">@item.PMTaskCategory.Name</a>
                 </td>
                 <td>
-                    <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+                    <a class="txtG" value="@item.Cre_on">@Convert.ToDateTime(item.Cre_on).ToString("yyyy-MM-dd HH:mm:ss")</a>
                 </td>
                 <td>
                     <a class="txtG" value="@item.PMTaskName">@item.PMTaskName</a>
@@ -52,7 +52,7 @@
 
     $(document).ready(function () {
         $("#tblProjectCreation").dataTable({
-            "order": [[2, 'desc']],
+            "order": [[1, 'desc']],
             "columnDefs": [
                 {
                     "targets": [1],

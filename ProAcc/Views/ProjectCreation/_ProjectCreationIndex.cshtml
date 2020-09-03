@@ -32,7 +32,7 @@
                 <a class="txtG" value="@item.Project_Name">@item.Project_Name</a>
             </td>
             <td>
-                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+                <a class="txtG" value="@item.Cre_on">@Convert.ToDateTime(item.Cre_on).ToString("yyyy/MM/dd")</a>
             </td>
             <td>
                 <a class="txtG" value="@item.Customer_Id">@item.Customer.Company_Name</a>
@@ -62,13 +62,13 @@
 
     $(document).ready(function () {
         $("#tblProjectCreation").dataTable({
-            "order": [[1, 'desc']],
-            "columnDefs": [
-                {
-                    "targets": [1],
-                    "visible": false
-                }
-            ]
+            "order": [[1, 'desc']]
+            //"columnDefs": [
+            //    {
+            //        "targets": [1],
+            //        "visible": false
+            //    }
+            //]
         } );
     });
 

@@ -45,7 +45,7 @@
                         <a class="txtG" value="@item.Email">@item.Email</a>
                     </td>
                     <td>
-                        <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+                        <a class="txtG" value="@item.Cre_on">@Convert.ToDateTime(item.Cre_on).ToString("yyyy/MM/dd")</a>
                     </td>
                     <td>
                         &nbsp;&nbsp;<a class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit!" href="@Url.Action("GetCustomerById","Customers", new { id = item.Customer_ID })"></a>

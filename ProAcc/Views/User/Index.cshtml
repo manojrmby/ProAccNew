@@ -54,7 +54,8 @@
                 @Html.DisplayFor(modelItem => item.RoleMaster.RoleName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cre_on)
+                @Convert.ToDateTime(item.Cre_on).ToString("yyyy/MM/dd")
+                @*@Html.DisplayFor(modelItem => item.Cre_on)*@
                 @*<a class="txtG" value="@item.Cre_on">@item.Cre_on</a>*@
             </td>
             <td>
@@ -102,12 +103,12 @@
     $(document).ready(function () {
         $("#prt").hide();
         $("#tblUserTable").dataTable({
-           "order": [[6, 'desc']],
+            "order": [[5, 'desc']],
             //"ordering": false,
             "columnDefs": [
                 {
                     "targets": [5],
-                    "visible": false
+                    "visible": true
                 }
             ]
         });

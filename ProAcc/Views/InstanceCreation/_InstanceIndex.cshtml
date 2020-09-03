@@ -23,7 +23,7 @@
                 <a class="txtG" value="@item.InstaceName">@item.InstaceName</a>
             </td>
             <td>
-                <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+                <a class="txtG" value="@item.Cre_on">@Convert.ToDateTime(item.Cre_on).ToString("yyyy-MM-dd HH:mm:ss")</a>
             </td>
             <td>
                 <a class="txtG" value="@item.Project_ID">@item.Project.Project_Name</a>
