@@ -1471,7 +1471,8 @@ namespace ProAcc.BL
 
                         P.EST_hours = decimal.Parse(dr["EST_hours"].ToString());
                         P.EST_hrs = dr["EST_hours"].ToString();
-                        P.Actual_St_hours = float.Parse(dr["Actual_St_hours"].ToString());
+                        P.Actual_St_hours = decimal.Parse(dr["Actual_St_hours"].ToString());
+                        P.Actual_St_hrs = dr["Actual_St_hours"].ToString();
 
                         P.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
                         P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
@@ -1839,7 +1840,7 @@ namespace ProAcc.BL
                     P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
 
                     P.EST_hours = decimal.Parse(dr["EST_hours"].ToString());
-                    P.Actual_St_hours = float.Parse(dr["Actual_St_hours"].ToString());
+                    P.Actual_St_hours = decimal.Parse(dr["Actual_St_hours"].ToString());
 
                     P.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
                     P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
@@ -1899,7 +1900,7 @@ namespace ProAcc.BL
                     P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
 
                     P.EST_hours = decimal.Parse(dr["EST_hours"].ToString());
-                    P.Actual_St_hours = float.Parse(dr["Actual_St_hours"].ToString());
+                    P.Actual_St_hours = decimal.Parse(dr["Actual_St_hours"].ToString());
 
                     P.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
                     P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());

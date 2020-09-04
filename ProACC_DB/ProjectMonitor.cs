@@ -26,8 +26,8 @@ namespace ProACC_DB
         public Nullable<int> RoleId { get; set; }
         public System.Guid UserID { get; set; }
         public int StatusId { get; set; }
-        public Nullable<double> EST_hours { get; set; }
-        public Nullable<double> Actual_St_hours { get; set; }
+        public Nullable<decimal> EST_hours { get; set; }
+        public Nullable<decimal> Actual_St_hours { get; set; }
         public Nullable<System.DateTime> Planed__St_Date { get; set; }
         public Nullable<System.DateTime> Actual_St_Date { get; set; }
         public Nullable<System.DateTime> Planed__En_Date { get; set; }

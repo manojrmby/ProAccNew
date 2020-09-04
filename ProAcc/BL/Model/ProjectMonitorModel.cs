@@ -30,7 +30,9 @@ namespace ProAcc.BL.Model
 		//public double EST_hours { get; set; }
 		public decimal EST_hours { get; set; }
 		public String EST_hrs { get; set; }
-		public double Actual_St_hours { get; set; }
+		//public double Actual_St_hours { get; set; }
+		public decimal Actual_St_hours { get; set; }
+		public String Actual_St_hrs { get; set; }
 		
 		public DateTime Planed__St_Date { get; set; }
 		

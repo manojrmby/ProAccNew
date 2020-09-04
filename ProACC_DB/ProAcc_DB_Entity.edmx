@@ -289,8 +289,8 @@
           <Property Name="RoleId" Type="int" />
           <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StatusId" Type="int" Nullable="false" />
-          <Property Name="EST_hours" Type="float" />
-          <Property Name="Actual_St_hours" Type="float" />
+          <Property Name="EST_hours" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="Actual_St_hours" Type="decimal" Precision="4" Scale="2" />
           <Property Name="Planed__St_Date" Type="datetime" />
           <Property Name="Actual_St_Date" Type="datetime" />
           <Property Name="Planed__En_Date" Type="datetime" />
@@ -676,7 +676,6 @@
           </FunctionImport>
           <EntitySet Name="Instances" EntityType="ProAccModel.Instance" />
           <EntitySet Name="PhaseMasters" EntityType="ProAccModel.PhaseMaster" />
-          <EntitySet Name="ProjectMonitors" EntityType="ProAccModel.ProjectMonitor" />
           <EntitySet Name="StatusMasters" EntityType="ProAccModel.StatusMaster" />
           <EntitySet Name="IndustrySectors" EntityType="ProAccModel.IndustrySector" />
           <EntitySet Name="RoleMasters" EntityType="ProAccModel.RoleMaster" />
@@ -756,6 +755,7 @@
             <End Role="RoleMaster" EntitySet="RoleMasters" />
             <End Role="ActivityMaster" EntitySet="ActivityMasters" />
           </AssociationSet>
+          <EntitySet Name="ProjectMonitors" EntityType="ProAccModel.ProjectMonitor" />
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
           <Property Type="Int32" Name="RC" Nullable="true" />
@@ -804,36 +804,6 @@
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ActivityMasters" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="PhaseMaster" ToRole="ActivityMaster" />
-        </EntityType>
-        <EntityType Name="ProjectMonitor">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="ActivityID" Type="Int32" />
-          <Property Name="InstanceID" Type="Guid" Nullable="false" />
-          <Property Name="PhaseId" Type="Int32" Nullable="false" />
-          <Property Name="Task_Other_Environment" Type="Boolean" />
-          <Property Name="Dependency" Type="Boolean" />
-          <Property Name="Pending" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Delay_occurred" Type="Boolean" />
-          <Property Name="DelayedReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="RoleId" Type="Int32" />
-          <Property Name="UserID" Type="Guid" Nullable="false" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
-          <Property Name="EST_hours" Type="Double" />
-          <Property Name="Actual_St_hours" Type="Double" />
-          <Property Name="Planed__St_Date" Type="DateTime" Precision="3" />
-          <Property Name="Actual_St_Date" Type="DateTime" Precision="3" />
-          <Property Name="Planed__En_Date" Type="DateTime" Precision="3" />
-          <Property Name="Actual_En_Date" Type="DateTime" Precision="3" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="isActive" Type="Boolean" Nullable="false" />
-          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Cre_By" Type="Guid" Nullable="false" />
-          <Property Name="Modified_On" Type="DateTime" Precision="3" />
-          <Property Name="Modified_by" Type="Guid" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="StatusMaster">
           <Key>
@@ -1353,6 +1323,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ProjectMonitor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="ActivityID" Type="Int32" />
+          <Property Name="InstanceID" Type="Guid" Nullable="false" />
+          <Property Name="PhaseId" Type="Int32" Nullable="false" />
+          <Property Name="Task_Other_Environment" Type="Boolean" />
+          <Property Name="Dependency" Type="Boolean" />
+          <Property Name="Pending" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Delay_occurred" Type="Boolean" />
+          <Property Name="DelayedReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RoleId" Type="Int32" />
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="EST_hours" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="Actual_St_hours" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="Planed__St_Date" Type="DateTime" Precision="3" />
+          <Property Name="Actual_St_Date" Type="DateTime" Precision="3" />
+          <Property Name="Planed__En_Date" Type="DateTime" Precision="3" />
+          <Property Name="Actual_En_Date" Type="DateTime" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1406,37 +1406,6 @@
                 <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="PhaseName" ColumnName="PhaseName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProjectMonitors">
-            <EntityTypeMapping TypeName="ProAccModel.ProjectMonitor">
-              <MappingFragment StoreEntitySet="ProjectMonitor">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
-                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
-                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
-                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Actual_En_Date" ColumnName="Actual_En_Date" />
-                <ScalarProperty Name="Planed__En_Date" ColumnName="Planed__En_Date" />
-                <ScalarProperty Name="Actual_St_Date" ColumnName="Actual_St_Date" />
-                <ScalarProperty Name="Planed__St_Date" ColumnName="Planed__St_Date" />
-                <ScalarProperty Name="Actual_St_hours" ColumnName="Actual_St_hours" />
-                <ScalarProperty Name="EST_hours" ColumnName="EST_hours" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="DelayedReason" ColumnName="DelayedReason" />
-                <ScalarProperty Name="Delay_occurred" ColumnName="Delay_occurred" />
-                <ScalarProperty Name="Pending" ColumnName="Pending" />
-                <ScalarProperty Name="Dependency" ColumnName="Dependency" />
-                <ScalarProperty Name="Task_Other_Environment" ColumnName="Task_Other_Environment" />
-                <ScalarProperty Name="PhaseId" ColumnName="PhaseId" />
-                <ScalarProperty Name="InstanceID" ColumnName="InstanceID" />
-                <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1768,6 +1737,37 @@
                 <ScalarProperty Name="BuildingBlock_id" ColumnName="BuildingBlock_id" />
                 <ScalarProperty Name="Task" ColumnName="Task" />
                 <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectMonitors">
+            <EntityTypeMapping TypeName="ProAccModel.ProjectMonitor">
+              <MappingFragment StoreEntitySet="ProjectMonitor">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Actual_En_Date" ColumnName="Actual_En_Date" />
+                <ScalarProperty Name="Planed__En_Date" ColumnName="Planed__En_Date" />
+                <ScalarProperty Name="Actual_St_Date" ColumnName="Actual_St_Date" />
+                <ScalarProperty Name="Planed__St_Date" ColumnName="Planed__St_Date" />
+                <ScalarProperty Name="Actual_St_hours" ColumnName="Actual_St_hours" />
+                <ScalarProperty Name="EST_hours" ColumnName="EST_hours" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="DelayedReason" ColumnName="DelayedReason" />
+                <ScalarProperty Name="Delay_occurred" ColumnName="Delay_occurred" />
+                <ScalarProperty Name="Pending" ColumnName="Pending" />
+                <ScalarProperty Name="Dependency" ColumnName="Dependency" />
+                <ScalarProperty Name="Task_Other_Environment" ColumnName="Task_Other_Environment" />
+                <ScalarProperty Name="PhaseId" ColumnName="PhaseId" />
+                <ScalarProperty Name="InstanceID" ColumnName="InstanceID" />
+                <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

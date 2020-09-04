@@ -30,7 +30,6 @@ namespace ProACC_DB
     
         public virtual DbSet<Instance> Instances { get; set; }
         public virtual DbSet<PhaseMaster> PhaseMasters { get; set; }
-        public virtual DbSet<ProjectMonitor> ProjectMonitors { get; set; }
         public virtual DbSet<StatusMaster> StatusMasters { get; set; }
         public virtual DbSet<IndustrySector> IndustrySectors { get; set; }
         public virtual DbSet<RoleMaster> RoleMasters { get; set; }
@@ -50,6 +49,7 @@ namespace ProACC_DB
         public virtual DbSet<HistoryLog> HistoryLogs { get; set; }
         public virtual DbSet<FileMaster> FileMasters { get; set; }
         public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
+        public virtual DbSet<ProjectMonitor> ProjectMonitors { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {

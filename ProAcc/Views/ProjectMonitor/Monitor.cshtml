@@ -5,13 +5,14 @@
 <script>
     //document.body.style.zoom = "67%";
     document.body.style.zoom = "90%";
-    
+
     $(document).ready(function () {
         $(".app-main_Scroll").css("height", "calc(100vh - 62px)");
-        //var PhaseId= 
+        //var PhaseId=
         //debugger;
        // LoadTable(1);
     });
+    var useCustomDialog = false, oldInfoDialog = $.jgrid.info_dialog;
     function LoadTable(Instance) {
 
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
@@ -122,7 +123,7 @@
             });//.datepicker("setDate", new Date());
             // }).datepicker();
         };
-      
+
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","ProjectMonitor",new { Phase_ID=TempData["PhaseID"]})",
             datatype: "json",
@@ -146,7 +147,7 @@
                     editrules: {
                         required: true,
                         edithidden: true
-                    }, 
+                    },
                     editoptions: {
                         value: GetPhaseDropDown()
                     }
@@ -243,7 +244,7 @@
                     }
                 },
                 {
-                    label: 'Actual (hrs)', name: 'Actual_St_hours',
+                    label: 'Actual (hrs)', name: 'Actual_St_hrs',
                     width: 55, editable: true,align: 'right',
                     editoptions: {
                          dataInit: function (element) {
@@ -289,11 +290,25 @@
                 },
                 {
                     label: 'Comments', name: 'Notes', edittype: "textarea",classes: 'wrapColumnText',
-                    wrap: "on"
-                    ,editrules: { "edithidden": true, required:true }, "editable": true, "width": 100,
-                    editoptions: {
-                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
-                    },
+                    wrap: "on",
+                    editrules: {
+                        custom: true,
+                        custom_func: function (value, colname) {
+                        if(value == "") {
+                            //var msg = 'Please enter proper Comments';
+                            //Notiflix.Report.Info("ProAcc Info !", msg);
+                            //return [false];
+                            useCustomDialog = true; // use custom info_dialog!
+                            return [false, "Please enter the Comments"];
+                        }
+                        else
+                                return [true, ""];
+                        }
+                    }, "editable": true, "width": 100,
+                    //,editrules: { "edithidden": true, required:true }, "editable": true, "width": 100,
+                    //editoptions: {
+                    //    "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
+                    //},
                 },
                 {
                     label: 'ValidationStatus', name: 'ValidationStatus', width: 10, editable: false,hidden: true,
@@ -360,7 +375,7 @@
                 var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 
                 var EST_hours = $("#jqGrid").jqGrid('getCell', ColValue, 'EST_hrs');
-                var Actual_St_hours=$("#jqGrid").jqGrid('getCell', ColValue, 'Actual_St_hours');
+                var Actual_St_hours=$("#jqGrid").jqGrid('getCell', ColValue, 'Actual_St_hrs');
                 var Planed__St_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Planed__St_Date');
                 var Planed__En_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Planed__En_Date');
                 var Actual_St_Date = $("#jqGrid").jqGrid('getCell', ColValue, 'Actual_St_Date');
@@ -400,7 +415,7 @@
                 else {
                     EST_hours = EST_hours;
                     EST_hours = EST_hours.replace(":", ".");
-                     Actual_St_hours = postdata.Actual_St_hours;
+                     Actual_St_hours = postdata.Actual_St_hrs;
                      Actual_St_hours = Actual_St_hours.replace(":", ".");
                      Planed__St_Date = Planed__St_Date;
                     Planed__En_Date = Planed__En_Date;
@@ -453,7 +468,7 @@
             },
 
             loadComplete: function () {
-               
+
                  $("#jqGrid").jqGrid("setLabel", "rn", "S.No");
                 var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
                 for (var i = 0; i < ids.length; i++) {
@@ -464,14 +479,14 @@
                     EST_hours = EST_hours.replace(".", ":")
                     $('#jqGrid').jqGrid('setCell', ids[i], 'EST_hrs', EST_hours);
 
-                    var Actual_St_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'Actual_St_hours')
+                    var Actual_St_hours = $('#jqGrid').jqGrid('getCell', ids[i], 'Actual_St_hrs')
                     Actual_St_hours = Actual_St_hours.replace(".", ":")
-                    $('#jqGrid').jqGrid('setCell', ids[i], 'Actual_St_hours',Actual_St_hours);
+                    $('#jqGrid').jqGrid('setCell', ids[i], 'Actual_St_hrs',Actual_St_hours);
                 }
 
             },
             gridComplete: function () {
-              
+
                 var recs = $('#jqGrid').jqGrid('getGridParam', 'reccount');
                 var Phase_ID = @TempData["PhaseID"];
                 if (isNaN(recs) || recs == 0) {
@@ -656,6 +671,18 @@
             } // search options - define multiple search
         );
 
+        $.extend($.jgrid, {
+            info_dialog: function (caption, content, c_b, modalopt) {
+                if (useCustomDialog) {
+                    // display custom dialog
+                    useCustomDialog = false;
+                    //alert("ERROR: " + content);
+                    Notiflix.Report.Info("ProAcc Info !", content);
+                } else {
+                    return oldInfoDialog.apply(this, arguments);
+                }
+            }
+        });
     }
     function Show_PMEdit() {
         var selectedRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
@@ -674,7 +701,7 @@
         var User = '@Session["UserType"]';
         var loginid = '@Session["loginid"]';
         var j = 0;
-        
+
          var UserType ="@Session["UserType"].ToString()"
         if (UserType == 'Project Manager')
         {
@@ -776,15 +803,15 @@
             if ($('#jEditButton_' + ids[i]).is(":visible")) {a = a + 1;}
         }
         //debugger;
-        
+
         if (UserType != 'Project Manager') {
-            
+
             if (a == 0 && status_show == false) {
                 Notiflix.Notify.Info("You dont have any Task to Perform", { timeout: 2000 });
-                status_show = true;  
+                status_show = true;
              }
         }
-       
+
     }
 
 
