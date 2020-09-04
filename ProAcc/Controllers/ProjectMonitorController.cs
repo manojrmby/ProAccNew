@@ -106,7 +106,7 @@ namespace ProAcc.Controllers
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SubmitProjectMonitor(int Phase_ID, Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, decimal EST_hours, double Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
+        public ActionResult SubmitProjectMonitor(int Phase_ID, Guid id, bool Task_Other_Environment, bool Dependency, String Pending, bool Delay_occurred, decimal EST_hours, decimal Actual_St_hours, int StatusId, DateTime Planed__St_Date, DateTime Planed__En_Date, DateTime Actual_St_Date, DateTime Actual_En_Date, String Notes)
         {
 
             int PhaseId = Phase_ID;

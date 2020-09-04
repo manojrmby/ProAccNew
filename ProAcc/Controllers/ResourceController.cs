@@ -49,6 +49,22 @@ namespace ProAcc.Controllers
 
             return Json("", JsonRequestBehavior.AllowGet);
         }
+        public ActionResult UpdateResourceMonitor(Guid Id, Guid UserID,int RoleID)
+        {
+            ProjectMonitorModel Data = new ProjectMonitorModel();
+            Data.Id = Id;
+            Data.UserID = UserID;
+            Data.RoleID = RoleID;
+            Data.Instance = Guid.Parse(Session["InstanceId"].ToString());
+            Data.Modified_by = Guid.Parse(Session["loginid"].ToString());
+            Data.Modified_On = DateTime.UtcNow;
+            if (Data.Id != Guid.Empty)
+            {
+                bool s = _Base.Sp_UpdateResourceTask(Data);
+            }
+
+            return Json("success", JsonRequestBehavior.AllowGet);
+        }
         public ActionResult DeleteResource(String ID)
         {
             ProjectMonitorModel PM = new ProjectMonitorModel();

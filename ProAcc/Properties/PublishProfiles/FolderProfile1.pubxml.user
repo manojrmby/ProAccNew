@@ -475,22 +475,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>09/02/2020 10:22:29</publishTime>
+      <publishTime>09/03/2020 16:23:31</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
-      <publishTime>09/01/2020 17:22:09</publishTime>
+      <publishTime>09/03/2020 11:59:13</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>09/02/2020 10:22:29</publishTime>
+      <publishTime>09/03/2020 16:23:31</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
-      <publishTime>08/31/2020 17:57:16</publishTime>
+      <publishTime>09/03/2020 16:23:29</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll.config">
       <publishTime>07/19/2020 13:10:27</publishTime>
     </File>
     <File Include="bin/ProACC_DB.pdb">
-      <publishTime>08/31/2020 17:57:16</publishTime>
+      <publishTime>09/03/2020 16:23:29</publishTime>
     </File>
     <File Include="bin/Release/Publish/Asset/css/main_Login.css">
       <publishTime>05/12/2020 18:37:12</publishTime>
@@ -1396,7 +1396,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2020 16:05:54</publishTime>
     </File>
     <File Include="Views/Customers/Index.cshtml">
-      <publishTime>08/24/2020 15:39:59</publishTime>
+      <publishTime>09/03/2020 10:53:20</publishTime>
     </File>
     <File Include="Views/ErrorLog/Error404.cshtml">
       <publishTime>06/22/2020 12:55:43</publishTime>
@@ -1414,7 +1414,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/25/2020 16:30:36</publishTime>
     </File>
     <File Include="Views/InstanceCreation/_InstanceIndex.cshtml">
-      <publishTime>08/21/2020 01:27:09</publishTime>
+      <publishTime>09/03/2020 10:53:20</publishTime>
     </File>
     <File Include="Views/IssueTrack/Create.cshtml">
       <publishTime>08/25/2020 17:50:53</publishTime>
@@ -1498,13 +1498,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/25/2020 16:28:47</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_PMTaskIndex.cshtml">
-      <publishTime>09/01/2020 15:02:11</publishTime>
+      <publishTime>09/03/2020 10:53:20</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_ProjectCreationCreate.cshtml">
       <publishTime>08/25/2020 16:26:15</publishTime>
     </File>
     <File Include="Views/ProjectCreation/_ProjectCreationIndex.cshtml">
-      <publishTime>08/21/2020 01:07:35</publishTime>
+      <publishTime>09/03/2020 10:53:20</publishTime>
     </File>
     <File Include="Views/ProjectInstanceConfigs/Create.cshtml">
       <publishTime>05/18/2020 10:26:12</publishTime>
@@ -1534,13 +1534,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2020 17:42:29</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/Monitor.cshtml">
-      <publishTime>09/01/2020 12:31:24</publishTime>
+      <publishTime>09/02/2020 12:08:48</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/PMAdminCreate.cshtml">
       <publishTime>06/08/2020 10:38:21</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/PMTask.cshtml">
-      <publishTime>08/31/2020 17:54:49</publishTime>
+      <publishTime>09/03/2020 10:53:20</publishTime>
     </File>
     <File Include="Views/ProjectMonitor/PMUPload.cshtml">
       <publishTime>08/21/2020 01:14:43</publishTime>
@@ -1578,8 +1578,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Resource/ResourceAllocation.cshtml">
       <publishTime>08/21/2020 00:05:10</publishTime>
     </File>
+    <File Include="Views/Resource/ResourceAllocationAll.cshtml">
+      <publishTime>09/03/2020 16:15:47</publishTime>
+    </File>
     <File Include="Views/Resource/ResourceAssessment.cshtml">
-      <publishTime>09/01/2020 17:30:32</publishTime>
+      <publishTime>09/03/2020 14:45:56</publishTime>
     </File>
     <File Include="Views/Resource/ResourceConversion.cshtml">
       <publishTime>09/01/2020 17:31:29</publishTime>
@@ -1600,7 +1603,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/26/2020 18:15:19</publishTime>
     </File>
     <File Include="Views/Role/_RoleIndex.cshtml">
-      <publishTime>08/21/2020 01:32:17</publishTime>
+      <publishTime>09/03/2020 10:53:20</publishTime>
     </File>
     <File Include="Views/shared/_Layout.cshtml">
       <publishTime>09/01/2020 17:02:43</publishTime>
@@ -1621,7 +1624,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/12/2020 17:20:50</publishTime>
     </File>
     <File Include="Views/User/Index.cshtml">
-      <publishTime>09/01/2020 14:57:25</publishTime>
+      <publishTime>09/03/2020 10:53:20</publishTime>
     </File>
     <File Include="Views/User/ResourceAllocationCreate.cshtml">
       <publishTime>05/26/2020 09:44:33</publishTime>
@@ -1648,7 +1651,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/07/2020 10:50:03</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/01/2020 18:11:33</publishTime>
+      <publishTime>09/03/2020 16:23:33</publishTime>
     </File>
   </ItemGroup>
 </Project>

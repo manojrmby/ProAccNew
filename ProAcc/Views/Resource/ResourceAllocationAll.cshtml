@@ -1,4 +1,5 @@
-﻿@Styles.Render("~/Content/css/jqGrid")
+﻿
+@Styles.Render("~/Content/css/jqGrid")
 @Scripts.Render("~/bundles/Scripts/jqGrid")
 
 <script>
@@ -22,6 +23,9 @@
     .ui-jqdialog {
         top: 120px !important;
         left: 500px !important;
+    }
+    .app-main__inner{
+        width:99%;
     }
 </style>
 <div>
@@ -128,11 +132,14 @@
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","Resource")?Phase_ID="+PhaseID,//,new { Phase_ID= PhaseID})",
             datatype: "json",
-            editurl: "@Url.Action("UpdateResource","Resource")",
+            @*editurl: "@Url.Action("UpdateResource","Resource")",*@
             colModel: [
                 {
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
-                    sortable: false, align: 'center', editable: false, hidden: true
+                    align: 'center', editable: true, hidden: true,
+
+                    //label: 'Id', name: 'Id', index: 'Id', width: 70,
+                    //sortable: false, align: 'center', editable: false, hidden: true
 
                 },
                 {
@@ -200,7 +207,7 @@
                             {
                                 type: 'change',
                                 fn: function (e) {
-                                    UpdateUserByRole($("#RoleID").val());
+                                   // UpdateUserByRole($("#RoleID").val());
                                 }
                             }]
                     }
@@ -219,6 +226,10 @@
                             UpdateUserByRoleID(rowid)
                             //$("#" + rowid + "_StatusId").addClass("fit_Data");
                             //Show_Edit();
+                            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                             for (var i = 0; i < ids.length; i++) {
+                                    $('#jEditButton_' + ids[i]).hide();
+                             }
                         },
 
                         editformbutton: false,//Determines if popup should open or not
@@ -259,31 +270,26 @@
             rownumWidth: 45,
             reload: true,
             serializeRowData: function (postdata) {
-            debugger;
-            var Id = postdata.Id;
-            var OwnerID = $("#jqGrid").jqGrid('getCell', ColValue, 'UserID');
-            $.ajax({
-            type: "POST",
-            url: "@Url.Action("UpdateResource","Resource")",
-            data: {
-                'Id': "" + Id + "",
-                'UserID': OwnerID
-                //'Task_Other_Environment': Task_Other_Environment,
-                //'Dependency': Dependency,
-                //'Pending': Pending,
-                //'Delay_occurred': Delay_occurred,
-                //'EST_hours': EST_hours,
-                //'Actual_St_hours': Actual_St_hours,
-                //'Planed__St_Date': Planed__St_Date,
-                //'Planed__En_Date': Planed__En_Date,
-                //'Actual_St_Date': Actual_St_Date,
-                //'Actual_En_Date': Actual_En_Date,
-                //'Notes': Notes
-            },
-            success: function (Result) {
-                    $('#jqGrid').trigger('reloadGrid');
+                //debugger;
+                var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+                var Id = postdata.Id;
+                var RoleID = $("#jqGrid").jqGrid('getCell', ColValue, 'RoleID');/*postdata.RoleID;*/
+                var OwnerID = postdata.UserID;
+                       
+                $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateResourceMonitor","Resource")",
+                    data: { 
+                    'Id': "" + Id + "",
+                    'UserID': OwnerID,
+                    'RoleID': RoleID
+                },
+                    success: function (Result) {
+                        if (Result == "success")
+                        Notiflix.Notify.Success('Resource Updated successfully..!', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
+                        $('#jqGrid').trigger('reloadGrid');
 
-            }
+                }
 
             });
             },
@@ -356,7 +362,7 @@
                     $("#Task").attr("disabled", "disabled");
                      $("#RoleID").attr("disabled", "disabled");
                     //$("#RoleID").attr("disabled", "disabled");
-                    UpdateUserByRole($("#RoleID").val());
+                    //UpdateUserByRole($("#RoleID").val());
                     //debugger;
                     //needDisable=true;
                 },
@@ -628,12 +634,12 @@
 
 
     function UpdateUserByRole(RoleID) {
-        debugger;
+        //debugger;
          //$("#RoleID").attr("disabled", "disabled");
          $("#UserID")
             .html("<option value=''>Loading User...</option>")
             .attr("disabled", "disabled");
-
+        $('#UserID').empty()
         $.ajax({
             url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
            // data: '{RoleID: ' + JSON.stringify(RoleID)+'}',
@@ -643,7 +649,7 @@
                 //debugger;
                 $("#UserID")
                     .removeAttr("disabled");
-                 $('#UserID').empty()
+                // $('#UserID').empty()
                 $.each(res, function (data, value) {
                     var d = "00000000-0000-0000-0000-000000000000"
                     if (value.UserId!=d) {
@@ -726,8 +732,9 @@
     }
 
 
+
     function GetUserDropDown() {
-	var Parameters = {};
+        var Parameters = {};
     $.ajax({
         type: "POST",
         url: '@Url.Action("GetAllUser","ProjectMonitor")',
@@ -735,12 +742,14 @@
         dataType: "json",
 		async: false,
         contentType: "application/json; charset=utf-8",
+        
         success: function (Data) {
+                             
 				for (var i = 0; i < Data.length; i++) {
                 var obj = {};
                     var Name = Data[i].Name;
-                var key = ""+Data[i].UserId;
-                Parameters[key] = Name;
+                    var key = ""+Data[i].UserId;
+                    Parameters[key] = Name;
             }
         },
         error: function (data) {
