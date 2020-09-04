@@ -17,6 +17,7 @@ namespace ProAcc.BL
     {
         private readonly string _PDFRunStatus = WebConfigurationManager.AppSettings["PDFRunStatus"];
         LogHelper _log = new LogHelper();
+        Base _base = new Base();
         public async Task Report()
         {
 
@@ -40,7 +41,7 @@ namespace ProAcc.BL
             //SqlConnection con1 = new SqlConnection();
             //con1.ConnectionString = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
             //con1.ConnectionString = "Data Source = 123.176.34.15;port=4043;Integrated Security=False; Initial Catalog = survey; User ID = TestLogin; Password = ASD123!@#;";
-            con1.ConnectionString = ConfigurationManager.ConnectionStrings["MysqlPath"].ConnectionString;
+            con1.ConnectionString = _base.Decrypt(ConfigurationManager.ConnectionStrings["MysqlPath"].ConnectionString);
             //SqlDataAdapter da = new SqlDataAdapter("select * from question where submitted =1 AND MailStatus=0", con1);
             MySqlDataAdapter da = new MySqlDataAdapter("select * from question where submitted =1 AND MailStatus=0", con1);
             DataTable dt = new DataTable();
@@ -54,11 +55,11 @@ namespace ProAcc.BL
                 ReportDocument ss = new ReportDocument();
                 ConnectionInfo myConnectionInfo = new ConnectionInfo();
                 myConnectionInfo.AllowCustomConnection = true;
-                myConnectionInfo.ServerName = ConfigurationManager.AppSettings["SERVERNAME"].ToString();
-                myConnectionInfo.DatabaseName = ConfigurationManager.AppSettings["DATABASE"].ToString();
+                myConnectionInfo.ServerName =_base.Decrypt(ConfigurationManager.AppSettings["SERVERNAME"].ToString());
+                myConnectionInfo.DatabaseName = _base.Decrypt(ConfigurationManager.AppSettings["DATABASE"].ToString());
                 myConnectionInfo.IntegratedSecurity = Convert.ToBoolean(ConfigurationManager.AppSettings["INTEGRATEDSECURITY"].ToString());
-                myConnectionInfo.UserID = ConfigurationManager.AppSettings["USERID"].ToString();
-                myConnectionInfo.Password = ConfigurationManager.AppSettings["PASSWORD"].ToString();
+                myConnectionInfo.UserID = _base.Decrypt(ConfigurationManager.AppSettings["USERID"].ToString());
+                myConnectionInfo.Password = _base.Decrypt(ConfigurationManager.AppSettings["PASSWORD"].ToString());
                 myConnectionInfo.Type = ConnectionInfoType.SQL;
 
                 string Rpt_Path = System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["rptLocation"].ToString());

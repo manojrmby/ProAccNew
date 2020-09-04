@@ -17,6 +17,7 @@ namespace ProACC_DB
     
     public partial class ProAccEntities : DbContext
     {
+
         public ProAccEntities()
             : base("name=ProAccEntities")
         {

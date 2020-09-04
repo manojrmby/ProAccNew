@@ -36,7 +36,7 @@ namespace ProAcc.BL
             DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
             dB.addIn("@Type", "Login");
             dB.addIn("@UserName", user.Username);
-            dB.addIn("@Password", PasswordEncrypt(user.Password));
+            dB.addIn("@Password", Encrypt(user.Password));
             ds = dB.ExecuteDataSet();
             DataTable dt = new DataTable();
             if (ds.Tables.Count != 0)
@@ -71,11 +71,11 @@ namespace ProAcc.BL
 
         }
 
-        public string PasswordEncrypt(string st)
+        public string Encrypt(string st)
         {
             return Cipher.Encrypt(st, _salt);
         }
-        public string PasswordDecrypt(string st)
+        public string Decrypt(string st)
         {
             return Cipher.Decrypt(st, _salt);
         }
@@ -2213,6 +2213,7 @@ namespace ProAcc.BL
                     a.Task = dr["Task"].ToString();
                     a.BuildingBlock_id = Convert.ToInt32(dr["BuildingBlock_id"].ToString());
                     a.PhaseID = Convert.ToInt32(dr["PhaseID"].ToString());
+                    //a.Sequence_Num= Convert.ToInt32(dr["Sequence_Num"].ToString());
                     a.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
                     a.ApplicationAreaID = Convert.ToInt32(dr["ApplicationAreaID"].ToString());
                     a.EST_hours1 = dr["EST_hours"].ToString().Replace(".",":");
@@ -2590,6 +2591,47 @@ namespace ProAcc.BL
                 }
             }
             return ListM;
+        }
+
+
+        public Boolean Activity_Master_Add_Update(Activity_Master AM)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_Activity", CommandType.StoredProcedure);
+                if (AM.Activity_ID==0)
+                {
+                    dB.addIn("@Type", "ADD");
+                }
+                else
+                {
+                    dB.addIn("@Type", "Update");
+                    dB.addIn("@Activity_ID", AM.Activity_ID);
+                }
+                dB.addIn("@Task", AM.Task);
+                dB.addIn("@BuildingBlock_id", AM.BuildingBlock_id);
+                dB.addIn("@PhaseID", AM.PhaseID);
+                dB.addIn("@PreviousId", AM.PreviousId);
+                dB.addIn("@ApplicationAreaID",AM.ApplicationAreaID);
+                dB.addIn("@RoleID", AM.RoleID);
+                dB.addIn("@EST_hours", AM.EST_hours);
+                dB.addIn("@Cre_By", AM.Modified_by);
+
+                dB.Execute();// ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+
+            return Status;
+
+
         }
 
         #region Mail

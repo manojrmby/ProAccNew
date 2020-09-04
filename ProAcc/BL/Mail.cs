@@ -29,10 +29,11 @@ namespace ProAcc.BL
         private readonly string _Mail_EnableTest = ConfigurationManager.AppSettings["Mail_EnableTest"].ToString();
         private readonly string _Mail_TestToID = ConfigurationManager.AppSettings["Mail_TestToID"].ToString();
         private readonly string serverName = WebConfigurationManager.AppSettings["Mail_Client"];
+
         private readonly string userName = WebConfigurationManager.AppSettings["Mail_UserName"];
         private readonly string password = WebConfigurationManager.AppSettings["Mail_Password"];
 
-        private readonly string Mail_ToAddress = WebConfigurationManager.AppSettings["Mail_ToAddress"];
+        private readonly string Mail_ToAddress =  WebConfigurationManager.AppSettings["Mail_ToAddress"];
         private readonly string Mail_CCAddress = WebConfigurationManager.AppSettings["Mail_CCAddress"];
 
         readonly MailAddress fromAddress = new MailAddress(WebConfigurationManager.AppSettings["Mail_UserName"]);
@@ -199,7 +200,7 @@ namespace ProAcc.BL
                 //Convert.ToBoolean(WebConfigurationManager.AppSettings["SmtpSsl"]);
                 client.UseDefaultCredentials = false;
 
-                NetworkCredential smtpUserInfo = new NetworkCredential(userName, password);
+                NetworkCredential smtpUserInfo = new NetworkCredential(_Base.Decrypt(userName), _Base.Decrypt(password));
                 client.Credentials = smtpUserInfo;
                // ProAccEntities db = new ProAccEntities();
                 client.Credentials = smtpUserInfo;

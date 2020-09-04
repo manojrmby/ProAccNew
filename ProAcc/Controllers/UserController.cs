@@ -142,7 +142,7 @@ namespace ProAcc.Controllers
                 {
                     if (con.Name != null && con.LoginId != null && con.Password != null)
                     {
-                        con.Password = _Base.PasswordEncrypt(con.Password.ToString());
+                        con.Password = _Base.Encrypt(con.Password.ToString());
                         con.UserId = Guid.NewGuid();
                         con.Cre_By = Guid.Parse(Session["loginid"].ToString());
                         con.Cre_on = DateTime.UtcNow;
@@ -202,7 +202,7 @@ namespace ProAcc.Controllers
                 {
                     return HttpNotFound();
                 }
-                userMaster.Password= _Base.PasswordDecrypt(userMaster.Password.ToString());
+                userMaster.Password= _Base.Decrypt(userMaster.Password.ToString());
                 ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).OrderBy(x=>x.UserType).ToList();
                 var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
                 var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
@@ -227,7 +227,7 @@ namespace ProAcc.Controllers
                     userMaster.Modified_On = DateTime.UtcNow;
                     userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
                     userMaster.isActive = true;
-                    userMaster.Password = _Base.PasswordEncrypt(userMaster.Password.ToString());
+                    userMaster.Password = _Base.Encrypt(userMaster.Password.ToString());
                     if (userMaster.UserTypeID == 1)
                     {
                         var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;

@@ -263,6 +263,38 @@ namespace ProAcc.Controllers
         {
             return View();
         }
-        
+
+
+        [HttpPost]
+        public ActionResult ActivityCreate(Activity_Master activityMaster)
+        {
+            try
+            {
+                activityMaster.Modified_by= Guid.Parse(Session["loginid"].ToString());
+                _Base.Activity_Master_Add_Update(activityMaster);
+                //var name = db.ActivityMasters.Where(p => p.Task == activityMaster.Task).Where(x => x.isActive == true).ToList();
+                //if (name.Count == 0)
+                //{
+                //    //activityMaster.Activity_ID = Guid.NewGuid();
+                //    activityMaster.isActive = false;
+                //    activityMaster.Cre_on = DateTime.UtcNow;
+                //    activityMaster.Cre_By = Guid.Parse(Session["loginid"].ToString());
+                //    db.ActivityMasters.Add(activityMaster);
+                //    db.SaveChanges();
+                return Json(activityMaster.Activity_ID, JsonRequestBehavior.AllowGet);
+                //}
+                //else
+                //{
+                //return Json("error");
+                //}
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
     }
 }

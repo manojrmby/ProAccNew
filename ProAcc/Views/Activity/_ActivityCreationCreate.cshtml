@@ -248,7 +248,7 @@
             else {
                 $("#lblEstimated").html("").show();
             }
-             ValidateActivity();           
+             ValidateActivity();
         }
 
 
@@ -314,7 +314,7 @@
 
         $('#drpPhase,#drpRole,#drpApplicationArea,#drpBlock').change(function () {
              var Task = $("#txtTask").val();
-            var sequence = $("#txtSequence").val();           
+            var sequence = $("#txtSequence").val();
             var Phase = $('#drpPhase').val();
             var Role = $('#drpRole').val();
             var ApplicationArea = $('#drpApplicationArea').val();
@@ -371,7 +371,7 @@
 
     });
     $("#btnActivityCreCreate").on("click", function () {
-        
+
         var Task = $("#txtTask").val();
         Task = Task.replace(/,/g, " ");
        // var sequence = $("#txtSequence").val();
@@ -395,34 +395,57 @@
             $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
             ValidateActivity();
         }
-        else if (ApplicationArea==0)
-        {
+        else if (ApplicationArea == 0) {
             $("#lblApplicationArea").html("Please select the ApplicationArea").show().fadeOut(5000);
             ValidateActivity();
         }
-        else if (Phase==0)
-        {
+        else if (Phase == 0) {
             $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
             ValidateActivity();
         }
-        else if (Role == 0)
-        {
+        else if (Role == 0) {
             $("#lblRole").html("Please select the Role").show().fadeOut(5000);
             ValidateActivity();
         }
-         else if (BlockId == 0)
-        {
+        else if (BlockId == 0) {
             $("#lblBlock").html("Please select the Building Block").show().fadeOut(5000);
             ValidateActivity();
         }
-        else if (Estimated == "")
-        {
+        else if (Estimated == "") {
             $("#lblEstimated").html("Please fill the Estimated hours").show();
             ValidateActivity();
         }
 
         else {
-            $.ajax({
+            $("#drpTsk").empty();
+            var id = $("#drpPhase").val()
+            if (id > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetAllTask","Activity")',
+                    data: { id: id },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                            $('#drpTsk').append($("<option value='0'>Please Select Previous Task</option>"));
+                            $.each(response, function (index, item) {
+                                var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
+                                $('#drpTsk').append(option);
+                            });
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            }
+            document.getElementById('id01').style.display = 'block';
+
+            @*$.ajax({
                 type: "POST",
                 url: '@Url.Action("Create","Activity")',
                 data: { activityMaster:model },
@@ -465,15 +488,76 @@
                     error: function (response) {
                         alert(response.responseText);
                     }
-            });
+            });*@
 
 
 
         }
     });
-
     $("#btnSeq").on("click", function () {
-        //debugger;
+        var id = $("#activityrid").val();
+        var Task = $("#txtTask").val();
+        Task = Task.replace(/,/g, " ");
+        var ApplicationArea = $("#drpApplicationArea").val();
+        var Phase = $('#drpPhase').val();
+        var Role = $('#drpRole').val();
+        var BlockId = $('#drpBlock').val();
+        var Estimated = $("#txtEstimated").val();
+        Estimated = Estimated.replace(/:/g, ".");
+
+        var LatestTaskId = $("#hiddenActivityId").val();
+        var LastTaskId = $("#drpTsk").val();
+
+        var model = {
+            Activity_ID: id,
+            Task: Task,
+            PhaseID: Phase,
+            BuildingBlock_id: BlockId,
+            EST_hours: Estimated,
+            ApplicationAreaID: ApplicationArea,
+            RoleID: Role,
+            PreviousId: LastTaskId,
+        }
+        if (Task == "") {
+            $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
+            ValidateActivity();
+        }
+        else if (ApplicationArea == 0) {
+            $("#lblApplicationArea").html("Please select the ApplicationArea").show().fadeOut(5000);
+            ValidateActivity();
+        }
+        else if (Phase == 0) {
+            $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
+            ValidateActivity();
+        }
+        else if (Role == 0) {
+            $("#lblRole").html("Please select the Role").show().fadeOut(5000);
+            ValidateActivity();
+        }
+        else if (BlockId == 0) {
+            $("#lblBlock").html("Please select the Building Block").show().fadeOut(5000);
+            ValidateActivity();
+        }
+        else if (Estimated == "") {
+            $("#lblEstimated").html("Please fill the Estimated hours").show();
+            ValidateActivity();
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ActivityCreate", "Activity")',
+                data: { activityMaster: model },
+                success: function (response) {
+                    Notiflix.Notify.Success('Activity Saved Successfully..!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    document.getElementById('id01').style.display = 'none';
+                    location.reload();
+                }
+            });
+        }
+
+
+    });
+    @*$("#btnSeq").on("click", function () {
         var LatestTaskId = $("#hiddenActivityId").val();
         var LastTaskId = $("#drpTsk").val();
         var type = $("#drpPhase").val();
@@ -507,7 +591,7 @@
                 alert(err);
             }
         });
-    });
+    });*@
 
     $("#btntivityCreUpdate").on("click", function () {
 
@@ -560,8 +644,37 @@
        else if (Estimated == "") {
            $("#lblEstimated").html("Please fill the Estimated hours").show();
            ValidateActivity();
-       }
+        }
         else {
+            $("#drpTsk").empty();
+            var id = $("#drpPhase").val()
+            if (id > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetAllTask","Activity")',
+                    data: { id: id },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                            $('#drpTsk').append($("<option value='0'>Please Select Previous Task</option>"));
+                            $.each(response, function (index, item) {
+                                var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
+                                $('#drpTsk').append(option);
+                            });
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            }
+            document.getElementById('id01').style.display = 'block';
+        }
+        @*else {
 
             $.ajax({
                     type: "POST",
@@ -613,7 +726,7 @@
                     }
             });
 
-        }
+        }*@
      });
 
 

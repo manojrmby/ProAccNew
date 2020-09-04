@@ -610,6 +610,7 @@
     <Compile Include="BL\LogHelper.cs" />
     <Compile Include="BL\Mail.cs" />
     <Compile Include="BL\Model\ActivityMasterModel.cs" />
+    <Compile Include="BL\Model\Activity_Master.cs" />
     <Compile Include="BL\Model\AuditReport.cs" />
     <Compile Include="BL\Model\CreateViewModel.cs" />
     <Compile Include="Asset\images\CrystalReport.cs">
