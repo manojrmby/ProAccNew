@@ -679,8 +679,8 @@ namespace ProAcc.Controllers
         #region PMTask
         public ActionResult PMTask()
         {
-
-            List<SelectListItem> Project = new List<SelectListItem>();
+            
+            List <SelectListItem> Project = new List<SelectListItem>();
 
             Guid LoginId = Guid.Parse(Session["loginid"].ToString());
             var Data = (from a in db.UserMasters
@@ -701,13 +701,18 @@ namespace ProAcc.Controllers
             return View();
         }
 
-       // [HttpGet]
-        public ActionResult PMTaskGetData(String IDProject)
+        //[HttpPost]
+        public ActionResult PMTaskGetData()
         {
-            List<PMTaskMonitor_> PM = _Base.GetPMTask(IDProject);
+            string ProjectId = Session["ProjectId"].ToString();
+            List<PMTaskMonitor_> PM = _Base.GetPMTask(ProjectId);
             return Json(PM, JsonRequestBehavior.AllowGet);
         }
-       
+        public JsonResult SetprojectId(string ProjectId)
+        {
+            Session["ProjectId"] = ProjectId;
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult GetTaskName()
         {
             var PMTasklist = db.PMTaskMasters.Where(x => x.isActive == true).ToList();

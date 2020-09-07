@@ -151,10 +151,10 @@
 </script>
 <script>
     function LoadTable(IDProject) {
-        debugger
+        //debugger
         @*var Id = @Session["P_id"];*@
         //var Id = '<%= Session["P_id"] %>';
-        var Id = IDProject;
+       // var Id = IDProject;
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
 
         var Planed_StartDate = function (element, options) {
@@ -263,12 +263,12 @@
             });//.datepicker("setDate", new Date());
             // }).datepicker();
         };
-         
+        updateprojectID(IDProject);
         $("#jqGrid").jqGrid({
-            url: "@Url.Action("PMTaskGetData", "ProjectMonitor")?IDProject=" + Id,
+            url: "@Url.Action("PMTaskGetData", "ProjectMonitor")",
             datatype: "json",
             //data: { 'IDProject': IDProject },
-            //type: "Post", 
+            //type: "Post",
             //contentType: "application/json; charset=utf-8",
             async: false,
             colModel: [
@@ -468,7 +468,7 @@
             caption: '',
             sortable: false,
             grouping: false,
-             rownumbers: true,
+            rownumbers: true,
             rownumWidth: 45,
             reload: true,
             reloadAfterSubmit:true,
@@ -630,6 +630,8 @@
             //}
         }
 
+
+
             //var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
 
             //            function textReadOnly(cellValue, options, rowdata, action) {
@@ -668,7 +670,20 @@
 
 
     }
-
+    function updateprojectID(id) {
+        $.ajax({
+                type: "POST",
+                url: '@Url.Action("SetprojectId", "ProjectMonitor")',
+            data: { 'ProjectId': id },
+            async: false,
+                success: function (data) {
+                   
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+    }
      function Show_HideEdit() {
         var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
         var User = '@Session["UserType"]';
