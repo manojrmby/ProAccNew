@@ -36,7 +36,7 @@ namespace ProAcc.BL
         private readonly string Mail_ToAddress =  WebConfigurationManager.AppSettings["Mail_ToAddress"];
         private readonly string Mail_CCAddress = WebConfigurationManager.AppSettings["Mail_CCAddress"];
 
-        readonly MailAddress fromAddress = new MailAddress(WebConfigurationManager.AppSettings["Mail_UserName"]);
+        //readonly MailAddress fromAddress = new MailAddress(WebConfigurationManager.AppSettings["Mail_UserName"]);
         readonly int port = Convert.ToInt32(WebConfigurationManager.AppSettings["Mail_Port"]);
         
 
@@ -176,7 +176,8 @@ namespace ProAcc.BL
                     msg.To.Add(toAddress);
                 }
                 
-                
+                MailAddress fromAddress = new MailAddress(_Base.Decrypt(WebConfigurationManager.AppSettings["Mail_UserName"]));
+
                 msg.From=fromAddress;
 
                 msg.Subject = SM.subject;

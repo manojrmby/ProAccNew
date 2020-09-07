@@ -259,7 +259,7 @@
                                         FileUpload4_View = itemData.C_FileName;
                                     }
                                 });
-                            }
+                            }                            
                         }
                     });
                     //setTimeout(Redirect, 3000);
@@ -269,15 +269,19 @@
 
         });
     $('#FileUpload1_View').click(function () {
+         $(".app-main_Scroll").animate({ scrollTop: 550}, 1000);
         LoadPdf(FileUpload1_View);
     });
     $('#FileUpload2_View').click(function () {
+        $(".app-main_Scroll").animate({ scrollTop: 550}, 1000);
         LoadPdf(FileUpload2_View);
     });
     $('#FileUpload3_View').click(function () {
+        $(".app-main_Scroll").animate({ scrollTop: 550}, 1000);
         LoadPdf(FileUpload3_View);
     });
     $('#FileUpload4_View').click(function () {
+        $(".app-main_Scroll").animate({ scrollTop: 550}, 1000);
         LoadPdf(FileUpload4_View);
     });
 

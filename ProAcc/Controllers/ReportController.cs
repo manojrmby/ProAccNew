@@ -1,10 +1,13 @@
-﻿using ProAcc.BL;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using ProAcc.BL;
 using ProAcc.BL.Model;
 using ProACC_DB;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -202,6 +205,78 @@ namespace ProAcc.Controllers
             List<FileUploadMaster> PM = _Base.GetPMuploadlist(InstanceID);
             var obj = new { data = PM };
             return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult pdfData(bool? pdf)
+        {
+            if (!pdf.HasValue)
+            {
+                return View();
+            }
+            else
+            {
+                string filePath = Server.MapPath(ConfigurationManager.AppSettings["Sample_pdfPath"].ToString());  //"F:\\GitProAccNew\\ProAccNew\\ProAcc\\Asset\\Uploadedppt\\Sample.pdf";//Server.MapPath("Content") + "Sample.pdf";
+                string imagePath = Server.MapPath(ConfigurationManager.AppSettings["Logo_Path"].ToString()); //"F:\\GitProAccNew\\ProAccNew\\ProAcc\\Asset\\images\\promantus-new-logo.PNG";
+                Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+                string LoginID = Session["loginid"].ToString();
+                List<ProjectMonitorModel> PM = _Base.Sp_GetReportDataReportPDF(InstanceID, LoginID);
+                ExportPDF(PM, filePath, imagePath);
+                return File(filePath, "application/pdf", "list.pdf");
+            }
+        }
+
+        private static void ExportPDF(List<ProjectMonitorModel> PM, string filePath,string imagePath)
+        {
+            Font headerFont = FontFactory.GetFont("arial", 6,Font.BOLD,BaseColor.BLACK);
+            Font rowfont = FontFactory.GetFont("arial", 6);
+            Document document = new Document(PageSize.A4.Rotate());
+            PdfWriter writer = PdfWriter.GetInstance(document,
+                       new FileStream(filePath, FileMode.OpenOrCreate));
+            document.Open();
+
+            iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(imagePath);
+            img.Alignment = Element.ALIGN_LEFT;
+            img.ScaleToFit(120f, 170f);
+            img.SpacingBefore = 10f;
+            img.SpacingAfter = 50f;
+            document.Add(img);
+
+            //String Project_Id = Session["Project_ID"].ToString();
+            //String InstanceId = Session["Instance_ID"].ToString();
+            //Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
+
+            //String a = "Project Name : " + Project_Id + "Instance Name : " + InstanceId +;
+            //Paragraph para = new Paragraph(a);
+            //para.Alignment = Element.ALIGN_LEFT;
+            //document.Add(para);
+
+            string[] columns = { "BuldingBlock", "Phase", "Task", "ApplicationArea", "Delay_occurred_Report", "Owner", "Status","EST_hrs", "Actual_St_hrs", "PlanedDate", "ActualDate", "PlanedEn_Date", "ActualEn_Date", "Notes" };
+            string[] columnHeadings = { "Bulding Block", "Phase", "Task", "Application Area", "Delay", "Owner", "Status","EST (hrs)", "Actual (hrs)", "Planed Start", "Actual Start", "Planed End", "Actual End", "Commnets" };
+            PdfPTable table = new PdfPTable(columns.Length)
+            { WidthPercentage = 100, RunDirection = PdfWriter.RUN_DIRECTION_LTR, ExtendLastRow = false };
+            table.PaddingTop = 300f;
+            table.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.TotalWidth = 550f;
+            float[] widths = new float[] {65f, 45f, 100f, 50f, 25f,40f,40f,25f,25f,30f,30f, 30f, 30f, 50f };
+            table.SetWidths(widths);
+            foreach (var column in columnHeadings)
+            {
+                PdfPCell cell = new PdfPCell(new Phrase(column, headerFont));
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+            }
+
+            foreach (var item in PM)
+            {
+                foreach (var column in columns)
+                {
+                    string value = item.GetType().GetProperty(column).GetValue(item).ToString();
+                    PdfPCell cell5 = new PdfPCell(new Phrase(value, rowfont));
+                    table.AddCell(cell5);
+                }
+            }
+            document.Add(table);
+            document.Close();
         }
     }
 }

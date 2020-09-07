@@ -1900,7 +1900,9 @@ namespace ProAcc.BL
                     P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
 
                     P.EST_hours = decimal.Parse(dr["EST_hours"].ToString());
+                    P.EST_hrs = dr["EST_hours"].ToString();
                     P.Actual_St_hours = decimal.Parse(dr["Actual_St_hours"].ToString());
+                    P.Actual_St_hrs = dr["Actual_St_hours"].ToString();
 
                     P.Planed__St_Date = Convert.ToDateTime(dr["Planed__St_Date"].ToString());
                     P.Actual_St_Date = Convert.ToDateTime(dr["Actual_St_Date"].ToString());
@@ -1915,6 +1917,72 @@ namespace ProAcc.BL
             return PM;
         }
 
+
+        public List<ProjectMonitorModel> Sp_GetReportDataReportPDF(Guid InstanceId, string LoginID)
+        {
+            DataTable dt = new DataTable();
+
+            List<ProjectMonitorModel> PM = new List<ProjectMonitorModel>();
+
+            DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetReportDataPDF");
+            dB.addIn("@InstunceID", InstanceId);
+            dt = dB.ExecuteDataTable();
+
+            if (dt.Rows.Count > 0)
+            {
+                //int count = 1;
+                var myLocalDateTime = DateTime.UtcNow;
+                foreach (DataRow dr in dt.Rows)
+                {
+
+                    ProjectMonitorModel P = new ProjectMonitorModel();
+                    P.Id = Guid.Parse(dr["id"].ToString());
+                    P.ActivityID = Convert.ToInt32(dr["ActivityID"].ToString());
+                    P.Instance = Guid.Parse(dr["InstanceID"].ToString());
+                    P.BuldingBlock = dr["BuildingBlock"].ToString();
+                    P.Task = dr["Task"].ToString();
+                    P.Phase = dr["Phase"].ToString();
+                    P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
+                    P.ApplicationArea = dr["Applicationarea"].ToString();  //dr["ApplicationArea"].ToString();
+                    P.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
+                    P.Dependency = Convert.ToBoolean(dr["Dependency"].ToString());
+                    P.Pending = dr["Pending"].ToString();
+                    P.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
+                    if (P.Delay_occurred)
+                    {
+                        P.Delay_occurred_Report = "Yes";
+                    }
+                    else
+                    {
+                        P.Delay_occurred_Report = "NO";
+                    }
+
+                    P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
+                    P.Owner = dr["Owner"].ToString();
+                    P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
+                    P.Status = dr["Status"].ToString();
+
+                    P.EST_hours = decimal.Parse(dr["EST_hours"].ToString());
+                    P.EST_hrs = dr["EST_hours"].ToString();
+                    P.EST_hrs = P.EST_hrs.Replace(".", ":");
+
+                    P.Actual_St_hours = decimal.Parse(dr["Actual_St_hours"].ToString());
+                    P.Actual_St_hrs = dr["Actual_St_hours"].ToString();
+                    P.Actual_St_hrs = P.Actual_St_hrs.Replace(".", ":");
+
+                    P.PlanedDate = dr["PlanedDate"].ToString();
+                    P.ActualDate = dr["ActualDate"].ToString();
+                    P.PlanedEn_Date = dr["PlanedEn_Date"].ToString();
+                    P.ActualEn_Date = dr["ActualEn_Date"].ToString();
+                    P.Notes = dr["Notes"].ToString();
+
+                    PM.Add(P);
+                }
+            }
+
+            return PM;
+        }
 
         public List<AuditReport.ProjectMonitorModel> Sp_GetAuditData()
         {
@@ -2214,7 +2282,7 @@ namespace ProAcc.BL
                     a.Task = dr["Task"].ToString();
                     a.BuildingBlock_id = Convert.ToInt32(dr["BuildingBlock_id"].ToString());
                     a.PhaseID = Convert.ToInt32(dr["PhaseID"].ToString());
-                    //a.Sequence_Num= Convert.ToInt32(dr["Sequence_Num"].ToString());
+                    a.Sequence_Num= Convert.ToInt32(dr["Sequence_Num"].ToString());
                     a.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
                     a.ApplicationAreaID = Convert.ToInt32(dr["ApplicationAreaID"].ToString());
                     a.EST_hours1 = dr["EST_hours"].ToString().Replace(".",":");

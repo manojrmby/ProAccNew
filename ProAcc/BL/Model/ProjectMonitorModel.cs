@@ -48,5 +48,15 @@ namespace ProAcc.BL.Model
 		public Guid Modified_by { get; set; }
 		//public bool IsDeleted { get; set; }
 
+		public String Phase { get; set; }
+		public String ApplicationArea { get; set; }
+		public String BuldingBlock { get; set; }
+		public String Owner { get; set; }
+		public String Status { get; set; }
+		public String PlanedDate { get; set; }
+		public String ActualDate { get; set; }
+		public String PlanedEn_Date { get; set; }
+		public String ActualEn_Date { get; set; }
+
 	}
 }

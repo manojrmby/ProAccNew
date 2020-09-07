@@ -643,7 +643,8 @@
         $.ajax({
             url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
            // data: '{RoleID: ' + JSON.stringify(RoleID)+'}',
-			dataType: "json",
+            dataType: "json",
+            async: false,
 			contentType: "application/json; charset=utf-8",
             success: function (res) {
                 //debugger;
@@ -677,7 +678,8 @@
          $.ajax({
             url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
            // data: '{RoleID: ' + JSON.stringify(RoleID)+'}',
-			dataType: "json",
+             dataType: "json",
+            async: false,
 			contentType: "application/json; charset=utf-8",
              success: function (res) {
                 select
