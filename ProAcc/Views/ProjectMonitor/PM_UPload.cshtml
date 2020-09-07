@@ -76,7 +76,7 @@
                                             Comprehensive Assessment and Readiness Check Report
                                         </td>
                                         <td>
-                                            <input class="mb-2 mr-2 btn btn-info" type="file" name="files" id="FileUpload1" />
+                                            <input class="mb-2 mr-2 btn btn-info" type="file" accept="application/pdf" name="files" id="FileUpload1" onChange='getFileNameWithExt(event)' />
 
                                         </td>
 
@@ -92,7 +92,7 @@
                                             Landscape & System Management
                                         </td>
                                         <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload2" />
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload2" onChange='getFileNameWithExt(event)'  />
                                         </td>
 
                                         <td>
@@ -106,8 +106,8 @@
                                         <td>
                                             Custom Code Analysis
                                         </td>
-                                        <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload3" />
+                                        <td> 
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload3" onChange='getFileNameWithExt(event)'  />
                                         </td>
 
                                         <td>
@@ -122,7 +122,7 @@
                                             License Optimization
                                         </td>
                                         <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" name="files" id="FileUpload4" />
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload4" onChange='getFileNameWithExt(event)'  />
                                         </td>
 
                                         <td>
@@ -168,106 +168,111 @@
 <div id="Parent" style="min-height:500px;"></div>
        
 <script>
-
+    $(document).ready(function ($) {
+        $('#prt').hide();
+        $("#Parent").hide();
+        $("#IDInstance").prop("disabled", true);
+        $('#Table').hide();
+    });
     var FileUpload1_View = "", FileUpload2_View = "", FileUpload3_View = "", FileUpload4_View = "";
 
-         $('#IDProject').change(function () {
+    $('#IDProject').change(function () {
 
-            var id = $(this).val();
-			$('#SubmitInstance').prop("disabled", true);
-             var select = $("#IDInstance");
-                    select.empty();
+    var id = $(this).val();
+	$('#SubmitInstance').prop("disabled", true);
+        var select = $("#IDInstance");
+            select.empty();
+            select.append($('<option/>', {
+                value: 0,
+                text: "-Select-"
+            }));
+        $('#IDProject').prop('title', $("#IDProject option:selected").text());
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("LoadInstance","Home")',
+        data: { 'ProjectId' : id},
+        success: function (data) {
+            var select = $("#IDInstance");
+            select.empty();
+            select.append($('<option/>', {
+                value: 0,
+                text: "-Select-"
+            }));
+            if (data.length > 0) {
+                $.each(data, function (index, itemData) {
                     select.append($('<option/>', {
-                        value: 0,
-                        text: "-Select-"
+                        value: itemData.Value,
+                        text: itemData.Text
                     }));
-             $('#IDProject').prop('title', $("#IDProject option:selected").text());
+                });
+                $("#IDInstance").prop("disabled", false);
+            }
+            else {
+                $("#IDInstance").prop("disabled", true);
+				$('#SubmitInstance').prop("disabled", true);
+            }
+        },
+        error: function (a) {
+            alert(a);
+        }
+    });
+    });
+$('#IDInstance').change(function () {
+    var id = $(this).val();
+    if (id == "" || id == "0") {
+        $('#SubmitInstance').prop("disabled", true);
+    } else {
+        $('#SubmitInstance').prop("disabled", false);
+    }
+    $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
+});
+$('#SubmitInstance').click(function () {
+    var IDInstance = $("#IDInstance").val();
+    $.ajax({
+        //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+        url: '@Url.Action("SubmitInstance", "Home")',
+        type: "POST",
+        async: false,
+        data: { 'IDInstance': IDInstance },
+        success: function (result) {
+            //debugger;
+            reset();
+            $('#Table').show();
+            Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("LoadInstance","Home")',
-                data: { 'ProjectId' : id},
+                url: '@Url.Action("PMReportData", "Report")',
+                async: false,
                 success: function (data) {
-                    var select = $("#IDInstance");
-                    select.empty();
-                    select.append($('<option/>', {
-                        value: 0,
-                        text: "-Select-"
-                    }));
+                    data = data.data;
                     if (data.length > 0) {
                         $.each(data, function (index, itemData) {
-                            select.append($('<option/>', {
-                                value: itemData.Value,
-                                text: itemData.Text
-                            }));
+                            if (itemData.FileType == 9) {
+                                $('#FileUpload1_View').removeClass('invisible').addClass('visible');
+                                FileUpload1_View = itemData.C_FileName;
+                            }
+                            else if (itemData.FileType == 10) {
+                                $('#FileUpload2_View').removeClass('invisible').addClass('visible');
+                                FileUpload2_View = itemData.C_FileName;
+                            }
+                            else if (itemData.FileType == 11) {
+                                $('#FileUpload3_View').removeClass('invisible').addClass('visible');
+                                FileUpload3_View = itemData.C_FileName;
+                            }
+                            else if (itemData.FileType == 12) {
+                                $('#FileUpload4_View').removeClass('invisible').addClass('visible');
+                                FileUpload4_View = itemData.C_FileName;
+                            }
                         });
-                        $("#IDInstance").prop("disabled", false);
-                    }
-                    else {
-                        $("#IDInstance").prop("disabled", true);
-						$('#SubmitInstance').prop("disabled", true);
-                    }
-                },
-                error: function (a) {
-                    alert(a);
+                    }                            
                 }
             });
-            });
-        $('#IDInstance').change(function () {
-            var id = $(this).val();
-            if (id == "" || id == "0") {
-                $('#SubmitInstance').prop("disabled", true);
-            } else {
-                $('#SubmitInstance').prop("disabled", false);
-            }
-            $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
-        });
-        $('#SubmitInstance').click(function () {
-            var IDInstance = $("#IDInstance").val();
-            $.ajax({
-                //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
-                url: '@Url.Action("SubmitInstance", "Home")',
-                type: "POST",
-                async: false,
-                data: { 'IDInstance': IDInstance },
-                success: function (result) {
-                    //debugger;
-                    reset();
-                    $('#Table').show();
-                    Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("PMReportData", "Report")',
-                        async: false,
-                        success: function (data) {
-                            data = data.data;
-                            if (data.length > 0) {
-                                $.each(data, function (index, itemData) {
-                                    if (itemData.FileType == 9) {
-                                        $('#FileUpload1_View').removeClass('invisible').addClass('visible');
-                                        FileUpload1_View = itemData.C_FileName;
-                                    }
-                                    else if (itemData.FileType == 10) {
-                                        $('#FileUpload2_View').removeClass('invisible').addClass('visible');
-                                        FileUpload2_View = itemData.C_FileName;
-                                    }
-                                    else if (itemData.FileType == 11) {
-                                        $('#FileUpload3_View').removeClass('invisible').addClass('visible');
-                                        FileUpload3_View = itemData.C_FileName;
-                                    }
-                                    else if (itemData.FileType == 12) {
-                                        $('#FileUpload4_View').removeClass('invisible').addClass('visible');
-                                        FileUpload4_View = itemData.C_FileName;
-                                    }
-                                });
-                            }                            
-                        }
-                    });
-                    //setTimeout(Redirect, 3000);
-                }
-            });
+            //setTimeout(Redirect, 3000);
+        }
+    });
 
 
-        });
+});
     $('#FileUpload1_View').click(function () {
          $(".app-main_Scroll").animate({ scrollTop: 550}, 1000);
         LoadPdf(FileUpload1_View);
@@ -301,7 +306,7 @@
         dimention();
     }
     $('#btnUpload').click(function () {
-        debugger
+        $("#load1").css("display", "block");
             var InstanceId = '@Session["InstanceId"]';
             if (InstanceId != "" && InstanceId != 0) {
                 var fileUpload1 = $("#FileUpload1").get(0);
@@ -330,7 +335,7 @@
                         data: fileData,
                         async: false,
                         success: function (result) {
-
+                            $("#load1").css("display", "none");
                             if (result == 'File Uploaded Successfully!') {
                                 Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                                 Redirect();
@@ -359,12 +364,14 @@
                             }
                         },
                         error: function (err) {
+                            $("#load1").css("display", "none");
                             Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             //alert(err.statusText);
                         }
                     });
                 }
                 else {
+                    $("#load1").css("display", "none");
                     Notiflix.Notify.Failure("Select at leaset one file .! ", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                 }
 
@@ -373,203 +380,224 @@
 
     function Redirect() {
         location.reload();
+    }
+    $(window).resize(function () {
+        dimention();
+    });
+    function dimention() {
+        var newHeight = $("#Parent").height();
+        var Width = $("#Parentr").width();
+        $("iframe").height(newHeight);
+        $("iframe").width(Width);
+    }
+    function getFileNameWithExt(event) {
+        if (!event || !event.target || !event.target.files || event.target.files.length === 0) {
+            return;
+        }
+
+        if (event.target.files.length == 1) {
+            
+            const name = event.target.files[0].name;
+            const lastDot = name.lastIndexOf('.');
+
+            //const fileName = name.substring(0, lastDot);
+            const ext = name.substring(lastDot + 1);
+            var id = event.target.id;
+            if (ext=="pdf") {
+
             }
-            $(window).resize(function () {
-                dimention();
-            });
-            function dimention() {
-                var newHeight = $("#Parent").height();
-                var Width = $("#Parentr").width();
-                $("iframe").height(newHeight);
-                $("iframe").width(Width);
+            else {
+                Notiflix.Notify.Failure("Only pdf allowed..!", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                $("#" + id).val("");
             }
+            //outputfile.value = fileName;
+            //extension.value = ext;
+        }
+        else {
+            Notiflix.Notify.Failure("Select only one pdf file ..!", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            $("#" + id).val("");
+            //more than one files
+        }
+    }
+    function reset() {
+        FileUpload1_View = "";
+        FileUpload2_View = "";
+        FileUpload3_View = "";
+        FileUpload4_View = "";
+
+        $('#FileUpload1').val("");
+        $('#FileUpload2').val("");
+        $('#FileUpload3').val("");
+        $('#FileUpload4').val("");
+
+        $('#FileUpload1_View').removeClass('visible').addClass('invisible');
+        $('#FileUpload2_View').removeClass('visible').addClass('invisible');
+        $('#FileUpload3_View').removeClass('visible').addClass('invisible');
+        $('#FileUpload4_View').removeClass('visible').addClass('invisible');
+    }
 </script>
-        <script>
-            $(document).ready(function ($) {
-                $('#prt').hide();
-                $("#Parent").hide();
-                $("#IDInstance").prop("disabled", true);
-                $('#Table').hide();
-            });
-            function reset() {
-                FileUpload1_View = "";
-                FileUpload2_View = "";
-                FileUpload3_View = "";
-                FileUpload4_View = "";
+       
 
-                $('#FileUpload1').val("");
-                $('#FileUpload2').val("");
-                $('#FileUpload3').val("");
-                $('#FileUpload4').val("");
-
-                $('#FileUpload1_View').removeClass('visible').addClass('invisible');
-                $('#FileUpload2_View').removeClass('visible').addClass('invisible');
-                $('#FileUpload3_View').removeClass('visible').addClass('invisible');
-                $('#FileUpload4_View').removeClass('visible').addClass('invisible');
-            }
-
-        </script>
-
-        <script>
+<script>
 
 
-            //$(document).ready(function () {
-            //    var fileUpload;
-            //    var files;
-            //    $("#FileUpload1").on('blur', function () {
-            //        if (this.files.length > 0) {
-            //            fileUpload = $("#FileUpload1").get(0);
-            //            files = fileUpload.files;
-            //            for (var i = 0; i < files.length; i++) {
-            //                if (files[0].name != "Activities.xlsx") {
-            //                    Notiflix.Notify.Failure("Enter Activities file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-            //                    $("#FileUpload1").val('');
-            //                }
-            //                else {
-            //                    $(this).css("background-color", "#3ac47d");
-            //                    $(this).addClass('active')
-            //                }
-            //            }
-            //        }
-            //        else {
-            //            $(this).removeClass('active');
-            //            $(this).css("background-color", "#0090e2");
-            //        }
-            //    });
-            //    $("#FileUpload2").on('blur', function () {
-            //        if (this.files.length > 0) {
+//$(document).ready(function () {
+//    var fileUpload;
+//    var files;
+//    $("#FileUpload1").on('blur', function () {
+//        if (this.files.length > 0) {
+//            fileUpload = $("#FileUpload1").get(0);
+//            files = fileUpload.files;
+//            for (var i = 0; i < files.length; i++) {
+//                if (files[0].name != "Activities.xlsx") {
+//                    Notiflix.Notify.Failure("Enter Activities file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+//                    $("#FileUpload1").val('');
+//                }
+//                else {
+//                    $(this).css("background-color", "#3ac47d");
+//                    $(this).addClass('active')
+//                }
+//            }
+//        }
+//        else {
+//            $(this).removeClass('active');
+//            $(this).css("background-color", "#0090e2");
+//        }
+//    });
+//    $("#FileUpload2").on('blur', function () {
+//        if (this.files.length > 0) {
 
-            //            fileUpload = $("#FileUpload2").get(0);
-            //            files = fileUpload.files;
-            //            for (var i = 0; i < files.length; i++) {
-            //                if (files[0].name != "Bwextractors.xlsx") {
-            //                    Notiflix.Notify.Failure("Enter Bwextractors file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-            //                    $("#FileUpload2").val('');
-            //                }
-            //                else {
-            //                    $(this).css("background-color", "#3ac47d");
-            //                    $(this).addClass('active');
-            //                }
-            //            }
-            //        }
-            //        else {
-            //            $(this).removeClass('active');
-            //            $(this).css("background-color", "#0090e2");
-            //        }
-            //    });
-            //    $("#FileUpload3").on('blur', function () {
-            //        if (this.files.length > 0) {
-            //            fileUpload = $("#FileUpload3").get(0);
-            //            files = fileUpload.files;
-            //            for (var i = 0; i < files.length; i++) {
-            //                if (files[0].name != "CustomCode.xlsx") {
-            //                    Notiflix.Notify.Failure("Enter CustomCode file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-            //                    $("#FileUpload3").val('');
-            //                }
-            //                else {
-            //                    $(this).css("background-color", "#3ac47d");
-            //                    $(this).addClass('active');
-            //                }
-            //            }
-            //        }
-            //        else {
-            //            $(this).removeClass('active');
-            //            $(this).css("background-color", "#0090e2");
-            //        }
-            //    });
-            //    $("#FileUpload4").on('blur', function () {
-            //        if (this.files.length > 0) {
-            //            fileUpload = $("#FileUpload4").get(0);
-            //            files = fileUpload.files;
-            //            for (var i = 0; i < files.length; i++) {
-            //                if (files[0].name != "HanaDatabaseTables.xlsx") {
-            //                    Notiflix.Notify.Failure("Enter HanaDatabaseTables file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-            //                    $("#FileUpload4").val('');
-            //                }
-            //                else {
-            //                    $(this).css("background-color", "#3ac47d");
-            //                    $(this).addClass('active');
-            //                }
-            //            }
-            //        }
-            //        else {
-            //            $(this).removeClass('active');
-            //            $(this).css("background-color", "#0090e2");
-            //        }
-            //    });
-            //    $("#FileUpload5").on('blur', function () {
-            //        if (this.files.length > 0) {
-            //            fileUpload = $("#FileUpload5").get(0);
-            //            files = fileUpload.files;
-            //            for (var i = 0; i < files.length; i++) {
-            //                if (files[0].name != "RecommendedFioriApps.xlsx") {
-            //                    Notiflix.Notify.Failure("Enter RecommendedFioriApps file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-            //                    $("#FileUpload5").val('');
-            //                }
-            //                else {
-            //                    $(this).css("background-color", "#3ac47d");
-            //                    $(this).addClass('active');
-            //                }
-            //            }
-            //        }
-            //        else {
-            //            $(this).removeClass('active');
-            //            $(this).css("background-color", "#0090e2");
-            //        }
-            //    });
-            //    $("#FileUpload6").on('blur', function () {
-            //        if (this.files.length > 0) {
-            //            fileUpload = $("#FileUpload6").get(0);
-            //            files = fileUpload.files;
-            //            for (var i = 0; i < files.length; i++) {
-            //                if (files[0].name != "RelevantSimplificationItems.xlsx") {
-            //                    Notiflix.Notify.Failure("Enter RelevantSimplificationItems file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-            //                    $("#FileUpload6").val('');
-            //                }
-            //                else {
-            //                    $(this).css("background-color", "#3ac47d");
-            //                    $(this).addClass('active');
-            //                }
-            //            }
-            //        }
-            //        else {
-            //            $(this).removeClass('active');
-            //            $(this).css("background-color", "#0090e2");
-            //        }
-            //    });
-            //    $("#FileUpload7").on('blur', function () {
-            //        if (this.files.length > 0) {
-            //            fileUpload = $("#FileUpload7").get(0);
-            //            files = fileUpload.files;
-            //            for (var i = 0; i < files.length; i++) {
-            //                if (files[0].name != "SAP Readiness Check.pdf") {
-            //                    Notiflix.Notify.Failure("Enter Readiness Check file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-            //                    $("#FileUpload7").val('');
-            //                }
-            //                else {
-            //                    $(this).css("background-color", "#3ac47d");
-            //                    $(this).addClass('active');
-            //                }
-            //            }
-            //        }
-            //        else {
-            //            $(this).removeClass('active');
-            //            $(this).css("background-color", "#0090e2");
-            //        }
-            //    });
+//            fileUpload = $("#FileUpload2").get(0);
+//            files = fileUpload.files;
+//            for (var i = 0; i < files.length; i++) {
+//                if (files[0].name != "Bwextractors.xlsx") {
+//                    Notiflix.Notify.Failure("Enter Bwextractors file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+//                    $("#FileUpload2").val('');
+//                }
+//                else {
+//                    $(this).css("background-color", "#3ac47d");
+//                    $(this).addClass('active');
+//                }
+//            }
+//        }
+//        else {
+//            $(this).removeClass('active');
+//            $(this).css("background-color", "#0090e2");
+//        }
+//    });
+//    $("#FileUpload3").on('blur', function () {
+//        if (this.files.length > 0) {
+//            fileUpload = $("#FileUpload3").get(0);
+//            files = fileUpload.files;
+//            for (var i = 0; i < files.length; i++) {
+//                if (files[0].name != "CustomCode.xlsx") {
+//                    Notiflix.Notify.Failure("Enter CustomCode file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+//                    $("#FileUpload3").val('');
+//                }
+//                else {
+//                    $(this).css("background-color", "#3ac47d");
+//                    $(this).addClass('active');
+//                }
+//            }
+//        }
+//        else {
+//            $(this).removeClass('active');
+//            $(this).css("background-color", "#0090e2");
+//        }
+//    });
+//    $("#FileUpload4").on('blur', function () {
+//        if (this.files.length > 0) {
+//            fileUpload = $("#FileUpload4").get(0);
+//            files = fileUpload.files;
+//            for (var i = 0; i < files.length; i++) {
+//                if (files[0].name != "HanaDatabaseTables.xlsx") {
+//                    Notiflix.Notify.Failure("Enter HanaDatabaseTables file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+//                    $("#FileUpload4").val('');
+//                }
+//                else {
+//                    $(this).css("background-color", "#3ac47d");
+//                    $(this).addClass('active');
+//                }
+//            }
+//        }
+//        else {
+//            $(this).removeClass('active');
+//            $(this).css("background-color", "#0090e2");
+//        }
+//    });
+//    $("#FileUpload5").on('blur', function () {
+//        if (this.files.length > 0) {
+//            fileUpload = $("#FileUpload5").get(0);
+//            files = fileUpload.files;
+//            for (var i = 0; i < files.length; i++) {
+//                if (files[0].name != "RecommendedFioriApps.xlsx") {
+//                    Notiflix.Notify.Failure("Enter RecommendedFioriApps file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+//                    $("#FileUpload5").val('');
+//                }
+//                else {
+//                    $(this).css("background-color", "#3ac47d");
+//                    $(this).addClass('active');
+//                }
+//            }
+//        }
+//        else {
+//            $(this).removeClass('active');
+//            $(this).css("background-color", "#0090e2");
+//        }
+//    });
+//    $("#FileUpload6").on('blur', function () {
+//        if (this.files.length > 0) {
+//            fileUpload = $("#FileUpload6").get(0);
+//            files = fileUpload.files;
+//            for (var i = 0; i < files.length; i++) {
+//                if (files[0].name != "RelevantSimplificationItems.xlsx") {
+//                    Notiflix.Notify.Failure("Enter RelevantSimplificationItems file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+//                    $("#FileUpload6").val('');
+//                }
+//                else {
+//                    $(this).css("background-color", "#3ac47d");
+//                    $(this).addClass('active');
+//                }
+//            }
+//        }
+//        else {
+//            $(this).removeClass('active');
+//            $(this).css("background-color", "#0090e2");
+//        }
+//    });
+//    $("#FileUpload7").on('blur', function () {
+//        if (this.files.length > 0) {
+//            fileUpload = $("#FileUpload7").get(0);
+//            files = fileUpload.files;
+//            for (var i = 0; i < files.length; i++) {
+//                if (files[0].name != "SAP Readiness Check.pdf") {
+//                    Notiflix.Notify.Failure("Enter Readiness Check file", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+//                    $("#FileUpload7").val('');
+//                }
+//                else {
+//                    $(this).css("background-color", "#3ac47d");
+//                    $(this).addClass('active');
+//                }
+//            }
+//        }
+//        else {
+//            $(this).removeClass('active');
+//            $(this).css("background-color", "#0090e2");
+//        }
+//    });
 
 
-            //});
+//});
 
-            //function OnFileuploadChange(Comp) {
-            //    //console.log(Comp);
-            //    var Onsuccess = Comp.Value;
-            //    if (Onsuccess != String.empty) {
-            //        $(Comp).css("background-color", "#3ac47d");
-            //        Comp.css("background-color", "#3ac47d");
-            //    }
-            //}
-        </script>
+//function OnFileuploadChange(Comp) {
+//    //console.log(Comp);
+//    var Onsuccess = Comp.Value;
+//    if (Onsuccess != String.empty) {
+//        $(Comp).css("background-color", "#3ac47d");
+//        Comp.css("background-color", "#3ac47d");
+//    }
+//}
+</script>
 
 
 

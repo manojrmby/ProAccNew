@@ -166,7 +166,7 @@ namespace ProAcc.Controllers
         public ActionResult GetAuditDatas(AuditReport.ProjectMonitorModel model)
         {
             List<AuditReport.ProjectMonitorModel> PM = _Base.Sp_GetAuditDatas(model);
-            var obj = new { data = PM };
+            //var obj = new { data = PM };
             return PartialView("_AuditReportIndex", PM);
         }
 

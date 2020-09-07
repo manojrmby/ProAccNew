@@ -61,6 +61,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+       
         $("#prt").hide();
         function ddMonyy(Date) {
             const date = Date;
@@ -109,8 +110,7 @@
     });   
 
     function loadAuditReport() {
-
-
+       
         var startdate = $("#StartDate").val();
         var enddate = $("#EndDate").val();
         var ActionID =$("#Actiondropdown").val().trim();
@@ -122,6 +122,7 @@
             ActionID: ActionID,
             TABLE_NAME: tablename 
         }
+        $("#load1").css("display", "block");
         $.ajax({
             type: "GET",
             //data: null,
@@ -136,7 +137,9 @@
             error: function (response) {
             alert(response.responseText);
             }
-         });
+        });
+        $("#load1").css("display", "none");
+       
     }
 
     $("#SubmitSearch").click(function () {

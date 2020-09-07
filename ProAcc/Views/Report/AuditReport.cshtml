@@ -39,6 +39,7 @@
         LoadTable(1);
     });
     function LoadTable(Instance) {
+        $("#load1").show();
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
 
         $("#jqGrid").jqGrid({
@@ -157,6 +158,7 @@
                 showQuery: false
             }
         );
+        $("#load1").hide();
     }
 
 </script>
