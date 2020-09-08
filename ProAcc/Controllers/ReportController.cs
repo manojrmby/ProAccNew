@@ -219,13 +219,16 @@ namespace ProAcc.Controllers
                 string imagePath = Server.MapPath(ConfigurationManager.AppSettings["Logo_Path"].ToString()); //"F:\\GitProAccNew\\ProAccNew\\ProAcc\\Asset\\images\\promantus-new-logo.PNG";
                 Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
                 string LoginID = Session["loginid"].ToString();
+                String ProjectName= Session["Project_Name"].ToString();
+                String InstancetName = Session["Instance_Name"].ToString();
                 List<ProjectMonitorModel> PM = _Base.Sp_GetReportDataReportPDF(InstanceID, LoginID);
-                ExportPDF(PM, filePath, imagePath);
-                return File(filePath, "application/pdf", "list.pdf");
+                String description = "Project Name :"+ ProjectName + " && Instance Name : "+ InstancetName + ".";
+                ExportPDF(PM, filePath, imagePath, description);
+                return File(filePath, "application/pdf", "DetailedReport.pdf");
             }
         }
 
-        private static void ExportPDF(List<ProjectMonitorModel> PM, string filePath,string imagePath)
+        private static void ExportPDF(List<ProjectMonitorModel> PM, string filePath,string imagePath,string description)
         {
             Font headerFont = FontFactory.GetFont("arial", 6,Font.BOLD,BaseColor.BLACK);
             Font rowfont = FontFactory.GetFont("arial", 6);
@@ -241,14 +244,10 @@ namespace ProAcc.Controllers
             img.SpacingAfter = 50f;
             document.Add(img);
 
-            //String Project_Id = Session["Project_ID"].ToString();
-            //String InstanceId = Session["Instance_ID"].ToString();
-            //Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
-
-            //String a = "Project Name : " + Project_Id + "Instance Name : " + InstanceId +;
-            //Paragraph para = new Paragraph(a);
-            //para.Alignment = Element.ALIGN_LEFT;
-            //document.Add(para);
+            Paragraph para = new Paragraph(description);
+            para.Alignment = Element.ALIGN_LEFT;
+            para.SpacingAfter = 20f;
+            document.Add(para);
 
             string[] columns = { "BuldingBlock", "Phase", "Task", "ApplicationArea", "Delay_occurred_Report", "Owner", "Status","EST_hrs", "Actual_St_hrs", "PlanedDate", "ActualDate", "PlanedEn_Date", "ActualEn_Date", "Notes" };
             string[] columnHeadings = { "Bulding Block", "Phase", "Task", "Application Area", "Delay", "Owner", "Status","EST (hrs)", "Actual (hrs)", "Planed Start", "Actual Start", "Planed End", "Actual End", "Commnets" };
