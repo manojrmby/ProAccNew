@@ -17,7 +17,6 @@ namespace ProACC_DB
     
     public partial class ProAccEntities : DbContext
     {
-
         public ProAccEntities()
             : base("name=ProAccEntities")
         {
@@ -43,13 +42,13 @@ namespace ProACC_DB
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ScenarioMaster> ScenarioMasters { get; set; }
         public virtual DbSet<PMTaskCategory> PMTaskCategories { get; set; }
-        public virtual DbSet<PMTaskMonitor_> PMTaskMonitor_ { get; set; }
         public virtual DbSet<Issuetrack> Issuetracks { get; set; }
-        public virtual DbSet<PMTaskMaster> PMTaskMasters { get; set; }
         public virtual DbSet<HistoryLog> HistoryLogs { get; set; }
         public virtual DbSet<FileMaster> FileMasters { get; set; }
         public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
         public virtual DbSet<ProjectMonitor> ProjectMonitors { get; set; }
+        public virtual DbSet<PMTaskMaster> PMTaskMasters { get; set; }
+        public virtual DbSet<PMTaskMonitor_> PMTaskMonitor_ { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {

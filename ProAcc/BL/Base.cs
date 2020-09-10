@@ -2331,7 +2331,92 @@ namespace ProAcc.BL
            
         }
 
-       
+        public List<PMTaskModel> Sp_GetPMTaskData()
+        {
+            List<PMTaskModel> PTM = new List<PMTaskModel>();
+            DataTable dt = new DataTable();
+
+            DBHelper dB = new DBHelper("SP_PMTask", CommandType.StoredProcedure);
+            dB.addIn("@Type", "PMData");
+            dt = dB.ExecuteDataTable();
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    PMTaskModel a = new PMTaskModel();
+                    a.PMTaskId = Guid.Parse(dr["PMTaskId"].ToString());
+                    a.PMTaskName = dr["PMTaskName"].ToString();
+                    a.PMTaskCategoryID = Convert.ToInt32(dr["PMTaskCategoryID"].ToString());
+                    a.EST_hours1 = dr["EST_hours"].ToString().Replace(".",":");
+                    a.PMTaskCategory = dr["PMTaskCategory"].ToString();                    
+
+                    PTM.Add(a);
+                }
+            }
+
+            return PTM;
+        }
+
+        public PMTaskModel Sp_GetPMtaskById(Guid? id)
+        {
+
+            LogHelper _log = new LogHelper();
+            DataTable dt = new DataTable();
+
+            DBHelper dB = new DBHelper("SP_PMTask", CommandType.StoredProcedure);
+            dB.addIn("@Type", "EditPMTaskById");
+            dB.addIn("@PMTaskId", id);
+            dt = dB.ExecuteDataTable();
+            PMTaskModel a = new PMTaskModel();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    a.PMTaskId = Guid.Parse(dr["PMTaskId"].ToString());
+                    a.PMTaskName = dr["PMTaskName"].ToString();
+                    a.PMTaskCategoryID = Convert.ToInt32(dr["PMTaskCategoryID"].ToString());
+                    a.EST_hours1 = dr["EST_hours"].ToString().Replace(".", ":");
+                    a.Cre_on = DateTime.Parse(dr["Cre_on"].ToString());
+                    a.Cre_By = Guid.Parse(dr["Cre_By"].ToString());
+                }
+            }
+            return a;           
+        }
+
+        public Boolean PMTask_Master_Add_Update(PMTaskMaster PM)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_PMTask", CommandType.StoredProcedure);
+                if (PM.PMTaskId == Guid.Empty)
+                {
+                    dB.addIn("@Type", "PMAdd");
+                    dB.addIn("@PMTaskId", Guid.NewGuid());
+                }
+                else
+                {
+                    dB.addIn("@Type", "PMUpdate");
+                    dB.addIn("@PMTaskId", PM.PMTaskId);
+                }
+                
+                dB.addIn("@PMTaskName", PM.PMTaskName);
+                dB.addIn("@PMTaskCategoryID", PM.PMTaskCategoryID);
+                dB.addIn("@EST_hours", PM.EST_hours);
+                dB.addIn("@Cre_By", PM.Cre_By);
+
+                dB.ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
 
         public List<IssueTrackModel> Sp_GetIssueTrackData(String Id,int type,IssueTrackModel Model)
         {
@@ -2624,9 +2709,9 @@ namespace ProAcc.BL
         //    return wpd.MainDocumentPart.GetIdOfPart(ip);
         //}
 
-        public List<PMTaskMonitor_> GetPMTask(String IDProject)
+        public List<PMTaskModel> GetPMTask(String IDProject)
         {
-            List<PMTaskMonitor_> ListM = new List<PMTaskMonitor_>();
+            List<PMTaskModel> ListM = new List<PMTaskModel>();
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_PMTask", CommandType.StoredProcedure);
             dB.addIn("@Type", "GetPMTask");
@@ -2637,14 +2722,14 @@ namespace ProAcc.BL
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    PMTaskMonitor_ M = new PMTaskMonitor_();
+                    PMTaskModel M = new PMTaskModel();
                     M.Id = Guid.Parse(dr["id"].ToString());
                     M.PMTaskID = Guid.Parse(dr["PMTaskID"].ToString());
                     M.ProjectId = Guid.Parse(dr["ProjectId"].ToString());
                     //M.Delay_occurred = Convert.ToBoolean(dr["Delay_occurred"].ToString());
                     M.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
-                    M.EST_hours = Convert.ToDouble(dr["EST_hours"].ToString());
-                    M.Actual_St_hours = Convert.ToDouble(dr["Actual_St_hours"].ToString());
+                    M.EST_hours1 = dr["EST_hours"].ToString().Replace(".",":");
+                    M.Actual_St_hours = dr["Actual_St_hours"].ToString().Replace(".", ":");
 
                     M.Task_Other_Environment = Convert.ToBoolean(dr["Task_Other_Environment"].ToString());
 
@@ -2702,6 +2787,7 @@ namespace ProAcc.BL
 
 
         }
+
 
         #region Mail
 

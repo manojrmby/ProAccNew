@@ -146,8 +146,7 @@ namespace ProAcc.Controllers
             if (name.Count == 0)
             {
                 model.Modified_On = DateTime.UtcNow;
-                model.LastUpdated_Dt = DateTime.UtcNow;
-                //model.Cre_on = DateTime.Now;
+                model.LastUpdated_Dt = DateTime.UtcNow;                
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
                 db.Entry(model).State = EntityState.Modified;

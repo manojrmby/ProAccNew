@@ -222,7 +222,7 @@ namespace ProAcc.Controllers
                 String ProjectName= Session["Project_Name"].ToString();
                 String InstancetName = Session["Instance_Name"].ToString();
                 List<ProjectMonitorModel> PM = _Base.Sp_GetReportDataReportPDF(InstanceID, LoginID);
-                String description = "Project Name :"+ ProjectName + " && Instance Name : "+ InstancetName + ".";
+                String description = "Project Name :"+ ProjectName + " & Instance Name : "+ InstancetName + ".";
                 ExportPDF(PM, filePath, imagePath, description);
                 return File(filePath, "application/pdf", "DetailedReport.pdf");
             }

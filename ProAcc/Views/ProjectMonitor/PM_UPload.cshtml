@@ -92,7 +92,7 @@
                                             Landscape & System Management
                                         </td>
                                         <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload2" onChange='getFileNameWithExt(event)'  />
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload2" onChange='getFileNameWithExt(event)' />
                                         </td>
 
                                         <td>
@@ -106,8 +106,8 @@
                                         <td>
                                             Custom Code Analysis
                                         </td>
-                                        <td> 
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload3" onChange='getFileNameWithExt(event)'  />
+                                        <td>
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload3" onChange='getFileNameWithExt(event)' />
                                         </td>
 
                                         <td>
@@ -122,7 +122,7 @@
                                             License Optimization
                                         </td>
                                         <td>
-                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload4" onChange='getFileNameWithExt(event)'  />
+                                            <input type="file" class="mb-2 mr-2 btn btn-info" accept="application/pdf" name="files" id="FileUpload4" onChange='getFileNameWithExt(event)' />
                                         </td>
 
                                         <td>
@@ -152,18 +152,18 @@
             </div>
         </div>
     </div>
-
+    @Html.Hidden("RedirectTo", Url.Action("PMReport", "Report"))
     @*@if (ViewBag.Message != null)
-    {
+        {
 
-        <a id="Msg" style="display:none">@ViewBag.Message</a>
-        <script type="text/javascript">
-            var a = $('#Msg').text();
-            //debugger;
-            Notiflix.Report.Info("ProAcc Info !", a);
-        </script>
+            <a id="Msg" style="display:none">@ViewBag.Message</a>
+            <script type="text/javascript">
+                var a = $('#Msg').text();
+                //debugger;
+                Notiflix.Report.Info("ProAcc Info !", a);
+            </script>
 
-    }*@
+        }*@
 </div>
 <div id="Parent" style="min-height:500px;"></div>
        
@@ -238,6 +238,12 @@ $('#SubmitInstance').click(function () {
             //debugger;
             reset();
             $('#Table').show();
+            $("#Parent").empty();
+            
+            //var idiv = document.createElement('iframe');
+            // $("iframe").height("0");
+            //$("iframe").width("0");
+            //$("#Parent").prepend(idiv);
             Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
             $.ajax({
                 type: "POST",
@@ -305,8 +311,14 @@ $('#SubmitInstance').click(function () {
         $("#Parent").append(idiv);
         dimention();
     }
+    //function loadupload() {
+    //   // $("#load1").css("display", "block");
+    //    $("#load1").LoadingOverlay("show");
+    //}
+    
+
     $('#btnUpload').click(function () {
-        $("#load1").css("display", "block");
+        //$("#load1").css("display", "block");
             var InstanceId = '@Session["InstanceId"]';
             if (InstanceId != "" && InstanceId != 0) {
                 var fileUpload1 = $("#FileUpload1").get(0);
@@ -333,7 +345,7 @@ $('#SubmitInstance').click(function () {
                         contentType: false, // Not to set any content header
                         processData: false, // Not to process data
                         data: fileData,
-                        async: false,
+                        //async: false,
                         success: function (result) {
                             $("#load1").css("display", "none");
                             if (result == 'File Uploaded Successfully!') {
@@ -371,7 +383,7 @@ $('#SubmitInstance').click(function () {
                     });
                 }
                 else {
-                    $("#load1").css("display", "none");
+                    $("#load1").css("display", "none");                     
                     Notiflix.Notify.Failure("Select at leaset one file .! ", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                 }
 
@@ -379,7 +391,9 @@ $('#SubmitInstance').click(function () {
         });
 
     function Redirect() {
-        location.reload();
+        var Redirect = $("#RedirectTo").val();
+        location.href = Redirect;
+        //location.reload();
     }
     $(window).resize(function () {
         dimention();

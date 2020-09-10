@@ -17,6 +17,7 @@ namespace ProACC_DB
         public System.Guid PMTaskId { get; set; }
         public string PMTaskName { get; set; }
         public int PMTaskCategoryID { get; set; }
+        public Nullable<decimal> EST_hours { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }

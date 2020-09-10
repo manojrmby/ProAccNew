@@ -150,6 +150,7 @@
    
 </script>
 <script>
+    var useCustomDialog = false, oldInfoDialog = $.jgrid.info_dialog;
     function LoadTable(IDProject) {
         //debugger
         @*var Id = @Session["P_id"];*@
@@ -323,7 +324,7 @@
                     },
                 },
                 {
-                    label: 'Est.(hrs)', name: 'EST_hours', width: 45,
+                    label: 'Est.(hrs)', name: 'EST_hours1', width: 45,
                     editable: true, align:'right',
                     editrules: { },
                     editoptions: {
@@ -389,11 +390,22 @@
                 },
                 {
                     label: 'Comments', name: 'Notes', edittype: "textarea",classes: 'wrapColumnText',
-                    wrap: "on"
-                    ,editrules: { "edithidden": true, required:true }, "editable": true, "width": 80,
-                    editoptions: {
-                        "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
-                    },
+                    wrap: "on",
+                    editrules: {
+                        custom: true,
+                        custom_func: function (value, colname) {
+                        if(value == "") {
+                            useCustomDialog = true; // use custom info_dialog!
+                            return [false, "Please enter the Comments"];
+                        }
+                        else
+                                return [true, ""];
+                        }
+                    }, "editable": true, "width": 100,
+                    //,editrules: { "edithidden": true, required:true }, "editable": true, "width": 80,
+                    //editoptions: {
+                    //    "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
+                    //},
                 },
                 //{
                 //    label: 'ValidationStatus', name: 'ValidationStatus', width: 10, editable: false,hidden: true,
@@ -496,14 +508,15 @@
                 //var EST_hours = EST_hours;
                 //var Planed__St_Date = Planed__St_Date;
                 //var Planed__En_Date = Planed__En_Date;
-                var EST_hours = postdata.EST_hours;
+                var EST_hours = postdata.EST_hours1;
+                EST_hours = EST_hours.replace(":", ".");
                 var Actual_St_hours = postdata.Actual_St_hours;
                 var Planed__St_Date = postdata.Planed__St_Date;
                 var Planed__En_Date = postdata.Planed__En_Date;
                 var Actual_St_Date = postdata.Actual_St_Date;
                 var Actual_En_Date = postdata.Actual_En_Date;
 
-                EST_hours = EST_hours.replace(":", ".");
+               // EST_hours = EST_hours.replace(":", ".");
                 Actual_St_hours = Actual_St_hours.replace(":", ".");
 
                 //if (Notes == "") {
@@ -543,31 +556,32 @@
                     Message, 'Yes', 'No',
                     function () {
                         $.ajax({
-                                            type: "POST",
-                                            url: '@Url.Action("SubmitPMTaskMonitor", "ProjectMonitor")',
-                                            data: {
-                                                'Id': "" + Id + "",
-                                                'StatusId': StatusId,
-                                                'Task_Other_Environment': Task_Other_Environment,
-                                                'Dependency': Dependency,
-                                                'Pending': Pending,
-                                                'Delay_occurred': Delay_occurred,
-                                                'EST_hours': EST_hours,
-                                                'Actual_St_hours': Actual_St_hours,
+                            type: "POST",
+                            url: '@Url.Action("SubmitPMTaskMonitor", "ProjectMonitor")',
+                            async: false,
+                             data: {
+                                  'Id': "" + Id + "",
+                                  'StatusId': StatusId,
+                                  'Task_Other_Environment': Task_Other_Environment,
+                                  'Dependency': Dependency,
+                                  'Pending': Pending,
+                                  'Delay_occurred': Delay_occurred,
+                                  'EST_hours': EST_hours,
+                                  'Actual_St_hours': Actual_St_hours,
 
-                                                'Planed__St_Date': Planed__St_Date,
-                                                'Planed__En_Date': Planed__En_Date,
+                                  'Planed__St_Date': Planed__St_Date,
+                                  'Planed__En_Date': Planed__En_Date,
 
-                                                'Actual_St_Date': Actual_St_Date,
-                                                'Actual_En_Date': Actual_En_Date,
-                                                'Notes': Notes
-                                            },
+                                  'Actual_St_Date': Actual_St_Date,
+                                  'Actual_En_Date': Actual_En_Date,
+                                  'Notes': Notes
+                              },
                             success: function (Result) {
-                                                 $('#jqGrid').trigger('reloadGrid');
+                                $('#jqGrid').trigger('reloadGrid');
 
-                                            }
+                            }
 
-                                        });
+                         });
                         // Yes button callbackalert('Thank you.');
                     }, function () {
                         //$('#jqGrid').trigger( 'reloadGrid' );
@@ -667,7 +681,18 @@
             } // search options - define multiple search
         );
 
-
+        $.extend($.jgrid, {
+            info_dialog: function (caption, content, c_b, modalopt) {
+                if (useCustomDialog) {
+                    // display custom dialog
+                    useCustomDialog = false;
+                    //alert("ERROR: " + content);
+                    Notiflix.Report.Info("ProAcc Info !", content);
+                } else {
+                    return oldInfoDialog.apply(this, arguments);
+                }
+            }
+        });
 
     }
     function updateprojectID(id) {

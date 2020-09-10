@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ProAcc.BL;
+using ProAcc.BL.Model;
 using ProACC_DB;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace ProAcc.Controllers
 {
     public class ProjectCreationController : Controller
     {
+        Base _Base = new Base();
         private ProAccEntities db = new ProAccEntities();
         LogHelper _Log = new LogHelper();
         // GET: ProjectCreation
@@ -40,7 +42,8 @@ namespace ProAcc.Controllers
                                 join c in db.Customers on e.Customer_Id equals c.Customer_ID
                                 where e.isActive == true && c.isActive == true
                                 select e).OrderByDescending(x => x.Cre_on).ToList();
-                return PartialView("_ProjectCreationIndex", Projlist);
+
+                return PartialView("_ProjectCreationIndex",Projlist);
             }
             catch (Exception ex)
             {
@@ -259,13 +262,16 @@ namespace ProAcc.Controllers
         [HttpGet]
         public ActionResult GetPMTask()
         {
-            List<ProACC_DB.PMTaskMaster> PMTasklist=null;
+            //List<ProACC_DB.PMTaskMaster> PMTasklist=null;
             try
             {
-                PMTasklist = db.PMTaskMasters.Where(x => x.isActive == true).OrderByDescending(x => x.Cre_on).ToList();
+               // PMTasklist = db.PMTaskMasters.Where(x => x.isActive == true).OrderByDescending(x => x.Cre_on).ToList();
                 //(from e in db.PMTaskMasters
                 //                where e.isActive == true 
                 //                select e).OrderByDescending(x => x.Cre_on).ToList();
+
+                List<PMTaskModel> PMTasklist = _Base.Sp_GetPMTaskData();
+                ViewBag.PTM = PMTasklist;
             }
             catch (Exception ex)
             {
@@ -273,7 +279,7 @@ namespace ProAcc.Controllers
                 throw;
             }
 
-            return PartialView("_PMTaskIndex", PMTasklist);
+            return PartialView("_PMTaskIndex");
         }
 
 
@@ -291,14 +297,17 @@ namespace ProAcc.Controllers
                 {
                     return HttpNotFound();
                 }
-                var PMTasks = db.PMTaskMasters.Where(x => x.isActive == true && x.PMTaskId == id).Select(
-                    p => new {
-                        p.PMTaskId,
-                        p.PMTaskName,
-                        p.PMTaskCategoryID,
-                        p.Cre_on,
-                        p.Cre_By
-                    }).FirstOrDefault();
+
+                //var PMTasks = db.PMTaskMasters.Where(x => x.isActive == true && x.PMTaskId == id).Select(
+                //    p => new {
+                //        p.PMTaskId,
+                //        p.PMTaskName,
+                //        p.EST_hours,
+                //        p.PMTaskCategoryID,
+                //        p.Cre_on,
+                //        p.Cre_By
+                //    }).FirstOrDefault();
+               var PMTasks= _Base.Sp_GetPMtaskById(id);
                 return Json(PMTasks, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -311,25 +320,39 @@ namespace ProAcc.Controllers
 
 
         [HttpPost]
-        public ActionResult PMTaskEdit(PMTaskMaster PMTask)
+        public ActionResult PMTaskAddEdit(PMTaskMaster PMTask)
         {
             try
             {
-                var name = db.PMTaskMasters.Where(p => p.PMTaskName == PMTask.PMTaskName).Where(x => x.PMTaskId != PMTask.PMTaskId).Where(x => x.isActive == true).ToList();
-                if (name.Count == 0)
+                PMTask.Cre_By = Guid.Parse(Session["loginid"].ToString());
+                //PMTask.Cre_on = DateTime.UtcNow;
+                var Status=_Base.PMTask_Master_Add_Update(PMTask);
+                if(Status == true)
                 {
-                    PMTask.Modified_On = DateTime.UtcNow;
-                    PMTask.Cre_on = DateTime.UtcNow;
-                    PMTask.Modified_by = Guid.Parse(Session["loginid"].ToString());
-                    PMTask.isActive = true;
-                    db.Entry(PMTask).State = EntityState.Modified;
-                    db.SaveChanges();
                     return Json("success");
                 }
                 else
                 {
                     return Json("error");
                 }
+
+                
+
+                //var name = db.PMTaskMasters.Where(p => p.PMTaskName == PMTask.PMTaskName).Where(x => x.PMTaskId != PMTask.PMTaskId).Where(x => x.isActive == true).ToList();
+                //if (name.Count == 0)
+                //{
+                //    PMTask.Modified_On = DateTime.UtcNow;
+                //    //PMTask.Cre_on = DateTime.UtcNow;
+                //    PMTask.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                //    PMTask.isActive = true;
+                //    db.Entry(PMTask).State = EntityState.Modified;
+                //    db.SaveChanges();
+                //    return Json("success");
+                //}
+                //else
+                //{
+                //    return Json("error");
+                //}
             }
             catch (Exception ex)
             {
@@ -344,34 +367,61 @@ namespace ProAcc.Controllers
         {
             try
             {
-                PMTaskMaster PMTask = db.PMTaskMasters.Find(id);
-                if (PMTask.PMTaskId == id)
+                var del = (from a in db.PMTaskMasters
+                           join b in db.PMTaskMonitor_ on a.PMTaskId equals b.PMTaskID
+                           where a.PMTaskId == id && a.isActive == true && b.isActive == true
+                           select b
+                    ).ToList();
+                if (del.Count != 0)
                 {
-                    PMTask.isActive = false;
-                    PMTask.IsDeleted = true;
-                    db.Entry(PMTask).State = EntityState.Modified;
-                    db.SaveChanges();
+                    return Json("fail");
                 }
-                return Json("success");
+                else
+                {
+                    PMTaskMaster PMTask = db.PMTaskMasters.Find(id);
+                    if (PMTask.PMTaskId == id)
+                    {
+                        PMTask.isActive = false;
+                        PMTask.IsDeleted = true;
+                        db.Entry(PMTask).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    return Json("success");
+                }
             }
             catch (Exception ex)
             {
                 string Url = Request.Url.AbsoluteUri;
-                _Log.createLog(ex, "-->PMTaskCreate" + Url);
+                _Log.createLog(ex, "--> PMTaskCreate " + Url);
                 throw;
             }
         }
 
-        public JsonResult CheckPMTaskAvailability(string namedata, int? id)
+        public JsonResult CheckPMTaskAvailability(string namedata, Guid? id)
         {
-            var SearchDt = db.PMTaskMasters.Where(x => x.PMTaskName == namedata).Where(x => x.isActive == true).FirstOrDefault();
-            if (SearchDt != null)
+            if (id != null)
             {
-                return Json("error", JsonRequestBehavior.AllowGet);
+                var SearchDt = db.PMTaskMasters.Where(x => x.PMTaskName == namedata).Where(x => x.PMTaskId != id).Where(x => x.isActive == true).FirstOrDefault();
+                if (SearchDt != null)
+                {
+                    return Json("error", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("success", JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
-                return Json("success", JsonRequestBehavior.AllowGet);
+                var SearchDt = db.PMTaskMasters.Where(x => x.PMTaskName == namedata).Where(x => x.isActive == true).FirstOrDefault();
+                if (SearchDt != null)
+                {
+                    return Json("error", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("success", JsonRequestBehavior.AllowGet);
+                }
             }
         }
         #endregion

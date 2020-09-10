@@ -219,7 +219,6 @@ namespace ProAcc.Controllers
                 if (name.Count == 0)
                 {
                     customer.Modified_On = DateTime.UtcNow;
-                    //customer.Cre_on = DateTime.Now;
                     customer.Modified_by = Guid.Parse(Session["loginid"].ToString());
                     customer.isActive = true;
                     db.Entry(customer).State = EntityState.Modified;

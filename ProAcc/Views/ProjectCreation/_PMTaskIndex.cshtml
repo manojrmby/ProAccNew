@@ -19,29 +19,31 @@
             <th>Category</th>
             <th>Cre_on</th>
             <th>Task Name</th>
+            <th style="width:90px">EST Hours</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in ViewBag.PTM)
         {
-            <tr>
-                <td>
-                    <a class="txtG" value="@item.PMTaskCategoryID">@item.PMTaskCategory.Name</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.Cre_on">@Convert.ToDateTime(item.Cre_on).ToString("yyyy-MM-dd HH:mm:ss")</a>
-                </td>
-                <td>
-                    <a class="txtG" value="@item.PMTaskName">@item.PMTaskName</a>
-                </td>
-                
-
-                <td>
-                    <a href="#" id="btnEdit" class="btnEdit fa fa-edit"></a><input type="hidden" value="@item.PMTaskId" /> |
-                    <a href="#" class="btnProjCreationDelete fa fa-trash"></a><input type="hidden" value="@item.PMTaskId" />
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <a class="txtG" value="@item.PMTaskCategoryID">@item.PMTaskCategory</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.Cre_on">@Convert.ToDateTime(item.Cre_on).ToString("yyyy-MM-dd HH:mm:ss")</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.PMTaskName">@item.PMTaskName</a>
+            </td>
+            <td>
+                <a class="txtG" value="@item.EST_hours">@item.EST_hours1</a>
+            </td>
+            <td>
+                <a href="#" id="btnEdit" class="btnEdit fa fa-edit"></a><input type="hidden" value="@item.PMTaskId" /> |
+                <a href="#" class="btnProjCreationDelete fa fa-trash"></a><input type="hidden" value="@item.PMTaskId" />
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -76,10 +78,9 @@
 
 
                 $("#proj_id").val(result.PMTaskId);
-
-
                 $("#drpTaskCat").val(result.PMTaskCategoryID);
                 $("#txtTaskName").val(result.PMTaskName);
+                $("#txtEsthrs").val(result.EST_hours1);
 
                 $("#projcre_on").val(result.Cre_on);
                 $("#projcre_By").val(result.Cre_By);
@@ -99,7 +100,35 @@
        // $('.chartAreaWrapper').scrollTop($('.chartAreaWrapper')[0].scrollHeight);
 
     });
-      $(".btnProjCreationDelete").on("click", function () {
+     $(".btnProjCreationDelete").on("click", function () {
+        var id = $(this).next().val();
+         Notiflix.Confirm.Show(
+                'Confirm',
+                'Do you want to delete ?',
+                'Yes', 'No',
+                function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("PMTaskDelete", "ProjectCreation")',
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response == "success") {
+                                Notiflix.Notify.Success('PM Task deleted successfully!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                                setTimeout(location.reload(), 3000);
+                            }
+                            else {
+                                 Notiflix.Notify.Warning('PM Task is in use', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            }
+                        }
+                    });
+                }, function () {
+                   
+                }
+            )
+     });
+
+      @*$(".btnProjCreationDelete").on("click", function () {
         var id = $(this).next().val();
         $.confirm({
               title: 'Delete !',
@@ -138,25 +167,6 @@
                                     }
                                  });
                               }
-                              //else {
-                              // $.alert({
-                              //   title: 'Alert !',
-                              //   content: 'Project Instances are in active..!',
-                              //   icon: 'fa fa-rocket',
-                              //   animation: 'scale',
-                              //   closeAnimation: 'scale',
-                              //    buttons: {
-                              //     okay: {
-                              //       text: 'Okay',
-                              //       btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
-                              //       action: function (event, ui) {
-                              //          $(this).remove();
-                              //          location.reload();
-                              //       }
-                              //     }
-                              //    }
-                              // });
-                              //}
                            },
                            failure: function (response) {
                               alert(response.responseText);
@@ -172,5 +182,5 @@
                  },
               }
          });
-    });
+    });*@
 </script>

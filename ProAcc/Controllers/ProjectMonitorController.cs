@@ -705,7 +705,7 @@ namespace ProAcc.Controllers
         public ActionResult PMTaskGetData()
         {
             string ProjectId = Session["ProjectId"].ToString();
-            List<PMTaskMonitor_> PM = _Base.GetPMTask(ProjectId);
+            List<PMTaskModel> PM = _Base.GetPMTask(ProjectId);
             return Json(PM, JsonRequestBehavior.AllowGet);
         }
         public JsonResult SetprojectId(string ProjectId)

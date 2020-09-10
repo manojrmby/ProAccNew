@@ -158,7 +158,7 @@ namespace ProAcc.BL
                     //    logInfo.WriteLine("");
                     //    logInfo.WriteLine("");
                     //    logInfo.WriteLine("");
-                    //    logInfo.WriteLine("======================Logging Started At:" + DateTime.Now + "======================");
+                    //    logInfo.WriteLine("======================Logging Started At:" + DateTime.UtcNow + "======================");
                     //    //logInfo.Close();
                     //}
                     //catch (Exception ex)
@@ -180,7 +180,7 @@ namespace ProAcc.BL
                             MyWriter.WriteLine("");
                             MyWriter.WriteLine("");
                             MyWriter.WriteLine("");
-                            MyWriter.WriteLine("======================Logging Started At:" + DateTime.Now + "======================");
+                            MyWriter.WriteLine("======================Logging Started At:" + DateTime.UtcNow + "======================");
                             //MyWriter.Close();
                         }
                         finally
@@ -215,7 +215,7 @@ namespace ProAcc.BL
                     //    logInfo.WriteLine("");
                     //    logInfo.WriteLine("");
                     //    logInfo.WriteLine("");
-                    //    logInfo.WriteLine("======================Logging for " + strMsg + " Started At:" + DateTime.Now + "======================");
+                    //    logInfo.WriteLine("======================Logging for " + strMsg + " Started At:" + DateTime.UtcNow + "======================");
                     //    //logInfo.Close();
                     //}
                     //finally
@@ -233,7 +233,7 @@ namespace ProAcc.BL
                             MyWriter.WriteLine("");
                             MyWriter.WriteLine("");
                             MyWriter.WriteLine("");
-                            MyWriter.WriteLine("======================Logging for " + strMsg + " Started At:" + DateTime.Now + "======================");
+                            MyWriter.WriteLine("======================Logging for " + strMsg + " Started At:" + DateTime.UtcNow + "======================");
                             //MyWriter.Close();
                         }
                         finally
@@ -264,10 +264,10 @@ namespace ProAcc.BL
                     //    logInfo = new FileLogTraceListener();
                     //    logInfo = (FileLogTraceListener)AssignProperty();
 
-                    //    //logInfo.WriteLine("=====Log Start DateTime:" + DateTime.Now+ "=======");
+                    //    //logInfo.WriteLine("=====Log Start DateTime:" + DateTime.UtcNow+ "=======");
                     //    //logInfo.WriteLine(strMsg);
                     //    //logInfo.WriteLine("=====Log End=======");
-                    //    logInfo.WriteLine("============" + strMsg + " At " + DateTime.Now + "============");
+                    //    logInfo.WriteLine("============" + strMsg + " At " + DateTime.UtcNow + "============");
                     //    logInfo.WriteLine("");
                     //    //logInfo.Close();
                     //}
@@ -285,7 +285,7 @@ namespace ProAcc.BL
                         {
                             //logInfo = new StreamWriter(FileLocation + "/" + FileName, true);
 
-                            MyWriter.WriteLine("============" + strMsg + " At " + DateTime.Now + "============");
+                            MyWriter.WriteLine("============" + strMsg + " At " + DateTime.UtcNow + "============");
                             MyWriter.WriteLine("");
 
                         }
@@ -317,7 +317,7 @@ namespace ProAcc.BL
                     //    logInfo = new FileLogTraceListener();
                     //    logInfo = (FileLogTraceListener)AssignProperty();
 
-                    //    logInfo.WriteLine("=====Exception Log Start DateTime:" + DateTime.Now + "=======");
+                    //    logInfo.WriteLine("=====Exception Log Start DateTime:" + DateTime.UtcNow + "=======");
                     //    logInfo.WriteLine("");
 
                     //    logInfo.WriteLine("NameSpace : " + NameSpace);
@@ -354,7 +354,7 @@ namespace ProAcc.BL
                         GetWriter();
                         try
                         {
-                            MyWriter.WriteLine("=====Exception Log Start DateTime:" + DateTime.Now + "=======");
+                            MyWriter.WriteLine("=====Exception Log Start DateTime:" + DateTime.UtcNow + "=======");
                             MyWriter.WriteLine("");
 
                             MyWriter.WriteLine("NameSpace : " + NameSpace);
@@ -413,7 +413,7 @@ namespace ProAcc.BL
                     //    logInfo = new FileLogTraceListener();
                     //    logInfo = (FileLogTraceListener)AssignProperty();
 
-                    //    logInfo.WriteLine("=====Exception Log DateTime:" + DateTime.Now + "=======");
+                    //    logInfo.WriteLine("=====Exception Log DateTime:" + DateTime.UtcNow + "=======");
                     //    logInfo.WriteLine(strExceptionMsg);
                     //    logInfo.WriteLine("");
 
@@ -449,7 +449,7 @@ namespace ProAcc.BL
                         GetWriter();
                         try
                         {
-                            MyWriter.WriteLine("=====Exception Log DateTime:" + DateTime.Now + "=======");
+                            MyWriter.WriteLine("=====Exception Log DateTime:" + DateTime.UtcNow + "=======");
                             MyWriter.WriteLine(strExceptionMsg);
                             MyWriter.WriteLine("");
 
@@ -505,7 +505,7 @@ namespace ProAcc.BL
                     //{
                     //    logInfo = (FileLogTraceListener)AssignProperty();
 
-                    //    logInfo.WriteLine("===" + strMsg + " At " + DateTime.Now);
+                    //    logInfo.WriteLine("===" + strMsg + " At " + DateTime.UtcNow);
                     //    logInfo.WriteLine("");
                     //    //logInfo.Close();
                     //}
@@ -523,7 +523,7 @@ namespace ProAcc.BL
                         {
                             MyWriter = new StreamWriter(FileLocation + "/" + FileName, true);
 
-                            MyWriter.WriteLine("===" + strMsg + " At " + DateTime.Now);
+                            MyWriter.WriteLine("===" + strMsg + " At " + DateTime.UtcNow);
                             MyWriter.WriteLine("");
                             MyWriter.Close();
                         }
@@ -554,7 +554,7 @@ namespace ProAcc.BL
                     //    logInfo = new FileLogTraceListener();
                     //    logInfo = (FileLogTraceListener)AssignProperty();
 
-                    //    logInfo.WriteLine("======================Logging Ended At:" + DateTime.Now + "======================");
+                    //    logInfo.WriteLine("======================Logging Ended At:" + DateTime.UtcNow + "======================");
                     //    logInfo.WriteLine("");
                     //    logInfo.WriteLine("");
                     //    logInfo.WriteLine("");
@@ -575,7 +575,7 @@ namespace ProAcc.BL
                         {
                             MyWriter = new StreamWriter(FileLocation + "/" + FileName, true);
 
-                            MyWriter.WriteLine("======================Logging Ended At:" + DateTime.Now + "======================");
+                            MyWriter.WriteLine("======================Logging Ended At:" + DateTime.UtcNow + "======================");
                             MyWriter.WriteLine("");
                             MyWriter.WriteLine("");
                             MyWriter.WriteLine("");

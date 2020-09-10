@@ -23,8 +23,8 @@ namespace ProACC_DB
         public Nullable<bool> Delay_occurred { get; set; }
         public string DelayedReason { get; set; }
         public int StatusId { get; set; }
-        public Nullable<double> EST_hours { get; set; }
-        public Nullable<double> Actual_St_hours { get; set; }
+        public Nullable<decimal> EST_hours { get; set; }
+        public Nullable<decimal> Actual_St_hours { get; set; }
         public Nullable<System.DateTime> Planed__St_Date { get; set; }
         public Nullable<System.DateTime> Actual_St_Date { get; set; }
         public Nullable<System.DateTime> Planed__En_Date { get; set; }

@@ -21,11 +21,20 @@
                             <option value="@item.ID">@item.Name</option>
                         }
                     </select>
-                    @*<input type="text" class="form-control" id="txtCustomerPhone" maxlength="10" />*@
-                    @*<span id="lblCustomerName" style="color:red" />*@
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTaskCat">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 required">EST Hours HH:MM</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="txtEsthrs" placeholder="00:00"/>
+                </div>
+                <div>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEsthrs">&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -37,13 +46,14 @@
             <div class="form-group">
                 <label class="control-label col-md-4 required">Task Name</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" id="txtTaskName" maxlength="1000"/>
-                    @*<span id="lblProjectName" style="color:red" />*@
+                    <input type="text" class="form-control" id="txtTaskName" maxlength="1000" />
                 </div>
                 <div>
                     &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTaskName">&nbsp;</span>
                 </div>
             </div>
+
+           
         </div>
         <div class="col-12">
             <div class="form-group">
@@ -59,125 +69,108 @@
 <script>
 
     $(document).ready(function () {
-         $("#prt").hide();
-        $("#btnCreate").prop('disabled', true);
 
         $("#txtTaskName").keypress(function (event) {
             if (event.which === 44) {
                 event.preventDefault();
-                $("#lblTaskName").html("Not Allowed").show().fadeOut(5000);
+                $("#lblTaskName").html("Not Allowed").show();
             }
-            else {
-                $("#lblTaskName").html("").show();
-            }
-            ValidateData();
         });
 
-        $("#txtTaskName").bind('paste', function () {
-            var self = $(this);
-            var orig = self.val();
-            setTimeout(function () {
-               
-                ValidateData();
-            });
-        });
-       
-    });
-    $('#drpTaskCat').change(function () {
-        ValidateData();
+        //$("#txtTaskName").bind('paste', function () {
+        //    var self = $(this);
+        //    var orig = self.val();
+        //    setTimeout(function () {
+
+        //    });
+        //});
+
     });
 
-      var typingTimer;                //timer identifier
-        var doneTypingInterval = 1000;  //time in ms, 1 second for example
 
-       // on keyup, start the countdown
-         $('#txtTaskName').on('keyup', function () {
-          clearTimeout(typingTimer);
-          typingTimer = setTimeout(PMTaskCheck, doneTypingInterval);
-        });
-
-        //on keydown, clear the countdown
-         $('#txtTaskName').on('keydown', function () {
-          clearTimeout(typingTimer);
-         });
-
-    function PMTaskCheck() {
-         var TaskName = $("#txtTaskName").val().trim();
-            var id = $("#drpTaskCat").val();
-            if (TaskName == "") {
-                $("#lblTaskName").html("Please Enter valid Instance name").show().fadeOut(2000);
-            }
-            else {
-                $.ajax({
-                url: '@Url.Action("CheckPMTaskAvailability", "ProjectCreation")',
-                type: "GET",
-                data: { namedata: TaskName,id:id },
-                dataType: "json",
-                success: function (data) {
-                    if (data != "success") {
-                        $("#lblTaskName").html("This Task Name is already in use").show();
-                        $("#btnCreate").prop("disabled", true);
-                        $("#btnUpdate").prop("disabled", true);
-                    }
-                    else {
-                        $("#lblTaskName").html("").hide();
-                         $("#btnCreate").prop("disabled", false);
-                        $("#btnUpdate").prop("disabled", false);
-                    }
-                },
-                error: function (err) {
-                    alert(err);
+    function PMTaskCheck(TaskName,id) {
+        // var TaskName = $("#txtTaskName").val().trim();
+        //var id = $("#proj_id").val();
+        var status = true
+        $.ajax({
+            url: '@Url.Action("CheckPMTaskAvailability", "ProjectCreation")',
+            type: "GET",
+            data: { namedata: TaskName,id:id },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != "success") {
+                    status= false;
                 }
-            });
-        }
-          ValidateData()
+            },
+            error: function (err) {
+                 alert(err);
+            }
+        });
+        return status;
     }
-   
-    function ValidateData() {
-        
-            var TaskName = $("#txtTaskName").val().trim();
-            var TaskCat = $("#drpTaskCat").val();
 
-            var lblTaskName = $("#lblTaskName").text().trim();
-            var lblTaskCat = $("#lblTaskCat").text().trim();
-
-
-            if (TaskName.length > 0 && TaskCat != 0 && 
-                lblTaskName == "" && lblTaskCat == "" ) {
-
-                $("#btnCreate").prop("disabled", false);
-                $("#btnUpdate").prop("disabled", false);
-            }
-            else {
-                $("#btnCreate").prop("disabled", true);
-                $("#btnUpdate").prop("disabled", true);
-            }
-
-
+    function TaskEstHrs() {
+         var status=true
+        var txtEstimated = $("#txtEsthrs").val();
+            //var filter =/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/  //{IMP}
+        var filter =/^([0-9]{1,2}):[0-5][0-9]$/
+        if (!filter.test(txtEstimated)) {
+            status= false;
         }
-    $("#btnCreate").on("click", function () {
-        
+        return status;
+    }
+    $('#txtEsthrs').on('keypress', function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 58)) {
+                event.preventDefault();
+                $("#lblEsthrs").html("Time Only").show().fadeOut(5000);
+            }
 
+    });
+
+    $('#txtEsthrs').keyup(function (event) {
+
+        this.value = this.value
+            .replace(/[^\d:]/g, '')             // numbers and decimals only
+            .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+            .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+            //.replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+            .replace(/(\:[0-5][0-9]{1})./g, '$1');
+
+    });
+
+    $("#btnCreate").on("click", function () {
         var TaskName = $("#txtTaskName").val().trim();
          TaskName = TaskName.replace(",", " ");
-        var TaskCat = $("#drpTaskCat").val();
+         var TaskCat = $("#drpTaskCat").val();
+        var Esthrs = $("#txtEsthrs").val().trim();
+        Esthrs = Esthrs.replace(":", ".")
 
-            if (TaskName == "") {
-                $("#lblTaskName").html("Please enter the Task Name").show().fadeOut(5000);
-                ValidateData();
-            }
-            else if (TaskCat == 0) {
-                $("#lblCustomerName").html("Please select the Task Category").show().fadeOut(5000);
-                ValidateData();
-            }
-            else {
-               
+        if (TaskCat == 0) {
+            $("#lblTaskCat").html("Please select the Task Category").show().fadeOut(5000);
+        }
+        else if (Esthrs == "") {
+            $("#lblEsthrs").html("Please enter the Estimated hours").show().fadeOut(5000);
+        }
+        else if (TaskEstHrs() == false) {
+              $("#lblEsthrs").html("Invalid Est hours").show().fadeOut(5000);
+        }
+        else if (TaskName == "") {
+            $("#lblTaskName").html("Please enter the Task Name").show().fadeOut(5000);
+        }
+        else if (PMTaskCheck(TaskName,null) == false) {
+            $("#lblTaskName").html("Task Name is already in use").show().fadeOut(5000);
+        }
+        else {
+
             $.ajax({
                     type: "POST",
-                url: '@Url.Action("PMTaskCreate", "ProjectCreation")',
+                @*url: '@Url.Action("PMTaskCreate", "ProjectCreation")',*@
+                url: '@Url.Action("PMTaskAddEdit", "ProjectCreation")',
                 data: {
                     PMTaskName: TaskName,
-                    PMTaskCategoryID: TaskCat
+                    PMTaskCategoryID: TaskCat,
+                    EST_hours:Esthrs
                 },
                     success: function (response) {
                         if (response == "success") {
@@ -185,7 +178,7 @@
                             loadPM();
                             Reset();
                             //$("#btnCreate").show();
-                            $("#btnCreate").prop('disabled', true);
+                           // $("#btnCreate").prop('disabled', true);
                             $(".app-main_Scroll").animate({ scrollTop: 350 }, 1000);
                         }
                     },
@@ -198,36 +191,46 @@
             });
         }
     });
-    $("#btnUpdate").on("click", function () {
 
+    $("#btnUpdate").on("click", function () {
+       
         var id = $("#proj_id").val();
         var TaskName = $("#txtTaskName").val().trim();
         TaskName = TaskName.replace(",", " ");
         var TaskCat = $("#drpTaskCat").val();
         var cre_on = $("#projcre_on").val();
         var cre_By = $("#projcre_By").val();
+        var Esthrs = $("#txtEsthrs").val().trim();
+        Esthrs = Esthrs.replace(":", ".")
 
         var model = {
             PMTaskId: id,
             PMTaskName: TaskName,
             PMTaskCategoryID: TaskCat,
+            EST_hours:Esthrs,
             Cre_on: cre_on,
             Cre_By: cre_By
         }
-        if (TaskName == "") {
+         if (TaskCat == 0) {
+            $("#lblTaskCat").html("Please select the Task Category").show().fadeOut(5000);
+        }
+        else if (Esthrs == "") {
+            $("#lblEsthrs").html("Please enter the Estimated hours").show().fadeOut(5000);
+        }
+        else if (TaskEstHrs() == false) {
+              $("#lblEsthrs").html("Invalid Est hours").show().fadeOut(5000);
+        }
+        else if (TaskName == "") {
             $("#lblTaskName").html("Please enter the Task Name").show().fadeOut(5000);
-            ValidateProject();
         }
-        else if (TaskCat == 0) {
-            $("#lblCustomerName").html("Please select the Task Category").show().fadeOut(5000);
-            ValidateProject();
+        else if (PMTaskCheck(TaskName,id) == false) {
+            $("#lblTaskName").html("Task Name is already in use").show().fadeOut(5000);
         }
-        
         else {
 
             $.ajax({
                     type: "POST",
-                    url: '@Url.Action("PMTaskEdit", "ProjectCreation")',
+                    url: '@Url.Action("PMTaskAddEdit", "ProjectCreation")',
                 data: { PMTask : model},
                     //dataType: "json",
                     success: function (response) {
@@ -239,7 +242,6 @@
                             $("#btnAddNew").hide();
                             $("#btnUpdate").hide();
                             $("#btnCreate").show();
-                            $("#btnCreate").prop('disabled', true);
                             $("#prjtCreate").show();
                             $("#prjtUpdate").hide();
                             $(".app-main_Scroll").animate({ scrollTop: 350 }, 1000);
@@ -257,7 +259,9 @@
     });
 
     function Reset() {
-        $("#txtTaskName").val("")
+        $("#txtTaskName").val("");
+        $("#txtEsthrs").val("");
         $("#drpTaskCat").val(0);
     }
+
 </script>
