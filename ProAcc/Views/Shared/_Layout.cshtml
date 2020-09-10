@@ -717,6 +717,15 @@
                                     <i class="metismenu-state-icon fa fa-caret-down caret-left"></i>
                                 </a>
                                 <ul>
+                                    @*@if (User.IsInRole("Project Manager"))
+        {*@
+                                    <li>
+                                        <a href="@Url.Action("PMReport", "Report")">
+                                            <i class="metismenu-icon pe-7s-diamond"></i>
+                                            Assessment Report
+                                        </a>
+                                    </li>
+                                    @*}*@
                                     <li>
                                         <a href="@Url.Action("OverAllTaskReport", "Report")">
                                             <i class="metismenu-icon pe-7s-diamond"></i>
@@ -732,15 +741,7 @@
                                             </a>
                                         </li>
                                     }
-                                    @*@if (User.IsInRole("Project Manager"))
-                                    {*@
-                                        <li>
-                                            <a href="@Url.Action("PMReport", "Report")">
-                                                <i class="metismenu-icon pe-7s-diamond"></i>
-                                                Assessment Report
-                                            </a>
-                                        </li>
-                                    @*}*@
+
                                 </ul>
                             </li>
                             @if (User.IsInRole("Consultant") || User.IsInRole("Project Manager") || User.IsInRole("Customer"))
