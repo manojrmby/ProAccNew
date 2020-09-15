@@ -100,28 +100,28 @@ namespace ProAcc.Controllers
                 }
             }
            
-            var task = (from u in db.ProjectMonitors
-                        join v in db.ActivityMasters on u.ActivityID equals v.Activity_ID
-                        join w in db.StatusMasters on u.StatusId equals w.Id
-                        join x in db.UserMasters on u.UserID equals x.UserId
-                        join P in db.PhaseMasters on u.PhaseId equals P.Id
-                        where u.InstanceID == InstanceID
-                        orderby u.Modified_On descending
-                        select new { v.Task, x.Name,P.PhaseName, w.StatusName, u.Planed__En_Date }).ToList().Take(5);
-            dynamic output = new List<dynamic>();
+            //var task = (from u in db.ProjectMonitors
+            //            join v in db.ActivityMasters on u.ActivityID equals v.Activity_ID
+            //            join w in db.StatusMasters on u.StatusId equals w.Id
+            //            join x in db.UserMasters on u.UserID equals x.UserId
+            //            join P in db.PhaseMasters on u.PhaseId equals P.Id
+            //            where u.InstanceID == InstanceID
+            //            orderby u.Modified_On descending
+            //            select new { v.Task, x.Name,P.PhaseName, w.StatusName, u.Planed__En_Date }).ToList().Take(5);
+            //dynamic output = new List<dynamic>();
 
-            foreach (var inputAttribute in task)
-            {
-                dynamic row = new ExpandoObject();
-                row.Task = inputAttribute.Task;
-                row.Name = inputAttribute.Name;
-                row.StatusName = inputAttribute.StatusName;
-                row.Planed__En_Date = inputAttribute.Planed__En_Date;
-                row.PhaseName = inputAttribute.PhaseName;
-                output.Add(row);
-            }
+            //foreach (var inputAttribute in task)
+            //{
+            //    dynamic row = new ExpandoObject();
+            //    row.Task = inputAttribute.Task;
+            //    row.Name = inputAttribute.Name;
+            //    row.StatusName = inputAttribute.StatusName;
+            //    row.Planed__En_Date = inputAttribute.Planed__En_Date;
+            //    row.PhaseName = inputAttribute.PhaseName;
+            //    output.Add(row);
+            //}
             ViewBag.count = Count;
-            ViewBag.Taskdetails = output;
+            //ViewBag.Taskdetails = output;
             ViewBag.Project = Project;
             ViewBag.Scen= Sce;
 
