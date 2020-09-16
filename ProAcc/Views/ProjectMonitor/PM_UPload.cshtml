@@ -232,7 +232,7 @@ $('#SubmitInstance').click(function () {
         //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
         url: '@Url.Action("SubmitInstance", "Home")',
         type: "POST",
-        async: false,
+        //async: false,
         data: { 'IDInstance': IDInstance },
         success: function (result) {
             //debugger;
@@ -318,6 +318,7 @@ $('#SubmitInstance').click(function () {
     
 
     $('#btnUpload').click(function () {
+        debugger
         //$("#load1").css("display", "block");
             var InstanceId = '@Session["InstanceId"]';
             if (InstanceId != "" && InstanceId != 0) {
@@ -347,7 +348,7 @@ $('#SubmitInstance').click(function () {
                         data: fileData,
                         //async: false,
                         success: function (result) {
-                            $("#load1").css("display", "none");
+                           // $("#load1").css("display", "none");
                             if (result == 'File Uploaded Successfully!') {
                                 Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                                 Redirect();
@@ -376,14 +377,14 @@ $('#SubmitInstance').click(function () {
                             }
                         },
                         error: function (err) {
-                            $("#load1").css("display", "none");
+                            //$("#load1").css("display", "none");
                             Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             //alert(err.statusText);
                         }
                     });
                 }
                 else {
-                    $("#load1").css("display", "none");                     
+                   // $("#load1").css("display", "none");                     
                     Notiflix.Notify.Failure("Select at leaset one file .! ", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                 }
 

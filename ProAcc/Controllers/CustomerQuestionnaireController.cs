@@ -23,7 +23,7 @@ namespace ProAcc.Controllers
         Base _Base = new Base();
         public ActionResult CustomerNeedHelpIndex()
         {
-            con1.ConnectionString = ConfigurationManager.ConnectionStrings["MysqlPath"].ConnectionString;
+            con1.ConnectionString = _Base.Decrypt(ConfigurationManager.ConnectionStrings["MysqlPath"].ConnectionString);
             MySqlDataAdapter da = new MySqlDataAdapter("select * from users where active=1 AND Need_Help=1", con1);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -45,7 +45,7 @@ namespace ProAcc.Controllers
 
         public JsonResult UpdateNeepHelp(int id)
         {
-            con1.ConnectionString = ConfigurationManager.ConnectionStrings["MysqlPath"].ConnectionString;
+            con1.ConnectionString = _Base.Decrypt(ConfigurationManager.ConnectionStrings["MysqlPath"].ConnectionString);
             con1.Open();
             string q = "update users set Need_Help=0 WHERE User_ID = " + id + " ";
             MySqlCommand cmd3 = new MySqlCommand(q, con1);

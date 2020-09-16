@@ -34,7 +34,8 @@ namespace ProAcc.Controllers
             {
                 var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
                 var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
-                RoleList = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).OrderByDescending(x => x.Cre_on).ToList();
+                var CustomerRoleId = db.RoleMasters.Where(x => x.RoleName == "Customer" && x.isActive == true).FirstOrDefault().RoleId;
+                RoleList = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId&& x.RoleId != CustomerRoleId).OrderByDescending(x => x.Cre_on).ToList();
             }
             catch (Exception ex)
             {
