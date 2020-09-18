@@ -245,7 +245,7 @@ namespace ProAcc.Controllers
                 // ViewBag.ITM = ITM;
                 //List<IssueTrackModel> ITM_Comments = _Base.Sp_GetIssueTrackData();
                 ViewBag.ITM_Comments = db.HistoryLogs.Where(x=>x.IssueTrackId==id && x.isActive==true).ToList();
-                List<UserMaster> B = _Base.Sp_EditAssignedTo(ITM.ProjectInstance_Id);
+                List<UserMaster> B = _Base.Sp_EditAssignedTo(ITM.ProjectInstance_Id,id);
                 ViewBag.AssignedTo = B;
                 
                 var loginid = Guid.Parse(Session["loginid"].ToString());
@@ -272,9 +272,9 @@ namespace ProAcc.Controllers
             }
         }
 
-        public JsonResult EditAssignedTo(Guid Iid)
+        public JsonResult EditAssignedTo(Guid Iid,Guid id)
         {
-            List<UserMaster> B = _Base.Sp_EditAssignedTo(Iid);
+            List<UserMaster> B = _Base.Sp_EditAssignedTo(Iid,id);
             return Json(B, JsonRequestBehavior.AllowGet);
         }
 
@@ -305,7 +305,8 @@ namespace ProAcc.Controllers
         } 
         public JsonResult AssignedTo(Guid Pid)
         {
-            List<UserMaster> B = _Base.Sp_AssignedTo(Pid);
+            var login = Session["loginid"].ToString();
+            List<UserMaster> B = _Base.Sp_AssignedTo(Pid,login);
             return Json(B, JsonRequestBehavior.AllowGet);
         }
         //public ActionResult Getdata()

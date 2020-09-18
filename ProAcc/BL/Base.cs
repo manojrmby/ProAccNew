@@ -2118,13 +2118,14 @@ namespace ProAcc.BL
         //    return p;
         //}
 
-        public List<UserMaster> Sp_AssignedTo(Guid Pid)
+        public List<UserMaster> Sp_AssignedTo(Guid Pid, String login)
         {
             List<UserMaster> ListM = new List<UserMaster>();
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
             dB.addIn("@Type", "AssignedTo");
             dB.addIn("@Project_Id", Pid);
+            dB.addIn("@Id", login);
             dt = dB.ExecuteDataTable();
             if (dt.Rows.Count > 0)
             {
@@ -2140,13 +2141,14 @@ namespace ProAcc.BL
             return ListM;
         }
 
-        public List<UserMaster> Sp_EditAssignedTo(Guid Iid)
+        public List<UserMaster> Sp_EditAssignedTo(Guid Iid,Guid id)
         {
             List<UserMaster> ListM = new List<UserMaster>();
             DataTable dt = new DataTable();
             DBHelper dB = new DBHelper("SP_IssueTrack", CommandType.StoredProcedure);
             dB.addIn("@Type", "EditAssignedTo");
             dB.addIn("@Instance_Id", Iid);
+            dB.addIn("@Id", id);
             dt = dB.ExecuteDataTable();
             if (dt.Rows.Count > 0)
             {
