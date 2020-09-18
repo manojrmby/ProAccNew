@@ -720,7 +720,7 @@
              for (var i = 0; i < ids.length; i++) {
                  var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
 
-                 if (Status_Id == 1) {
+                 if (Status_Id == 1 || Status_Id == 3) {
                      $('#jEditButton_' + ids[i]).hide();
                  }
                  else {

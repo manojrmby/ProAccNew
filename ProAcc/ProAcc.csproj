@@ -251,6 +251,7 @@
     <Content Include="Asset\MailTemplate\T5.HTML" />
     <Content Include="Asset\MailTemplate\T6.HTML" />
     <Content Include="Asset\MailTemplate\T7.html" />
+    <Content Include="Asset\MailTemplate\T8.html" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.css" />
     <Content Include="Asset\Notiflix\notiflix-2.3.1.min.js" />
     <Content Include="Asset\Notiflix\notiflix-aio-2.3.1.min.js" />
@@ -576,6 +577,10 @@
     <Content Include="Views\IssueTrack\_IssueTrackIndex.cshtml" />
     <Content Include="Views\ProjectMonitor\PM_UPload.cshtml" />
     <Content Include="Views\Resource\ResourceAllocationAll.cshtml" />
+    <Content Include="Views\Home\UpdatePassword.cshtml" />
+    <Content Include="Views\Login\Forgotpassword.cshtml" />
+    <Content Include="Views\Login\ResetLink.cshtml" />
+    <Content Include="Views\ErrorLog\Multilogin_Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

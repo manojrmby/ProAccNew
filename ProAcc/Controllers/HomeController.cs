@@ -19,6 +19,7 @@ namespace ProAcc.Controllers
         private Guid InstanceId = Guid.Empty;
         Base _Base = new Base();
         private ProAccEntities db = new ProAccEntities();
+        LogHelper _Log = new LogHelper();
         // GET: Home
         public ActionResult Home()
         {
@@ -280,7 +281,78 @@ namespace ProAcc.Controllers
         //    return Json(Instance, JsonRequestBehavior.AllowGet);
         //}
 
+        public ActionResult UpdatePassword()
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        public ActionResult UpdatePassword(UserMaster userMaster)
+        {
+            try
+            {
+                if (userMaster.Password != null)
+                {
 
+                    userMaster.Modified_On = DateTime.UtcNow;
+                    userMaster.Modified_by = Guid.Parse(Session["loginid"].ToString());
+                    userMaster.isActive = true;
+                    userMaster.Password = _Base.Encrypt(userMaster.Password.ToString());
+                    userMaster.UserId = Guid.Parse(Session["loginid"].ToString());
+                    bool Result = _Base.Sp_ResetPassword(userMaster);
+
+                    //bool Status = true;
+                    //Guid CreatedBy= Guid.Parse(Session["loginid"].ToString());
+                    //DateTime CreatedOn = DateTime.UtcNow;
+                    //bool IsValid = true;
+                    //Guid UserId = Guid.Parse(Session["loginid"].ToString()); 
+
+                    //bool Reset = _Base.Sp_ResetPasswordStatus(UserId,Status,CreatedBy, CreatedOn, IsValid);
+
+                    if (Result == true)
+                    {
+                        //Session.Clear();
+                        return Json("success", JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json("fail", JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    ViewBag.UserTypeID = db.User_Type.Where(x => x.isActive == true).ToList();
+                    var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+                    var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+                    ViewBag.RoleID = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).ToList();
+                    ViewBag.Customer_Id = db.Customers.Where(x => x.isActive == true).ToList();
+
+                    ViewBag.Message = true;
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                string Url = Request.Url.AbsoluteUri;
+                //_Log.createLog(ex, "-->Users Edit Post" + Url);
+                throw;
+            }
+        }
+
+
+        public ActionResult OldPasswordcheck(string password)
+        {
+            string passwordEncrypt = _Base.Encrypt(password);
+            var result = db.UserMasters.ToList().Exists(x => x.Password == passwordEncrypt && x.isActive == true);
+            if (result != true)
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+
+            }
+        }
 
     }
 }

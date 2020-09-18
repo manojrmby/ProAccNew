@@ -18,6 +18,21 @@
 
 
     <style>
+        .modal-backdrop.in {
+            opacity: 0.5;
+        }
+
+        .modal {
+            margin-top: 76px;
+            border-radius: 45px;
+        }
+
+        button#forgotpassword {
+            border: none;
+            background: bottom;
+            font-weight: bold;
+        }
+
         .Cl_Tagname {
             font-weight: bolder;
             font-size: 16px;
@@ -36,9 +51,8 @@
             background: #f0f5f7;
             /*background: linear-gradient(344deg, rgba(7,213,213,1) 24%, rgba(1,157,208,1) 64%) !important;*/
         }
-        .ld ld-ring ld-spin
-        {
 
+        .ld ld-ring ld-spin {
         }
     </style>
 </head>
@@ -90,10 +104,15 @@
                                 }
                                 <label id="dis"></label><br>
                             </div>
-                                <div class="container-login100-form-btn">
+
+                            <div class="container">
+                                <button type="button" class="form-control fpassword text-black-50" id="forgotpassword" data-toggle="modal" data-target="#updateModal">Forgot Password</button>
+                            </div>
+
+                            <div class="container-login100-form-btn">
                                 <button class="login100-form-btn ld-ext-right" id="loginclick" onclick="this.classList.toggle('running')" type="submit">
                                     Login
-                                <div class="ld ld-ring ld-spin"></div>
+                                    <div class="ld ld-ring ld-spin"></div>
                                 </button>
                             </div>
                         </form>
@@ -106,6 +125,7 @@
                 </div>
             </div>
         </div>
+        <div class="modal fadeIn" id="updateModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" data-url='@Url.Action("Forgotpassword","Login")'></div>
     }
     <script src="~/Asset/Scripts/jquery.min.js"></script>
     <script src="~/Asset/Scripts/bootstrap.min.js"></script>
@@ -115,6 +135,15 @@
             scale: 1.2
 
         });
+
+        $('.fpassword').click(function () {
+            var modal = $("#updateModal").data('url');
+            $.get(modal, function (data) {
+                $("#updateModal").html(data);
+                $("#updateModal").modal('show');
+            });
+        });
+
     </script>
 
 
@@ -197,6 +226,6 @@
     });*@
     </script>
 
-   
+
 </body>
 </html>

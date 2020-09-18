@@ -42,6 +42,8 @@
         <EntityTypeShape EntityType="ProAccModel.PMTaskMaster" Width="1.5" PointX="15.625" PointY="12.5" />
         <AssociationConnector Association="ProAccModel.FK_PMTaskMaster_PMTaskCategory" />
         <EntityTypeShape EntityType="ProAccModel.PMTaskMonitor_" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ProAccModel.ResetPassword" Width="1.5" PointX="5.625" PointY="5.375" />
+        <AssociationConnector Association="ProAccModel.FK_ResetPassword_UserMaster" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

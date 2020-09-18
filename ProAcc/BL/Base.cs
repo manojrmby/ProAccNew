@@ -32,11 +32,25 @@ namespace ProAcc.BL
         public LogedUser UserValidation(LogedUser user)
         {
             DataSet ds = new DataSet();
-           
+            string Browser, IP, MachineName;
+            Browser = HttpContext.Current.Request.Browser.Browser;
+            IP = HttpContext.Current.Request.UserHostAddress;
+
+            System.Net.IPHostEntry hostEntry = System.Net.Dns.GetHostEntry(IP);
+            MachineName = hostEntry.HostName;
+
+
             DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
             dB.addIn("@Type", "Login");
             dB.addIn("@UserName", user.Username);
             dB.addIn("@Password", Encrypt(user.Password));
+
+            dB.addIn("@Browser", Browser);
+            dB.addIn("@IP", IP);
+            dB.addIn("@MachineName", MachineName);
+
+
+
             ds = dB.ExecuteDataSet();
             DataTable dt = new DataTable();
             if (ds.Tables.Count != 0)
@@ -53,7 +67,7 @@ namespace ProAcc.BL
                         user.ID = Guid.Parse(dt.Rows[0][0].ToString());
                         user.Type = Convert.ToInt32(dt.Rows[0][1].ToString());
                         user.Name = dt.Rows[0][2].ToString();
-
+                        user.LogID = Guid.Parse(dt.Rows[0][3].ToString());
                         //User_ID = user.ID;
                         //User_Name = user.Name;
                         //for (int i = 0; i < dt1.Rows.Count; i++)
@@ -71,13 +85,95 @@ namespace ProAcc.BL
 
         }
 
+        public Boolean Validate_Log (Guid logid)
+        {
+            Boolean status = false;
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+            dB.addIn("@Type", "Validate_Log");
+            dB.addIn("@LogId", logid);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count>0)
+            {
+                status = true;
+            }
+            return status;
+        }
+
         public string Encrypt(string st)
         {
             return Cipher.Encrypt(st, _salt);
         }
         public string Decrypt(string st)
         {
+            
             return Cipher.Decrypt(st, _salt);
+        }
+
+
+        public Boolean Sp_ResetPasswordStatus(Guid UserId, bool Status, Guid CreatedBy, DateTime CreatedOn, bool isValid)
+        {
+            Boolean Result = false;
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+            dB.addIn("@Type", "ResetPasswordStatus");
+            dB.addIn("@UserId", UserId);
+            dB.addIn("@CreatedBy", CreatedBy);
+            dB.ExecuteScalar();
+            Result = true;
+            return Result;
+        }
+        public Boolean Sp_ResetPassword(UserMaster Data)
+        {
+            Boolean Result = false;
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+            dB.addIn("@Type", "ResetPassword");
+            dB.addIn("@UserId", Data.UserId);
+            dB.addIn("@Password", Data.Password);
+            dB.addIn("@ModifiedBy", Data.Modified_by);
+            dB.addIn("@ModifiedOn", Data.Modified_On);
+            dB.ExecuteScalar();
+            Result = true;
+            return Result;
+        }
+        //public Boolean Sp_ResetByLinkPassword(UserMaster Data,Guid ResetId)
+        //{
+        //    Boolean Result = false;
+        //    DataTable dt = new DataTable();
+        //    DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+        //    dB.addIn("@Type", "Resetpwdbylink");
+        //    dB.addIn("@UserId", Data.UserId);
+        //    dB.addIn("@Password", Data.Password);
+        //    dB.addIn("@Reset_Id", ResetId);
+        //    dB.addIn("@ModifiedBy", Data.Modified_by);
+        //    dB.addIn("@ModifiedOn", Data.Modified_On);
+        //    dB.ExecuteScalar();
+        //    Result = true;
+        //    return Result;
+        //}
+        public RstPassword Sp_GetResetId(Guid Id)
+        {
+            RstPassword rm = new RstPassword();
+            DataTable dt = new DataTable();
+            DBHelper db = new DBHelper("SP_Login", CommandType.StoredProcedure);
+            db.addIn("@Type", "FetchResetId");
+            db.addIn("@UserId", Id);
+            dt = db.ExecuteDataTable();
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rm.ResetId = Guid.Parse(dr["ResetId"].ToString());
+                }
+            }
+
+            return rm;
+        }
+        public class RstPassword
+        {
+            public Guid ResetId { get; set; }
         }
         #endregion
 
@@ -2141,7 +2237,7 @@ namespace ProAcc.BL
             return ListM;
         }
 
-        public List<UserMaster> Sp_EditAssignedTo(Guid Iid,Guid id)
+        public List<UserMaster> Sp_EditAssignedTo(Guid Iid, Guid id)
         {
             List<UserMaster> ListM = new List<UserMaster>();
             DataTable dt = new DataTable();
@@ -2913,6 +3009,33 @@ namespace ProAcc.BL
             return Status;
         }
 
+
+        public Boolean AddResetMail(Guid ResetId, Guid UserID, String emailId, String msg)
+        {
+            Boolean Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper Db1 = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+                Db1.addIn("@Type", "ResetMail");
+                Db1.addIn("@UserID", UserID);
+                Db1.addIn("@Q_Mail", emailId);
+                Db1.addIn("@Q_Name", msg);
+                Db1.addIn("@PM_ID", ResetId);
+                Db1.addIn("@Cre_By", UserID);
+                DataTable dt = new DataTable();
+                dt = Db1.ExecuteDataTable();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "-->Reset_Mail" + ex.Message.ToString());
+            }
+
+            return Status;
+        }
 
         //public Boolean AddIssueTrack_Mail(IssueTrackModel ITM)
         //{
