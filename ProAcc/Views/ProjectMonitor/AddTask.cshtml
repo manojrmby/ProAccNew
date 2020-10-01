@@ -1,0 +1,152 @@
+﻿
+    <link href="~/Asset/css/Activity.css" rel="stylesheet" />
+<button class="btn-wide mb-2 mr-2 btn btn-primary form-control" id="AddTask">Add Task</button>
+    <div class="w3-container">
+        <div id="id01" class="w3-modal">
+            <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:110%;">
+                <div class="w3-container" style="margin:0 auto !important;">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <div class="row" style="margin-top:3%;">
+                        <div class="col-10">
+                            <div class="form-group">
+                                <label class="control-label col-md-4 required">Task</label>
+                                <div class="col-md-10" style="border: 1px solid #ccc;border-radius: 4px;box-sizing: border-box;">
+                                    <input type="text" class="form-control" id="txtTask" />
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblTask">&nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 required">Phase</label>
+                                <div class="col-md-10">
+                                    <input id="drphiddenPhase" type="hidden" />
+                                    <select class="form-control" id="drpPhase">
+                                        <option value="0">Select Phase</option>
+                                        @foreach (var item in ViewBag.Phase)
+                                        {
+                                            <option value="@item.Id">@item.PhaseName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblPhase">&nbsp;</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4 required">Application Area</label>
+                                <div class="col-md-10">
+                                    <input id="drphiddenApplicationArea" type="hidden" />
+                                    <select class="form-control" id="drpApplicationArea">
+                                        <option value="0">Select Application Area</option>
+                                        @foreach (var item in ViewBag.ApplicationArea)
+                                        {
+                                            <option value="@item.Id">@item.ApplicationArea</option>
+                                        }
+                                    </select>
+                                    <input type="hidden" id="hiddenActivityId" />
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblApplicationArea">&nbsp;</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4 required">Building Block</label>
+                                <div class="col-md-10">
+                                    <input id="drphiddenBlock" type="hidden" />
+                                    <select class="form-control" id="drpBlock">
+                                        <option value="0">Select Building Block</option>
+                                        @foreach (var item in ViewBag.Block)
+                                        {
+                                            <option value="@item.block_ID">@item.Block_Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblBlock">&nbsp;</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4 required">Role</label>
+                                <div class="col-md-10">
+                                    <input id="drphiddenRole" type="hidden" />
+                                    <select class="form-control" id="drpRole">
+                                        <option value="0">Select Role</option>
+                                        @foreach (var item in ViewBag.Role)
+                                        {
+                                            <option value="@item.RoleId">@item.RoleName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblRole">&nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 required">Est.Hrs HH:MM</label>
+                                <div class="col-md-10" style="border: 1px solid #ccc;border-radius: 4px;box-sizing: border-box;">
+                                    <input type="text" class="form-control" id="txtEstimated" placeholder="00:00" />
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblEstimated">&nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="button" value="Create" class="btn btn-primary" id="btnAddTask" />
+                            </div>
+                        </div>                                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function () {
+        $("#AddTask").on("click", function () {
+             document.getElementById('id01').style.display = 'block';
+        })
+
+        $("#btnAddTask").on("click", function () {
+             var Task = $("#txtTask").val();
+            Task = Task.replace(/,/g, " ");
+            var ApplicationArea = $("#drpApplicationArea").val();
+            var Phase = $('#drpPhase').val();
+            var Role = $('#drpRole').val();
+            var BlockId = $('#drpBlock').val();
+            var Estimated = $("#txtEstimated").val();
+            Estimated = Estimated.replace(/:/g, ".");
+
+            var model = {
+                Task: Task,
+                PhaseID: Phase,
+                BuildingBlock_id: BlockId,
+                EST_hours:Estimated,
+                ApplicationAreaID: ApplicationArea,
+                RoleID:Role
+            }
+            if (Task == "") {
+                $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
+            }
+            else if (ApplicationArea == 0) {
+                $("#lblApplicationArea").html("Please select the ApplicationArea").show().fadeOut(5000);            
+            }
+            else if (Phase == 0) {
+                $("#lblPhase").html("Please select the Phase").show().fadeOut(5000);
+            }
+            else if (Role == 0) {
+                $("#lblRole").html("Please select the Role").show().fadeOut(5000);
+            }
+            else if (BlockId == 0) {
+                $("#lblBlock").html("Please select the Building Block").show().fadeOut(5000);
+            }
+            else if (Estimated == "") {
+                $("#lblEstimated").html("Please fill the Estimated hours").show();
+            }
+        })
+        
+    })
+</script>
+

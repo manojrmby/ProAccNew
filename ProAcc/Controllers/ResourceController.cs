@@ -36,7 +36,7 @@ namespace ProAcc.Controllers
 
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
-
+        
         public ActionResult UpdateResource(ProjectMonitorModel Data)
         {
             Data.Instance = Guid.Parse(Session["InstanceId"].ToString());

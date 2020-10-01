@@ -576,6 +576,7 @@
     <Content Include="Views\IssueTrack\_IssueTrackIndex.cshtml" />
     <Content Include="Views\ProjectMonitor\PM_UPload.cshtml" />
     <Content Include="Views\Resource\ResourceAllocationAll.cshtml" />
+    <Content Include="Views\ProjectMonitor\AddTask.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

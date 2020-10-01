@@ -1343,6 +1343,30 @@ namespace ProAcc.BL
 
             return L;
         }
+
+        public List<ActivityMaster> GetActivity(int Id,Guid Instance)
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetTaskFromPhase");
+            dB.addIn("@Instance", Instance);
+            dB.addIn("@ID", Id);
+            dt = dB.ExecuteDataTable();
+            List<ActivityMaster> L = new List<ActivityMaster>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ActivityMaster P = new ActivityMaster();
+                    P.Activity_ID = Convert.ToInt32(dr["Activity_ID"].ToString());
+                    P.Task = dr["Task"].ToString();
+                    L.Add(P);
+                }
+            }
+
+            return L;
+        }
+
         public List<StatusMaster> GetStatus()
         {
             DataTable dt = new DataTable();
@@ -1601,7 +1625,8 @@ namespace ProAcc.BL
                 dB.addIn("@Cre_By", PM.Cre_By);
                 dB.addIn("@Id", PM.Id);
                 dB.ExecuteScalar();
-                Boolean s = UpdateMonitor_Mail(PM, PhaseId);
+                //Boolean s = UpdateMonitor_Mail(PM, PhaseId);
+                Boolean s = true;
                 if (s)
                     Status = true;
                 
@@ -2790,6 +2815,38 @@ namespace ProAcc.BL
 
         }
 
+        public Boolean Sp_AddTask(Guid Instance, ProjectMonitorModel Data)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_ProjectMonitor", CommandType.StoredProcedure);
+                
+                dB.addIn("@Type", "GetTask");                
+                dB.addIn("@Task", Data.Task);
+                dB.addIn("@InstunceID", Instance);
+                dB.addIn("@BuildingBlock_id", Data.BuldingBlockID);
+                dB.addIn("@PhaseID", Data.PhaseId);
+                dB.addIn("@PreviousId", Data.PreviousID);
+                dB.addIn("@ApplicationAreaID", Data.ApplicationAreaID);
+                dB.addIn("@RoleID", Data.RoleID);
+                dB.addIn("@Notes", Data.Notes);
+                dB.addIn("@EST_hours", Data.EST_hours);
+                dB.addIn("@UserID", Data.UserID);
+                dB.addIn("@Cre_By", Data.Cre_By);                
+
+                dB.Execute();// ExecuteScalar();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
 
         #region Mail
 

@@ -227,6 +227,41 @@ namespace ProAcc.Controllers
             //}
             return Json(P, JsonRequestBehavior.AllowGet);
         }
+
+        //public ActionResult PreviousTask()
+        //{
+        //    int id;
+        //    if (Session["PhaseID"] != null)
+        //    {
+        //        id = Convert.ToInt32(Session["PhaseID"].ToString());
+        //    }
+        //    else
+        //    {
+        //        id = 1;
+        //    }
+
+        //    List<ActivityMaster> P = _Base.GetActivity(id);
+
+        //    return Json(P, JsonRequestBehavior.AllowGet);
+        //}
+
+        public ActionResult PreviousTaskPhase(int PhaseID)
+        {
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            List<ActivityMaster> P = _Base.GetActivity(PhaseID,Instance);
+
+            return Json(P, JsonRequestBehavior.AllowGet);
+        }
+
+        //[HttpGet]
+        //[Route("GetPhaseID/{id}")]
+        //public JsonResult GetPhaseID(int id)
+        //{
+        //    //List<ActivityMaster> P = _Base.GetActivity(id);
+        //    Session["PhaseID"] = id;
+        //    return Json("success",JsonRequestBehavior.AllowGet);
+        //}
+
         public ActionResult GetStatus()
         {
             List<StatusMaster> P = _Base.GetStatus();
@@ -276,6 +311,23 @@ namespace ProAcc.Controllers
         }
 
         #endregion
+        public ActionResult AddTask(ProjectMonitorModel Data)
+        {
+            Boolean Result = false;
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
+            Result = _Base.Sp_AddTask(Instance, Data);
+            if (Result == true)
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+           
+        } 
+        
 
         [ChildActionOnly]
         public PartialViewResult Monitor()
@@ -291,6 +343,17 @@ namespace ProAcc.Controllers
             ViewBag.Project = TempData["Project"];
             return PartialView("InstanceSelection");
         }
+        //[ChildActionOnly]
+        //public PartialViewResult AddTask()
+        //{
+        //    ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true).OrderBy(x => x.Id);
+        //    var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
+        //    var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
+        //    ViewBag.Role = db.RoleMasters.Where(x => x.isActive == true && x.RoleId != adminRoleId && x.RoleId != pmRoleId).OrderBy(x => x.RoleName);
+        //    ViewBag.Block = db.Buldingblocks.Where(x => x.isActive == true).OrderBy(x => x.Block_Name);
+        //    ViewBag.ApplicationArea = db.ApplicationAreaMasters.Where(x => x.isActive == true).OrderBy(x => x.ApplicationArea);
+        //    return PartialView("AddTask");
+        //}
 
         public ActionResult GetBlock()
         {

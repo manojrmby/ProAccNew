@@ -12,6 +12,7 @@
         //debugger;
        // LoadTable(1);
     });
+  
     var useCustomDialog = false, oldInfoDialog = $.jgrid.info_dialog;
     function LoadTable(Instance) {
 
@@ -127,11 +128,18 @@
         $("#jqGrid").jqGrid({
             url: "@Url.Action("GetData","ProjectMonitor",new { Phase_ID=TempData["PhaseID"]})",
             datatype: "json",
-           // editurl: "@Url.Action("SubmitProjectMonitor","ProjectMonitor")",
+            @*editurl: "@Url.Action("SubmitAddTask","ProjectMonitor")",*@
             colModel: [
                  {
                     label: 'Id', name: 'Id', index: 'Id', width: 70,
                      align: 'center', editable: true, hidden: true,
+                },
+                {
+                    label: 'Building Block', name: 'BuldingBlockID',index: 'BuldingBlockID', width: 100, editable: true,hidden: true, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                   editoptions: {
+                        value: GetBlock()
+                    }
                 },
                 {
                     label: 'Building Block', name: 'BuldingBlockID', index: 'BuldingBlockID', width: 100, editable: false, classes: 'wrapColumnText',
@@ -149,8 +157,15 @@
                         edithidden: true
                     },
                     editoptions: {
-                        value: GetPhaseDropDown()
-                    }
+                        value: GetPhaseDropDown(),
+                        "dataEvents":[{
+                            "type":"change",
+                            "fn": function (e) {
+                               GetPreviousTaskID($("#PhaseId").val())
+                                
+                            }
+                        }]
+                    },
                 },
                 {
                     label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,classes: 'wrapColumnText',
@@ -165,6 +180,7 @@
 
 
                 },
+
                 {
                     label: 'Application Area', name: 'ApplicationAreaID',index: 'ApplicationAreaID', width: 100, editable: false, classes: 'wrapColumnText',
                     cellEdit: true, edittype: 'select', formatter: 'select',
@@ -174,7 +190,32 @@
 
                 },
                 {
-                    label: 'Sequence ', name: 'SequenceNum', width: 50,  editable: true, hidden: true,
+                    label: 'Application Area', name: 'ApplicationAreaID',index: 'ApplicationAreaID', width: 100, editable: true,hidden:true, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                   editoptions: {
+                        value: GetApplicationAreaDropDown()
+                    }
+
+                },
+                {
+                    label: 'Role', name: 'RoleID',index: 'RoleID', width: 100, editable: true,hidden:true, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        value: GetRoleDropDown(),
+                        dataEvents: [
+                        {
+                            type: 'change',
+                            fn: function (e) {
+                               UpdateUserByRole($("#RoleID").val());
+                            }
+                        }]
+
+                        //value: GetApplicationAreaDropDown()
+                    }
+
+                },
+                {
+                    label: 'Sequence ', name: 'SequenceNum', width: 50,  editable: false, hidden: true,
                     editrules: {
                         required: true,
                         edithidden: true
@@ -216,6 +257,14 @@
                         value: GetUserDropDown()
                     }
                 },
+                {
+                    label: 'Owner', name: 'UserID', index: 'UserID', width: 75, align: 'center', editable: true,hidden:true,
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                        //value: GetUserDropDown()
+                    }
+                },
+                
                 {
                     label: 'Status', name: 'StatusId', index: 'StatusId', width: 100,  align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
@@ -289,6 +338,14 @@
                     editoptions: { dataInit: Actual_En_Date }
                 },
                 {
+                    label: 'Previous Task', name: 'PreviousID',index: 'PreviousID', width: 100, editable: true,hidden:true, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                    editoptions: {
+                       // value:GetPreviousTask()
+                       // value: GetApplicationAreaDropDown()
+                    }
+                },
+                {
                     label: 'Comments', name: 'Notes', edittype: "textarea",classes: 'wrapColumnText',
                     wrap: "on",
                     editrules: {
@@ -304,7 +361,7 @@
                         else
                                 return [true, ""];
                         }
-                    }, "editable": true, "width": 100,
+                    }, "editable": true,hidden:false, "width": 100,
                     //,editrules: { "edithidden": true, required:true }, "editable": true, "width": 100,
                     //editoptions: {
                     //    "class": "", "rows": 5, "wrap": "off", "style": "width:200px",
@@ -327,8 +384,14 @@
                         delbutton: false,
 
                         onEdit: function (rowid) {
+                            //var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                            //for (var i = 0; i < ids.length; i++) {
+                            //        $('#jEditButton_' + ids[i]).hide();
+                            //}
+
                             $("#" + rowid + "_StatusId").addClass("fit_Data");
-                             Show_PMEdit();
+                            Show_PMEdit();
+
                         },
 
                         editformbutton: false,//Determines if popup should open or not
@@ -484,6 +547,10 @@
                     $('#jqGrid').jqGrid('setCell', ids[i], 'Actual_St_hrs',Actual_St_hours);
                 }
 
+                var UserType ="@Session["UserType"].ToString()"
+                if (UserType != 'Project Manager') {
+                    $("#add_jqGrid").addClass("ui-pg-button ui-disabled");
+                }
             },
             gridComplete: function () {
 
@@ -600,10 +667,10 @@
             //    }
             //}
             //alert(id);
-
+       
         $('#jqGrid').navGrid('#jqGridPager',
-            // the buttons to appear on the toolbar of the grid
-            { edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
+            // the buttons to appear on the toolbar of the grid        
+            {edit: false, add: true, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false},
             // options for the Edit Dialog
             {
                 editCaption: "The Edit Dialog",
@@ -625,39 +692,37 @@
             },
             // options for the Add Dialog
             {
+                @*url: "@Url.Action("AddTask","ProjectMonitor")",*@
                 closeAfterAdd: true,
                 recreateForm: true,
                 beforeShowForm: function (form) {
-
-                    //var nameColumnField = $('#tr_Task', form).show();
-                    //$('#tr_Task', form).show();
-
-                    //$('<tr class="FormData" id="tr_AddInfo"><td class="CaptionTD ui-widget-content"><b>Additional Information:</b></td></tr>').insertAfter (nameColumnField);
-                    // debugger;
-                    $('#PhaseId')
-                        .val(5)//AssumentID
-                        .prop("disabled", true);
+                    //$('#PhaseId').val(5).prop("disabled", true);
                     $("#tr_Task_Other_Environment").hide();
                     $("#tr_Dependency").hide();
                     $("#tr_Pending").hide();
                     $("#tr_Delay_occurred").hide();
-                    $("#tr_StatusID").hide();
-                    $("#tr_EST_hours").hide();
+                    $("#tr_StatusId").hide();
+                    //$("#tr_EST_hours").hide();
                     $("#tr_Actual_St_hours").hide();
                     $("#tr_Planed__St_Date").hide();
                     $("#tr_Actual_St_Date").hide();
                     $("#tr_Planed__En_Date").hide();
                     $("#tr_Actual_En_Date").hide();
-                    $("#tr_Notes").hide();
-                    // $grid.jqGrid('showCol', 'Id');
-                    //$grid.jqGrid(‘hideCol’, 'Task_Other_Environment');
-                    // debugger;
-                    //alert("Mano");
+                    $("#tr_BuldingBlockID").show();
+                    $("#tr_ApplicationAreaID").show();
+                    $("#tr_RoleID").show();
+                    $("#tr_PreviousID").show();
+                    $("#tr_UserID").show();
                 },
-
+                 reloadAfterSubmit: true,
                 errorTextFormat: function (data) {
                     return 'Error: ' + data.responseText
-                }
+                },
+                addCaption: "Add Task",
+                onclickSubmit: function (response, postdata) {
+                    AddTask(postdata);
+                    closeAfterAdd: true
+		        }
             },
             // options for the Delete Dailog
             {
@@ -684,11 +749,106 @@
             }
         });
     }
+
+    
+     function UpdateUserByRole(RoleID) {
+         $("#UserID")
+            .html("<option value=''>Loading User...</option>")
+            .attr("disabled", "disabled");
+        $('#UserID').empty()
+        $.ajax({
+            url: '@Url.Action("GetUser","ProjectMonitor")'+"?RoleID="+RoleID,
+            dataType: "json",
+            async: false,
+			contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                $("#UserID")
+                    .removeAttr("disabled");
+                $.each(res, function (data, value) {
+                    var d = "00000000-0000-0000-0000-000000000000"
+                    if (value.UserId!=d) {
+                         $("#UserID").append($("<option></option>").val(value.UserId).html(value.Name));
+                    }
+
+                })
+            }
+        });
+    }
+
+    function GetPreviousTaskID(PhaseID) {
+         $("#PreviousID")
+            .html("<option value=''>Loading User...</option>")
+            .attr("disabled", "disabled");
+        $('#PreviousID').empty()
+        $.ajax({  
+             url: '@Url.Action("PreviousTaskPhase","ProjectMonitor")'+"?PhaseID="+PhaseID, 
+            dataType: "json",
+            async: false,
+			contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                $("#PreviousID")
+                    .removeAttr("disabled");
+                $.each(res, function (data, value) {                  
+                   $('#PreviousID').append($("<option value='" + value.Activity_ID + "'>" + value.Task + "</option>"));                                                            
+                })
+            },
+            error: function (data) {
+                 alert("GetPreviousTaskID phaseid fail");
+            }
+        });
+    }
+
+    function AddTask(postdata) {
+        
+        var EST_hours = postdata.EST_hrs;
+         EST_hours = EST_hours.replace(":", ".");
+        var BuldingBlockID= postdata.BuldingBlockID;
+        var PhaseId= postdata.PhaseId;
+        var ApplicationAreaID= postdata.ApplicationAreaID;
+        var Task= postdata.Task;
+        var Notes= postdata.Notes;
+        var RoleID = postdata.RoleID;
+        var PreviousID = postdata.PreviousID;
+        var UserID = postdata.UserID;
+
+         $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddTask","ProjectMonitor")',
+             data: {
+
+                 EST_hours:EST_hours,
+                 BuldingBlockID: BuldingBlockID,
+                 PhaseId: PhaseId,
+                 ApplicationAreaID: ApplicationAreaID,
+                 Task: Task,
+                 Notes: Notes,
+                 RoleID: RoleID,
+                 PreviousID: PreviousID,
+                 UserID: UserID
+             },
+   //         dataType: "json",
+			//async: false,
+   //         contentType: "application/json; charset=utf-8",
+             success: function (Data) {
+                 if (Data == 'success') {
+                     //$(".ui-jqdialog-titlebar-close table-active").click();
+                     $('#jqGrid').trigger('reloadGrid');
+                 }
+                 else {
+                     alert("please enter all the details");
+                 }
+             },
+             error: function (data) {
+                   alert("GetPhase fail");
+             }
+         });
+    }
     function Show_PMEdit() {
         var selectedRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
          var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
         var UserType ="@Session["UserType"].ToString()"
-        if (UserType == 'Project Manager') {
+        //if (UserType == 'Project Manager')
+        {
             //debugger;
             for (var i = 0; i < ids.length; i++) {
                 $('#jEditButton_' + ids[i]).hide();
@@ -746,23 +906,23 @@
             var Planed__En_Date = jQuery("#jqGrid").jqGrid('getColProp', 'Planed__En_Date');
                 Planed__En_Date.editable = false;
             //debugger;
-            for (var i = 0; i < ids.length; i++) {
+            //for (var i = 0; i < ids.length; i++) {
 
-                var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
-                if (Status_Id == 1|| Status_Id == 2) {
-                    j = i;
-                    //break;
-                }
-                $('#jEditButton_' + ids[i]).hide();
-            }
+            //    var Status_Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId')
+            //    if (Status_Id == 1|| Status_Id == 2) {
+            //        j = i;
+            //        //break;
+            //    }
+            //   $('#jEditButton_' + ids[i]).hide();
+            //}
 
-            var EditFlag = false;
+           // var EditFlag = false;
             //  debugger;
             for (var k = 0; k < ids.length; k++) {
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
-                if ((Status_Id == 5 || Status_Id == 2 ) && !EditFlag) {
+                if ((Status_Id == 5 || Status_Id == 2 )) { // && !EditFlag
                     $('#jEditButton_' + ids[k]).show();
-                    EditFlag = true;
+                    //EditFlag = true;
                 }
                 //else {
                 //    $('#jEditButton_' + ids[k]).hide();
@@ -794,7 +954,6 @@
                     if (User_ID != loginid) {
                         $('#jEditButton_' + ids[i]).hide();
                     }
-
                 }
             }
         }
@@ -816,28 +975,59 @@
 
 
     function GetPhaseDropDown() {
-				 var Parameters = {};
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("GetPhase","ProjectMonitor")',
-                    //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
-                    dataType: "json",
-					async: false,
-                    contentType: "application/json; charset=utf-8",
-                    success: function (Data) {
-						 for (var i = 0; i < Data.length; i++) {
-                           var obj = {};
-                             var PhaseName = Data[i].PhaseName;
-                            var key = ""+Data[i].Id;
-                            Parameters[key] = PhaseName;
-                        }
-                    },
-                    error: function (data) {
-                        alert("GetPhase fail");
-                    }
-                });
-				return Parameters;
+		 var Parameters = {};
+         $.ajax({
+              type: "POST",
+              url: '@Url.Action("GetPhase","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+              dataType: "json",
+		      async: false,
+              contentType: "application/json; charset=utf-8",
+              success: function (Data) {
+              var PhaseName = 'Select Phase';
+              var key = '0';
+              Parameters[key] = PhaseName;
+				 for (var i = 0; i < Data.length; i++) {
+                      var obj = {};
+                       PhaseName = Data[i].PhaseName;
+                       key = ""+Data[i].Id;
+                       Parameters[key] = PhaseName;
+                 }
+              },
+              error: function (data) {
+                   alert("GetPhase fail");
+              }
+          });
+		return Parameters;
     }
+     function GetRoleDropDown() {
+        var Parameters = {};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetRole","ProjectMonitor")',
+            //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+               var RoleName = 'Select Role';
+                var key = '0';
+               Parameters[key] = RoleName;
+                for (var i = 0; i < Data.length; i++) {
+                    var obj = {};
+                     RoleName = Data[i].RoleName;
+                     key = "" + Data[i].RoleId;
+                    Parameters[key] = RoleName;
+                }
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+        return Parameters;
+
+    }
+
     function GetApplicationAreaDropDown() {
 				 var Parameters = {};
                 $.ajax({
@@ -941,6 +1131,31 @@
         }
     });
 	return Parameters;
+    }
+    function GetPreviousTask() {
+
+        var Parameters = {};
+       
+        $.ajax({
+               type: "POST",
+                url: '@Url.Action("PreviousTask","ProjectMonitor")',
+                //data: { id: id },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: false,
+            success: function (Data) {
+                for (var i = 0; i < Data.length; i++) {
+                    var obj = {};
+                    var Name = Data[i].Task;
+                    var key = "" + Data[i].Activity_ID;
+                    Parameters[key] = Name;
+                }
+            },
+            error: function (data) {
+                alert("GetPreviousTask fail");
+            }
+        })
+        return Parameters;
     }
 
     function GetUserDropDown() {
