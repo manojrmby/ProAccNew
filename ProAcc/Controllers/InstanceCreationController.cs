@@ -16,6 +16,7 @@ namespace ProAcc.Controllers
     public class InstanceCreationController : Controller
     {
         ProAccEntities db = new ProAccEntities();
+        Base _Base = new Base();
         // GET: InstanceCreation
         public ActionResult Index()
         {
@@ -86,6 +87,16 @@ namespace ProAcc.Controllers
             return PartialView("_InstanceIndex", InstanceList);
         }
 
+        public ActionResult GetInstancesByProject(Guid id)
+        {
+            var InstanceList = (from e in db.Instances
+                                join c in db.Projects on e.Project_ID equals c.Project_Id
+                                join cu in db.Customers on c.Customer_Id equals cu.Customer_ID
+                                where e.isActive == true && c.isActive == true && cu.isActive == true && e.Project_ID==id
+                                select new { e.InstaceName,e.Instance_id}).ToList();
+            return Json(InstanceList, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public ActionResult Create(Instance instance)
         {
@@ -114,6 +125,26 @@ namespace ProAcc.Controllers
             {
                 throw;
             }
+        }
+
+
+        public ActionResult CreateClone(String InstaceName, Guid Project_ID,Guid Previous_Instance)
+        {
+            Boolean Result = false;
+            Instance Data = new Instance();
+            Data.InstaceName = InstaceName;
+            Data.Project_ID = Project_ID;
+            Data.Cre_By= Guid.Parse(Session["loginid"].ToString());
+            Result = _Base.Sp_InstanceClone(Data, Previous_Instance);
+            if(Result==true)
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         [HttpGet]

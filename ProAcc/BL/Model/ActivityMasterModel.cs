@@ -28,6 +28,8 @@ namespace ProAcc.BL.Model
         public String Role { get; set; }
         public String ApplicationArea { get; set; }
 
+        public String Tasktype { get; set; }
+        public String ParallelType { get; set; }
 
     }
 }

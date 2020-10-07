@@ -22,6 +22,9 @@ namespace ProACC_DB
         public int ApplicationAreaID { get; set; }
         public int RoleID { get; set; }
         public Nullable<decimal> EST_hours { get; set; }
+        public Nullable<bool> PM_Add { get; set; }
+        public Nullable<int> Task_id { get; set; }
+        public Nullable<System.Guid> Parallel_Id { get; set; }
         public bool isActive { get; set; }
         public System.DateTime Cre_on { get; set; }
         public System.Guid Cre_By { get; set; }
@@ -29,8 +32,6 @@ namespace ProACC_DB
         public Nullable<System.Guid> Modified_by { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual ApplicationAreaMaster ApplicationAreaMaster { get; set; }
-        public virtual Buldingblock Buldingblock { get; set; }
         public virtual PhaseMaster PhaseMaster { get; set; }
         public virtual RoleMaster RoleMaster { get; set; }
     }

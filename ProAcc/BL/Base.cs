@@ -2317,6 +2317,9 @@ namespace ProAcc.BL
                     a.Phase = dr["Phase"].ToString();
                     a.Role = dr["Role"].ToString();
                     a.ApplicationArea = dr["ApplicationArea"].ToString();
+                
+                    a.Tasktype = dr["TaskType"].ToString();
+                    a.ParallelType = dr["ParallelType"].ToString();
 
                     AMM.Add(a);
                 }
@@ -2799,6 +2802,11 @@ namespace ProAcc.BL
                 dB.addIn("@RoleID", AM.RoleID);
                 dB.addIn("@EST_hours", AM.EST_hours);
                 dB.addIn("@Cre_By", AM.Modified_by);
+               
+                dB.addIn("@PM_Add", 0);
+                dB.addIn("@Task_Id", AM.TaskId);
+                dB.addIn("@Parallel_Id", AM.ParallelId);
+ 
 
                 dB.Execute();// ExecuteScalar();
 
@@ -2838,6 +2846,30 @@ namespace ProAcc.BL
 
                 dB.Execute();// ExecuteScalar();
 
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
+        
+        public Boolean Sp_InstanceClone(Instance Data, Guid Previous_Instance)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_Instance", CommandType.StoredProcedure);
+                
+                dB.addIn("@Type", "InstanceClone");                
+                dB.addIn("@Project_ID", Data.Project_ID);
+                dB.addIn("@InstaceName", Data.InstaceName);
+                dB.addIn("@Previous_Instance", Previous_Instance);
+                dB.addIn("@Cre_By", Data.Cre_By);
+                dB.Execute();
                 Status = true;
             }
             catch (Exception ex)

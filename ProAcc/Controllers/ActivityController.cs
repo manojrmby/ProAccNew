@@ -25,6 +25,8 @@ namespace ProAcc.Controllers
         }
         public ActionResult Create()
         {
+            ViewBag.TaskId = db.TaskType1.ToList();
+            ViewBag.ParallelId = db.ParallelTypes.ToList();
             ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true).OrderBy(x=>x.Id);
             var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
             var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;
@@ -49,10 +51,17 @@ namespace ProAcc.Controllers
             return PartialView("_ActivityCreationIndex");
         }
         [HttpGet]
+        public ActionResult GetAllTaskByParallelType(int id,Guid Parallel_Id)
+        {
+           var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id && x.Sequence_Num != null&&x.Parallel_Id== Parallel_Id).OrderBy(a => a.Sequence_Num).Select(p => new { p.Activity_ID, p.Task }).ToList();
+           return Json(Activitylist, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult GetAllTask(int id)
         {
-            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id&&x.Sequence_Num!=null).OrderBy(a => a.Sequence_Num).Select(p=> new{ p.Activity_ID,p.Task}).ToList();
-            return Json(Activitylist, JsonRequestBehavior.AllowGet);           
+           var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id && x.Sequence_Num != null).OrderBy(a => a.Sequence_Num).Select(p => new { p.Activity_ID, p.Task }).ToList();
+           return Json(Activitylist, JsonRequestBehavior.AllowGet);                              
         }
         [HttpGet]
         public ActionResult LastTask(int id)

@@ -17,6 +17,9 @@
           <Property Name="ApplicationAreaID" Type="int" Nullable="false" />
           <Property Name="RoleID" Type="int" Nullable="false" />
           <Property Name="EST_hours" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="PM_Add" Type="bit" />
+          <Property Name="Task_id" Type="int" />
+          <Property Name="Parallel_Id" Type="uniqueidentifier" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="Cre_on" Type="datetime" Nullable="false" />
           <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
@@ -189,6 +192,13 @@
           <Property Name="Modified_by" Type="uniqueidentifier" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParallelType">
+          <Key>
+            <PropertyRef Name="ParallelId" />
+          </Key>
+          <Property Name="ParallelId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParallelName" Type="int" />
+        </EntityType>
         <EntityType Name="PhaseMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -343,6 +353,13 @@
           <Property Name="Modified_by" Type="uniqueidentifier" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="TaskType1">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="TaskName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="User_Type">
           <Key>
             <PropertyRef Name="UserTypeID" />
@@ -377,30 +394,6 @@
           <Property Name="Modified_by" Type="uniqueidentifier" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK_ActivityMaster_ApplicationAreaMaster">
-          <End Role="ApplicationAreaMaster" Type="Self.ApplicationAreaMaster" Multiplicity="1" />
-          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationAreaMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ActivityMaster">
-              <PropertyRef Name="ApplicationAreaID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ActivityMaster_Buldingblock">
-          <End Role="Buldingblock" Type="Self.Buldingblock" Multiplicity="1" />
-          <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Buldingblock">
-              <PropertyRef Name="block_ID" />
-            </Principal>
-            <Dependent Role="ActivityMaster">
-              <PropertyRef Name="BuildingBlock_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ActivityMaster_PhaseMaster">
           <End Role="PhaseMaster" Type="Self.PhaseMaster" Multiplicity="1" />
           <End Role="ActivityMaster" Type="Self.ActivityMaster" Multiplicity="*" />
@@ -582,6 +575,7 @@
           <EntitySet Name="Instance" EntityType="Self.Instance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Issuetrack" EntityType="Self.Issuetrack" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MailMaster" EntityType="Self.MailMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParallelType" EntityType="Self.ParallelType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhaseMaster" EntityType="Self.PhaseMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PMTaskCategory" EntityType="Self.PMTaskCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PMTaskMaster" EntityType="Self.PMTaskMaster" Schema="dbo" store:Type="Tables" />
@@ -591,16 +585,9 @@
           <EntitySet Name="RoleMaster" EntityType="Self.RoleMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScenarioMaster" EntityType="Self.ScenarioMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StatusMaster" EntityType="Self.StatusMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskType1" EntityType="Self.TaskType1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Type" EntityType="Self.User_Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_ActivityMaster_ApplicationAreaMaster" Association="Self.FK_ActivityMaster_ApplicationAreaMaster">
-            <End Role="ApplicationAreaMaster" EntitySet="ApplicationAreaMaster" />
-            <End Role="ActivityMaster" EntitySet="ActivityMaster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ActivityMaster_Buldingblock" Association="Self.FK_ActivityMaster_Buldingblock">
-            <End Role="Buldingblock" EntitySet="Buldingblock" />
-            <End Role="ActivityMaster" EntitySet="ActivityMaster" />
-          </AssociationSet>
           <AssociationSet Name="FK_ActivityMaster_PhaseMaster" Association="Self.FK_ActivityMaster_PhaseMaster">
             <End Role="PhaseMaster" EntitySet="PhaseMaster" />
             <End Role="ActivityMaster" EntitySet="ActivityMaster" />
@@ -733,15 +720,16 @@
             <End Role="HistoryLog" EntitySet="HistoryLogs" />
           </AssociationSet>
           <EntitySet Name="FileMasters" EntityType="ProAccModel.FileMaster" />
+          <EntitySet Name="ProjectMonitors" EntityType="ProAccModel.ProjectMonitor" />
+          <EntitySet Name="PMTaskMasters" EntityType="ProAccModel.PMTaskMaster" />
+          <AssociationSet Name="FK_PMTaskMaster_PMTaskCategory" Association="ProAccModel.FK_PMTaskMaster_PMTaskCategory">
+            <End Role="PMTaskCategory" EntitySet="PMTaskCategories" />
+            <End Role="PMTaskMaster" EntitySet="PMTaskMasters" />
+          </AssociationSet>
+          <EntitySet Name="PMTaskMonitor_" EntityType="ProAccModel.PMTaskMonitor_" />
           <EntitySet Name="ActivityMasters" EntityType="ProAccModel.ActivityMaster" />
-          <AssociationSet Name="FK_ActivityMaster_ApplicationAreaMaster" Association="ProAccModel.FK_ActivityMaster_ApplicationAreaMaster">
-            <End Role="ApplicationAreaMaster" EntitySet="ApplicationAreaMasters" />
-            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ActivityMaster_Buldingblock" Association="ProAccModel.FK_ActivityMaster_Buldingblock">
-            <End Role="Buldingblock" EntitySet="Buldingblocks" />
-            <End Role="ActivityMaster" EntitySet="ActivityMasters" />
-          </AssociationSet>
+          <EntitySet Name="ParallelTypes" EntityType="ProAccModel.ParallelType" />
+          <EntitySet Name="TaskType1" EntityType="ProAccModel.TaskType1" />
           <AssociationSet Name="FK_ActivityMaster_PhaseMaster" Association="ProAccModel.FK_ActivityMaster_PhaseMaster">
             <End Role="PhaseMaster" EntitySet="PhaseMasters" />
             <End Role="ActivityMaster" EntitySet="ActivityMasters" />
@@ -750,13 +738,6 @@
             <End Role="RoleMaster" EntitySet="RoleMasters" />
             <End Role="ActivityMaster" EntitySet="ActivityMasters" />
           </AssociationSet>
-          <EntitySet Name="ProjectMonitors" EntityType="ProAccModel.ProjectMonitor" />
-          <EntitySet Name="PMTaskMasters" EntityType="ProAccModel.PMTaskMaster" />
-          <AssociationSet Name="FK_PMTaskMaster_PMTaskCategory" Association="ProAccModel.FK_PMTaskMaster_PMTaskCategory">
-            <End Role="PMTaskCategory" EntitySet="PMTaskCategories" />
-            <End Role="PMTaskMaster" EntitySet="PMTaskMasters" />
-          </AssociationSet>
-          <EntitySet Name="PMTaskMonitor_" EntityType="ProAccModel.PMTaskMonitor_" />
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
           <Property Type="Int32" Name="RC" Nullable="true" />
@@ -939,7 +920,6 @@
           <Property Name="Modified_On" Type="DateTime" Precision="3" />
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ActivityMasters" Relationship="ProAccModel.FK_ActivityMaster_ApplicationAreaMaster" FromRole="ApplicationAreaMaster" ToRole="ActivityMaster" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -998,7 +978,6 @@
           <Property Name="Modified_On" Type="DateTime" Precision="3" />
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ActivityMasters" Relationship="ProAccModel.FK_ActivityMaster_Buldingblock" FromRole="Buldingblock" ToRole="ActivityMaster" />
         </EntityType>
         <EntityType Name="MailMaster">
           <Key>
@@ -1199,77 +1178,6 @@
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="ActivityMaster">
-          <Key>
-            <PropertyRef Name="Activity_ID" />
-          </Key>
-          <Property Name="Activity_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Task" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="BuildingBlock_id" Type="Int32" Nullable="false" />
-          <Property Name="PhaseID" Type="Int32" Nullable="false" />
-          <Property Name="Sequence_Num" Type="Int32" />
-          <Property Name="ApplicationAreaID" Type="Int32" Nullable="false" />
-          <Property Name="RoleID" Type="Int32" Nullable="false" />
-          <Property Name="EST_hours" Type="Decimal" Precision="4" Scale="2" />
-          <Property Name="isActive" Type="Boolean" Nullable="false" />
-          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Cre_By" Type="Guid" Nullable="false" />
-          <Property Name="Modified_On" Type="DateTime" Precision="3" />
-          <Property Name="Modified_by" Type="Guid" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ApplicationAreaMaster" Relationship="ProAccModel.FK_ActivityMaster_ApplicationAreaMaster" FromRole="ActivityMaster" ToRole="ApplicationAreaMaster" />
-          <NavigationProperty Name="Buldingblock" Relationship="ProAccModel.FK_ActivityMaster_Buldingblock" FromRole="ActivityMaster" ToRole="Buldingblock" />
-          <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="ActivityMaster" ToRole="PhaseMaster" />
-          <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_ActivityMaster_RoleMaster" FromRole="ActivityMaster" ToRole="RoleMaster" />
-        </EntityType>
-        <Association Name="FK_ActivityMaster_ApplicationAreaMaster">
-          <End Type="ProAccModel.ApplicationAreaMaster" Role="ApplicationAreaMaster" Multiplicity="1" />
-          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationAreaMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ActivityMaster">
-              <PropertyRef Name="ApplicationAreaID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ActivityMaster_Buldingblock">
-          <End Type="ProAccModel.Buldingblock" Role="Buldingblock" Multiplicity="1" />
-          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Buldingblock">
-              <PropertyRef Name="block_ID" />
-            </Principal>
-            <Dependent Role="ActivityMaster">
-              <PropertyRef Name="BuildingBlock_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ActivityMaster_PhaseMaster">
-          <End Type="ProAccModel.PhaseMaster" Role="PhaseMaster" Multiplicity="1" />
-          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PhaseMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ActivityMaster">
-              <PropertyRef Name="PhaseID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ActivityMaster_RoleMaster">
-          <End Type="ProAccModel.RoleMaster" Role="RoleMaster" Multiplicity="1" />
-          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RoleMaster">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="ActivityMaster">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ProjectMonitor">
           <Key>
             <PropertyRef Name="Id" />
@@ -1355,6 +1263,68 @@
           <Property Name="Modified_by" Type="Guid" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="ActivityMaster">
+          <Key>
+            <PropertyRef Name="Activity_ID" />
+          </Key>
+          <Property Name="Activity_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Task" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BuildingBlock_id" Type="Int32" Nullable="false" />
+          <Property Name="PhaseID" Type="Int32" Nullable="false" />
+          <Property Name="Sequence_Num" Type="Int32" />
+          <Property Name="ApplicationAreaID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="EST_hours" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="PM_Add" Type="Boolean" />
+          <Property Name="Task_id" Type="Int32" />
+          <Property Name="Parallel_Id" Type="Guid" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_by" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="ActivityMaster" ToRole="PhaseMaster" />
+          <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_ActivityMaster_RoleMaster" FromRole="ActivityMaster" ToRole="RoleMaster" />
+        </EntityType>
+        <EntityType Name="ParallelType">
+          <Key>
+            <PropertyRef Name="ParallelId" />
+          </Key>
+          <Property Name="ParallelId" Type="Guid" Nullable="false" />
+          <Property Name="ParallelName" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TaskType1">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="TaskName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_ActivityMaster_PhaseMaster">
+          <End Type="ProAccModel.PhaseMaster" Role="PhaseMaster" Multiplicity="1" />
+          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhaseMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityMaster">
+              <PropertyRef Name="PhaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityMaster_RoleMaster">
+          <End Type="ProAccModel.RoleMaster" Role="RoleMaster" Multiplicity="1" />
+          <End Type="ProAccModel.ActivityMaster" Role="ActivityMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ActivityMaster">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1679,26 +1649,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ActivityMasters">
-            <EntityTypeMapping TypeName="ProAccModel.ActivityMaster">
-              <MappingFragment StoreEntitySet="ActivityMaster">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
-                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
-                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
-                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="EST_hours" ColumnName="EST_hours" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-                <ScalarProperty Name="ApplicationAreaID" ColumnName="ApplicationAreaID" />
-                <ScalarProperty Name="Sequence_Num" ColumnName="Sequence_Num" />
-                <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
-                <ScalarProperty Name="BuildingBlock_id" ColumnName="BuildingBlock_id" />
-                <ScalarProperty Name="Task" ColumnName="Task" />
-                <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ProjectMonitors">
             <EntityTypeMapping TypeName="ProAccModel.ProjectMonitor">
               <MappingFragment StoreEntitySet="ProjectMonitor">
@@ -1771,6 +1721,45 @@
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="PMTaskID" ColumnName="PMTaskID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityMasters">
+            <EntityTypeMapping TypeName="ProAccModel.ActivityMaster">
+              <MappingFragment StoreEntitySet="ActivityMaster">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Parallel_Id" ColumnName="Parallel_Id" />
+                <ScalarProperty Name="Task_id" ColumnName="Task_id" />
+                <ScalarProperty Name="PM_Add" ColumnName="PM_Add" />
+                <ScalarProperty Name="EST_hours" ColumnName="EST_hours" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ApplicationAreaID" ColumnName="ApplicationAreaID" />
+                <ScalarProperty Name="Sequence_Num" ColumnName="Sequence_Num" />
+                <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
+                <ScalarProperty Name="BuildingBlock_id" ColumnName="BuildingBlock_id" />
+                <ScalarProperty Name="Task" ColumnName="Task" />
+                <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParallelTypes">
+            <EntityTypeMapping TypeName="ProAccModel.ParallelType">
+              <MappingFragment StoreEntitySet="ParallelType">
+                <ScalarProperty Name="ParallelName" ColumnName="ParallelName" />
+                <ScalarProperty Name="ParallelId" ColumnName="ParallelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskType1">
+            <EntityTypeMapping TypeName="ProAccModel.TaskType1">
+              <MappingFragment StoreEntitySet="TaskType1">
+                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

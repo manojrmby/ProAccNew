@@ -23,6 +23,8 @@ namespace ProAcc.BL.Model
         public bool IsDeleted { get; set; }
 
         public int PreviousId { get; set; }
+        public int? TaskId { get; set; }
+        public Nullable<System.Guid> ParallelId { get; set; }
 
     }
 }

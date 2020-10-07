@@ -83,6 +83,9 @@
     <Compile Include="MailMaster.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParallelType.cs">
+      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
+    </Compile>
     <Compile Include="PhaseMaster.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
@@ -133,6 +136,9 @@
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
     <Compile Include="StatusMaster.cs">
+      <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaskType1.cs">
       <DependentUpon>ProAcc_DB_Entity.tt</DependentUpon>
     </Compile>
     <Compile Include="UserMaster.cs">

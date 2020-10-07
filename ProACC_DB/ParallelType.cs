@@ -12,15 +12,9 @@ namespace ProACC_DB
     using System;
     using System.Collections.Generic;
     
-    public partial class Buldingblock
+    public partial class ParallelType
     {
-        public int block_ID { get; set; }
-        public string Block_Name { get; set; }
-        public bool isActive { get; set; }
-        public System.DateTime Cre_on { get; set; }
-        public System.Guid Cre_By { get; set; }
-        public Nullable<System.DateTime> Modified_On { get; set; }
-        public Nullable<System.Guid> Modified_by { get; set; }
-        public bool IsDeleted { get; set; }
+        public System.Guid ParallelId { get; set; }
+        public Nullable<int> ParallelName { get; set; }
     }
 }

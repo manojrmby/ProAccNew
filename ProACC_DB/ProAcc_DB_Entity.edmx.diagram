@@ -33,15 +33,15 @@
         <EntityTypeShape EntityType="ProAccModel.HistoryLog" Width="1.5" PointX="9.75" PointY="22" />
         <AssociationConnector Association="ProAccModel.FK_HistoryLog_Issuetrack" />
         <EntityTypeShape EntityType="ProAccModel.FileMaster" Width="1.5" PointX="15.375" PointY="6.75" />
-        <EntityTypeShape EntityType="ProAccModel.ActivityMaster" Width="1.5" PointX="13" PointY="7.125" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_ApplicationAreaMaster" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_Buldingblock" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_PhaseMaster" />
-        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_RoleMaster" />
         <EntityTypeShape EntityType="ProAccModel.ProjectMonitor" Width="1.5" PointX="7.375" PointY="9.75" />
         <EntityTypeShape EntityType="ProAccModel.PMTaskMaster" Width="1.5" PointX="15.625" PointY="12.5" />
         <AssociationConnector Association="ProAccModel.FK_PMTaskMaster_PMTaskCategory" />
         <EntityTypeShape EntityType="ProAccModel.PMTaskMonitor_" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ProAccModel.ActivityMaster" Width="1.5" PointX="8" PointY="0.75" />
+        <EntityTypeShape EntityType="ProAccModel.ParallelType" Width="1.5" PointX="5.375" PointY="6.625" />
+        <EntityTypeShape EntityType="ProAccModel.TaskType1" Width="1.5" PointX="12.375" PointY="7.625" />
+        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_PhaseMaster" />
+        <AssociationConnector Association="ProAccModel.FK_ActivityMaster_RoleMaster" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
