@@ -99,22 +99,7 @@
                 </div>
             </div>
 
-            <div class="form-group" id="parallelhideid">
-                <label class="control-label col-md-4 ">Parallel-Name</label>
-                <div class="col-md-10">
-                    <input id="drphiddenRole" type="hidden" />
-                    <select class="form-control" id="drpParallelId">
-                        <option value="00000000-0000-0000-0000-000000000000">Select Parallel-Name</option>                       
-                        @foreach (var item in ViewBag.ParallelId)
-                        {
-                            <option value="@item.ParallelId">P @item.ParallelName</option>
-                        }
-                    </select>
-                </div>
-                <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblParallelId">&nbsp;</span>
-                </div>
-            </div>
+            
         </div>
 
         <div class="col-6">
@@ -162,16 +147,31 @@
                 </div>
             </div>
 
-
-            <div class="form-group" id="parallelhidecheck">
-                <div class="col-md-12">
-                    <input type="checkbox"  id="txtParallelCheck" name="check" />
-                    <label class="control-label col-md-4 Parallel">New Parallel Name</label>
+            <div class="form-group" id="parallelhideid">
+                <label class="control-label col-md-4 ">Parallel-Name</label>
+                <div class="col-md-10">
+                    <input id="drphiddenRole" type="hidden" />
+                    <select class="form-control" id="drpParallelId">
+                        <option value="00000000-0000-0000-0000-000000000000">New Parallel Name</option>
+                        @foreach (var item in ViewBag.ParallelId)
+                        {
+                            <option value="@item.ParallelId">P @item.ParallelName</option>
+                        }
+                    </select>
                 </div>
                 <div>
-                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblParallelcheck">&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblParallelId">&nbsp;</span>
                 </div>
             </div>
+            @*<div class="form-group" id="parallelhidecheck">
+            <div class="col-md-12">
+                <input type="checkbox"  id="txtParallelCheck" name="check" />
+                <label class="control-label col-md-4 Parallel">New Parallel Name</label>
+            </div>
+            <div>
+                &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblParallelcheck">&nbsp;</span>
+            </div>
+        </div>*@
         </div>
                 
         <div class="col-10">

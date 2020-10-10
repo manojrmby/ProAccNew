@@ -157,6 +157,18 @@ namespace ProAcc.Controllers
         {
             List<TaskType1> P = _Base.GetTaskTypeMasters();
             return Json(P, JsonRequestBehavior.AllowGet);
+        } 
+        
+        public ActionResult GetParallelNameByProject()
+        {
+            Guid InstanceId = Guid.Parse(Session["InstanceId"].ToString());
+            List<ParallelType> P = _Base.GetParallelTypeMasters(InstanceId);
+            return Json(P, JsonRequestBehavior.AllowGet);
+        }  
+        public ActionResult GetParallelName()
+        {
+            List<ParallelType> P = _Base.GetParallelType();
+            return Json(P, JsonRequestBehavior.AllowGet);
         }
 
         //public ActionResult GetPending()

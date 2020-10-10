@@ -3234,50 +3234,53 @@ namespace ProAcc.BL
         #endregion
 
 
-        //#region InstanceCreationClone InstanceCreate
-        //public Boolean Sp_InstanceClone(Instance Data, Guid Previous_Instance)
-        //{​​​​
-        //    bool Status = false;
-        //    LogHelper _log = new LogHelper();
-        //    try
-        //    {​​​​
-        //        DBHelper dB = new DBHelper("SP_Instance", CommandType.StoredProcedure);
-        //        dB.addIn("@Type", "InstanceClone");
-        //        dB.addIn("@Project_ID", Data.Project_ID);
-        //        dB.addIn("@InstaceName", Data.InstaceName);
-        //        dB.addIn("@Previous_Instance", Previous_Instance);
-        //        dB.addIn("@Cre_By", Data.Cre_By);
-        //        dB.Execute();
-        //        Status = true;
-        //    }
-        //    catch(Exception ex)
-        //    {​​​​
-        //        _log.createLog(ex);
-        //    }​​​​
-        //    return Status;
-        //}​​​​
+        public List<ParallelType> GetParallelTypeMasters(Guid InstanceId)
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetParallelTypeByProject");
+            dB.addIn("@Instance", InstanceId);
+            dt = dB.ExecuteDataTable();
+            List<ParallelType> TT = new List<ParallelType>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ParallelType P = new ParallelType();
+                    P.ParallelId = Guid.Parse(dr["ParallelId"].ToString());
+                    P.ParallelName = Convert.ToInt32(dr["ParallelName"].ToString());
+                    TT.Add(P);
+                }
+            }
 
-        //public Boolean Sp_InstanceCreate(Instance Data)
-        //{​​​​
-        //    bool Status = false;
-        //    LogHelper _log = new LogHelper();
-        //    try
-        //    {​​​​
-        //        DBHelper dB = new DBHelper("SP_Instance", CommandType.StoredProcedure);
-        //        dB.addIn("@Type", "CreateInstance");
-        //        dB.addIn("@Project_ID", Data.Project_ID);
-        //        dB.addIn("@InstaceName", Data.InstaceName);
-        //        dB.addIn("@Cre_By", Data.Cre_By);
-        //        dB.Execute();
-        //        Status = true;
-        //    }​​​​
-        //    catch (Exception ex)
-        //    {​​​​
-        //        _log.createLog(ex);
-        //    }​​​​
-        //    return Status;
-        //}​​​​
-        //#endregion
+            return TT;
+        }
+
+        public List<ParallelType> GetParallelType()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetParallelType");
+            dt = dB.ExecuteDataTable();
+            List<ParallelType> TT = new List<ParallelType>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ParallelType P = new ParallelType();
+                    P.ParallelId = Guid.Parse(dr["ParallelId"].ToString());
+                    P.ParallelName = Convert.ToInt32(dr["ParallelName"].ToString());
+                    TT.Add(P);
+                }
+            }
+
+            return TT;
+        }
+
+
+
+
+
 
         #region PMUpload
         public Boolean PMUpload(string filetype, string fileName, Guid Instance_ID, Guid User_ID)

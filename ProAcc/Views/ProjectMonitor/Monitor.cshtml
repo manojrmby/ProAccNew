@@ -214,12 +214,17 @@ table > tbody > tr > td > label{
                         }]
                     }
                 },                
+                //{
+                //    label: 'Parallel Name', name: 'Parallel_Id',index: 'Parallel_Id', width: 100, editable: false,editable: false,classes: 'wrapColumnText',
+                //    cellEdit: true, edittype: 'select', formatter: 'select',
+                //   editoptions: {
+                //      value: GetParallelName()
+                //    }
+
+                //},
                 {
                     label: 'Parallel Name', name: 'Parallel_Id',index: 'Parallel_Id', width: 100, editable: false,editable: true, hidden:true, classes: 'wrapColumnText',
                     cellEdit: true, edittype: 'select', formatter: 'select',
-                   editoptions: {
-                        //value: GetApplicationAreaDropDown()
-                    }
 
                 },
                 {
@@ -475,7 +480,7 @@ table > tbody > tr > td > label{
             onSelectRow: editRow,
 
             serializeRowData: function (postdata) {
-
+                debugger
                 var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 
                 var EST_hours = $("#jqGrid").jqGrid('getCell', ColValue, 'EST_hrs');
@@ -840,7 +845,7 @@ table > tbody > tr > td > label{
     }
 
     function AddTask(postdata) {
-        
+        debugger
         var EST_hours = postdata.EST_hrs;
          EST_hours = EST_hours.replace(":", ".");
         var BuldingBlockID= postdata.BuldingBlockID;
@@ -850,6 +855,11 @@ table > tbody > tr > td > label{
         var Notes= postdata.Notes;
         var RoleID = postdata.RoleID;
         var PreviousID = postdata.PreviousID;
+        var Taskid = postdata.Task_id;
+        if (Taskid == '2') {
+            var ParallelID = postdata.parallel_Id;
+        }        
+
         var UserID = postdata.UserID;
 
          $.ajax({
@@ -865,14 +875,12 @@ table > tbody > tr > td > label{
                  Notes: Notes,
                  RoleID: RoleID,
                  PreviousID: PreviousID,
-                 UserID: UserID
+                 UserID: UserID,
+                 Task_id: Taskid,
+                 parallel_Id:ParallelID
              },
-   //         dataType: "json",
-			//async: false,
-   //         contentType: "application/json; charset=utf-8",
              success: function (Data) {
                  if (Data == 'success') {
-                     //$(".ui-jqdialog-titlebar-close table-active").click();
                      $('#jqGrid').trigger('reloadGrid');
                  }
                  else {
@@ -1093,10 +1101,48 @@ table > tbody > tr > td > label{
 				return Parameters;
     }
 
+    function GetParallelName() {
+        var Parameters = {};
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetParallelName","ProjectMonitor")',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (Data) {
+                        for (var i = 0; i < Data.length; i++) {
+                           var obj = {};
+                            var Name = Data[i].ParallelName;
+                            var key = "" + Data[i].ParallelId;
+                            Parameters[key] = Name;
+                        }
+                    },
+                    error: function (data) {
+                        alert("GetParallelName fail");
+                    }
+                });
+				return Parameters;
+    }
     function UpdateParallelName(Taskid) {
-        debugger
         if (Taskid == 2) {
             $("#tr_Parallel_Id").show();
+              $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetParallelNameByProject","ProjectMonitor")',
+                    //data: '{Phase: ' + JSON.stringify(Phase) + ',condition:' + JSON.stringify(condition) + '}',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        $('#Parallel_Id').append($("<option value='00000000-0000-0000-0000-000000000000'>" + 'New Parallel Name' + "</option>"));
+                        $.each(res, function (data, value) {                  
+                           $('#Parallel_Id').append($("<option value='" + value.parallelId + "'>" + 'P'+value.ParallelName + "</option>"));                                                            
+                        })
+                    },
+                    error: function (data) {
+                        alert("UpdateParallelName fail");
+                    }
+                });
         }
        
 

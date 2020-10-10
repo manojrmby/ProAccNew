@@ -117,6 +117,7 @@
                 $("#drpBlock").val(result.BuildingBlock_id);
                 $("#drpRole").val(result.RoleID);
                 $("#drpTaskType").val(result.Tasktype);
+                 $("#drpTaskType").prop("disabled", true);
                 if (result.Tasktype == '2') {
                     //$('#drpParallelId').prop('selectedIndex', 0);
                     $("#drpParallelId").val(result.Parallel_Type);
