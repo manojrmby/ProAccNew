@@ -2962,7 +2962,11 @@ namespace ProAcc.BL
                
                 dB.addIn("@PM_Add", 0);
                 dB.addIn("@Task_Id", AM.TaskId);
-                dB.addIn("@Parallel_Id", AM.ParallelId);
+                if (AM.TaskId==2 && AM.ParallelId!= Guid.Empty)
+                {
+                    dB.addIn("@Parallel_Id", AM.ParallelId);
+                }
+                
  
 
                 dB.Execute();// ExecuteScalar();
@@ -2999,6 +3003,13 @@ namespace ProAcc.BL
                 dB.addIn("@Notes", Data.Notes);
                 dB.addIn("@EST_hours", Data.EST_hours);
                 dB.addIn("@UserID", Data.UserID);
+                dB.addIn("@Task_Id", Data.Task_id);
+
+                if (Data.Task_id == 2 && Data.parallel_Id != Guid.Empty)
+                {
+                    dB.addIn("@Parallel_Id", Data.parallel_Id);
+                }
+                
                 dB.addIn("@Cre_By", Data.Cre_By);                
 
                 dB.Execute();// ExecuteScalar();

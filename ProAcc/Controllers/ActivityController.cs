@@ -53,14 +53,14 @@ namespace ProAcc.Controllers
         [HttpGet]
         public ActionResult GetAllTaskByParallelType(int id,Guid Parallel_Id)
         {
-           var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id && x.Sequence_Num != null&&x.Parallel_Id== Parallel_Id).OrderBy(a => a.Sequence_Num).Select(p => new { p.Activity_ID, p.Task }).ToList();
+           var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id && x.Sequence_Num != null&&x.Parallel_Id== Parallel_Id&& x.PM_Add==false).OrderBy(a => a.Sequence_Num).Select(p => new { p.Activity_ID, p.Task }).ToList();
            return Json(Activitylist, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult GetAllTask(int id)
         {
-           var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id && x.Sequence_Num != null).OrderBy(a => a.Sequence_Num).Select(p => new { p.Activity_ID, p.Task }).ToList();
+           var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id && x.Sequence_Num != null && x.PM_Add == false).OrderBy(a => a.Sequence_Num).Select(p => new { p.Activity_ID, p.Task }).ToList();
            return Json(Activitylist, JsonRequestBehavior.AllowGet);                              
         }
         [HttpGet]
