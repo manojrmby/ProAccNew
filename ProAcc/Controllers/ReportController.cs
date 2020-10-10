@@ -98,7 +98,7 @@ namespace ProAcc.Controllers
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             string LoginID = Session["loginid"].ToString();
             List<ProjectMonitorModel> PM = _Base.Sp_GetReportData(InstanceID, LoginID);
-            var obj = new { data = PM };
+            //var obj = new { data = PM };
             return Json(PM, JsonRequestBehavior.AllowGet);
         }
 
@@ -183,7 +183,7 @@ namespace ProAcc.Controllers
         //    var obj = new { data = PM };
         //    return Json(PM, JsonRequestBehavior.AllowGet);
         //}
-        public ActionResult GetDataReport()
+        public ActionResult GetDataReport(string Instance)
         {
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             string LoginID = Session["loginid"].ToString();

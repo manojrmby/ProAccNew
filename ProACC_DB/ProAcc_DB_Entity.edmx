@@ -314,6 +314,19 @@
           <Property Name="Modified_by" Type="uniqueidentifier" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ResetPassword">
+          <Key>
+            <PropertyRef Name="ResetId" />
+          </Key>
+          <Property Name="ResetId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -514,6 +527,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ResetPassword_UserMaster">
+          <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="1" />
+          <End Role="ResetPassword" Type="Self.ResetPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMaster">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ResetPassword">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserMaster_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
           <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="*" />
@@ -582,6 +607,7 @@
           <EntitySet Name="PMTaskMonitor " EntityType="Self.PMTaskMonitor " Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectMonitor" EntityType="Self.ProjectMonitor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResetPassword" EntityType="Self.ResetPassword" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleMaster" EntityType="Self.RoleMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScenarioMaster" EntityType="Self.ScenarioMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StatusMaster" EntityType="Self.StatusMaster" Schema="dbo" store:Type="Tables" />
@@ -627,6 +653,10 @@
           <AssociationSet Name="FK_Project_UserMaster" Association="Self.FK_Project_UserMaster">
             <End Role="UserMaster" EntitySet="UserMaster" />
             <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResetPassword_UserMaster" Association="Self.FK_ResetPassword_UserMaster">
+            <End Role="UserMaster" EntitySet="UserMaster" />
+            <End Role="ResetPassword" EntitySet="ResetPassword" />
           </AssociationSet>
           <AssociationSet Name="FK_UserMaster_Customer" Association="Self.FK_UserMaster_Customer">
             <End Role="Customer" EntitySet="Customer" />
@@ -737,6 +767,11 @@
           <AssociationSet Name="FK_ActivityMaster_RoleMaster" Association="ProAccModel.FK_ActivityMaster_RoleMaster">
             <End Role="RoleMaster" EntitySet="RoleMasters" />
             <End Role="ActivityMaster" EntitySet="ActivityMasters" />
+          </AssociationSet>
+          <EntitySet Name="ResetPasswords" EntityType="ProAccModel.ResetPassword" />
+          <AssociationSet Name="FK_ResetPassword_UserMaster" Association="ProAccModel.FK_ResetPassword_UserMaster">
+            <End Role="UserMaster" EntitySet="UserMasters" />
+            <End Role="ResetPassword" EntitySet="ResetPasswords" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
@@ -867,6 +902,7 @@
           <NavigationProperty Name="Customer" Relationship="ProAccModel.FK_UserMaster_Customer" FromRole="UserMaster" ToRole="Customer" />
           <Property Name="Countrycode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Projects" Relationship="ProAccModel.FK_Project_UserMaster" FromRole="UserMaster" ToRole="Project" />
+          <NavigationProperty Name="ResetPasswords" Relationship="ProAccModel.FK_ResetPassword_UserMaster" FromRole="UserMaster" ToRole="ResetPassword" />
         </EntityType>
         <Association Name="FK_UserMaster_RoleMaster">
           <End Type="ProAccModel.RoleMaster" Role="RoleMaster" Multiplicity="1" />
@@ -1325,6 +1361,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ResetPassword">
+          <Key>
+            <PropertyRef Name="ResetId" />
+          </Key>
+          <Property Name="ResetId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Guid" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserMaster" Relationship="ProAccModel.FK_ResetPassword_UserMaster" FromRole="ResetPassword" ToRole="UserMaster" />
+        </EntityType>
+        <Association Name="FK_ResetPassword_UserMaster">
+          <End Type="ProAccModel.UserMaster" Role="UserMaster" Multiplicity="1" />
+          <End Type="ProAccModel.ResetPassword" Role="ResetPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMaster">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ResetPassword">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1760,6 +1822,20 @@
               <MappingFragment StoreEntitySet="TaskType1">
                 <ScalarProperty Name="TaskName" ColumnName="TaskName" />
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResetPasswords">
+            <EntityTypeMapping TypeName="ProAccModel.ResetPassword">
+              <MappingFragment StoreEntitySet="ResetPassword">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ResetId" ColumnName="ResetId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

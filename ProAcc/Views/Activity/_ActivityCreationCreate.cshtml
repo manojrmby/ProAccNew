@@ -411,7 +411,7 @@
     $("#drpTaskType").change(function () {
         //var Paralleltype = $("#drpParallelId").val();
         var taskValue = $(this).children("option:selected").val();
-        if (taskValue == "1" || taskValue == "3") {
+        if (taskValue == "0" ||taskValue == "1" || taskValue == "3") {
             $("#parallelhidecheck , #parallelhideid").hide();
             $("#drpParallelId").val("");
         }

@@ -26,10 +26,10 @@ namespace ProAcc.Controllers
         public ActionResult Create()
         {
             //ViewBag.project = db.Projects.Where(x => x.isActive == true);
-            ViewBag.project = (from e in db.Projects                               
+            ViewBag.project = (from e in db.Projects
                                join cu in db.Customers on e.Customer_Id equals cu.Customer_ID
                                where e.isActive == true && cu.isActive == true
-                               select e).OrderBy(x=>x.Project_Name).ToList();
+                               select e).OrderBy(x => x.Project_Name).ToList();
             return View();
         }
 
@@ -82,8 +82,8 @@ namespace ProAcc.Controllers
             var InstanceList = (from e in db.Instances
                                 join c in db.Projects on e.Project_ID equals c.Project_Id
                                 join cu in db.Customers on c.Customer_Id equals cu.Customer_ID
-                            where e.isActive == true && c.isActive == true && cu.isActive==true
-                            select e).OrderByDescending(x=>x.Cre_on).ToList();
+                                where e.isActive == true && c.isActive == true && cu.isActive == true
+                                select e).OrderByDescending(x => x.Cre_on).ToList();
             return PartialView("_InstanceIndex", InstanceList);
         }
 
@@ -92,14 +92,15 @@ namespace ProAcc.Controllers
             var InstanceList = (from e in db.Instances
                                 join c in db.Projects on e.Project_ID equals c.Project_Id
                                 join cu in db.Customers on c.Customer_Id equals cu.Customer_ID
-                                where e.isActive == true && c.isActive == true && cu.isActive == true && e.Project_ID==id
-                                select new { e.InstaceName,e.Instance_id}).ToList();
+                                where e.isActive == true && c.isActive == true && cu.isActive == true && e.Project_ID == id
+                                select new { e.InstaceName, e.Instance_id }).ToList();
             return Json(InstanceList, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Create(Instance instance)
         {
+            LogHelper _log = new LogHelper();
             try
             {
                 var name = db.Instances.Where(p => p.InstaceName == instance.InstaceName && p.Project_ID == instance.Project_ID).Where(x => x.isActive == true).ToList();
@@ -110,33 +111,39 @@ namespace ProAcc.Controllers
                     instance.Cre_on = DateTime.UtcNow;
                     instance.LastUpdated_Dt = DateTime.UtcNow; ;
                     instance.Cre_By = Guid.Parse(Session["loginid"].ToString());
-
-                    db.Instances.Add(instance);
-                    db.SaveChanges();
-                    return Json("success");
+                    bool status = _Base.Sp_InstanceCreate(instance);
+                    if (status == true)
+                    {
+                        return Json("success");
+                    }
+                    else
+                    {
+                        return Json("error");
+                    }
                 }
                 else
                 {
                     return Json("error");
                 }
-                
+
             }
-            catch 
+            catch (Exception ex)
             {
+                _log.createLog(ex);
                 throw;
             }
         }
 
 
-        public ActionResult CreateClone(String InstaceName, Guid Project_ID,Guid Previous_Instance)
+        public ActionResult CreateClone(String InstaceName, Guid Project_ID, Guid Previous_Instance)
         {
             Boolean Result = false;
             Instance Data = new Instance();
             Data.InstaceName = InstaceName;
             Data.Project_ID = Project_ID;
-            Data.Cre_By= Guid.Parse(Session["loginid"].ToString());
+            Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
             Result = _Base.Sp_InstanceClone(Data, Previous_Instance);
-            if(Result==true)
+            if (Result == true)
             {
                 return Json("success", JsonRequestBehavior.AllowGet);
             }
@@ -144,7 +151,7 @@ namespace ProAcc.Controllers
             {
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
-            
+
         }
 
         [HttpGet]
@@ -177,7 +184,7 @@ namespace ProAcc.Controllers
             if (name.Count == 0)
             {
                 model.Modified_On = DateTime.UtcNow;
-                model.LastUpdated_Dt = DateTime.UtcNow;                
+                model.LastUpdated_Dt = DateTime.UtcNow;
                 model.Modified_by = Guid.Parse(Session["loginid"].ToString());
                 model.isActive = true;
                 db.Entry(model).State = EntityState.Modified;
@@ -200,26 +207,26 @@ namespace ProAcc.Controllers
                        on a.Instance_id equals b.InstanceID
                        where b.InstanceID == id && a.isActive == true && b.isActive == true
                        //select new { V = b.StatusId != 4 } ).ToList();
-                       select new { V =( b.StatusId != 2 && b.StatusId != 4 && b.StatusId != 5) }).ToList();
+                       select new { V = (b.StatusId != 2 && b.StatusId != 4 && b.StatusId != 5) }).ToList();
 
             foreach (var i in del)
             {
                 if (i.V == false)
                 {
                     result = true;
-                        break;
-                }                
+                    break;
+                }
             }
-            if(result==true)
+            if (result == true)
             {
                 return Json("fail");
             }
             else
             {
-                var ids = db.ProjectMonitors.Where(x=>x.InstanceID==id && x.isActive==true).ToList();
+                var ids = db.ProjectMonitors.Where(x => x.InstanceID == id && x.isActive == true).ToList();
                 foreach (var pmid in ids)
                 {
-                    var task = db.ProjectMonitors.Where(p => p.InstanceID == pmid.InstanceID&& p.Id==pmid.Id).FirstOrDefault();
+                    var task = db.ProjectMonitors.Where(p => p.InstanceID == pmid.InstanceID && p.Id == pmid.Id).FirstOrDefault();
                     task.isActive = false;
                     task.IsDeleted = true;
                     db.Entry(task).State = EntityState.Modified;
@@ -238,7 +245,7 @@ namespace ProAcc.Controllers
                 }
                 return Json("success");
             }
-            
+
         }
     }
 }

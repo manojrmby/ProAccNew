@@ -13,5 +13,10 @@ namespace ProAcc.Controllers
         {
             return View();
         }
+
+        public ActionResult Multilogin_Error()
+        {
+            return View();
+        }
     }
 }

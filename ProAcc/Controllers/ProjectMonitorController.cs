@@ -153,6 +153,12 @@ namespace ProAcc.Controllers
             List<ApplicationAreaMaster> P = _Base.GetApplicationAreaMasters();
             return Json(P, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult GetTaskType()
+        {
+            List<TaskType1> P = _Base.GetTaskTypeMasters();
+            return Json(P, JsonRequestBehavior.AllowGet);
+        }
+
         //public ActionResult GetPending()
         //{
         //    List<PendingMaster> P = _Base.GetPendingMasters();

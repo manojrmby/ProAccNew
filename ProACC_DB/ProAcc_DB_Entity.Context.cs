@@ -51,6 +51,7 @@ namespace ProACC_DB
         public virtual DbSet<ActivityMaster> ActivityMasters { get; set; }
         public virtual DbSet<ParallelType> ParallelTypes { get; set; }
         public virtual DbSet<TaskType1> TaskType1 { get; set; }
+        public virtual DbSet<ResetPassword> ResetPasswords { get; set; }
     
         public virtual ObjectResult<SP_ReadinessReport_Result> SP_ReadinessReport(string type, string instanceId)
         {

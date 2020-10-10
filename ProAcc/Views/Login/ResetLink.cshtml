@@ -1,0 +1,217 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ResetLink</title>
+    @Styles.Render("~/Content/css/Layout")
+    @Scripts.Render("~/bundles/Scripts/Layout")
+    @Scripts.Render("~/bundles/Scripts/jquery-ui")
+    <link href="~/Asset/css/jquery-confirm.min.css" rel="stylesheet" />
+    <link href="~/Asset/css/jquery-confirm.less" rel="stylesheet/less" />
+    <script src="~/Asset/Jquery/jquery-confirm.min.js"></script>
+    <link href="~/Asset/Notiflix/notiflix-2.3.1.min.css" rel="stylesheet" />
+    <script src="~/Asset/Notiflix/notiflix-2.3.1.min.js"></script>
+    <script src="~/Asset/Notiflix/notiflix-aio-2.3.1.min.js"></script>
+    <style>
+        .reset {
+            background: white;
+            /* height: 100vh;*/
+            position: relative;
+            display: flex;
+            justify-items: center;
+            width: 332px;
+            margin-top: 90px;
+        }
+
+        .content {
+            margin-left: 500px;
+            margin-top: 20px;
+        }
+
+        .hrd {
+            border: 1px solid rgba(1,0,0,0.3);
+        }
+
+        .Class_span {
+            color: red;
+        }
+        .form-group {
+            height: 99px;
+        }
+    </style>
+</head>
+<body style="background-color: white">
+    <h1 class="jumbotron-fluid h3 content">Reset Password</h1>
+    <hr class="hrd" />
+    @Html.AntiForgeryToken()
+    <div class="container reset" id="Rst">
+        <div class="row-12">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label col-md-12 required">New Password:</label>
+                    <div class="col-md-12">
+                        <input type="password" class="form-control" id="txtNewPassword" style="border: 2px solid #ccc !important" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblNewPassword">&nbsp;</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-12 required">Confirm Password:</label>
+                    <div class="col-md-12">
+                        <input type="password" class="form-control" id="txtCnfPassword" style="border: 2px solid #ccc !important" />
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblCnfPassword">&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row-12">
+                    <div class="col-lg-12">
+                        <input type="submit" value="Save" class="btn btn-success" id="btnSave" style="width:100%" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        @Html.Hidden("RedirectToHome", Url.Action("Logout", "Login"))
+    </div>
+
+
+    <script>
+
+    $(document).ready(function () {
+    /*$("#txtOldPassword").focusout(*/
+        var Status = '@ViewData["Status"]';
+        if (Status == "False") {
+            $("#Rst").hide();
+            $("#btnSave").hide();
+            Notiflix.Notify.Success('Link Not Vaild or password Updated already..Kindly Login Again!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            setTimeout(Redirect, 3000);
+        }
+        
+        function newpasswordcheck() {
+            var stat = false;
+            var _newpassword = $("#txtNewPassword").val().trim();
+            if (_newpassword == "") {
+                $("#lblNewPassword").html("Please enter the  Password").show().fadeOut(2000);
+            }
+            else {
+                $.ajax({
+                    type: 'GET',
+                    data: { password: _newpassword },
+                    url: '@Url.Action("NewPasswordcheck","Login")',
+                    async: false,
+                    success: function (response) {
+                        if (response == "error") {
+                           //$("#lblOldPassword").html("current & given Password are Same").show().fadeOut(2000);
+                            Notiflix.Notify.Failure('current & given Password are Same', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            $("#txtNewPassword").val("");
+                            $("#txtCnfPassword").val("");
+                            stat= false;
+                        }
+                        else {
+                            stat=true;
+                        }
+                    }
+                });
+            }
+            return stat;
+        }
+        function TaskPwd() {
+            var status = true;
+            var str = $("#txtNewPassword").val();
+            var filter = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,8}$/
+            if (str.length < 6) {
+                $("#lblNewPassword").html("Password should contain 6-8 characters").show();
+                status = false;
+            }
+            else if (!filter.test(str)) {
+                $("#lblNewPassword").html("Password should contain at least one character,Special char and number").show();
+                status = false;
+            }
+            else {
+                $("#lblNewPassword").html("").show();
+                status = true
+            }
+            return status
+        }
+
+
+        function cnfpassword() {
+            var str = $("#txtNewPassword").val().trim();
+            var str1 = $("#txtCnfPassword").val().trim();
+            if (str != str1) {
+                $("#txtCnfPassword").val("");
+                return false;
+            }
+        }
+        function Redirect() {
+            location.href = $("#RedirectToHome").val();
+        }
+        $("#btnSave").click(function () {
+
+            var _newPassword = $("#txtNewPassword").val().trim();
+            var _cnfPassword = $("#txtCnfPassword").val().trim();
+            var email= '@ViewData["Mail"]';
+            var code = '@ViewData["code"]';
+            var model = {
+                Password: _newPassword,
+                Mail: email,
+                code: code,
+                __RequestVerificationToken: $('[name="__RequestVerificationToken"]').val()
+            }
+
+            var Rs = newpasswordcheck();
+            if (Rs) {
+                if (_newPassword == "") {
+                $("#lblNewPassword").html("Please enter the New Password").show().fadeOut(2000);
+                }
+               else if (TaskPwd() == false)
+                {
+                    $("#lblNewPassword").html("Password should contain at least one character, Special char and number").show().fadeOut(5000);
+                }
+            else if (_cnfPassword == "") {
+                $("#lblCnfPassword").html("Please enter the Confirm Password").show().fadeOut(2000);
+            }
+            else if (cnfpassword() == false) {
+                $("#lblCnfPassword").html("Please enter the Confirm Password").show().fadeOut(2000);
+
+            }
+            else {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ResetLink", "Login")',
+                    data: model,
+                    async: false,
+                    success: function (response) {
+                        if (response == "success") {
+                            Notiflix.Notify.Success('Password Updated successfully..Kindly Login Again!', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            setTimeout(Redirect, 3000);
+
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            }
+            }
+
+        });
+    });
+    </script>
+</body>
+</html>

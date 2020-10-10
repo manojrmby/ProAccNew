@@ -18,6 +18,7 @@ namespace ProACC_DB
         public UserMaster()
         {
             this.Projects = new HashSet<Project>();
+            this.ResetPasswords = new HashSet<ResetPassword>();
         }
     
         public System.Guid UserId { get; set; }
@@ -42,5 +43,7 @@ namespace ProACC_DB
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ResetPassword> ResetPasswords { get; set; }
     }
 }

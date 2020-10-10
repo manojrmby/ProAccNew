@@ -26,49 +26,90 @@ namespace ProAcc.BL
     public class Base : Common
     {
         private ProAccEntities db = new ProAccEntities();
+        //
         //private LogHelper _Log = new LogHelper();
         public  string _salt = "d5cc07aa70fd47";
         #region Login
         public LogedUser UserValidation(LogedUser user)
         {
-            DataSet ds = new DataSet();
-           
-            DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
-            dB.addIn("@Type", "Login");
-            dB.addIn("@UserName", user.Username);
-            dB.addIn("@Password", Encrypt(user.Password));
-            ds = dB.ExecuteDataSet();
-            DataTable dt = new DataTable();
-            if (ds.Tables.Count != 0)
-            {
-                //DataTable dt1 = new DataTable();
-                dt = ds.Tables[0];
-                //dt1 = ds.Tables[1];
-                if (dt.Rows.Count == 1)
+            LogHelper _Log = new LogHelper();
+            _Log.createLog("Came inside user validation");
+            try
+            {            
+                
+                DataSet ds = new DataSet();
+            
+                //string Browser, IP, MachineName;
+                //Browser = HttpContext.Current.Request.Browser.Browser;
+                //IP = HttpContext.Current.Request.UserHostAddress;
+
+                //System.Net.IPHostEntry hostEntry = System.Net.Dns.GetHostEntry(IP);
+                //MachineName = hostEntry.HostName;
+                _Log.createLog("Before Db helper");
+                DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+                dB.addIn("@Type", "Login");
+                dB.addIn("@UserName", user.Username);
+                dB.addIn("@Password", Encrypt(user.Password));
+
+                dB.addIn("@Browser", "Browser");
+                dB.addIn("@IP", "IP");
+                dB.addIn("@MachineName", "MachineName");
+
+                _Log.createLog("Inside User validation");
+                ds = dB.ExecuteDataSet();
+                DataTable dt = new DataTable();
+                if (ds.Tables.Count != 0)
                 {
-                    if (!string.IsNullOrEmpty(dt.Rows[0][0].ToString()))
+                    //DataTable dt1 = new DataTable();
+                    dt = ds.Tables[0];
+                    //dt1 = ds.Tables[1];
+                    if (dt.Rows.Count == 1)
                     {
+                        if (!string.IsNullOrEmpty(dt.Rows[0][0].ToString()))
+                        {
 
 
-                        user.ID = Guid.Parse(dt.Rows[0][0].ToString());
-                        user.Type = Convert.ToInt32(dt.Rows[0][1].ToString());
-                        user.Name = dt.Rows[0][2].ToString();
-
-                        //User_ID = user.ID;
-                        //User_Name = user.Name;
-                        //for (int i = 0; i < dt1.Rows.Count; i++)
-                        //{
-                        //    if (user.Type == Convert.ToInt32(dt1.Rows[i]["id"]))
-                        //    {
-                        //        User_Type = dt1.Rows[0]["UserType"].ToString().ToUpper();
-                        //        break;
-                        //    }
-                        //}
+                            user.ID = Guid.Parse(dt.Rows[0][0].ToString());
+                            user.Type = Convert.ToInt32(dt.Rows[0][1].ToString());
+                            user.Name = dt.Rows[0][2].ToString();
+                            user.LogID = Guid.Parse(dt.Rows[0][3].ToString());
+                            //User_ID = user.ID;
+                            //User_Name = user.Name;
+                            //for (int i = 0; i < dt1.Rows.Count; i++)
+                            //{
+                            //    if (user.Type == Convert.ToInt32(dt1.Rows[i]["id"]))
+                            //    {
+                            //        User_Type = dt1.Rows[0]["UserType"].ToString().ToUpper();
+                            //        break;
+                            //    }
+                            //}
+                        }
                     }
                 }
+                _Log.createLog("Inside User validation Before return"+ user.Username.ToString()+"---------"+user.ID.ToString());
+                return user;
             }
-            return user;
+            catch (Exception ex)
+            {
+                throw ex;
+                _Log.createLog(ex);
+                //return user;                
+            }
+        }
 
+        public Boolean Validate_Log(Guid logid)
+        {
+            Boolean status = false;
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+            dB.addIn("@Type", "Validate_Log");
+            dB.addIn("@LogId", logid);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                status = true;
+            }
+            return status;
         }
 
         public string Encrypt(string st)
@@ -78,6 +119,73 @@ namespace ProAcc.BL
         public string Decrypt(string st)
         {
             return Cipher.Decrypt(st, _salt);
+        }
+
+        
+
+        public Boolean Sp_ResetPasswordStatus(Guid UserId, bool Status, Guid CreatedBy, DateTime CreatedOn, bool isValid)
+        {
+            Boolean Result = false;
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+            dB.addIn("@Type", "ResetPasswordStatus");
+            dB.addIn("@UserId", UserId);
+            dB.addIn("@CreatedBy", CreatedBy);
+            dB.ExecuteScalar();
+            Result = true;
+            return Result;
+        }
+        public Boolean Sp_ResetPassword(UserMaster Data)
+        {
+            Boolean Result = false;
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+            dB.addIn("@Type", "ResetPassword");
+            dB.addIn("@UserId", Data.UserId);
+            dB.addIn("@Password", Data.Password);
+            dB.addIn("@ModifiedBy", Data.Modified_by);
+            dB.addIn("@ModifiedOn", Data.Modified_On);
+            dB.ExecuteScalar();
+            Result = true;
+            return Result;
+        }
+        //public Boolean Sp_ResetByLinkPassword(UserMaster Data,Guid ResetId)
+        //{
+        //    Boolean Result = false;
+        //    DataTable dt = new DataTable();
+        //    DBHelper dB = new DBHelper("SP_Login", CommandType.StoredProcedure);
+        //    dB.addIn("@Type", "Resetpwdbylink");
+        //    dB.addIn("@UserId", Data.UserId);
+        //    dB.addIn("@Password", Data.Password);
+        //    dB.addIn("@Reset_Id", ResetId);
+        //    dB.addIn("@ModifiedBy", Data.Modified_by);
+        //    dB.addIn("@ModifiedOn", Data.Modified_On);
+        //    dB.ExecuteScalar();
+        //    Result = true;
+        //    return Result;
+        //}
+        public RstPassword Sp_GetResetId(Guid Id)
+        {
+            RstPassword rm = new RstPassword();
+            DataTable dt = new DataTable();
+            DBHelper db = new DBHelper("SP_Login", CommandType.StoredProcedure);
+            db.addIn("@Type", "FetchResetId");
+            db.addIn("@UserId", Id);
+            dt = db.ExecuteDataTable();
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rm.ResetId = Guid.Parse(dr["ResetId"].ToString());
+                }
+            }
+
+            return rm;
+        }
+        public class RstPassword
+        {
+            public Guid ResetId { get; set; }
         }
         #endregion
 
@@ -1252,7 +1360,27 @@ namespace ProAcc.BL
 
             return AA;
         }
+        
+         public List<TaskType1> GetTaskTypeMasters()
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetTaskType");
+            dt = dB.ExecuteDataTable();
+            List<TaskType1> TT = new List<TaskType1>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    TaskType1 P = new TaskType1();
+                    P.TaskId = Convert.ToInt32(dr["TaskId"].ToString());
+                    P.TaskName = dr["TaskName"].ToString();
+                    TT.Add(P);
+                }
+            }
 
+            return TT;
+        }
         //public List<PendingMaster> GetPendingMasters()
         //{
         //    DataTable dt = new DataTable();
@@ -1492,6 +1620,7 @@ namespace ProAcc.BL
                         P.RoleID = Convert.ToInt32(dr["RoleId"].ToString());
                         P.UserID = Guid.Parse(dr["UserID"].ToString());
                         P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
+                        P.Task_id= Convert.ToInt32(dr["Task_id"].ToString());
 
                         P.EST_hours = decimal.Parse(dr["EST_hours"].ToString());
                         P.EST_hrs = dr["EST_hours"].ToString();
@@ -2319,7 +2448,11 @@ namespace ProAcc.BL
                     a.ApplicationArea = dr["ApplicationArea"].ToString();
                 
                     a.Tasktype = dr["TaskType"].ToString();
-                    a.ParallelType = dr["ParallelType"].ToString();
+                    if(a.Tasktype == "Parallel")
+                    {
+                        a.ParallelType = "P" + dr["ParallelType"].ToString();
+                    }
+                    
 
                     AMM.Add(a);
                 }
@@ -2355,6 +2488,8 @@ namespace ProAcc.BL
                     a.Phase = dr["Phase"].ToString();
                     a.Role = dr["Role"].ToString();
                     a.ApplicationArea = dr["ApplicationArea"].ToString();
+                    a.Tasktype = dr["Task_id"].ToString();
+                    a.Parallel_Type = Guid.Parse(dr["Parallel_Id"].ToString());
                 }
             }
             return a;
@@ -2855,7 +2990,7 @@ namespace ProAcc.BL
             }
             return Status;
         }
-        
+
         public Boolean Sp_InstanceClone(Instance Data, Guid Previous_Instance)
         {
             bool Status = false;
@@ -2863,8 +2998,8 @@ namespace ProAcc.BL
             try
             {
                 DBHelper dB = new DBHelper("SP_Instance", CommandType.StoredProcedure);
-                
-                dB.addIn("@Type", "InstanceClone");                
+
+                dB.addIn("@Type", "InstanceClone");
                 dB.addIn("@Project_ID", Data.Project_ID);
                 dB.addIn("@InstaceName", Data.InstaceName);
                 dB.addIn("@Previous_Instance", Previous_Instance);
@@ -2874,12 +3009,33 @@ namespace ProAcc.BL
             }
             catch (Exception ex)
             {
-
                 _log.createLog(ex, "");
             }
             return Status;
         }
 
+        public Boolean Sp_InstanceCreate(Instance Data)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_Instance", CommandType.StoredProcedure);
+                dB.addIn("@Type", "InstanceClone");
+                dB.addIn("@Project_ID", Data.Project_ID);
+                dB.addIn("@InstaceName", Data.InstaceName);
+                dB.addIn("@Cre_By", Data.Cre_By);
+                dB.Execute();
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
+
+       
         #region Mail
 
         public Boolean UpdateMailList(int ID)
@@ -3002,6 +3158,32 @@ namespace ProAcc.BL
             return Status;
         }
 
+        public Boolean AddResetMail(Guid ResetId, Guid UserID, String emailId, String msg)
+        {
+            Boolean Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper Db1 = new DBHelper("SP_Mail", CommandType.StoredProcedure);
+                Db1.addIn("@Type", "ResetMail");
+                Db1.addIn("@UserID", UserID);
+                Db1.addIn("@Q_Mail", emailId);
+                Db1.addIn("@Q_Name", msg);
+                Db1.addIn("@PM_ID", ResetId);
+                Db1.addIn("@Cre_By", UserID);
+                DataTable dt = new DataTable();
+                dt = Db1.ExecuteDataTable();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "-->Reset_Mail" + ex.Message.ToString());
+            }
+
+            return Status;
+        }
 
         //public Boolean AddIssueTrack_Mail(IssueTrackModel ITM)
         //{
@@ -3028,6 +3210,52 @@ namespace ProAcc.BL
         //    return Status;
         //}
         #endregion
+
+
+        //#region InstanceCreationClone InstanceCreate
+        //public Boolean Sp_InstanceClone(Instance Data, Guid Previous_Instance)
+        //{​​​​
+        //    bool Status = false;
+        //    LogHelper _log = new LogHelper();
+        //    try
+        //    {​​​​
+        //        DBHelper dB = new DBHelper("SP_Instance", CommandType.StoredProcedure);
+        //        dB.addIn("@Type", "InstanceClone");
+        //        dB.addIn("@Project_ID", Data.Project_ID);
+        //        dB.addIn("@InstaceName", Data.InstaceName);
+        //        dB.addIn("@Previous_Instance", Previous_Instance);
+        //        dB.addIn("@Cre_By", Data.Cre_By);
+        //        dB.Execute();
+        //        Status = true;
+        //    }
+        //    catch(Exception ex)
+        //    {​​​​
+        //        _log.createLog(ex);
+        //    }​​​​
+        //    return Status;
+        //}​​​​
+
+        //public Boolean Sp_InstanceCreate(Instance Data)
+        //{​​​​
+        //    bool Status = false;
+        //    LogHelper _log = new LogHelper();
+        //    try
+        //    {​​​​
+        //        DBHelper dB = new DBHelper("SP_Instance", CommandType.StoredProcedure);
+        //        dB.addIn("@Type", "CreateInstance");
+        //        dB.addIn("@Project_ID", Data.Project_ID);
+        //        dB.addIn("@InstaceName", Data.InstaceName);
+        //        dB.addIn("@Cre_By", Data.Cre_By);
+        //        dB.Execute();
+        //        Status = true;
+        //    }​​​​
+        //    catch (Exception ex)
+        //    {​​​​
+        //        _log.createLog(ex);
+        //    }​​​​
+        //    return Status;
+        //}​​​​
+        //#endregion
 
         #region PMUpload
         public Boolean PMUpload(string filetype, string fileName, Guid Instance_ID, Guid User_ID)

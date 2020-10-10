@@ -1486,7 +1486,7 @@ background-attachment:local, local, scroll, scroll;
                 var d_total = (Data.COMPLETE + Data.WIP + Data.ONHOLD + Data.YetToStart)
                 if (d_total > 0) {
                     var a = (Data.COMPLETE) / d_total;
-                    var percent = Math.ceil(a * 100);
+                    var percent = Math.round(a * 100);
                     $("#AssId").html(percent + "%");
                     $("#AssId_Progress").css('width', percent + '%');
                     var progressid = '#AssId_Progress';
@@ -1522,7 +1522,7 @@ background-attachment:local, local, scroll, scroll;
         var d1_total = (Data1.COMPLETE + Data1.WIP + Data1.ONHOLD + Data1.YetToStart );
         if (d1_total > 0) {
             var a = (Data1.COMPLETE) / d1_total;
-            var percent = Math.ceil(a * 100);
+            var percent = Math.round(a * 100);
             $("#PreId").html(percent + "%");
             
             $("#PreId_Progress").css('width', percent + '%');
@@ -1559,7 +1559,7 @@ background-attachment:local, local, scroll, scroll;
         var d2_total = (Data2.COMPLETE + Data2.WIP + Data2.ONHOLD + Data2.YetToStart );
         if (d2_total > 0) {
             var a = (Data2.COMPLETE) / d2_total;
-            var percent = Math.ceil(a * 100);
+            var percent = Math.round(a * 100);
             $("#ConId").html(percent + "%");
             $("#ConId_Progress").css('width', percent + '%');
                     var progressid = '#ConId_Progress';
@@ -1594,7 +1594,7 @@ background-attachment:local, local, scroll, scroll;
         var d3_total = (Data3.COMPLETE + Data3.WIP + Data3.ONHOLD + Data3.YetToStart);
         if (d3_total > 0) {
             var a = (Data3.COMPLETE) / d3_total;
-            var percent = Math.ceil(a * 100);
+            var percent = Math.round(a * 100);
             $("#PostId").html(percent + "%");
             var progressid = '#PostId_Progress';
             $(progressid).css('width', percent + '%');

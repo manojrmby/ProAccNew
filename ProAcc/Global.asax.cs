@@ -21,12 +21,12 @@ namespace ProAcc
             Mail mail = new Mail();
             mail.StartMailSend();
         }
-         protected void Application_Error()
-        {
-            var ex = Server.GetLastError();
-            //log the error!
-            LogHelper log = new LogHelper();
-            log.createLog(ex);
-        }
+        // protected void Application_Error()
+        //{
+        //    var ex = Server.GetLastError();
+        //    //log the error!
+        //    LogHelper log = new LogHelper();
+        //    log.createLog(ex);
+        //}
     }
 }

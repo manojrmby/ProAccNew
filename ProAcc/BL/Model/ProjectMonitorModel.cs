@@ -58,6 +58,7 @@ namespace ProAcc.BL.Model
 		public String PlanedEn_Date { get; set; }
 		public String ActualEn_Date { get; set; }
 		public int PreviousID { get; set; }
+		public int Task_id { get; set; }
 
 	}
 }

@@ -1,4 +1,11 @@
-﻿<div>
+﻿
+<style>
+table > tbody > tr > td > label{
+    color:black
+}
+</style>
+
+<div>
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
@@ -182,6 +189,40 @@
                 },
 
                 {
+                    label: 'Task Types', name: 'Task_id',index: 'Task_id', width: 100, editable: false, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                   editoptions: {
+                        value: GetTaskTypeDropDown()
+                    }
+
+                },
+                {
+                    label: 'Task Type', name: 'Task_id',index: 'Task_id', width: 100, editable: true,hidden:true, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                     editrules: {
+                        required: true,
+                        edithidden: true
+                    },
+                   editoptions: {
+                       value: GetTaskTypeDropDown(),
+                       dataEvents: [
+                        {
+                            type: 'change',
+                               fn: function (e) {
+                                   UpdateParallelName($("#Task_id").val())
+                                }
+                        }]
+                    }
+                },                
+                {
+                    label: 'Parallel Name', name: 'Parallel_Id',index: 'Parallel_Id', width: 100, editable: false,editable: true, hidden:true, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                   editoptions: {
+                        //value: GetApplicationAreaDropDown()
+                    }
+
+                },
+                {
                     label: 'Application Area', name: 'ApplicationAreaID',index: 'ApplicationAreaID', width: 100, editable: false, classes: 'wrapColumnText',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                    editoptions: {
@@ -190,7 +231,7 @@
 
                 },
                 {
-                    label: 'Application Area', name: 'ApplicationAreaID',index: 'ApplicationAreaID', width: 100, editable: true,hidden:true, classes: 'wrapColumnText',
+                    label: 'Application Area', name: 'ApplicationAreaID',index: 'ApplicationAreaID', width: 100, editable: true, hidden:true, classes: 'wrapColumnText',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                    editoptions: {
                         value: GetApplicationAreaDropDown()
@@ -1025,6 +1066,39 @@
             }
         });
         return Parameters;
+
+    }
+
+    function GetTaskTypeDropDown() {
+				 var Parameters = {};
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetTaskType","ProjectMonitor")',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (Data) {
+                        for (var i = 0; i < Data.length; i++) {
+
+                           var obj = {};
+                             var ApplicationArea = Data[i].TaskName;
+                            var key = ""+Data[i].TaskId;
+                            Parameters[key] = ApplicationArea;
+                        }
+                    },
+                    error: function (data) {
+                        alert("GetTaskTypeDropDown fail");
+                    }
+                });
+				return Parameters;
+    }
+
+    function UpdateParallelName(Taskid) {
+        debugger
+        if (Taskid == 2) {
+            $("#tr_Parallel_Id").show();
+        }
+       
 
     }
 

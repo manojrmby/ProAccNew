@@ -24,9 +24,10 @@
                 <th>Application Area</th>
                 <th>Sequence</th>
                 <th>Est.Hrs</th>
-                <th>Task type</th>
+                <th>Task Name</th>
                 <th>Parallel Name</th>
                 <th>Actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -35,16 +36,16 @@
             {
             <tr>
                 @*<td>
-                    @j
-                </td>
-                @{j++;
-                }*@
-                 <td>
+            @j
+        </td>
+        @{j++;
+        }*@
+                <td>
                     <a class="txtG" value="@item.Task">@item.Task</a>
-                 </td>
-                 @*<td>
-                    <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
-                </td>*@
+                </td>
+                @*<td>
+            <a class="txtG" value="@item.Cre_on">@item.Cre_on</a>
+        </td>*@
                 <td>
                     <a class="txtG" value="@item.BuildingBlock_id">@item.Buldingblock</a>
                 </td>
@@ -64,14 +65,14 @@
                     <a class="txtG" value="@item.EST_hours">@item.EST_hours1</a>
                 </td>
                 <td>
-                    <a class="txtG" value="@item.Tasktype">@item.Tasktype</a>
-                </td>                
+                    <a class="txtG" value="@item.Task_id">@item.Tasktype</a>
+                </td>
                 <td>
                     @if (item.ParallelType != "")
                     {
-                        <a class="txtG" value="@item.ParallelType">P @item.ParallelType</a>
+                       <a class="txtG" value="@item.Parallel_Type">@item.ParallelType</a>
                     }
-                </td>               
+                </td>
                 <td>
                     <a href="#" id="btnprjtEdit" class="editActivityCreation fa fa-edit"></a><input type="hidden" value="@item.Activity_ID" />
                     <a href="#" class="btnActivityDelete fa fa-trash"></a><input type="hidden" value="@item.Activity_ID" />
@@ -93,7 +94,7 @@
             "columnDefs": [
                 {
                     "targets": [5],
-                    "visible": false
+                    "visible": true
                 }
             ]
         } );
@@ -106,25 +107,38 @@
             type: "GET",
             data: { id: id },
             success: function (result) {
-                  $("#activityrid").val(result.Activity_ID);
-                    $("#txtTask").val(result.Task);
-                    $("#txtSequence").val(result.Sequence_Num);
-                    $("#drpPhase").val(result.PhaseID);
-                    $('#drpPhase').attr("disabled", true); 
+                //debugger;
+                $("#activityrid").val(result.Activity_ID);
+                $("#txtTask").val(result.Task);
+                $("#txtSequence").val(result.Sequence_Num);
+                $("#drpPhase").val(result.PhaseID);
+                $('#drpPhase').attr("disabled", true); 
                 $("#drphiddenPhase").val(result.PhaseID);
-                 $("#drpBlock").val(result.BuildingBlock_id);
-                    $("#drpRole").val(result.RoleID);
-                    $('#drpRole').attr("disabled", true); 
+                $("#drpBlock").val(result.BuildingBlock_id);
+                $("#drpRole").val(result.RoleID);
+                $("#drpTaskType").val(result.Tasktype);
+                if (result.Tasktype == '2') {
+                    //$('#drpParallelId').prop('selectedIndex', 0);
+                    $("#drpParallelId").val(result.Parallel_Type);
+                    $("#drpParallelId").prop("disabled", true);
+                    $("#parallelhidecheck , #parallelhideid").show();
+                   // $("#txtParallelCheck").prop('checked', true);
+                }
+                else {
+                    $("#parallelhidecheck , #parallelhideid").hide();
+                }
+
+                $('#drpRole').attr("disabled", true); 
                 $("#drphiddenRole").val(result.RoleID);
                 //var EST_hours = result.EST_hours.replace(".", ":");
                 $("#txtEstimated").val(result.EST_hours1); //.replace(".", ":")
-                    $("#drpApplicationArea").val(result.ApplicationAreaID);
-                    $("#actcre_on").val(result.Cre_on);
-                    $("#actcre_By").val(result.Cre_By);
-                    $("#btntivityCreUpdate").show();
-                    $("#btnAddNew").show();
-                    $("#btnActivityCreCreate").hide();
-                    $("#activityCreation").hide();
+                $("#drpApplicationArea").val(result.ApplicationAreaID);
+                $("#actcre_on").val(result.Cre_on);
+                $("#actcre_By").val(result.Cre_By);
+                $("#btntivityCreUpdate").show();
+                $("#btnAddNew").show();
+                $("#btnActivityCreCreate").hide();
+                $("#activityCreation").hide();
                 $("#activityUpdation").show();
                 $(".app-main_Scroll").animate({ scrollTop: 0 }, 1000);
                 //$("").scrollTop(0);

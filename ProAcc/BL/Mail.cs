@@ -170,6 +170,12 @@ namespace ProAcc.BL
                         msg.CC.Add(CCAdd);
                     }
                 }
+                else if (SM.subject == "ResetMail")
+                {
+                    MailAddress toAddress = new MailAddress(To, Name);
+                    msg.To.Add(toAddress);
+
+                }
                 else
                 {
                     MailAddress toAddress = new MailAddress(To, Name);
@@ -234,7 +240,7 @@ namespace ProAcc.BL
             {
                 string pattern = "(,)";
                 string input = Body;
-                string Task = "", Phase = "", projectName = "", Instance = "",User_ID="", Issue="";
+                string Task = "", Phase = "", projectName = "", Instance = "",User_ID="", Issue="", G_Body = "";
                 Regex regex = new Regex(pattern);
 
                 using (StreamReader reader = new StreamReader(_TemplatePath + TemplateName.Trim() + ".html"))
@@ -271,6 +277,14 @@ namespace ProAcc.BL
                     Issue = substrings[0].ToString();
 
                     body = body.Replace("{Name}", Issue);
+                }
+                else if (TemplateName.Trim() == "T8")
+                {
+                    string[] substrings = regex.Split(input);
+                    G_Body = substrings[0].ToString();
+
+                    body = body.Replace("{Name}", Name);
+                    body = body.Replace("{Body}", G_Body);
                 }
                 else
                 {

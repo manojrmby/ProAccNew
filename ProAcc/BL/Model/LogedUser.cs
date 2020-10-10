@@ -13,5 +13,6 @@ namespace ProAcc.BL.Model
         public Int32 Type { get; set; }
         public string Name { get; set; }
 
+        public Guid LogID { get; set; }
     }
 }

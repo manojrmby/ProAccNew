@@ -26,7 +26,7 @@ namespace ProAcc.Controllers
         public ActionResult Create()
         {
             ViewBag.TaskId = db.TaskType1.ToList();
-            ViewBag.ParallelId = db.ParallelTypes.ToList();
+            ViewBag.ParallelId = db.ParallelTypes.OrderBy(x=>x.ParallelName).ToList();
             ViewBag.Phase = db.PhaseMasters.Where(x => x.isActive == true).OrderBy(x=>x.Id);
             var adminRoleId = db.RoleMasters.Where(x => x.RoleName == "Admin" && x.isActive == true).FirstOrDefault().RoleId;
             var pmRoleId = db.RoleMasters.Where(x => x.RoleName == "Project Manager" && x.isActive == true).FirstOrDefault().RoleId;

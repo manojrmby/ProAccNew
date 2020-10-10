@@ -445,6 +445,7 @@
     <Compile Include="BL\Model\SP_HomeDonut_Result.cs" />
     <Compile Include="BL\Model\UserModel.cs" />
     <Compile Include="BL\Model\UserRoleProvider.cs" />
+    <Compile Include="BL\ResetMailLink.cs" />
     <Compile Include="BL\URIHandler.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
@@ -577,6 +578,10 @@
     <Content Include="Views\ProjectMonitor\PM_UPload.cshtml" />
     <Content Include="Views\Resource\ResourceAllocationAll.cshtml" />
     <Content Include="Views\ProjectMonitor\AddTask.cshtml" />
+    <Content Include="Views\ErrorLog\Multilogin_Error.cshtml" />
+    <Content Include="Views\Home\UpdatePassword.cshtml" />
+    <Content Include="Views\Login\Forgotpassword.cshtml" />
+    <Content Include="Views\Login\ResetLink.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
