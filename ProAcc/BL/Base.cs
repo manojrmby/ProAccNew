@@ -955,6 +955,28 @@ namespace ProAcc.BL
             return status;
         }
 
+        public Boolean Lic_Upload(DataTable CustomTable, string fileName, Guid Instance_ID, Guid User_ID)
+        {
+            Boolean status = false;
+
+
+            DBHelper dB = new DBHelper("SP_FileUpload", CommandType.StoredProcedure);
+
+            dB.addIn("@Type", "up_LicUpload");
+            dB.addIn("@tblUserlist", CustomTable);
+            dB.addIn("@File_Type", "UserList");
+            dB.addIn("@FileUploadID", Guid.NewGuid());
+            dB.addIn("@instanceId", Instance_ID);
+            dB.addIn("@fileName", fileName);
+            dB.addIn("@Createdby", User_ID);
+
+            dB.ExecuteScalar();
+            status = true;
+            return status;
+
+        }
+
+
         #endregion
 
 
@@ -3347,6 +3369,80 @@ namespace ProAcc.BL
         }
         #endregion
 
+        public GeneralList sP_GetLicense_Bar(Guid InstanceId)
+        {
+            GeneralList sP_ = new GeneralList();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_License", CommandType.StoredProcedure);
+
+            dB.addIn("@Type", "License_Bar");
+            dB.addIn("@InstanceId", InstanceId);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+                List<Lis> _Lob = new List<Lis>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    _Lob.Add(
+                        new Lis
+                        {
+                            Name = dr["_Status"].ToString(),
+                            _Value = Convert.ToInt32(dr["_Count"].ToString()
+                            )
+                        });
+
+                }
+
+                sP_._List = _Lob;
+
+
+            }
+            return sP_;
+        }
+        public List<SAPInput_UserList> sP_GetLicense_Table(Guid InstanceId, int value)
+        {
+            List<SAPInput_UserList> sP_ = new List<SAPInput_UserList>();
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_License", CommandType.StoredProcedure);
+
+            dB.addIn("@Type", "License_Table");
+            dB.addIn("@InstanceId", InstanceId);
+            dt = dB.ExecuteDataTable();
+            if (dt.Rows.Count > 0)
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    SAPInput_UserList _Lob = new SAPInput_UserList();
+                    if (value == 1 && Convert.ToInt32(dr["_Status"].ToString()) != value)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        _Lob.Row_Number = Convert.ToInt32(dr["Row_Number"].ToString());
+                        _Lob.Users = dr["Users"].ToString();
+                        _Lob.User_Type = dr["User_Type"].ToString();
+                        _Lob.Valid_From = dr["Valid_From"].ToString();
+                        _Lob.Valid_To = dr["Valid_To"].ToString();
+
+                        _Lob.Last_logon = dr["Last_logon"].ToString();
+                        _Lob.System = dr["System"].ToString();
+                        _Lob.Catergory = dr["Catergory"].ToString();
+                    }
+
+
+
+                    //_Lob.Valid_To = Convert.ToDateTime(dr["Valid_To"].ToString());
+                    sP_.Add(_Lob);
+                }
+
+
+
+
+            }
+            return sP_;
+        }
 
         public string Phase_Assessment = "Assessment";
         public string Phase_PreConversion = "Pre Conversion";

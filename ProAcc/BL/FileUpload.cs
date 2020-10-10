@@ -464,6 +464,104 @@ namespace ProAcc.BL
         #endregion
 
 
-        
+        #region User list
+        public Boolean Process_Userlist(string FilePath, string fileName, Guid Instance_ID, Guid User_Id)
+        {
+            Boolean Status = false;
+
+            using (XLWorkbook workbook = new XLWorkbook(FilePath))
+            {
+                var workSheet = workbook.Worksheet(1);
+                var firstRowUsed = workSheet.FirstRowUsed();
+                var firstPossibleAddress = workSheet.Row(firstRowUsed.RowNumber()).FirstCell().Address;
+                var lastPossibleAddress = workSheet.LastCellUsed().Address;
+                var range = workSheet.Range(firstPossibleAddress, lastPossibleAddress).AsRange(); //.RangeUsed();
+                                                                                                  // Treat the range as a table (to be able to use the column names)
+                var table = range.AsTable();
+                //Specify what are all the Columns you need to get from Excel
+                var dataList = new List<string[]>
+                 {
+                    table.DataRange.Rows().Select(tableRow =>tableRow.Field("User").GetString()).ToArray(),
+                    table.DataRange.Rows().Select(tableRow => tableRow.Field("User Type").GetString()).ToArray(),
+                    table.DataRange.Rows().Select(tableRow => tableRow.Field("Valid from").GetString()).ToArray(),
+                    table.DataRange.Rows().Select(tableRow => tableRow.Field("Valid through").GetString()).ToArray(),
+                    table.DataRange.Rows().Select(tableRow => tableRow.Field("Date of Last Logon").GetString()).ToArray(),
+                    table.DataRange.Rows().Select(tableRow =>tableRow.Field("System").GetString()).ToArray(),
+                    table.DataRange.Rows().Select(tableRow =>tableRow.Field("Catergory").GetString()).ToArray()
+                 };
+                //Convert List to DataTable
+                DataTable dataTable = ConvertListToDataTable_Userlist(dataList);
+                Status = _Base.Lic_Upload(dataTable, fileName, Instance_ID, User_Id);
+                //To get unique column values, to avoid duplication
+                //var uniqueCols = dataTable.DefaultView.ToTable(true, "Solution Number");
+
+                ////Remove Empty Rows or any specify rows as per your requirement
+                //for (var i = uniqueCols.Rows.Count - 1; i >= 0; i--)
+                //{
+                //    var dr = uniqueCols.Rows[i];
+                //    if (dr != null && ((string)dr["Solution Number"] == "None" || (string)dr["Title"] == ""))
+                //        dr.Delete();
+                //}
+                //Console.WriteLine("Total number of unique solution number in Excel : " + uniqueCols.Rows.Count);
+            }
+
+
+            return Status;
+        }
+        private static DataTable ConvertListToDataTable_Userlist(IReadOnlyList<string[]> list)
+        {
+            var table = new DataTable("Userlist");
+            var rows = list.Select(array => array.Length).Concat(new[] { 0 }).Max();
+
+            table.Columns.Add("User");
+            table.Columns.Add("User Type");
+            table.Columns.Add("Valid from");
+            table.Columns.Add("Valid through");
+            table.Columns.Add("Date of Last Logon");
+            table.Columns.Add("System");
+            table.Columns.Add("Catergory");
+            table.Columns.Add("LastLogon_Date");
+
+            try
+            {
+                for (var j = 0; j < rows; j++)
+                {
+                
+                    var row = table.NewRow();
+                    row["User"] = list[0][j];
+                    row["User Type"] = list[1][j];
+                    if (list[2][j].ToString() != "")
+                        row["Valid from"] = Convert.ToDateTime(list[2][j].ToString());
+                    else
+                        row["Valid from"] = null;
+                    if (list[3][j].ToString() != "")
+                        row["Valid through"] = Convert.ToDateTime(list[3][j].ToString());
+                    else
+                        row["Valid through"] = null;
+
+                    if (list[4][j].ToString() != "Not in Use" && list[4][j].ToString() != "" )
+                        row["LastLogon_Date"] = Convert.ToDateTime(list[4][j].ToString());
+                    else
+                        row["LastLogon_Date"] = null;
+                    //row["Valid through"] = list[3][j];
+                    //row["Date of Last Logon"] = list[4][j];
+                    row["System"] = list[5][j];
+                    row["Catergory"] = list[6][j];
+                    row["Date of Last Logon"] = list[4][j];
+                    table.Rows.Add(row);
+                }
+            
+        }
+
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return table;
+        }
+        #endregion
+
+
     }
 }

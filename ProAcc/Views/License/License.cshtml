@@ -1,0 +1,536 @@
+﻿
+@{
+    ViewBag.Title = "LicenceUp";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+<link href="~/Asset/Scripts/Datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Asset/Scripts/Datatable/jquery.dataTables.min.js"></script>
+<script src="~/Asset/Scripts/Datatable/dataTables.bootstrap4.min.js"></script>
+<a class="card-title">License</a>
+<div style="padding-left:15px; max-width:99%;">
+    @{
+        Html.RenderAction("InstanceSelection", "ProjectMonitor");
+    }
+    <div style="margin-top:20px;">
+        @*<table id="jqGrid"></table>
+            <div id="jqGridPager"></div>*@
+        @{
+            <div class="row">
+                <div class="col-6">
+                    <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
+                </div>
+                <div class="col-6">
+                    <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="col-6">
+                Upload License File for the Instance  <b>@Session["Instance_Name"]</b>
+            </div>
+            <div class="col-6">
+                <input class="mb-2 mr-2 btn btn-info" type="file"
+                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                       name="files" id="FileUpload1" onChange='getFileNameWithExt(event)' />
+                <button class="btn-wide mb-2 mr-2 btn btn-primary" id="btnUpload">
+                    Add / Update
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-8 text-center card">
+            <canvas id="Chart_CustomCode"></canvas>
+        </div>
+
+        <hr />
+
+        <div >
+            <table class="table" id="tblLic">
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>Users</th>
+                        @*<th>Cre_on</th>*@
+                        <th>User Type</th>
+                        <th>Valid From</th>
+                        <th>Valid To</th>
+                        <th>Last Logon</th>
+                        <th>System </th>
+                        <th>Category</th>
+                        @*<th>Inserted on</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#IDInstance").prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+        Ajax_License_Bar();
+        document.getElementById('tblLic').style.display = 'none';
+        @*var Instance=$("#hdnSessionInstance_ID").val();
+        if (Instance != "") {
+            var IDInstance = $("#hdnSessionInstance_ID").val();
+            $.ajax({
+                url: '@Url.Action("SubmitInstance", "Home")',
+                type: "POST",
+                data: { 'IDInstance': IDInstance },
+                success: function (result) {
+                    Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                     //LoadTable(IDInstance);
+                    //$('#jqGrid').trigger('reloadGrid');
+                }
+            });
+        }*@
+    });
+
+     $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+
+                        text: "-Select-"
+                    }));
+         $('#IDCustomer').prop('title', $("#IDCustomer option:selected").text());
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                },
+                error: function (a) {
+                    //debugger;
+                    alert(a);
+                }
+            });
+        });
+    $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+        $('#IDProject').prop('title', $("#IDProject option:selected").text());
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstanceforResource","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+            });
+    $('#IDInstance').change(function () {
+                var id = $(this).val();
+                if (id == ""||id =="0") {
+                     $('#SubmitInstance').prop("disabled", true);
+                } else {
+					$('#SubmitInstance').prop("disabled", false);
+        }
+        $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
+            });
+   $('#SubmitInstance').click(function () {
+        var IDInstance = $("#IDInstance").val();
+        $.ajax({
+            //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+            url: '@Url.Action("SubmitInstance", "Home")',
+            type: "POST",
+            data: { 'IDInstance': IDInstance },
+            success: function (result) {
+                Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                //LoadTable(IDInstance);
+                location.reload();
+             //$('#jqGrid').trigger('reloadGrid');
+            }
+        });
+   });
+
+</script>
+
+<script>
+    function getFileNameWithExt(event) {
+        if (!event || !event.target || !event.target.files || event.target.files.length === 0) {
+            return;
+        }
+
+        if (event.target.files.length == 1) {
+
+            const name = event.target.files[0].name;
+            const lastDot = name.lastIndexOf('.');
+
+            //const fileName = name.substring(0, lastDot);
+            var ext = name.substring(lastDot + 1);
+            ext = ext.toLowerCase();
+            var id = event.target.id;
+            if (ext == "xls" || ext == "xlsx" ) {
+
+            }
+            else {
+                Notiflix.Notify.Failure("Only Excel allowed..!", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                $("#" + id).val("");
+            }
+            //outputfile.value = fileName;
+            //extension.value = ext;
+        }
+        else {
+            Notiflix.Notify.Failure("Select only one Excel file ..!", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            $("#" + id).val("");
+            //more than one files
+        }
+    }
+
+    $('#btnUpload').click(function () {
+       // debugger;
+        var InstanceId = '@Session["InstanceId"]';
+        if (InstanceId != "" && InstanceId != 0) {
+            var fileUpload1 = $("#FileUpload1").get(0);
+            var InstanceID = $("select#IDInstance").val();
+            var files = [
+                fileUpload1.files
+            ];
+            var fileData = new FormData();
+            fileData.append("InstanceID", InstanceId);
+            if (fileUpload1 != "") {
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i][0] != null)
+                        fileData.append(i, files[i][0]);
+                }
+                $.ajax({
+                    url: '@Url.Action("Lic_Upload", "License")',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    async: true,
+                    success: function (result) {
+                        //debugger
+                        // $("#load1").css("display", "none");
+                        if (result == 'File Uploaded Successfully!') {
+                            Notiflix.Notify.Success(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                            Redirect();
+                        }
+                        else if (result == 'Please Upload all files.') {
+                            Notiflix.Notify.Info(result, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        }
+                        else {
+                            Notiflix.Report.Info("ProAcc Info !", result, "Click", function () {
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        Notiflix.Notify.Failure(err.statusText, { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    }
+                });
+
+            }
+            else {
+
+                Notiflix.Notify.Failure("Select at leaset one file .! ", { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+            }
+
+        }
+    });
+
+
+    function Ajax_License_Bar() {
+		$.ajax({
+			type: "POST",
+			url: '@Url.Action("GetLicense_Bar")',
+			//data: '{LOB: ' + JSON.stringify(a) + '}',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+            success: function (Data) {
+                //debugger
+                if (Data._List != null) {
+                    var Output = Data._List;
+                    var inpName = [];
+                    var inpVal = [];
+                    var C = 0;
+                    for (var i = 0; i < Output.length; i++) {
+
+                        inpName.push("ECC");
+                        inpVal.push(Output[i]._Value);
+
+                        inpName.push("S4 HANA");
+                        inpVal.push(Output[i].Name);
+                    }
+                    labels = inpName;
+                    data_ = inpVal;
+                    renderCustomBarChart(data_, labels);
+                }
+			},
+			error: function () {
+				alert("Error while inserting data");
+			}
+		}).done(function (response) {
+			//chart.data = response;
+
+		});
+    }
+
+    function renderCustomBarChart(data, labels) {
+        debugger;
+        var D_Total = data[0];
+        var D_Active = data[1];
+
+        var maxval = Math.max.apply(Math, data);
+        //Chart.defaults.global.defaultFontFamily = "Verdana";
+        var canvas = document.getElementById("Chart_CustomCode")
+        var ctx = canvas.getContext("2d");
+
+
+
+        var config = {
+            //type: "horizontalBar",
+            type: "bar",
+
+            data: {
+                labels: labels,
+
+                datasets: [{
+
+                    data: data,
+                    backgroundColor: [
+                        '#f08956',
+                        '#36A2EB',
+                        '#FFCE56'
+                    ],
+
+                }]
+            },
+
+
+            options: {
+
+                legend: {
+                    display: false,
+                    position: "top"
+                },
+                //plugins: {
+                //    labels: {
+                //        render: 'value'
+                //    }
+                //},
+                //tooltips: {
+                //mode: 'label',
+                //     callbacks: {
+                //         label: function (tooltipItem, data) {
+
+                //     	return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+                //     }
+                //     }
+                //    },
+                title: {
+                    display: true,
+                    text: "ECC Vs S4 HANA Optimization"
+                },
+                hover: {
+                    animationDuration: 0
+                },
+                //animation: {
+                //	duration: 5000,
+                //	onComplete: function () {
+                //		var chartInstance = this.chart,
+                //		ctx = chartInstance.ctx;
+                //		ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                //		ctx.textAlign = 'center';
+                //		ctx.textBaseline = 'bottom';
+                //		var height = chartInstance.controller.boxes[0].bottom;
+                //		this.data.datasets.forEach(function (dataset, i) {
+                //			var meta = chartInstance.controller.getDatasetMeta(i);
+                //			meta.data.forEach(function (bar, index) {
+                //				var data = dataset.data[index];
+                //				 ctx.fillStyle = '#333';
+                //				ctx.fillText(data, bar._model.x, height - ((height - bar._model.y) / 2) - 10);
+
+                //			});
+                //		}
+                //		);
+                //	}
+                //},
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false,//this will remove only the label
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: true,
+
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            display: true,//this will remove only the label
+                            beginAtZero: true,
+                            max: maxval + 2
+
+                        },
+                        gridLines: {
+                            display: true,
+                            drawBorder: false
+
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Users'
+                        }
+                    }]
+                }
+
+            }
+
+
+        };
+        window.myRadialGauge = new Chart(ctx, config);
+        if (data[0] > 0) {
+            document.getElementById('Chart_CustomCode').style.display = 'block';
+        } else { document.getElementById('Chart_CustomCode').style.display = 'none';}
+        
+        canvas.onclick = function (evt) {
+            var activePoints = myRadialGauge.getElementsAtEvent(evt);
+            if (activePoints[0]) {
+                var chartData = activePoints[0]['_chart'].config.data;
+                var idx = activePoints[0]['_index'];
+
+                var label = chartData.labels[idx];
+                var value = chartData.datasets[0].data[idx];
+                if (value > 0) {
+                    var Res = "";
+                    if (D_Total == value) {
+                        Res=0
+                    }
+                    else {
+                        Res = 1
+                    }
+                    $("tbody").empty();
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetLic_Data", "License")',
+                        data: { value: Res },
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        async: true,
+                        success: function (D) {
+                           //debugger;
+                            $.each(D, function (i, D) {
+                                var body = "<tr>";
+                                body += "<td>" + D.Row_Number+ "</td>";
+                                body += "<td>" + D.Users + "</td>";
+                                body += "<td>" + D.User_Type + "</td>";
+                                body += "<td>" + D.Valid_From + "</td>";
+                                body += "<td>" + D.Valid_To + "</td>";
+                                body += "<td>" + D.Last_logon + "</td>";
+
+                                body += "<td>" + D.System + "</td>";
+                                body += "<td>" + D.Catergory + "</td>";
+                                body += "</tr>";
+                                $('#tblLic').append(body);
+
+                            });
+                            //debugger;
+                            //$("#tblLic").dataTable().fnDestroy();
+                            //if (table != undefined && table != null) {
+                            //    table.destroy();
+                            //    table = null;
+                            //}
+                            $("#tblLic").dataTable({
+                                destroy: true,
+                                retrieve: true,
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                                "order": [
+                                    [1, 'asc']
+                                ],
+
+                                //"columnDefs": [
+                                //    {
+                                //        "targets": [5],
+                                //        "visible": false
+                                //    }
+                                //]
+                            });
+                    /*DataTables instantiation.*/
+                            //$('#tblLic').dataTable();
+                            //if (response != null) {
+                            //    $('#drpTsk').append($("<option value='0'>Please Select Previous Task</option>"));
+                            //    $.each(response, function (index, item) {
+                            //        var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
+                            //        $('#drpTsk').append(option);
+                            //    });
+                            //}
+                        },
+                        failure: function (response) {
+                            //alert(response.responseText);
+                        },
+                        error: function (response) {
+                            //alert(response.responseText);
+                        }
+                    });
+                    document.getElementById('tblLic').style.display = 'block';
+                }
+
+                //var url = "http://example.com/?label=" + label + "&value=" + value;
+                //console.log(url);
+                //alert(url);
+            }
+        };
+
+    }
+    $(document).ready(function () {
+      //var table= $("#tblLic").dataTable({});
+    });
+</script>
