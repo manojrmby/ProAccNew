@@ -1657,6 +1657,7 @@ namespace ProAcc.BL
                         if (dr["ParallelName"].ToString() !="")
                         {
                             P.ParallelName = Convert.ToInt32(dr["ParallelName"].ToString());
+                            P.Parallel_Name = 'P'+dr["ParallelName"].ToString();
                         }
                         
 

@@ -214,16 +214,15 @@ table > tbody > tr > td > label{
                         }]
                     }
                 },                
-                //{
-                //    label: 'Parallel Name', name: 'Parallel_Id',index: 'Parallel_Id', width: 100, editable: false,editable: false,classes: 'wrapColumnText',
-                //    cellEdit: true, edittype: 'select', formatter: 'select',
-                //   editoptions: {
-                //      value: GetParallelName()
-                //    }
-
-                //},
+              {
+                    label: 'Parallel Name', name: 'Parallel_Name', index: 'Parallel_Name', width: 75, align: 'center', editable: false, hidden: false,
+                    cellEdit: true, 
+                    editoptions: {
+                        //value: GetUserDropDown()
+                    }
+                },
                 {
-                    label: 'Parallel Name', name: 'Parallel_Id',index: 'Parallel_Id', width: 100, editable: false,editable: true, hidden:true, classes: 'wrapColumnText',
+                    label: 'Parallel Name', name: 'Parallel_Id',index: 'Parallel_Id', width: 100,editable: true, hidden:true, classes: 'wrapColumnText',
                     cellEdit: true, edittype: 'select', formatter: 'select',
 
                 },
@@ -420,7 +419,7 @@ table > tbody > tr > td > label{
 
                 },
                 {
-                    label: 'ParallelID', name: 'ParallelName', index: 'ParallelName', width: 75, align: 'center', editable: true, hidden: false,
+                    label: 'ParallelID', name: 'ParallelName', index: 'ParallelName', width: 75, align: 'center', editable: false, hidden: false,
                     cellEdit: true, 
                     editoptions: {
                         //value: GetUserDropDown()
