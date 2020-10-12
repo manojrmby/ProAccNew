@@ -60,6 +60,6 @@ namespace ProAcc.BL.Model
 		public int PreviousID { get; set; }
 		public int Task_id { get; set; }
 		public Guid? parallel_Id { get; set; }
-
+		public int ParallelName { get; set; }
 	}
 }

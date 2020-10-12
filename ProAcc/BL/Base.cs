@@ -1654,6 +1654,11 @@ namespace ProAcc.BL
                         P.Planed__En_Date = Convert.ToDateTime(dr["Planed__En_Date"].ToString());
                         P.Actual_En_Date = Convert.ToDateTime(dr["Actual_En_Date"].ToString());
                         P.Notes = dr["Notes"].ToString();
+                        if (dr["ParallelName"].ToString() !="")
+                        {
+                            P.ParallelName = Convert.ToInt32(dr["ParallelName"].ToString());
+                        }
+                        
 
                         //P.Task_Other_Environment = false;
                         //P.Dependency = false;

@@ -420,6 +420,13 @@ table > tbody > tr > td > label{
 
                 },
                 {
+                    label: 'ParallelID', name: 'ParallelName', index: 'ParallelName', width: 75, align: 'center', editable: true, hidden: false,
+                    cellEdit: true, 
+                    editoptions: {
+                        //value: GetUserDropDown()
+                    }
+                },
+                {
                     name: "",
                     label: "Actions",
                     width: 65,
@@ -1005,12 +1012,13 @@ table > tbody > tr > td > label{
                     }
                 }
             }
+
         }
         var a = 0;
         for (var i = 0; i < ids.length; i++) {
             if ($('#jEditButton_' + ids[i]).is(":visible")) {a = a + 1;}
         }
-        //debugger;
+       
 
         if (UserType != 'Project Manager') {
 
@@ -1019,7 +1027,40 @@ table > tbody > tr > td > label{
                 status_show = true;
              }
         }
+        //debugger;
+        var par_minID = 0
+        var seq_min = 0
+        //debugger;
+        if (UserType != 'Project Manager') {
+            for (var i = 0; i < ids.length; i++) {
+                var ParallelID = $('#jqGrid').jqGrid('getCell', ids[i], 'ParallelName');
+                var Status__Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId');
+                var sequen = $('#jqGrid').jqGrid('getCell', ids[i], 'Task_id');
+                var localid = ids[i];
+                if (ParallelID != 0 && Status__Id != 1 && par_minID == 0) {
+                    par_minID = ParallelID
+                }
+                if (Status__Id != 1 && sequen == 1 && seq_min==0) {
+                    seq_min = ids[i];
+                }
+                
+                if (par_minID > 0 && ParallelID != par_minID && ParallelID>0) {
+                    if ($('#jEditButton_' + ids[i]).is(":visible")) {
+                        $('#jEditButton_' + ids[i]).hide();
+                    }
+                }
+                console.log(localid);
+                
+                if (sequen == 1 && seq_min < localid) {
+                //    console.log("In");
+                    if ($('#jEditButton_' + ids[i]).is(":visible")) {
+                        $('#jEditButton_' + ids[i]).hide();
+                    }
+                }
 
+            }
+        }
+        
     }
 
 
