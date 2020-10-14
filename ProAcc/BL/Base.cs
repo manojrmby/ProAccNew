@@ -1516,6 +1516,29 @@ namespace ProAcc.BL
 
             return L;
         }
+        
+        public List<ActivityMaster> GetActivityByParallelId(int Id,Guid Instance,Guid Parallel_Id)
+        {
+            DataTable dt = new DataTable();
+            DBHelper dB = new DBHelper("SP_Master", CommandType.StoredProcedure);
+            dB.addIn("@Type", "GetPreviousTaskByParallelId");
+            dB.addIn("@Instance", Instance);
+            dB.addIn("@Parallel_Id", Parallel_Id);
+            dB.addIn("@ID", Id);
+            dt = dB.ExecuteDataTable();
+            List<ActivityMaster> L = new List<ActivityMaster>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ActivityMaster P = new ActivityMaster();
+                    P.Activity_ID = Convert.ToInt32(dr["Activity_ID"].ToString());
+                    P.Task = dr["Task"].ToString();
+                    L.Add(P);
+                }
+            }
+            return L;
+        }
 
         public List<StatusMaster> GetStatus()
         {
@@ -1713,6 +1736,12 @@ namespace ProAcc.BL
                     P.SequenceNum = Convert.ToInt32(dr["Sequence_Num"].ToString());
                     P.RoleID = Convert.ToInt32(dr["RoleID"].ToString());
                     P.StatusId = Convert.ToInt32(dr["StatusId"].ToString());
+                    P.Task_id= Convert.ToInt32(dr["Task_id"].ToString());
+                    if (P.Task_id == 2)
+                    {
+                        P.parallel_Id = Guid.Parse(dr["Parallel_Id"].ToString());
+                        P.Parallel_Name = 'P' + dr["ParallelName"].ToString();
+                    }                    
                     P.Notes = "";
                     PM.Add(P);
                 }
@@ -2517,7 +2546,11 @@ namespace ProAcc.BL
                     a.Role = dr["Role"].ToString();
                     a.ApplicationArea = dr["ApplicationArea"].ToString();
                     a.Tasktype = dr["Task_id"].ToString();
-                    a.Parallel_Type = Guid.Parse(dr["Parallel_Id"].ToString());
+                    //a.Tasktype = dr["TaskType"].ToString();
+                    if (Convert.ToInt32(a.Tasktype) == 2)
+                    {
+                        a.Parallel_Type = Guid.Parse(dr["Parallel_Id"].ToString());
+                    }
                 }
             }
             return a;

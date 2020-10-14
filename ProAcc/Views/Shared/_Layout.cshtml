@@ -301,7 +301,8 @@
                                                     LogOut
                                                 </button>*@
                                             @Html.ActionLink("LogOut", "Logout", "login", new { area = "" }, new { @class = "dropdown-item" })
-                                            <button type="button" class="form-control btn btn-outline-success text-black-50" id="Updatepassword" data-toggle="modal" data-target="#updateModal">Update Password</button>
+                                            <button type="button" class="dropdown-item updtmodel" id="Updatepassword" data-toggle="modal" data-target="#updateModal">Update Password</button>
+                                            @*<button type="button" class="form-control btn btn-outline-success text-black-50" id="Updatepassword" data-toggle="modal" data-target="#updateModal">Update Password</button>*@
                                         </div>
                                     </div>
                                 </div>
@@ -859,7 +860,7 @@
     <div class="modal fadeIn" id="updateModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" data-url='@Url.Action("UpdatePassword","Home")'></div>
     <script>
         $(document).ready(function () {
-            $('.btn-outline-success').click(function () {
+            $('.updtmodel').click(function () {
                 var modal = $("#updateModal").data('url');
                 $.get(modal, function (data) {
                     $("#updateModal").html(data);

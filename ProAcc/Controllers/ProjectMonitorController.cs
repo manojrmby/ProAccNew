@@ -263,10 +263,21 @@ namespace ProAcc.Controllers
         //    return Json(P, JsonRequestBehavior.AllowGet);
         //}
 
-        public ActionResult PreviousTaskPhase(int PhaseID)
+        public ActionResult PreviousTaskPhase()
         {
+            int PhaseID = Convert.ToInt32(Session["PhaseID"].ToString());
             Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
             List<ActivityMaster> P = _Base.GetActivity(PhaseID,Instance);
+
+            return Json(P, JsonRequestBehavior.AllowGet);
+        }
+
+        
+        public ActionResult PreviousTaskByParallelId(Guid Parallel_Id)
+        {
+            int PhaseID = Convert.ToInt32(Session["PhaseID"].ToString());
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            List<ActivityMaster> P = _Base.GetActivityByParallelId(PhaseID, Instance, Parallel_Id);
 
             return Json(P, JsonRequestBehavior.AllowGet);
         }
@@ -329,11 +340,29 @@ namespace ProAcc.Controllers
         }
 
         #endregion
+
+        public ActionResult CheckTaskNameByInstance(string namedata)
+        {
+            Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
+            var SearchDt = (from a in db.ProjectMonitors
+                            join b in db.ActivityMasters on a.ActivityID equals b.Activity_ID
+                            where b.Task == namedata && a.InstanceID == Instance
+                            select a).FirstOrDefault();
+            if (SearchDt != null)
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult AddTask(ProjectMonitorModel Data)
         {
             Boolean Result = false;
             Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
             Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
+            Data.PhaseId=Convert.ToInt32(Session["PhaseID"].ToString());
             Result = _Base.Sp_AddTask(Instance, Data);
             if (Result == true)
             {
@@ -399,6 +428,7 @@ namespace ProAcc.Controllers
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
             TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
+            Session["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             //ViewBag.PhaseID= (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Assessment && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
@@ -476,6 +506,7 @@ namespace ProAcc.Controllers
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
             TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
+            Session["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PreConversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)
@@ -551,6 +582,7 @@ namespace ProAcc.Controllers
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
             TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
+            Session["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Conversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)
@@ -627,6 +659,7 @@ namespace ProAcc.Controllers
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
             TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
+            Session["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_PostConversion && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)
@@ -702,6 +735,7 @@ namespace ProAcc.Controllers
             //ViewBag.Customer = new SelectList(sP_._List, "Value", "Name");
             TempData["Customer"] = new SelectList(sP_._List, "Value", "Name");
             TempData["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
+            Session["PhaseID"] = (from q in db.PhaseMasters where q.PhaseName == _Base.Phase_Validation && q.isActive == true select q.Id).FirstOrDefault();
             Guid InstanceID = Guid.Parse(Session["InstanceId"].ToString());
             int inst = 0;
             if (InstanceID != Guid.Empty)

@@ -93,7 +93,7 @@ namespace ProAcc.Controllers
                                 join c in db.Projects on e.Project_ID equals c.Project_Id
                                 join cu in db.Customers on c.Customer_Id equals cu.Customer_ID
                                 where e.isActive == true && c.isActive == true && cu.isActive == true && e.Project_ID == id
-                                select new { e.InstaceName, e.Instance_id }).ToList();
+                                select new { e.InstaceName, e.Instance_id }).ToList().OrderBy(x=>x.InstaceName);
             return Json(InstanceList, JsonRequestBehavior.AllowGet);
         }
 

@@ -373,6 +373,11 @@
         //    }
         //});
 
+        $("#drpPhase").on('change', function () {
+            $('#drpParallelId').prop('selectedIndex', 0);
+            $("#parallelhidecheck , #parallelhideid").hide();
+             $("#drpTaskType").prop('selectedIndex', 0);
+        })
 
         $('#drpPhase,#drpRole,#drpApplicationArea,#drpBlock,#drpTaskType').change(function () {
              var Task = $("#txtTask").val();

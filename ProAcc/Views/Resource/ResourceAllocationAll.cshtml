@@ -163,6 +163,21 @@
                 { label: 'Activity / Task ', name: 'Task', width: 150, sortable: false, sorttype: 'integer', editable: false,classes: 'wrapColumnText' },
                 { label: 'Sequence ', name: 'SequenceNum', width: 50, sortable: false, sorttype: 'integer', editable: false ,hidden: true},
                 {
+                    label: 'Task Type', name: 'Task_id',index: 'Task_id', width: 100, editable: false, classes: 'wrapColumnText',
+                    cellEdit: true, edittype: 'select', formatter: 'select',
+                   editoptions: {
+                        value: GetTaskTypeDropDown()
+                    }
+
+                },
+                 {
+                    label: 'Parallel Name', name: 'Parallel_Name', index: 'Parallel_Name', width: 75, align: 'center', editable: false, hidden: false,
+                    cellEdit: true, 
+                    editoptions: {
+                        //value: GetUserDropDown()
+                    }
+                },
+                {
                     label: 'Role', name: 'RoleID', index: 'RoleID', width: 70, sortable: false, align: 'left', editable: false,
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
@@ -584,6 +599,34 @@
         });
         return Parameters;
     }
+
+    function GetTaskTypeDropDown() {
+       
+				 var Parameters = {};
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetTaskType","ProjectMonitor")',
+                    dataType: "json",
+					async: false,
+                    contentType: "application/json; charset=utf-8",                    
+                    success: function (Data) {
+                       // var TaskName = 'Select TaskName';
+                       // var key = '0';
+                       //Parameters[key] = TaskName;
+                        for (var i = 0; i < Data.length; i++) {
+                           var obj = {};
+                             var TaskName = Data[i].TaskName;
+                            var key = ""+Data[i].TaskId;
+                            Parameters[key] = TaskName;
+                        }
+                    },
+                    error: function (data) {
+                        alert("GetTaskTypeDropDown fail");
+                    }
+                });
+				return Parameters;
+    }
+
     function GetRoleDropDown() {
         var Parameters = {};
         $.ajax({

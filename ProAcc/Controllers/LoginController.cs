@@ -304,6 +304,22 @@ namespace ProAcc.Controllers
             }
         }
 
+        public ActionResult LoginIdCheck(string username, string mail, string code)
+        {
+            Guid ResetId = Guid.Parse(code);
+            var _userId = (from emp in db.ResetPasswords
+                           where emp.ResetId == ResetId && emp.IsActive == true
+                           select emp.UserId).FirstOrDefault();
+            var result = db.UserMasters.ToList().Exists(x => x.LoginId == username && x.UserId == _userId && x.EMail == mail && x.isActive == true);
+            if (result != true)
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+        }
 
         public ActionResult NewPasswordcheck(string password)
         {

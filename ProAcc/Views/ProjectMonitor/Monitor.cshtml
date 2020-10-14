@@ -1,8 +1,12 @@
 ﻿
 <style>
-table > tbody > tr > td > label{
-    color:black
-}
+    table > tbody > tr > td > label {
+        color: black
+    }
+
+    .ui-jqdialog-content input.FormElement {
+    border:2px solid #ccc !important
+    }
 </style>
 
 <div>
@@ -155,25 +159,25 @@ table > tbody > tr > td > label{
                         value: GetBlock()
                     }
                 },
-                {
-                    label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
-                     align: 'center', editable: true, hidden: true, edittype: 'custom',
-                    cellEdit: true, edittype: 'select', formatter: 'select',
-                    editrules: {
-                        required: true,
-                        edithidden: true
-                    },
-                    editoptions: {
-                        value: GetPhaseDropDown(),
-                        "dataEvents":[{
-                            "type":"change",
-                            "fn": function (e) {
-                               GetPreviousTaskID($("#PhaseId").val())
+                //{
+                //    label: 'Phase', name: 'PhaseId', index: 'PhaseId', width: 70,
+                //     align: 'center', editable: true, hidden: true, edittype: 'custom',
+                //    cellEdit: true, edittype: 'select', formatter: 'select',
+                //    editrules: {
+                //        required: true,
+                //        edithidden: true
+                //    },
+                //    editoptions: {
+                //        value: GetPhaseDropDown(),
+                //        "dataEvents":[{
+                //            "type":"change",
+                //            "fn": function (e) {
+                //               GetPreviousTaskID($("#PhaseId").val())
                                 
-                            }
-                        }]
-                    },
-                },
+                //            }
+                //        }]
+                //    },
+                //},
                 {
                     label: 'Activity / Task ', name: 'Task', width: 150,  editable: true, hidden: true,classes: 'wrapColumnText',
                     editrules: {
@@ -209,7 +213,13 @@ table > tbody > tr > td > label{
                         {
                             type: 'change',
                                fn: function (e) {
-                                   UpdateParallelName($("#Task_id").val())
+                                   GetPreviousTaskID()
+                                   if ($("#Task_id").val() == 2) {
+                                       UpdateParallelName($("#Task_id").val())
+                                   }
+                                   else {
+                                       $("#tr_Parallel_Id").hide();
+                                   }
                                 }
                         }]
                     }
@@ -224,7 +234,19 @@ table > tbody > tr > td > label{
                 {
                     label: 'Parallel Name', name: 'Parallel_Id',index: 'Parallel_Id', width: 100,editable: true, hidden:true, classes: 'wrapColumnText',
                     cellEdit: true, edittype: 'select', formatter: 'select',
-
+                    //editrules: {
+                    //    //required: true,
+                    //    edithidden: true
+                    //},
+                   editoptions: {
+                       dataEvents: [
+                        {
+                            type: 'change',
+                               fn: function (e) {
+                                   GetPreviousTaskByParallelId($("#Parallel_Id").val())
+                                }
+                        }]
+                    }
                 },
                 {
                     label: 'Application Area', name: 'ApplicationAreaID',index: 'ApplicationAreaID', width: 100, editable: false, classes: 'wrapColumnText',
@@ -290,7 +312,7 @@ table > tbody > tr > td > label{
                 },
                 { label: 'Pending With ', name: 'Pending', width: 100,  editable: true ,hidden: true},
                 {
-                    label: 'Delay', name: 'Delay_occurred', width: 30,  editable: true, align: 'center',
+                    label: 'Delay', name: 'Delay_occurred', width: 40,  editable: true, align: 'center',
                     edittype: 'checkbox',
                     editoptions: { value: "True:False" }
                     , formatter: "checkbox",
@@ -388,6 +410,7 @@ table > tbody > tr > td > label{
                     editoptions: {
                        // value:GetPreviousTask()
                        // value: GetApplicationAreaDropDown()
+                       // value:GetPreviousTaskID()
                     }
                 },
                 {
@@ -419,7 +442,7 @@ table > tbody > tr > td > label{
 
                 },
                 {
-                    label: 'ParallelID', name: 'ParallelName', index: 'ParallelName', width: 75, align: 'center', editable: false, hidden: false,
+                    label: 'ParallelID', name: 'ParallelName', index: 'ParallelName', width: 75, align: 'center', editable: false, hidden: true,
                     cellEdit: true, 
                     editoptions: {
                         //value: GetUserDropDown()
@@ -745,8 +768,8 @@ table > tbody > tr > td > label{
             // options for the Add Dialog
             {
                 @*url: "@Url.Action("AddTask","ProjectMonitor")",*@
-                closeAfterAdd: true,
-                recreateForm: true,
+                //closeAfterAdd: true,
+                //recreateForm: true,
                 beforeShowForm: function (form) {
                     //$('#PhaseId').val(5).prop("disabled", true);
                     $("#tr_Task_Other_Environment").hide();
@@ -773,7 +796,8 @@ table > tbody > tr > td > label{
                 addCaption: "Add Task",
                 onclickSubmit: function (response, postdata) {
                     AddTask(postdata);
-                    closeAfterAdd: true
+                    closeAfterAdd: true;
+                    recreateForm: true;
 		        }
             },
             // options for the Delete Dailog
@@ -827,13 +851,13 @@ table > tbody > tr > td > label{
         });
     }
 
-    function GetPreviousTaskID(PhaseID) {
+    function GetPreviousTaskID() {
          $("#PreviousID")
             .html("<option value=''>Loading User...</option>")
             .attr("disabled", "disabled");
         $('#PreviousID').empty()
         $.ajax({  
-             url: '@Url.Action("PreviousTaskPhase","ProjectMonitor")'+"?PhaseID="+PhaseID, 
+             url: '@Url.Action("PreviousTaskPhase","ProjectMonitor")', //+"?PhaseID="+PhaseID, 
             dataType: "json",
             async: false,
 			contentType: "application/json; charset=utf-8",
@@ -849,13 +873,63 @@ table > tbody > tr > td > label{
             }
         });
     }
+    
+    function GetPreviousTaskByParallelId(Parallel_Id) {
+        debugger
+         $("#PreviousID")
+            .html("<option value=''>Loading User...</option>")
+            .attr("disabled", "disabled");
+        $('#PreviousID').empty()
+        $.ajax({  
+             url: '@Url.Action("PreviousTaskByParallelId","ProjectMonitor")'+"?Parallel_Id="+Parallel_Id, 
+            dataType: "json",
+            async: false,
+			contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                 $("#PreviousID")
+                    .removeAttr("disabled");
+                $.each(res, function (data, value) {                  
+                   $('#PreviousID').append($("<option value='" + value.Activity_ID + "'>" + value.Task + "</option>"));                                                            
+                })
+            },
+            error: function (data) {
+                 alert("GetPreviousTaskID phaseid fail");
+            }
+        });
+    }
+
+    function TaskCheck(Task) {
+        debugger
+        var status = true;
+        if (Task == "") {
+            status= false
+       }
+       else {
+         $.ajax({
+            url: '@Url.Action("CheckTaskNameByInstance", "ProjectMonitor")',
+            type: "GET",
+            data: { namedata: Task},
+             dataType: "json",
+             async:false,
+            success: function (data) {
+               if (data == "success") {
+                   status= false
+               }                  
+            },
+            error: function (err) {
+                status= false
+            }
+          });
+        }
+        return status
+    }
 
     function AddTask(postdata) {
         debugger
         var EST_hours = postdata.EST_hrs;
          EST_hours = EST_hours.replace(":", ".");
         var BuldingBlockID= postdata.BuldingBlockID;
-        var PhaseId= postdata.PhaseId;
+        //var PhaseId= postdata.PhaseId;
         var ApplicationAreaID= postdata.ApplicationAreaID;
         var Task= postdata.Task;
         var Notes= postdata.Notes;
@@ -868,14 +942,18 @@ table > tbody > tr > td > label{
 
         var UserID = postdata.UserID;
 
-         $.ajax({
+        if (TaskCheck(Task) == false) {
+            alert("Enter Task details");
+        }
+        else {
+             $.ajax({
             type: "POST",
             url: '@Url.Action("AddTask","ProjectMonitor")',
              data: {
 
                  EST_hours:EST_hours,
                  BuldingBlockID: BuldingBlockID,
-                 PhaseId: PhaseId,
+                 //PhaseId: PhaseId,
                  ApplicationAreaID: ApplicationAreaID,
                  Task: Task,
                  Notes: Notes,
@@ -897,7 +975,9 @@ table > tbody > tr > td > label{
                    alert("GetPhase fail");
              }
          });
+        }        
     }
+
     function Show_PMEdit() {
         var selectedRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
          var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
@@ -1036,6 +1116,9 @@ table > tbody > tr > td > label{
                 var Status__Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId');
                 var sequen = $('#jqGrid').jqGrid('getCell', ids[i], 'Task_id');
                 var localid = ids[i];
+                if (Status__Id == 1||Status__Id == 3) {
+                    $('#jEditButton_' + ids[i]).hide();
+                }
                 if (ParallelID != 0 && Status__Id != 1 && par_minID == 0) {
                     par_minID = ParallelID
                 }
@@ -1124,14 +1207,16 @@ table > tbody > tr > td > label{
                     url: '@Url.Action("GetTaskType","ProjectMonitor")',
                     dataType: "json",
 					async: false,
-                    contentType: "application/json; charset=utf-8",
+                    contentType: "application/json; charset=utf-8",                    
                     success: function (Data) {
+                        var TaskName = 'Select TaskName';
+                        var key = '0';
+                       Parameters[key] = TaskName;
                         for (var i = 0; i < Data.length; i++) {
-
                            var obj = {};
-                             var ApplicationArea = Data[i].TaskName;
+                             var TaskName = Data[i].TaskName;
                             var key = ""+Data[i].TaskId;
-                            Parameters[key] = ApplicationArea;
+                            Parameters[key] = TaskName;
                         }
                     },
                     error: function (data) {
@@ -1165,6 +1250,7 @@ table > tbody > tr > td > label{
     }
     function UpdateParallelName(Taskid) {
         if (Taskid == 2) {
+            
             $("#tr_Parallel_Id").show();
               $.ajax({
                     type: "POST",
@@ -1173,16 +1259,18 @@ table > tbody > tr > td > label{
                     dataType: "json",
 					async: false,
                     contentType: "application/json; charset=utf-8",
-                    success: function (res) {
+                  success: function (res) {
+                         //$('#PreviousID').empty()
+                      $('#Parallel_Id').empty();
                         $('#Parallel_Id').append($("<option value='00000000-0000-0000-0000-000000000000'>" + 'New Parallel Name' + "</option>"));
                         $.each(res, function (data, value) {                  
-                           $('#Parallel_Id').append($("<option value='" + value.parallelId + "'>" + 'P'+value.ParallelName + "</option>"));                                                            
+                           $('#Parallel_Id').append($("<option value='" + value.ParallelId + "'>" + 'P'+value.ParallelName + "</option>"));                                                            
                         })
                     },
                     error: function (data) {
                         alert("UpdateParallelName fail");
                     }
-                });
+              });
         }
        
 

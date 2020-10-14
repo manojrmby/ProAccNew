@@ -31,7 +31,7 @@
         <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:20%;">
             <div class="w3-container" style="margin:0 auto !important;">
                 <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <div class="row" style="margin-top:3%;">
+                <div class="row" style="margin-top:3%;margin-bottom:3%;">
                     <div class="col-4">
                         <div class="form-group">
                             <label class="control-label col-md-6 required">Instance Name</label>
@@ -81,7 +81,7 @@
         <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:20%;">
             <div class="w3-container" style="margin:0 auto !important;">
                 <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <div class="row" style="margin-top:3%;">
+                <div class="row" style="margin-top:3%;margin-bottom:3%;">
                     <div class="col-4">
                         <label class="control-label col-md-4 required">Project</label>
                         <select class="form-control" id="drpProjectName">
@@ -143,7 +143,8 @@
                 var value = DrpInstance[i];
                 if (TxtInstance == value) {
                     $("#txtInstance1").val('');
-                    $("#lblInstance1").html("Please re-enter the Instance Name").show();
+                   // $("#lblInstance1").html("Please re-enter the Instance Name").show();
+                    Notiflix.Notify.Failure('Please re-enter the Instance Name', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                     return false;
                 }
             }
@@ -197,11 +198,13 @@
             var Project = $("#drpProjectName").val().trim();
             var Previous_Instance = $("#drpInstance").val().trim();
             if (InstanceName == "") {
-                $("#lblInstance1").html("Please enter the Instance Name").show().fadeOut(5000);
+                //$("#lblInstance1").html("Please enter the Instance Name").show().fadeOut(5000);
+                Notiflix.Notify.Failure('Please enter the Instance Name', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
             }
             else if (ClonecheckInstance() == false)
             {
-                $("#lblInstance1").html("Please re-enter the Instance ").show().fadeOut(5000);
+                // $("#lblInstance1").html("Please re-enter the Instance ").show().fadeOut(5000);
+                Notiflix.Notify.Failure('Please re-enter the Instance', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
 
             }
             else if (Project == 0) {
@@ -247,7 +250,8 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "success") {
-                        $("#lblInstanceName").html("This Instance Name already in Project ").show().fadeOut(5000);
+                        //$("#lblInstanceName").html("This Instance Name already in Project ").show().fadeOut(5000);
+                        Notiflix.Notify.Failure('This Instance Name already in Project ', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                         $("#btnInstanceCreate").prop('disabled', true);
                         // $("#btnInstanceUpdate").prop('disabled', true);
                     }
@@ -270,11 +274,13 @@
         var Project = $("#drpProject").val().trim();
 
         if (InstanceName == "") {
-            $("#lblInstanceName").html("Please enter the Instance Name").show().fadeOut(5000);
+           // $("#lblInstanceName").html("Please enter the Instance Name").show().fadeOut(5000);
+            Notiflix.Notify.Failure('Please enter the Instance Name', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
         }
         else if (Project ==0)
         {
-            $("#lblProject").html("Please Select the project").show().fadeOut(5000);
+            //$("#lblProject").html("Please Select the project").show().fadeOut(5000);
+            Notiflix.Notify.Failure('Please Select the project', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
         }
         else {
             $.ajax({
