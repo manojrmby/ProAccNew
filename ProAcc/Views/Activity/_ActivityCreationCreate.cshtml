@@ -5,7 +5,8 @@
 }
 @*<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">*@
 <link href="~/Asset/css/Activity.css" rel="stylesheet" />
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <style>
     /*span {
         color: red;
@@ -19,12 +20,12 @@
         top: -12px;
         cursor: pointer;
     }
+
     label.control-label.col-md-4.Parallel {
         position: absolute;
         margin-top: 7%;
         left: 9%;
     }
-
 </style>
 <a class="card-title" id="activityCreation">Activity Creation</a>
 <a class="card-title" style="display:none" id="activityUpdation">Activity Updation</a>
@@ -99,7 +100,7 @@
                 </div>
             </div>
 
-            
+
         </div>
 
         <div class="col-6">
@@ -147,16 +148,16 @@
                 </div>
             </div>
 
-            <div class="form-group" id="parallelhideid">
+            <div class="form-group" id="parallelhideid" style="display:none">
                 <label class="control-label col-md-4 ">Parallel-Name</label>
                 <div class="col-md-10">
                     <input id="drphiddenRole" type="hidden" />
                     <select class="form-control" id="drpParallelId">
-                        <option value="00000000-0000-0000-0000-000000000000">New Parallel Name</option>
+                        @*<option value="00000000-0000-0000-0000-000000000000">New Parallel Name</option>
                         @foreach (var item in ViewBag.ParallelId)
                         {
-                            <option value="@item.ParallelId">P @item.ParallelName</option>
-                        }
+                            <option value="@item.ParallelId">@item.Parallel_Name</option>
+                        }*@
                     </select>
                 </div>
                 <div>
@@ -164,16 +165,16 @@
                 </div>
             </div>
             @*<div class="form-group" id="parallelhidecheck">
-            <div class="col-md-12">
-                <input type="checkbox"  id="txtParallelCheck" name="check" />
-                <label class="control-label col-md-4 Parallel">New Parallel Name</label>
-            </div>
-            <div>
-                &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblParallelcheck">&nbsp;</span>
-            </div>
-        </div>*@
+                    <div class="col-md-12">
+                        <input type="checkbox"  id="txtParallelCheck" name="check" />
+                        <label class="control-label col-md-4 Parallel">New Parallel Name</label>
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;&nbsp;<span class="Class_span" id="lblParallelcheck">&nbsp;</span>
+                    </div>
+                </div>*@
         </div>
-                
+
         <div class="col-10">
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
@@ -188,10 +189,17 @@
 </div>
 <div class="w3-container">
     <div id="id01" class="w3-modal">
-        <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:20%;">
+        <div class="w3-modal-content" style="margin-left: 355px;margin-top: 110px; height:30%;">
             <div class="w3-container" style="margin:0 auto !important;">
                 <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <div class="row" style="margin-top:3%;">
+                <div class="row" id='newParallelrow' style="display:none">
+                    <label style="margin-top:20px;margin-left:20px">New Parallel Name</label>
+                    <div class="col-4">
+                        <input class="form-control" id="newParallelName" style="margin-top:3%;border:2px solid #ccc !important;" />
+                        <span class="Class_span" id="lblnewParallelName">&nbsp;</span>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:3%;margin-bottom:3%;">
                     <div class="col-10">
                         <select class="form-control" id="drpTsk">
                         </select>
@@ -414,18 +422,73 @@
     });
 
     $("#drpTaskType").change(function () {
-        //var Paralleltype = $("#drpParallelId").val();
+        debugger
         var taskValue = $(this).children("option:selected").val();
-        if (taskValue == "0" ||taskValue == "1" || taskValue == "3") {
+        var PhaseId = $('#drpPhase').val();
+        if (taskValue == "0" || taskValue == "1" || taskValue == "3") {
             $("#parallelhidecheck , #parallelhideid").hide();
             $("#drpParallelId").val("");
         }
         else if (taskValue == "2") {
-            $("#parallelhidecheck , #parallelhideid").show();
-             $('#drpParallelId').prop('selectedIndex', 0);
-           // $("#drpParallelId").prop("disabled", true);
+           // $("#parallelhidecheck , #parallelhideid").show();
+            $('#drpParallelId').prop('selectedIndex', 0);
+            $("#parallelhideid").show();
+            $('#drpParallelId').empty();
+            $.ajax({
+                 type: "GET",
+                 url: '@Url.Action("ParallelNameByPhase","Activity")',
+                 data: { Id: PhaseId, taskValue: taskValue },
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "json",
+                 success: function (response) {
+                     if (response != null) {
+                         $('#drpParallelId').append($("<option value='00000000-0000-0000-0000-000000000000'>New Parallel Name</option>"));
+                         $.each(response, function (index, item) {
+                           var option = $("<option value='" + item.ParallelId + "'>" + item.Parallel_Name + "</option>");
+                            $('#drpParallelId').append(option);
+                         });
+                       }
+                   },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+            });
         }
     });
+
+     function ParallelName(Parallel_Name,Tasktype) {
+           debugger
+             Parallel_Name = Parallel_Name.replace(/,/g, " ");
+         var status = true
+         if (Tasktype == 2 && Parallel_Name != "") {
+              if (Parallel_Name == "") {
+               status = false
+              }
+              else
+              {
+                 $.ajax({
+                    url: '@Url.Action("CheckParallel_NameAvailability", "Activity")',
+                    type: "GET",
+                    data: { namedata: Parallel_Name},
+                     dataType: "json",
+                     async:false,
+                    success: function (data) {
+                        if (data == "success") {
+                          status=false
+                        }                   
+                    },
+                    error: function (err) {
+                   
+                    }
+                 });
+              }
+         }
+           
+         return status;
+    }
 
     function ValidateActivity() {
 
@@ -435,7 +498,7 @@
         var Role = $('#drpRole').val();
         var Block = $('#drpBlock').val();
         var Estimated = $("#txtEstimated").val();
-        var TaskType = $("#drpTaskType").val(); 
+        var TaskType = $("#drpTaskType").val();
         var ParallelId = $("#drpParallelId").val();
 
 
@@ -482,6 +545,8 @@
         var Estimated = $("#txtEstimated").val();
         var Tasktype = $("#drpTaskType").val();
         var Paralleltype = $("#drpParallelId").val();
+
+
          Estimated = Estimated.replace(/:/g, ".");
 
         var model = {
@@ -528,7 +593,9 @@
         else {
             $("#drpTsk").empty();
             var id = $("#drpPhase").val()
-            if (id > 0 && (Paralleltype != null && Paralleltype!='00000000-0000-0000-0000-000000000000')) {
+            //$('#drpTsk').select2();
+            if (id > 0 && (Paralleltype != null && Paralleltype != '00000000-0000-0000-0000-000000000000')) {
+                 $("#newParallelrow").hide();
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("GetAllTaskByParallelType","Activity")',
@@ -537,7 +604,7 @@
                     dataType: "json",
                     success: function (response) {
                         if (response != null) {
-                            $('#drpTsk').append($("<option value='0'>Please Select Previous Task</option>"));
+                           // $('#drpTsk').append($("<option value='0'>Please Select Previous Task</option>"));
                             $.each(response, function (index, item) {
                                 var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
                                 $('#drpTsk').append(option);
@@ -552,7 +619,11 @@
                     }
                 });
             }
-            else if(id>0) {
+            else if (id > 0) {
+                 $("#newParallelrow").hide();
+                if (Tasktype==2 && Paralleltype == '00000000-0000-0000-0000-000000000000') {
+                    $("#newParallelrow").show();
+                }
                  $.ajax({
                     type: "GET",
                     url: '@Url.Action("GetAllTask","Activity")',
@@ -578,50 +649,7 @@
             }
             document.getElementById('id01').style.display = 'block';
 
-            @*$.ajax({
-                type: "POST",
-                url: '@Url.Action("Create","Activity")',
-                data: { activityMaster:model },
-                success: function (response) {
-                        if (response > 0) {
-                            $("#hiddenActivityId").val(response);
-                            $("#drpTsk").empty();
-                            var id = $("#drpPhase").val()
-                            if (id > 0) {
-                                $.ajax({
-                                    type: "GET",
-                                    url: '@Url.Action("GetAllTask","Activity")',
-                                    data: { id: id },
-                                    contentType: "application/json; charset=utf-8",
-                                    dataType: "json",
-                                    success: function (response) {
-                                        if (response != null) {
-                                            $('#drpTsk').append($("<option value='0'>Please Select Previous Task</option>"));
-                                            $.each(response, function (index, item) {
-                                                var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
-                                                $('#drpTsk').append(option);
-                                            });
-                                        }
-                                    },
-                                    failure: function (response) {
-                                        alert(response.responseText);
-                                    },
-                                    error: function (response) {
-                                        alert(response.responseText);
-                                    }
-                                });
-                            }
-                                     document.getElementById('id01').style.display = 'block';
 
-                        }
-                    },
-                    failure: function (response) {
-                       alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    }
-            });*@
 
 
 
@@ -644,8 +672,8 @@
 
         var LatestTaskId = $("#hiddenActivityId").val();
         var LastTaskId = $("#drpTsk").val();
+         var Parallel_Name = $("#newParallelName").val();
 
-        
         var model = {
             Activity_ID: id,
             Task: Task,
@@ -656,7 +684,8 @@
             RoleID: Role,
             PreviousId: LastTaskId,
             TaskId: Tasktype,
-            ParallelId: Paralleltype
+            ParallelId: Paralleltype,
+            Parallel_Name:Parallel_Name
         }
         if (Task == "") {
             $("#lblTask").html("Please enter the Task").show().fadeOut(5000);
@@ -681,6 +710,9 @@
         else if (Estimated == "") {
             $("#lblEstimated").html("Please fill the Estimated hours").show();
             ValidateActivity();
+        }
+        else if (ParallelName(Parallel_Name,Tasktype)==false){
+            $("#lblnewParallelName").html("Parallel Name already in use").show();
         }
         else {
             $.ajax({

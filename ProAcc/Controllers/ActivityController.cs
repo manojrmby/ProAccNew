@@ -56,6 +56,18 @@ namespace ProAcc.Controllers
            var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id && x.Sequence_Num != null&&x.Parallel_Id== Parallel_Id&& x.PM_Add==false).OrderBy(a => a.Sequence_Num).Select(p => new { p.Activity_ID, p.Task }).ToList();
            return Json(Activitylist, JsonRequestBehavior.AllowGet);
         }
+         
+        [HttpGet]
+        public ActionResult ParallelNameByPhase(int id,int taskvalue)
+        {
+            //var Activitylist = db.ActivityMasters.Where(x => x.isActive == true && x.PhaseID == id && x.Sequence_Num != null&&x.Task_id== taskvalue).OrderBy(a => a.Sequence_Num).Select(p => new { p.Activity_ID, p.Task }).ToList();
+            var Parallellist = (from A in db.ActivityMasters
+                                join P in db.ParallelTypes on A.Parallel_Id equals P.ParallelId
+                                join TT in db.TaskType1 on A.Task_id equals TT.TaskId
+                                where A.PhaseID == id && A.Task_id == taskvalue && A.PM_Add==false
+                                select new { P.ParallelId,P.Parallel_Name }).ToList().Distinct();
+            return Json(Parallellist, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public ActionResult GetAllTask(int id)
@@ -182,6 +194,21 @@ namespace ProAcc.Controllers
                 }
             }
         }
+        
+        public JsonResult CheckParallel_NameAvailability(string namedata)
+        {
+            var SearchDt = db.ParallelTypes.Where(x => x.Parallel_Name == namedata && x.isActive == true).FirstOrDefault();
+            if (SearchDt != null)
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
 
         [HttpPost]
         public ActionResult Create(ActivityMaster activityMaster)

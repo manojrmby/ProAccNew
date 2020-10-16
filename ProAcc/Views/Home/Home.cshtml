@@ -4,10 +4,12 @@
     Layout = "~/Views/shared/_Layout.cshtml";
     var mdetails = ViewBag.list;
     var taskdetails = ViewBag.Taskdetails;
-    
-}
 
+}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <style>
+
     /*.cs_Closed {
         color: lightgreen;
     }
@@ -15,7 +17,6 @@
     .cs_Inprogress {
         color: cornflowerblue;
     }*/
-
     /*.prograss_Bar {
         height: 15px;
     }*/
@@ -326,7 +327,7 @@
         background:
 	linear-gradient(white 30%, hsla(0,0%,100%, 0)),
 	linear-gradient(hsla(0,0%,100%,0) 10px, white 70%) bottom,
-	radial-gradient(at top, rgba(0,0,0,0.2), transparent 70%), 
+	radial-gradient(at top, rgba(0,0,0,0.2), transparent 70%),
 	radial-gradient(at bottom, rgba(0,0,0,0.2), transparent 70%) bottom;
 background-repeat:no-repeat;
 background-size: 100% 20px, 100% 20px, 100% 10px, 100% 10px;
@@ -351,7 +352,7 @@ background-attachment:local, local, scroll, scroll;
 
  ._Scroll{
     margin-bottom : 8px;
-  
+
 }
 
 ._Scroll dimmed {
@@ -742,7 +743,7 @@ background-attachment:local, local, scroll, scroll;
                //debugger;
                 percentage(Result);
                 Data = Result[0];
-                
+
                 data_Assessment = [Data.COMPLETE, Data.WIP, Data.ONHOLD, Data.YetToStart]; //, Data.NA
 				 labels = ["Completed", "Work In Progress", "On Hold", "Yet To Start"]; //,"Not Apllicable"
                 render_Ass_Chart(data_Assessment, labels);
@@ -770,7 +771,7 @@ background-attachment:local, local, scroll, scroll;
     }
 
     function Render_No_Data(ID) {
-        
+
         var ctx = document.getElementById(ID).getContext("2d");
         var config = {
 			type: "doughnut",
@@ -789,12 +790,12 @@ background-attachment:local, local, scroll, scroll;
 				responsive: true,
                 legend: {
                     display: false
-				
+
                 },
                 dataLabels: {
                     display: false
                 },
-                
+
                 centerPercentage: 60,
                 centerArea: {
                     displayText: true,
@@ -840,7 +841,7 @@ background-attachment:local, local, scroll, scroll;
             },
             centerText: {
                 display: true,
-                text: "NO Data" 
+                text: "NO Data"
             }
 		};
 
@@ -858,7 +859,7 @@ background-attachment:local, local, scroll, scroll;
        else {
            var ctx = document.getElementById("Chart_Assessment").getContext("2d");
 
-       
+
 		var config = {
 			type: "doughnut",
 			data: {
@@ -954,9 +955,9 @@ background-attachment:local, local, scroll, scroll;
 
 		window.myRadialGauge = new Chart(ctx, config);
        }
-		
+
     }
-    
+
    function render_Pre_Conversion_Chart(data, labels) {
         //Chart.defaults.global.defaultFontFamily = "Verdana";
        var Total = data[0] + data[1] + data[2] + data[3] //+ data[4];
@@ -1178,7 +1179,7 @@ background-attachment:local, local, scroll, scroll;
            window.myRadialGauge = new Chart(ctx, config);
        }
     }
-    
+
      function render_Post_Conversion_Chart(data, labels) {
          //Chart.defaults.global.defaultFontFamily = "Verdana";
       var Total = data[0] + data[1] + data[2] + data[3] //+ data[4];
@@ -1481,7 +1482,7 @@ background-attachment:local, local, scroll, scroll;
   //  }
 
     function percentage(Result) {
-       
+
                 var Data = Result[0];
                 var d_total = (Data.COMPLETE + Data.WIP + Data.ONHOLD + Data.YetToStart)
                 if (d_total > 0) {
@@ -1524,7 +1525,7 @@ background-attachment:local, local, scroll, scroll;
             var a = (Data1.COMPLETE) / d1_total;
             var percent = Math.round(a * 100);
             $("#PreId").html(percent + "%");
-            
+
             $("#PreId_Progress").css('width', percent + '%');
             var progressid = '#PreId_Progress';
             if (percent > 0 && percent < 50) {
@@ -1615,7 +1616,7 @@ background-attachment:local, local, scroll, scroll;
             $("#PostId_Progress").css('width', 0 + '%');
             $("#Post_StatusId").html("Yet To Start");
             }
-            
+
         }
         else {
               $("#PostId").html(0 + "%");
@@ -1670,10 +1671,10 @@ background-attachment:local, local, scroll, scroll;
         //    $("#Vali_StatusId").html("Yet To Start");
         //    //$("#ValiDivId").removeClass("bg-grow-early");
         //    //$("#ValiDivId").last().addClass("bg-grow-before");
-                
+
 
         //    }
-        
+
 			//	},
 			//	error: function () {
 			//		//alert("Error while inserting data");
@@ -1685,7 +1686,7 @@ background-attachment:local, local, scroll, scroll;
 
         Ajax_Donut();
         //Assessment_percentage();
-        
+
         var In =@ViewBag.Instance;
 
         if (In == 0) {
@@ -1711,7 +1712,7 @@ background-attachment:local, local, scroll, scroll;
                     select.append($('<option/>', {
                         value: 0,
                         text: "-Select-"
-                    }));                
+                    }));
                 $('#IDCustomer').prop('title', $("#IDCustomer option:selected").text());
             $.ajax({
                 type: "POST",
@@ -1740,8 +1741,9 @@ background-attachment:local, local, scroll, scroll;
                 }
             });
 
-                
-        });
+
+            });
+        $('#IDInstance').select2();
             $('#IDProject').change(function () {
 
             var id = $(this).val();
@@ -1760,11 +1762,12 @@ background-attachment:local, local, scroll, scroll;
                 success: function (data) {
                     var select = $("#IDInstance");
                     select.empty();
+                    
                     select.append($('<option/>', {
                         value: 0,
                         text: "-Select-"
-                    }));
-                    if (data.length > 0) {
+                    }));                    
+                    if (data.length > 0) {                        
                         $.each(data, function (index, itemData) {
                             select.append($('<option/>', {
                                 value: itemData.Value,
@@ -1802,11 +1805,11 @@ background-attachment:local, local, scroll, scroll;
                 success: function (result) {
                    Notiflix.Notify.Success('New Live Instance updated !', {cssAnimationStyle:'zoom', cssAnimationDuration:500,});
                     setTimeout(Redirect, 3000);
-                    
+
                 }
             });
 
-           
+
         });
     });
     function Redirect() {
@@ -1908,249 +1911,249 @@ background-attachment:local, local, scroll, scroll;
 //    });
 
 //    function drawTotals(chart) {
- 
+
 //    var width = chart.chart.width,
 //    height = chart.chart.height,
 //    ctx = chart.chart.ctx;
- 
+
 //    ctx.restore();
 //    var fontSize = (height / 114).toFixed(2);
 //    ctx.font = fontSize + "em sans-serif";
 //    ctx.textBaseline = "middle";
- 
+
 //    var text = chart.config.centerText.text,
 //    textX = Math.round((width - ctx.measureText(text).width) / 2),
 //    textY = height / 2;
- 
+
 //    ctx.fillText(text, textX, textY);
 //    ctx.save();
 //}
 </script>
 <script type="text/javascript">
-    //var randomScalingFactor = function () {
-    //    return Math.round(Math.random() * 100);
-    //};
+                        //var randomScalingFactor = function () {
+                        //    return Math.round(Math.random() * 100);
+                        //};
 
-    //Chart.defaults.global.defaultFontFamily = "Verdana";
+                        //Chart.defaults.global.defaultFontFamily = "Verdana";
 
-    //var ctx = document.getElementById("chart-Assessment").getContext("2d");
-    var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
-    var ctx2 = document.getElementById("chart-Conversion").getContext("2d");
-    var ctx3 = document.getElementById("chart-Post_Conversion").getContext("2d");
-    //var ctx4 = document.getElementById("chart-Validation").getContext("2d");
+                        //var ctx = document.getElementById("chart-Assessment").getContext("2d");
+                        var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
+                        var ctx2 = document.getElementById("chart-Conversion").getContext("2d");
+                        var ctx3 = document.getElementById("chart-Post_Conversion").getContext("2d");
+                        //var ctx4 = document.getElementById("chart-Validation").getContext("2d");
 
-    //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
+                        //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
 
-    window.onload = function () {
-        //var ctx = document.getElementById("chart-Assessment").getContext("2d");
-        //window.myRadialGauge = new Chart(ctx, config);
-        var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
-        window.myRadialGauge = new Chart(ctx1, config1);
+                        window.onload = function () {
+                            //var ctx = document.getElementById("chart-Assessment").getContext("2d");
+                            //window.myRadialGauge = new Chart(ctx, config);
+                            var ctx1 = document.getElementById("chart-Pre_Conversion").getContext("2d");
+                            window.myRadialGauge = new Chart(ctx1, config1);
 
-        var ctx2 = document.getElementById("chart-Conversion").getContext("2d");
-        window.myRadialGauge = new Chart(ctx2, config2);
+                            var ctx2 = document.getElementById("chart-Conversion").getContext("2d");
+                            window.myRadialGauge = new Chart(ctx2, config2);
 
-        var ctx3 = document.getElementById("chart-Post_Conversion").getContext("2d");
-        window.myRadialGauge = new Chart(ctx3, config3);
+                            var ctx3 = document.getElementById("chart-Post_Conversion").getContext("2d");
+                            window.myRadialGauge = new Chart(ctx3, config3);
 
-        //var ctx4 = document.getElementById("chart-Validation").getContext("2d");
-        //window.myRadialGauge = new Chart(ctx4, config4);
+                            //var ctx4 = document.getElementById("chart-Validation").getContext("2d");
+                            //window.myRadialGauge = new Chart(ctx4, config4);
 
-        //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
-        //window.myRadialGauge = new Chart(ctx5, config5);
-    };
+                            //var ctx5 = document.getElementById("chart-Storage").getContext("2d");
+                            //window.myRadialGauge = new Chart(ctx5, config5);
+                        };
 
-    //var gradientStroke_ = ctx.createLinearGradient(500, 0, 100, 0);
-    //gradientStroke_.addColorStop(0, "#FDB777");
-    //gradientStroke_.addColorStop(1, "#FD9346");
+                        //var gradientStroke_ = ctx.createLinearGradient(500, 0, 100, 0);
+                        //gradientStroke_.addColorStop(0, "#FDB777");
+                        //gradientStroke_.addColorStop(1, "#FD9346");
 
-    var gradientStroke_1 = ctx1.createLinearGradient(500, 0, 100, 0);
-    gradientStroke_1.addColorStop(0, "#FDB777");
-    gradientStroke_1.addColorStop(1, "#FD9346");
+                        var gradientStroke_1 = ctx1.createLinearGradient(500, 0, 100, 0);
+                        gradientStroke_1.addColorStop(0, "#FDB777");
+                        gradientStroke_1.addColorStop(1, "#FD9346");
 
-    var gradientStroke_2 = ctx2.createLinearGradient(500, 0, 100, 0);
-    gradientStroke_2.addColorStop(0, "#FB291B");
-    gradientStroke_2.addColorStop(1, "#CD1B2D");
+                        var gradientStroke_2 = ctx2.createLinearGradient(500, 0, 100, 0);
+                        gradientStroke_2.addColorStop(0, "#FB291B");
+                        gradientStroke_2.addColorStop(1, "#CD1B2D");
 
 
-    var gradientStroke_3 = ctx3.createLinearGradient(500, 0, 100, 0);
-    gradientStroke_3.addColorStop(0, "#FDB777");
-    gradientStroke_3.addColorStop(1, "#FD9346");
+                        var gradientStroke_3 = ctx3.createLinearGradient(500, 0, 100, 0);
+                        gradientStroke_3.addColorStop(0, "#FDB777");
+                        gradientStroke_3.addColorStop(1, "#FD9346");
 
-    //var gradientStroke_4 = ctx4.createLinearGradient(500, 0, 100, 0);
-    //gradientStroke_4.addColorStop(0, "#FB291B");
-    //gradientStroke_4.addColorStop(1, "#CD1B2D");
+                        //var gradientStroke_4 = ctx4.createLinearGradient(500, 0, 100, 0);
+                        //gradientStroke_4.addColorStop(0, "#FB291B");
+                        //gradientStroke_4.addColorStop(1, "#CD1B2D");
 
-    //var gradientStroke_5 = ctx5.createLinearGradient(500, 0, 100, 0);
-    //gradientStroke_5.addColorStop(0, "#FDB777");
-    //gradientStroke_5.addColorStop(1, "#FD9346");
+                        //var gradientStroke_5 = ctx5.createLinearGradient(500, 0, 100, 0);
+                        //gradientStroke_5.addColorStop(0, "#FDB777");
+                        //gradientStroke_5.addColorStop(1, "#FD9346");
 
-    //var config = {
-    //    type: "radialGauge",
-    //    data: {
-    //        labels: ["In Progress"],
-    //        datasets: [
-    //            {
-    //                data: [60],
-    //                backgroundColor: [gradientStroke_],
-    //                borderWidth: 0,
-    //                label: "Score"
-    //            }
-    //        ]
-    //    },
-    //    options: {
-    //        responsive: true,
-    //        legend: {},
-    //        title: {
-    //            display: false,
-    //            text: "Radial gauge chart"
-    //        },
-    //        centerPercentage: 60,
-    //        centerArea: {
-    //            displayText: true,
-    //            text: "60%"
-    //        }
-    //    }
-    //};
+                        //var config = {
+                        //    type: "radialGauge",
+                        //    data: {
+                        //        labels: ["In Progress"],
+                        //        datasets: [
+                        //            {
+                        //                data: [60],
+                        //                backgroundColor: [gradientStroke_],
+                        //                borderWidth: 0,
+                        //                label: "Score"
+                        //            }
+                        //        ]
+                        //    },
+                        //    options: {
+                        //        responsive: true,
+                        //        legend: {},
+                        //        title: {
+                        //            display: false,
+                        //            text: "Radial gauge chart"
+                        //        },
+                        //        centerPercentage: 60,
+                        //        centerArea: {
+                        //            displayText: true,
+                        //            text: "60%"
+                        //        }
+                        //    }
+                        //};
 
-    var config1 = {
-        type: "radialGauge",
-        data: {
-            labels: ["Closed"],
-            datasets: [
-                {
-                    data: [40],
-                    backgroundColor: [gradientStroke_1],
-                    borderWidth: 0,
-                    label: "Score"
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            legend: {},
-            title: {
-                display: false,
-                text: "Radial gauge chart"
-            },
-            centerPercentage: 60,
-            centerArea: {
-                displayText: true,
-                text: "40%"
-            }
-        }
-    };
-    var config2 = {
-        type: "radialGauge",
-        data: {
-            labels: ["In Progress"],
-            datasets: [
-                {
-                    data: [60],
-                    backgroundColor: [gradientStroke_2],
-                    borderWidth: 0,
-                    label: "Score"
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            legend: {},
-            title: {
-                display: false,
-                text: "Radial gauge chart"
-            },
-            centerPercentage: 60,
-            centerArea: {
-                displayText: true,
-                text: "60%"
-            }
-        }
-    };
+                        var config1 = {
+                            type: "radialGauge",
+                            data: {
+                                labels: ["Closed"],
+                                datasets: [
+                                    {
+                                        data: [40],
+                                        backgroundColor: [gradientStroke_1],
+                                        borderWidth: 0,
+                                        label: "Score"
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                legend: {},
+                                title: {
+                                    display: false,
+                                    text: "Radial gauge chart"
+                                },
+                                centerPercentage: 60,
+                                centerArea: {
+                                    displayText: true,
+                                    text: "40%"
+                                }
+                            }
+                        };
+                        var config2 = {
+                            type: "radialGauge",
+                            data: {
+                                labels: ["In Progress"],
+                                datasets: [
+                                    {
+                                        data: [60],
+                                        backgroundColor: [gradientStroke_2],
+                                        borderWidth: 0,
+                                        label: "Score"
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                legend: {},
+                                title: {
+                                    display: false,
+                                    text: "Radial gauge chart"
+                                },
+                                centerPercentage: 60,
+                                centerArea: {
+                                    displayText: true,
+                                    text: "60%"
+                                }
+                            }
+                        };
 
-    var config3 = {
-        type: "radialGauge",
-        data: {
-            labels: ["Closed"],
-            datasets: [
-                {
-                    data: [40],
-                    backgroundColor: [gradientStroke_3],
-                    borderWidth: 0,
-                    label: "Score"
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            legend: {},
-            title: {
-                display: false,
-                text: "Radial gauge chart"
-            },
-            centerPercentage: 60,
-            centerArea: {
-                displayText: true,
-                text: "40%"
-            }
-        }
-    };
+                        var config3 = {
+                            type: "radialGauge",
+                            data: {
+                                labels: ["Closed"],
+                                datasets: [
+                                    {
+                                        data: [40],
+                                        backgroundColor: [gradientStroke_3],
+                                        borderWidth: 0,
+                                        label: "Score"
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                legend: {},
+                                title: {
+                                    display: false,
+                                    text: "Radial gauge chart"
+                                },
+                                centerPercentage: 60,
+                                centerArea: {
+                                    displayText: true,
+                                    text: "40%"
+                                }
+                            }
+                        };
 
-    //var config4 = {
-    //    type: "radialGauge",
-    //    data: {
-    //        labels: ["In Progress"],
-    //        datasets: [
-    //            {
-    //                data: [60],
-    //                backgroundColor: [gradientStroke_4],
-    //                borderWidth: 0,
-    //                label: "Score"
-    //            }
-    //        ]
-    //    },
-    //    options: {
-    //        responsive: true,
-    //        legend: {},
-    //        title: {
-    //            display: false,
-    //            text: "Radial gauge chart"
-    //        },
-    //        centerPercentage: 60,
-    //        centerArea: {
-    //            displayText: true,
-    //            text: "60%"
-    //        }
-    //    }
-    //};
+                        //var config4 = {
+                        //    type: "radialGauge",
+                        //    data: {
+                        //        labels: ["In Progress"],
+                        //        datasets: [
+                        //            {
+                        //                data: [60],
+                        //                backgroundColor: [gradientStroke_4],
+                        //                borderWidth: 0,
+                        //                label: "Score"
+                        //            }
+                        //        ]
+                        //    },
+                        //    options: {
+                        //        responsive: true,
+                        //        legend: {},
+                        //        title: {
+                        //            display: false,
+                        //            text: "Radial gauge chart"
+                        //        },
+                        //        centerPercentage: 60,
+                        //        centerArea: {
+                        //            displayText: true,
+                        //            text: "60%"
+                        //        }
+                        //    }
+                        //};
 
-    //var config5 = {
-    //    type: "radialGauge",
-    //    data: {
-    //        labels: ["In Progress"],
-    //        datasets: [
-    //            {
-    //                data: [60],
-    //                backgroundColor: [gradientStroke_5],
-    //                borderWidth: 0,
-    //                label: "Score"
-    //            }
-    //        ]
-    //    },
-    //    options: {
-    //        responsive: true,
-    //        legend: {},
-    //        title: {
-    //            display: false,
-    //            text: "Radial gauge chart"
-    //        },
-    //        centerPercentage: 40,
-    //        centerArea: {
-    //            displayText: true,
-    //            text: "2.05 TB"
-    //        }
-    //    }
-    //};
+                        //var config5 = {
+                        //    type: "radialGauge",
+                        //    data: {
+                        //        labels: ["In Progress"],
+                        //        datasets: [
+                        //            {
+                        //                data: [60],
+                        //                backgroundColor: [gradientStroke_5],
+                        //                borderWidth: 0,
+                        //                label: "Score"
+                        //            }
+                        //        ]
+                        //    },
+                        //    options: {
+                        //        responsive: true,
+                        //        legend: {},
+                        //        title: {
+                        //            display: false,
+                        //            text: "Radial gauge chart"
+                        //        },
+                        //        centerPercentage: 40,
+                        //        centerArea: {
+                        //            displayText: true,
+                        //            text: "2.05 TB"
+                        //        }
+                        //    }
+                        //};
 
 
 </script>
@@ -2168,7 +2171,7 @@ background-attachment:local, local, scroll, scroll;
                     .css({'position':'absolute','visibility':'hidden','height':'auto'})
                     .addClass('slideClone')
                     .appendTo('body');
-        
+
         //$("#this").css({'position':'absolute','visibility':'hidden','height':'auto'});
         //var newHeight = $("#this").height();
         var newHeight = $(".slideClone").height();
@@ -2190,7 +2193,7 @@ background-attachment:local, local, scroll, scroll;
         $('#SceTopimg').hide();
         $('#Scebottomimg').attr('src', src + fileName + '.png');
 
-    } 
+    }
     else if (ScenarioID == 2) {
         fileName='MERGE'
     }
@@ -2218,48 +2221,48 @@ background-attachment:local, local, scroll, scroll;
             $('#Scebottomimg').attr('src',src + fileName + '1.png');
         }
     }
-    
-        
-    
+
+
+
 </script>
 
 
 @*<script>
-    var $container = $("#scrollContainer"),
-    $ps = $container.find("._Scroll"),
-    containerHeight = $container.height(),
-    contentHeight = 0,
-    scrollTop = 0,
-    paused = false;
+        var $container = $("#scrollContainer"),
+        $ps = $container.find("._Scroll"),
+        containerHeight = $container.height(),
+        contentHeight = 0,
+        scrollTop = 0,
+        paused = false;
 
-$ps.each(function() {
-    contentHeight += $(this).outerHeight();
-});
-
-$("<div></div>").css("height", 75).appendTo($container).clone().prependTo($container);
-
-setInterval(function() {
-    if (paused)
-        return;
-    if (scrollTop > contentHeight + containerHeight)
-        scrollTop = 0;
-    $container.scrollTop(scrollTop++);
-        
-    $ps.removeClass("highlighted")
-       .addClass("dimmed")
-       .each(function() {
-           var $this = $(this),
-               top = $this.position().top,
-               height = $this.height();
-           if (top > 0 && top + height < containerHeight)
-                    $(this).addClass("highlighted");
+    $ps.each(function() {
+        contentHeight += $(this).outerHeight();
     });
-}, 20);
 
-$container.hover(function() {
-    paused = true;
-}, function() {
-    paused = false;
-});
+    $("<div></div>").css("height", 75).appendTo($container).clone().prependTo($container);
 
-</script>*@
+    setInterval(function() {
+        if (paused)
+            return;
+        if (scrollTop > contentHeight + containerHeight)
+            scrollTop = 0;
+        $container.scrollTop(scrollTop++);
+
+        $ps.removeClass("highlighted")
+           .addClass("dimmed")
+           .each(function() {
+               var $this = $(this),
+                   top = $this.position().top,
+                   height = $this.height();
+               if (top > 0 && top + height < containerHeight)
+                        $(this).addClass("highlighted");
+        });
+    }, 20);
+
+    $container.hover(function() {
+        paused = true;
+    }, function() {
+        paused = false;
+    });
+
+    </script>*@

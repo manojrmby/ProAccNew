@@ -151,7 +151,7 @@ namespace ProAcc.Controllers
         public ActionResult GetApplicationArea()
         {
             List<ApplicationAreaMaster> P = _Base.GetApplicationAreaMasters();
-            return Json(P, JsonRequestBehavior.AllowGet);
+            return Json(P, JsonRequestBehavior.AllowGet); 
         }
         public ActionResult GetTaskType()
         {
@@ -341,8 +341,9 @@ namespace ProAcc.Controllers
 
         #endregion
 
-        public ActionResult CheckTaskNameByInstance(string namedata)
+        public Boolean CheckTaskNameByInstance(string namedata)
         {
+            Boolean status = true;
             Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
             var SearchDt = (from a in db.ProjectMonitors
                             join b in db.ActivityMasters on a.ActivityID equals b.Activity_ID
@@ -350,28 +351,39 @@ namespace ProAcc.Controllers
                             select a).FirstOrDefault();
             if (SearchDt != null)
             {
-                return Json("success", JsonRequestBehavior.AllowGet);
+                status = false;
+                //return Json("success", JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                return Json("error", JsonRequestBehavior.AllowGet);
-            }
+            //else
+            //{
+            //    status = true;
+            //    //return Json("error", JsonRequestBehavior.AllowGet);
+            //}
+            return status;
         }
         public ActionResult AddTask(ProjectMonitorModel Data)
         {
             Boolean Result = false;
             Guid Instance = Guid.Parse(Session["InstanceId"].ToString());
             Data.Cre_By = Guid.Parse(Session["loginid"].ToString());
-            Data.PhaseId=Convert.ToInt32(Session["PhaseID"].ToString());
-            Result = _Base.Sp_AddTask(Instance, Data);
-            if (Result == true)
-            {
-                return Json("success", JsonRequestBehavior.AllowGet);
-            }
-            else
+            Data.PhaseId = Convert.ToInt32(Session["PhaseID"].ToString());
+
+            if (CheckTaskNameByInstance(Data.Task)==false)
             {
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
+            else
+            {
+                Result = _Base.Sp_AddTask(Instance, Data);
+                if (Result == true)
+                {
+                    return Json("success", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("error", JsonRequestBehavior.AllowGet);
+                }
+            } 
            
         } 
         

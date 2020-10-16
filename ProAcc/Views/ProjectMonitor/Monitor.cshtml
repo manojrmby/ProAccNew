@@ -30,7 +30,7 @@
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
 
         var Planed_StartDate = function (element, options) {
-            var ID = options.rowId;
+            var ID = options.rowId;           
             $(element).on('keypress', function (e) {
                 e.preventDefault();
             })
@@ -58,7 +58,7 @@
             //var ST_Date=$('#').val();
             $(element).on('keypress', function (e) {
                 e.preventDefault();
-            })
+            })            
             $(element).datepicker({
                 duration: "slow",
                 // defaultDate: +1,
@@ -219,6 +219,7 @@
                                    }
                                    else {
                                        $("#tr_Parallel_Id").hide();
+                                       $("#tr_Parallel_Name").hide();
                                    }
                                 }
                         }]
@@ -232,7 +233,7 @@
                     }
                 },
                 {
-                    label: 'Parallel Name', name: 'Parallel_Id',index: 'Parallel_Id', width: 100,editable: true, hidden:true, classes: 'wrapColumnText',
+                    label: 'Parallel Type', name: 'Parallel_Id',index: 'Parallel_Id', width: 100,editable: true, hidden:true, classes: 'wrapColumnText',
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     //editrules: {
                     //    //required: true,
@@ -246,6 +247,13 @@
                                    GetPreviousTaskByParallelId($("#Parallel_Id").val())
                                 }
                         }]
+                    }
+                },
+                 {
+                    label: 'Parallel Name', name: 'Parallel_Name', index: 'Parallel_Name', width: 75, align: 'center', editable: true, hidden: true,
+                    cellEdit: true, 
+                    editoptions: {
+                        //value: GetUserDropDown()
                     }
                 },
                 {
@@ -269,6 +277,8 @@
                     cellEdit: true, edittype: 'select', formatter: 'select',
                     editoptions: {
                         value: GetRoleDropDown(),
+                        required: true,
+                        edithidden: true,
                         dataEvents: [
                         {
                             type: 'change',
@@ -342,8 +352,18 @@
                 {
                     label: 'Est.(hh:mm)', name: 'EST_hrs', width: 55,
                     editable: true, align: 'right', //formatter: 'string',
-                    editrules: { },
+                    editrules: {
+                     required: true,
+                        edithidden: true
+                    },
                     editoptions: {
+                        //dataEvents: [
+                        //{
+                        //    type: 'change',
+                        //        fn: function (e) {
+                        //           // value:
+                        //        }
+                        //}],
                         dataInit: function (element) {
                             $(element).keyup(function(event) {
 
@@ -471,7 +491,7 @@
 
                         editformbutton: false,//Determines if popup should open or not
                         afterSave: function (rowid, response, postdata, options) {
-                            Show_HideEdit();
+                           Show_HideEdit();
                             $('#jqGrid').trigger( 'reloadGrid' );
                         },
                         afterRestore: function (rowid) {
@@ -572,29 +592,30 @@
                     Message, 'Yes', 'No',
                     function () {
                         $.ajax({
-                                            type: "POST",
-                                            url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor",new { Phase_ID= TempData["PhaseID"]})',
-                                            data: {
-                                                'Id': "" + Id + "",
-                                                'StatusId': StatusId,
-                                                'Task_Other_Environment': Task_Other_Environment,
-                                                'Dependency': Dependency,
-                                                'Pending': Pending,
-                                                'Delay_occurred': Delay_occurred,
-                                                'EST_hours': EST_hours,
-                                                'Actual_St_hours': Actual_St_hours,
-                                                'Planed__St_Date': Planed__St_Date,
-                                                'Planed__En_Date': Planed__En_Date,
-                                                'Actual_St_Date': Actual_St_Date,
-                                                'Actual_En_Date': Actual_En_Date,
-                                                'Notes': Notes
-                                            },
+                            type: "POST",
+                            async: false,
+                            url: '@Url.Action("SubmitProjectMonitor","ProjectMonitor",new { Phase_ID= TempData["PhaseID"]})',
+                            data: {
+                                'Id': "" + Id + "",
+                                'StatusId': StatusId,
+                                'Task_Other_Environment': Task_Other_Environment,
+                                'Dependency': Dependency,
+                                'Pending': Pending,
+                                'Delay_occurred': Delay_occurred,
+                                'EST_hours': EST_hours,
+                                'Actual_St_hours': Actual_St_hours,
+                                'Planed__St_Date': Planed__St_Date,
+                                'Planed__En_Date': Planed__En_Date,
+                                'Actual_St_Date': Actual_St_Date,
+                                'Actual_En_Date': Actual_En_Date,
+                                'Notes': Notes
+                            },
                             success: function (Result) {
-                                                 $('#jqGrid').trigger('reloadGrid');
+                                $('#jqGrid').trigger('reloadGrid');
 
-                                            }
+                            }
 
-                                        });
+                        });
                         // Yes button callbackalert('Thank you.');
                     }, function () {
                         //$('#jqGrid').trigger( 'reloadGrid' );
@@ -767,9 +788,9 @@
             },
             // options for the Add Dialog
             {
-                @*url: "@Url.Action("AddTask","ProjectMonitor")",*@
-                //closeAfterAdd: true,
-                //recreateForm: true,
+                url: '@Url.Action("AddTask","ProjectMonitor")',
+                closeAfterAdd: true,
+                recreateForm: true,
                 beforeShowForm: function (form) {
                     //$('#PhaseId').val(5).prop("disabled", true);
                     $("#tr_Task_Other_Environment").hide();
@@ -794,11 +815,11 @@
                     return 'Error: ' + data.responseText
                 },
                 addCaption: "Add Task",
-                onclickSubmit: function (response, postdata) {
-                    AddTask(postdata);
-                    closeAfterAdd: true;
-                    recreateForm: true;
-		        }
+          //      onclickSubmit: function (response, postdata) {
+          //          AddTask(postdata);
+          //          closeAfterAdd: true;
+          //          recreateForm: true;
+		        //}
             },
             // options for the Delete Dailog
             {
@@ -876,26 +897,34 @@
     
     function GetPreviousTaskByParallelId(Parallel_Id) {
         debugger
-         $("#PreviousID")
-            .html("<option value=''>Loading User...</option>")
-            .attr("disabled", "disabled");
+         //$("#PreviousID")
+         //   .html("<option value=''>Loading User...</option>")
+         //   .attr("disabled", "disabled");
         $('#PreviousID').empty()
-        $.ajax({  
-             url: '@Url.Action("PreviousTaskByParallelId","ProjectMonitor")'+"?Parallel_Id="+Parallel_Id, 
-            dataType: "json",
-            async: false,
-			contentType: "application/json; charset=utf-8",
-            success: function (res) {
-                 $("#PreviousID")
-                    .removeAttr("disabled");
-                $.each(res, function (data, value) {                  
-                   $('#PreviousID').append($("<option value='" + value.Activity_ID + "'>" + value.Task + "</option>"));                                                            
-                })
-            },
-            error: function (data) {
-                 alert("GetPreviousTaskID phaseid fail");
-            }
-        });
+        if (Parallel_Id == '00000000-0000-0000-0000-000000000000') {
+            $("#tr_Parallel_Name").show();
+             GetPreviousTaskID()
+        }
+        else {
+            $("#tr_Parallel_Name").hide();
+            $.ajax({  
+                 url: '@Url.Action("PreviousTaskByParallelId","ProjectMonitor")'+"?Parallel_Id="+Parallel_Id, 
+                dataType: "json",
+                async: false,
+			    contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                     $("#PreviousID")
+                        .removeAttr("disabled");
+                    $.each(res, function (data, value) {                  
+                       $('#PreviousID').append($("<option value='" + value.Activity_ID + "'>" + value.Task + "</option>"));                                                            
+                    })
+                },
+                error: function (data) {
+                     alert("GetPreviousTaskID phaseid fail");
+                }
+            });
+        }
+        
     }
 
     function TaskCheck(Task) {
@@ -938,6 +967,7 @@
         var Taskid = postdata.Task_id;
         if (Taskid == '2') {
             var ParallelID = postdata.Parallel_Id;
+            var Parallel_Name = postdata.Parallel_Name
         }        
 
         var UserID = postdata.UserID;
@@ -961,11 +991,13 @@
                  PreviousID: PreviousID,
                  UserID: UserID,
                  Task_id: Taskid,
-                 parallel_Id:ParallelID
+                 parallel_Id: ParallelID,
+                 Parallel_Name:Parallel_Name
              },
              success: function (Data) {
                  if (Data == 'success') {
                      $('#jqGrid').trigger('reloadGrid');
+                     $(".ui-jqdialog-titlebar-close").click();
                  }
                  else {
                      alert("please enter all the details");
@@ -1052,7 +1084,7 @@
             //}
 
            // var EditFlag = false;
-            //  debugger;
+            // debugger;
             for (var k = 0; k < ids.length; k++) {
                 var Status_Id = $('#jqGrid').jqGrid('getCell', ids[k], 'StatusId')
                 if ((Status_Id == 5 || Status_Id == 2 )) { // && !EditFlag
@@ -1209,7 +1241,7 @@
 					async: false,
                     contentType: "application/json; charset=utf-8",                    
                     success: function (Data) {
-                        var TaskName = 'Select TaskName';
+                        var TaskName = 'Select Task Name';
                         var key = '0';
                        Parameters[key] = TaskName;
                         for (var i = 0; i < Data.length; i++) {
@@ -1252,6 +1284,7 @@
         if (Taskid == 2) {
             
             $("#tr_Parallel_Id").show();
+            $("#tr_Parallel_Name").show();
               $.ajax({
                     type: "POST",
                     url: '@Url.Action("GetParallelNameByProject","ProjectMonitor")',
@@ -1264,7 +1297,7 @@
                       $('#Parallel_Id').empty();
                         $('#Parallel_Id').append($("<option value='00000000-0000-0000-0000-000000000000'>" + 'New Parallel Name' + "</option>"));
                         $.each(res, function (data, value) {                  
-                           $('#Parallel_Id').append($("<option value='" + value.ParallelId + "'>" + 'P'+value.ParallelName + "</option>"));                                                            
+                           $('#Parallel_Id').append($("<option value='" + value.ParallelId + "'>" +value.Parallel_Name + "</option>"));                                                            
                         })
                     },
                     error: function (data) {

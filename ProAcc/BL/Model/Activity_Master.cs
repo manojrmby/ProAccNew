@@ -25,6 +25,7 @@ namespace ProAcc.BL.Model
         public int PreviousId { get; set; }
         public int? TaskId { get; set; }
         public Nullable<System.Guid> ParallelId { get; set; }
+        public String Parallel_Name { get; set; }
 
     }
 }

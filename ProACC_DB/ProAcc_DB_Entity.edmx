@@ -198,6 +198,13 @@
           </Key>
           <Property Name="ParallelId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ParallelName" Type="int" />
+          <Property Name="Parallel_Name" Type="varchar" MaxLength="100" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="Cre_on" Type="datetime" Nullable="false" />
+          <Property Name="Cre_By" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Modified_On" Type="datetime" />
+          <Property Name="Modified_By" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="PhaseMaster">
           <Key>
@@ -758,7 +765,6 @@
           </AssociationSet>
           <EntitySet Name="PMTaskMonitor_" EntityType="ProAccModel.PMTaskMonitor_" />
           <EntitySet Name="ActivityMasters" EntityType="ProAccModel.ActivityMaster" />
-          <EntitySet Name="ParallelTypes" EntityType="ProAccModel.ParallelType" />
           <EntitySet Name="TaskType1" EntityType="ProAccModel.TaskType1" />
           <AssociationSet Name="FK_ActivityMaster_PhaseMaster" Association="ProAccModel.FK_ActivityMaster_PhaseMaster">
             <End Role="PhaseMaster" EntitySet="PhaseMasters" />
@@ -773,6 +779,7 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="ResetPassword" EntitySet="ResetPasswords" />
           </AssociationSet>
+          <EntitySet Name="ParallelTypes" EntityType="ProAccModel.ParallelType" />
           </EntityContainer>
         <ComplexType Name="SP_ReadinessReport_Result">
           <Property Type="Int32" Name="RC" Nullable="true" />
@@ -1323,13 +1330,6 @@
           <NavigationProperty Name="PhaseMaster" Relationship="ProAccModel.FK_ActivityMaster_PhaseMaster" FromRole="ActivityMaster" ToRole="PhaseMaster" />
           <NavigationProperty Name="RoleMaster" Relationship="ProAccModel.FK_ActivityMaster_RoleMaster" FromRole="ActivityMaster" ToRole="RoleMaster" />
         </EntityType>
-        <EntityType Name="ParallelType">
-          <Key>
-            <PropertyRef Name="ParallelId" />
-          </Key>
-          <Property Name="ParallelId" Type="Guid" Nullable="false" />
-          <Property Name="ParallelName" Type="Int32" />
-        </EntityType>
         <EntityType Name="TaskType1">
           <Key>
             <PropertyRef Name="TaskId" />
@@ -1387,6 +1387,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParallelType">
+          <Key>
+            <PropertyRef Name="ParallelId" />
+          </Key>
+          <Property Name="ParallelId" Type="Guid" Nullable="false" />
+          <Property Name="ParallelName" Type="Int32" />
+          <Property Name="Parallel_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="Cre_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Cre_By" Type="Guid" Nullable="false" />
+          <Property Name="Modified_On" Type="DateTime" Precision="3" />
+          <Property Name="Modified_By" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1809,14 +1823,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParallelTypes">
-            <EntityTypeMapping TypeName="ProAccModel.ParallelType">
-              <MappingFragment StoreEntitySet="ParallelType">
-                <ScalarProperty Name="ParallelName" ColumnName="ParallelName" />
-                <ScalarProperty Name="ParallelId" ColumnName="ParallelId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TaskType1">
             <EntityTypeMapping TypeName="ProAccModel.TaskType1">
               <MappingFragment StoreEntitySet="TaskType1">
@@ -1836,6 +1842,21 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ResetId" ColumnName="ResetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParallelTypes">
+            <EntityTypeMapping TypeName="ProAccModel.ParallelType">
+              <MappingFragment StoreEntitySet="ParallelType">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Modified_By" ColumnName="Modified_By" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+                <ScalarProperty Name="Cre_By" ColumnName="Cre_By" />
+                <ScalarProperty Name="Cre_on" ColumnName="Cre_on" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Parallel_Name" ColumnName="Parallel_Name" />
+                <ScalarProperty Name="ParallelName" ColumnName="ParallelName" />
+                <ScalarProperty Name="ParallelId" ColumnName="ParallelId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

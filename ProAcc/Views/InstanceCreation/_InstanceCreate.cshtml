@@ -144,7 +144,7 @@
                 if (TxtInstance == value) {
                     $("#txtInstance1").val('');
                    // $("#lblInstance1").html("Please re-enter the Instance Name").show();
-                    Notiflix.Notify.Failure('Please re-enter the Instance Name', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    //Notiflix.Notify.Failure('Please re-enter the Instance Name', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                     return false;
                 }
             }
@@ -316,7 +316,8 @@
                             //});
                         }
                         else {
-                            $("#lblInstanceName").html("This Instance Name is already in use for this project").show().fadeOut(5000);
+                           // $("#lblInstanceName").html("This Instance Name is already in use for this project").show().fadeOut(5000);
+                            Notiflix.Notify.Failure('This Instance Name is already in use for this project ', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                             $("#btnInstanceCreate").prop('disabled', true);
                         }
                     },

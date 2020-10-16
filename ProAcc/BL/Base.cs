@@ -1680,7 +1680,8 @@ namespace ProAcc.BL
                         if (dr["ParallelName"].ToString() !="")
                         {
                             P.ParallelName = Convert.ToInt32(dr["ParallelName"].ToString());
-                            P.Parallel_Name = 'P'+dr["ParallelName"].ToString();
+                            //P.Parallel_Name = 'P'+dr["ParallelName"].ToString();
+                            P.Parallel_Name = dr["Parallel_Name"].ToString();
                         }
                         
 
@@ -2507,7 +2508,8 @@ namespace ProAcc.BL
                     a.Tasktype = dr["TaskType"].ToString();
                     if(a.Tasktype == "Parallel")
                     {
-                        a.ParallelType = "P" + dr["ParallelType"].ToString();
+                        //a.ParallelType = "P" + dr["ParallelType"].ToString();
+                        a.ParallelType = dr["Parallel_Name"].ToString();
                     }
                     
 
@@ -3005,10 +3007,10 @@ namespace ProAcc.BL
                 {
                     dB.addIn("@Parallel_Id", AM.ParallelId);
                 }
-                
- 
+                dB.addIn("@Parallel_Name", AM.Parallel_Name);
 
-                dB.Execute();// ExecuteScalar();
+
+                dB.Execute();
 
                 Status = true;
             }
@@ -3040,15 +3042,17 @@ namespace ProAcc.BL
                 dB.addIn("@ApplicationAreaID", Data.ApplicationAreaID);
                 dB.addIn("@RoleID", Data.RoleID);
                 dB.addIn("@Notes", Data.Notes);
-                dB.addIn("@EST_hours", Data.EST_hours);
+                Data.EST_hrs = Data.EST_hrs.Replace(":", ".");
+                dB.addIn("@EST_hours", Data.EST_hrs);
                 dB.addIn("@UserID", Data.UserID);
                 dB.addIn("@Task_Id", Data.Task_id);
 
                 if (Data.Task_id == 2 && Data.parallel_Id != Guid.Empty)
                 {
                     dB.addIn("@Parallel_Id", Data.parallel_Id);
+                    
                 }
-                
+                dB.addIn("@Parallel_Name", Data.Parallel_Name);
                 dB.addIn("@Cre_By", Data.Cre_By);                
 
                 dB.Execute();// ExecuteScalar();
@@ -3298,7 +3302,8 @@ namespace ProAcc.BL
                 {
                     ParallelType P = new ParallelType();
                     P.ParallelId = Guid.Parse(dr["ParallelId"].ToString());
-                    P.ParallelName = Convert.ToInt32(dr["ParallelName"].ToString());
+                    //P.ParallelName = Convert.ToInt32(dr["ParallelName"].ToString());
+                    P.Parallel_Name = dr["Parallel_Name"].ToString();
                     TT.Add(P);
                 }
             }
