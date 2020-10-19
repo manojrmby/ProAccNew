@@ -24,7 +24,11 @@ namespace ProAcc
                 ));
             bundles.Add(new ScriptBundle("~/bundles/Scripts/jqGrid").Include(
               "~/Asset/Jquery/jqGrid/grid.locale-en.js",
-              "~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"
+              "~/Asset/Jquery/jqGrid/jquery.jqGrid.min.js"              
+               ));
+
+             bundles.Add(new ScriptBundle("~/bundles/Scripts/select2").Include(
+             "~/Asset/js/SelectNSearch/select2.min.js"
                ));
 
 
@@ -33,7 +37,8 @@ namespace ProAcc
                       "~/Asset/css/main.css",
                       "~/Asset/css/LayoutStyles.css",
                       "~/Asset/Jquery/jquery-ui.css",
-                      "~/Asset/css/Menu.css"
+                      "~/Asset/css/Menu.css",
+                      "~/Asset/js/SelectNSearch/select2.min.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css/jqGrid").Include(

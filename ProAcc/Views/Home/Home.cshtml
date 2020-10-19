@@ -6,10 +6,18 @@
     var taskdetails = ViewBag.Taskdetails;
 
 }
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-<style>
 
+<style>
+    .select2-selection__rendered {
+    line-height: 31px !important;
+}
+    /*.select2-container .select2-selection--single {
+        height: 35px !important;
+    }*/
+
+    .select2-selection__arrow {
+        height: 34px !important;
+    }
     /*.cs_Closed {
         color: lightgreen;
     }
@@ -1743,7 +1751,11 @@ background-attachment:local, local, scroll, scroll;
 
 
             });
-        $('#IDInstance').select2();
+        $('#IDInstance').select2(
+            {
+                width: '150'
+            });
+
             $('#IDProject').change(function () {
 
             var id = $(this).val();

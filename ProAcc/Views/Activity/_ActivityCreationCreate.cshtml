@@ -5,8 +5,8 @@
 }
 @*<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">*@
 <link href="~/Asset/css/Activity.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+@*<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>*@
 <style>
     /*span {
         color: red;
@@ -85,7 +85,7 @@
 
 
             <div class="form-group">
-                <label class="control-label col-md-4 required">TaskType</label>
+                <label class="control-label col-md-4 required">Task Type</label>
                 <div class="col-md-10">
                     <select class="form-control" id="drpTaskType">
                         <option value="0">Select Task-Type</option>
@@ -422,7 +422,7 @@
     });
 
     $("#drpTaskType").change(function () {
-        debugger
+        
         var taskValue = $(this).children("option:selected").val();
         var PhaseId = $('#drpPhase').val();
         if (taskValue == "0" || taskValue == "1" || taskValue == "3") {
@@ -460,31 +460,32 @@
     });
 
      function ParallelName(Parallel_Name,Tasktype) {
-           debugger
+           
              Parallel_Name = Parallel_Name.replace(/,/g, " ");
          var status = true
          if (Tasktype == 2 && Parallel_Name != "") {
-              if (Parallel_Name == "") {
-               status = false
-              }
-              else
-              {
-                 $.ajax({
+              $.ajax({
                     url: '@Url.Action("CheckParallel_NameAvailability", "Activity")',
                     type: "GET",
                     data: { namedata: Parallel_Name},
                      dataType: "json",
                      async:false,
                     success: function (data) {
-                        if (data == "success") {
+                        if (data != "success") {
                           status=false
                         }                   
                     },
                     error: function (err) {
                    
                     }
-                 });
-              }
+               });
+              //if (Parallel_Name == "") {
+              // status = false
+              //}
+              //else
+              //{
+                
+              //}
          }
            
          return status;
@@ -533,7 +534,7 @@
 
     });
     $("#btnActivityCreCreate").on("click", function () {
-        debugger
+        
         var Task = $("#txtTask").val();
         Task = Task.replace(/,/g, " ");
        // var sequence = $("#txtSequence").val();
@@ -593,7 +594,14 @@
         else {
             $("#drpTsk").empty();
             var id = $("#drpPhase").val()
-            //$('#drpTsk').select2();
+
+            $('#drpTsk').select2({
+                width: '700'
+            });
+            $('#drpParallelId').select2({
+                width: '385'
+            });
+
             if (id > 0 && (Paralleltype != null && Paralleltype != '00000000-0000-0000-0000-000000000000')) {
                  $("#newParallelrow").hide();
                 $.ajax({
@@ -657,7 +665,7 @@
     });
     $("#btnSeq").on("click", function () {
 
-        debugger
+        
         var id = $("#activityrid").val();
         var Task = $("#txtTask").val();
         Task = Task.replace(/,/g, " ");
@@ -711,8 +719,11 @@
             $("#lblEstimated").html("Please fill the Estimated hours").show();
             ValidateActivity();
         }
-        else if (ParallelName(Parallel_Name,Tasktype)==false){
+        else if (ParallelName(Parallel_Name, Tasktype) == false) {
             $("#lblnewParallelName").html("Parallel Name already in use").show();
+        }
+        else if (Paralleltype=='00000000-0000-0000-0000-000000000000' &&Parallel_Name==""){
+             $("#lblnewParallelName").html("Please enter the Parallel Name").show();
         }
         else {
             $.ajax({

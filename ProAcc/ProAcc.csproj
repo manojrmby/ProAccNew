@@ -243,6 +243,8 @@
     <Content Include="Asset\Jquery\PdfJs\pdf.worker.js" />
     <Content Include="Asset\js\intlTelInput.js" />
     <Content Include="Asset\js\intlTelInput.min.js" />
+    <Content Include="Asset\js\SelectNSearch\select2.min.css" />
+    <Content Include="Asset\js\SelectNSearch\select2.min.js" />
     <Content Include="Asset\js\utils.js" />
     <Content Include="Asset\MailTemplate\T1.HTML" />
     <Content Include="Asset\MailTemplate\T2.HTML" />
@@ -442,7 +444,7 @@
     <Compile Include="BL\Model\SAPInput_CustomCode.cs" />
     <Compile Include="BL\Model\SAPInput_PreConvertion.cs" />
     <Compile Include="BL\Model\SAPInput_SimplificationReport.cs" />
-	<Compile Include="BL\Model\SAPInput_UserList.cs" />
+    <Compile Include="BL\Model\SAPInput_UserList.cs" />
     <Compile Include="BL\Model\SP_HomeDonut_Result.cs" />
     <Compile Include="BL\Model\UserModel.cs" />
     <Compile Include="BL\Model\UserRoleProvider.cs" />
@@ -458,7 +460,7 @@
     <Compile Include="Controllers\IssueTrackController.cs" />
     <Compile Include="Controllers\LinkController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-	<Compile Include="Controllers\LicenseController.cs" />
+    <Compile Include="Controllers\LicenseController.cs" />
     <Compile Include="BL\Base.cs" />
     <Compile Include="BL\DBHelper.cs" />
     <Compile Include="BL\Model\Common.cs" />
@@ -536,7 +538,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Edit_Old.cshtml" />
     <Content Include="Views\Link\ProfileLink.cshtml" />
-	<Content Include="Views\License\License.cshtml" />
+    <Content Include="Views\License\License.cshtml" />
     <Content Include="Views\User\ResourceAllocationCreate.cshtml" />
     <Content Include="Views\Customers\GetCustomerById.cshtml" />
     <Content Include="Views\Resource\ResourceAssessment.cshtml" />
