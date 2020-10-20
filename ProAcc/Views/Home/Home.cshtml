@@ -645,12 +645,20 @@ background-attachment:local, local, scroll, scroll;
                     <div class="col-lg-6 card text-center border">
                         <br />
                         <a class="card-title">Assessment</a>
+                        <div style="width: 100%; height: 40px; position: absolute; top: 60%; left: 0; margin-top: -20px; line-height:19px; text-align: center; z-index: 999999999999999">
+                        <a id="Ass_Center">0 %</a><Br />
+                        Completed
+                        </div>
                         <canvas id="Chart_Assessment"></canvas>
                     </div>
 
                     <div class="col-lg-6 card text-center border">
                         <br />
                         <div class="card-title">Pre-Conversion</div>
+                        <div style="width: 100%; height: 40px; position: absolute; top: 60%; left: 0; margin-top: -20px; line-height:19px; text-align: center; z-index: 999999999999999">
+                                <a id="Pre_Center">0 %</a><Br />
+                                Completed
+                        </div>
                         <canvas id="chart-Pre_Conversion"></canvas>
                     </div>
                     @*<div class="col-lg-6 card text-center border">
@@ -666,15 +674,21 @@ background-attachment:local, local, scroll, scroll;
                     <div class="col-lg-6 card text-center border">
                         <br />
                         <div class="card-title">Conversion</div>
+                        <div style="width: 100%; height: 40px; position: absolute; top: 60%; left: 0; margin-top: -20px; line-height:19px; text-align: center; z-index: 999999999999999">
+                                <a id="Con_Center">0 %</a><Br />
+                                Completed
+                        </div>
                         <canvas id="chart-Conversion"></canvas>
 
                     </div>
                     <div class="col-lg-6 card text-center border">
                         <br />
                         <div class="card-title">Post-Conversion</div>
-
+                        <div style="width: 100%; height: 40px; position: absolute; top: 60%; left: 0; margin-top: -20px; line-height:19px; text-align: center; z-index: 999999999999999">
+                            <a id="Post_Center">0 %</a><Br />
+                            Completed
+                        </div>
                         <canvas id="chart-Post_Conversion"></canvas>
-
                     </div>
                     @*<div class="col-lg-6 card text-center border">
                       <br />
@@ -1493,13 +1507,13 @@ background-attachment:local, local, scroll, scroll;
   //  }
 
     function percentage(Result) {
-
                 var Data = Result[0];
                 var d_total = (Data.COMPLETE + Data.WIP + Data.ONHOLD + Data.YetToStart)
                 if (d_total > 0) {
                     var a = (Data.COMPLETE) / d_total;
                     var percent = Math.round(a * 100);
-                    $("#AssId").html(percent + "%");
+                    $("#AssId,#Ass_Center").html(percent + " %");
+
                     $("#AssId_Progress").css('width', percent + '%');
                     var progressid = '#AssId_Progress';
                     if (percent > 0 && percent<50) {
@@ -1535,7 +1549,7 @@ background-attachment:local, local, scroll, scroll;
         if (d1_total > 0) {
             var a = (Data1.COMPLETE) / d1_total;
             var percent = Math.round(a * 100);
-            $("#PreId").html(percent + "%");
+            $("#PreId,#Pre_Center").html(percent + " %");
 
             $("#PreId_Progress").css('width', percent + '%');
             var progressid = '#PreId_Progress';
@@ -1572,7 +1586,7 @@ background-attachment:local, local, scroll, scroll;
         if (d2_total > 0) {
             var a = (Data2.COMPLETE) / d2_total;
             var percent = Math.round(a * 100);
-            $("#ConId").html(percent + "%");
+            $("#ConId,#Con_Center").html(percent + " %");
             $("#ConId_Progress").css('width', percent + '%');
                     var progressid = '#ConId_Progress';
             if (percent > 0 && percent < 50) {
@@ -1607,7 +1621,7 @@ background-attachment:local, local, scroll, scroll;
         if (d3_total > 0) {
             var a = (Data3.COMPLETE) / d3_total;
             var percent = Math.round(a * 100);
-            $("#PostId").html(percent + "%");
+            $("#PostId,#Post_Center").html(percent + " %");
             var progressid = '#PostId_Progress';
             $(progressid).css('width', percent + '%');
             if (percent > 0 && percent < 50) {

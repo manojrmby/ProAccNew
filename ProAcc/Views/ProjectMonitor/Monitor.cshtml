@@ -1178,6 +1178,8 @@
         //debugger;
         var par_minID = 0
         var seq_min = 0
+
+       
         //debugger;
         if (UserType != 'Project Manager') {
             for (var i = 0; i < ids.length; i++) {
@@ -1195,12 +1197,12 @@
                     seq_min = ids[i];
                 }
                 
-                if (par_minID > 0 && ParallelID != par_minID && ParallelID>0) {
+                 if (par_minID > 0 && ParallelID != par_minID && ParallelID>0) {
                     if ($('#jEditButton_' + ids[i]).is(":visible")) {
                         $('#jEditButton_' + ids[i]).hide();
                     }
                 }
-                console.log(localid);
+                
                 
                 if (sequen == 1 && seq_min < localid) {
                 //    console.log("In");
@@ -1208,6 +1210,25 @@
                         $('#jEditButton_' + ids[i]).hide();
                     }
                 }
+
+                if (seq_min>0) {
+                    if (ParallelID > 0) {
+                        if ($('#jEditButton_' + ids[i]).is(":visible")) {
+                            $('#jEditButton_' + ids[i]).hide();
+                        }
+                    }
+                }
+                if (par_minID>0) {
+                    if (sequen > 0) {
+                        if ($('#jEditButton_' + ids[i]).is(":visible")) {
+                            $('#jEditButton_' + ids[i]).hide();
+                        }
+                    }
+                }
+
+
+                
+                console.log(localid);
 
             }
         }
