@@ -385,6 +385,7 @@ namespace ProAcc.Controllers
                     {
                         PMTask.isActive = false;
                         PMTask.IsDeleted = true;
+                        PMTask.Modified_by= Guid.Parse(Session["loginid"].ToString());
                         db.Entry(PMTask).State = EntityState.Modified;
                         db.SaveChanges();
                     }

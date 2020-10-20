@@ -358,40 +358,52 @@
                 },
                 {
                     label: 'Est.(hh:mm)', name: 'EST_hrs', width: 55,
-                    editable: true, align: 'right', //formatter: 'string',
+                    editable: true, align: 'right', formatter: 'string',
                     editrules: {
-                     required: true,
-                        edithidden: true
+                        custom: true,
+                         custom_func: function (value, colname) {
+                            var filter =/^([0-9]{1,2}):[0-5][0-9]$/
+                            if (!filter.test(value)) {
+                                useCustomDialog = true;
+                                return [false, "Please enter the Est. in hh:mm format "];
+                            }
+                            else
+                                    return [true, ""];
+                         }
                     },
-                    editoptions: {
-                        dataEvents: [
-                        {
-                            type: 'change',
-                                fn: function (e) {
-                                   EsthrsDatechange()
-                                }
-                        }],
-                        dataInit: function (element) {
-                            $(element).keyup(function(event) {
+                    //editrules: {
+                    // required: true,
+                    //    edithidden: true
+                    //},
+                    //editoptions: {
+                    //    dataEvents: [
+                    //    {
+                    //        type: 'change',
+                    //            fn: function (e) {
+                    //               EsthrsDatechange()
+                    //            }
+                    //    }],
+                    //    dataInit: function (element) {
+                    //        $(element).keyup(function(event) {
 
-                                //var filter =/^([0-9]{1,2}):[0-5][0-9]$/
-                                //if (!filter.test($("#EST_hrs").val())) {
-                                //    $("#lblEstimated").html("Time is Invalid").show();
-                                //}
-                                //else {
-                                //    $("#lblEstimated").html("").show();
-                                //}
-                                this.value = this.value
-                                  .replace(/[^\d:]/g, '')             // numbers and decimals only
-                                  .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
-                                  .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
-                                  //.replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
-                                   .replace(/(\:[0-5][0-9]{1})./g, '$1');
+                    //            //var filter =/^([0-9]{1,2}):[0-5][0-9]$/
+                    //            //if (!filter.test($("#EST_hrs").val())) {
+                    //            //    $("#lblEstimated").html("Time is Invalid").show();
+                    //            //}
+                    //            //else {
+                    //            //    $("#lblEstimated").html("").show();
+                    //            //}
+                    //            this.value = this.value
+                    //              .replace(/[^\d:]/g, '')             // numbers and decimals only
+                    //              .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+                    //              .replace(/(\::*)\:/g, '$1')         // decimal can't exist more than once
+                    //              //.replace(/(\:[\d]{2})./g, '$1');    // not more than 4 digits after decimal
+                    //               .replace(/(\:[0-5][0-9]{1})./g, '$1');
 
-                            });
+                    //        });
 
-                        }
-                    }
+                    //    }
+                    //}
                 },
                 {
                     label: 'Actual (hh:mm)', name: 'Actual_St_hrs',
