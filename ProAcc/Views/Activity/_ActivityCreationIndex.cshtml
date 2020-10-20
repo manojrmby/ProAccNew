@@ -120,9 +120,11 @@
                  $("#drpTaskType").prop("disabled", true);
                 if (result.Tasktype == '2') {
                     //$('#drpParallelId').prop('selectedIndex', 0);
-                    $("#drpParallelId").val(result.Parallel_Type);
+                    $('#drpParallelId').empty();
+                    //$("#drpParallelId").val(result.ParallelType);
+                    $('#drpParallelId').append($("<option value='" + result.Parallel_Type + "'>" + result.ParallelType + "</option>"));
                     $("#drpParallelId").prop("disabled", true);
-                    $("#parallelhidecheck , #parallelhideid").show();
+                    $("#parallelhideid").show();
                    // $("#txtParallelCheck").prop('checked', true);
                 }
                 else {

@@ -411,15 +411,15 @@
 
     });
 
-    $('input[type="checkbox"][name="check"]').click(function () {
-        if ($(this).prop("checked") == true) {
-            $("#drpParallelId").prop("disabled", true);
-            $('#drpParallelId').prop('selectedIndex', 0);
-        }
-        else if ($(this).prop("checked") == false) {
-            $("#drpParallelId").prop("disabled", false);
-        }
-    });
+    //$('input[type="checkbox"][name="check"]').click(function () {
+    //    if ($(this).prop("checked") == true) {
+    //        $("#drpParallelId").prop("disabled", true);
+    //        $('#drpParallelId').prop('selectedIndex', 0);
+    //    }
+    //    else if ($(this).prop("checked") == false) {
+    //        $("#drpParallelId").prop("disabled", false);
+    //    }
+    //});
 
     $("#drpTaskType").change(function () {
         
@@ -791,6 +791,8 @@
         var BlockId=$('#drpBlock').val();
          var Estimated = $("#txtEstimated").val();
         Estimated = Estimated.replace(/:/g, ".");
+         var Tasktype = $("#drpTaskType").val();
+        var Paralleltype = $("#drpParallelId").val();
 
         var model = {
             Activity_ID: id,
@@ -831,11 +833,40 @@
         else {
             $("#drpTsk").empty();
             var id = $("#drpPhase").val()
-            if (id > 0) {
+             if (id > 0 && (Paralleltype != null && Paralleltype != '00000000-0000-0000-0000-000000000000')) {
+                 $("#newParallelrow").hide();
                 $.ajax({
                     type: "GET",
+                    url: '@Url.Action("GetAllTaskByParallelType","Activity")',
+                    data: { id: id, Parallel_Id: Paralleltype },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                           // $('#drpTsk').append($("<option value='0'>Please Select Previous Task</option>"));
+                            $.each(response, function (index, item) {
+                                var option = $("<option value='" + item.Activity_ID + "'>" + item.Task + "</option>");
+                                $('#drpTsk').append(option);
+                            });
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            }
+            else if (id > 0) {
+                 $("#newParallelrow").hide();
+                if (Tasktype==2 && Paralleltype == '00000000-0000-0000-0000-000000000000') {
+                    $("#newParallelrow").show();
+                }
+                 $.ajax({
+                    type: "GET",
                     url: '@Url.Action("GetAllTask","Activity")',
-                    data: { id: id },
+                    data: { id: id},
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {

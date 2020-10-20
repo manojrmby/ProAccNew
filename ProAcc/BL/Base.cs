@@ -2552,6 +2552,7 @@ namespace ProAcc.BL
                     if (Convert.ToInt32(a.Tasktype) == 2)
                     {
                         a.Parallel_Type = Guid.Parse(dr["Parallel_Id"].ToString());
+                        a.ParallelType = dr["Parallel_Name"].ToString();
                     }
                 }
             }
