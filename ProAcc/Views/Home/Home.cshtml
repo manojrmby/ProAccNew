@@ -922,7 +922,8 @@ background-attachment:local, local, scroll, scroll;
                      labels: {
                         //arc: true,
                          //stretch: 45,
-                         render: 'value' + "%",
+                         
+                        // render: "value" + "%",
                         fontColor: '#000',
 						position: 'outside'
 					}
@@ -939,9 +940,11 @@ background-attachment:local, local, scroll, scroll;
                             //return percentage + "%";
 
                              var currentValue = dataset.data[tooltipItem.index];
+                            //var currentValue = "TEST";
                             var percentage = parseFloat((currentValue/total*100).toFixed(1));
                             //return currentValue + ' (' + percentage + '%)';
                             //return percentage + '%';
+
                             return currentValue;
 
                         },

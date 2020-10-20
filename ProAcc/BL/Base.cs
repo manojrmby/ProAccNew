@@ -3025,6 +3025,28 @@ namespace ProAcc.BL
 
         }
 
+        public Boolean Sp_UpdatePMTaskByProjectID(Guid projectID, Guid Cre_By)
+        {
+            bool Status = false;
+            LogHelper _log = new LogHelper();
+            try
+            {
+                DBHelper dB = new DBHelper("SP_PMTask", CommandType.StoredProcedure);
+
+                dB.addIn("@Type", "UpdatePMTaskByProjectID");
+                dB.addIn("@ProjectID", projectID);
+                dB.addIn("@Cre_By", Cre_By);
+                dB.Execute();
+
+                Status = true;
+            }
+            catch (Exception ex)
+            {
+
+                _log.createLog(ex, "");
+            }
+            return Status;
+        }
         public Boolean Sp_AddTask(Guid Instance, ProjectMonitorModel Data)
         {
             bool Status = false;

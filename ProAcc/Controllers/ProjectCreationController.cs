@@ -196,6 +196,8 @@ namespace ProAcc.Controllers
                 }
                 else
                 {
+                    _Base.Sp_UpdatePMTaskByProjectID(id, Guid.Parse(Session["loginid"].ToString()));
+                   
                     Project project = db.Projects.Find(id);
                     if (project.Project_Id == id)
                     {
@@ -368,7 +370,7 @@ namespace ProAcc.Controllers
             try
             {
                 var del = (from a in db.PMTaskMasters
-                           join b in db.PMTaskMonitor_ on a.PMTaskId equals b.PMTaskID
+                            join b in db.PMTaskMonitor_ on a.PMTaskId equals b.PMTaskID
                            where a.PMTaskId == id && a.isActive == true && b.isActive == true
                            select b
                     ).ToList();

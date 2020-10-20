@@ -364,16 +364,23 @@
                         edithidden: true
                     },
                     editoptions: {
-                        //dataEvents: [
-                        //{
-                        //    type: 'change',
-                        //        fn: function (e) {
-                        //           // value:
-                        //        }
-                        //}],
+                        dataEvents: [
+                        {
+                            type: 'change',
+                                fn: function (e) {
+                                   EsthrsDatechange()
+                                }
+                        }],
                         dataInit: function (element) {
                             $(element).keyup(function(event) {
 
+                                //var filter =/^([0-9]{1,2}):[0-5][0-9]$/
+                                //if (!filter.test($("#EST_hrs").val())) {
+                                //    $("#lblEstimated").html("Time is Invalid").show();
+                                //}
+                                //else {
+                                //    $("#lblEstimated").html("").show();
+                                //}
                                 this.value = this.value
                                   .replace(/[^\d:]/g, '')             // numbers and decimals only
                                   .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
@@ -773,7 +780,7 @@
        
         $('#jqGrid').navGrid('#jqGridPager',
             // the buttons to appear on the toolbar of the grid        
-            {edit: false, add: true, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false},
+            { edit: false, add: true, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
                 editCaption: "The Edit Dialog",
@@ -781,8 +788,8 @@
                 checkOnUpdate: true,
                 checkOnSubmit: true,
                 closeAfterEdit: true,
-                reloadAfterSubmit:true,
-                  //editParams: myEditOptions,
+                reloadAfterSubmit: true,
+                //editParams: myEditOptions,
                 beforeShowForm: function (form) {
 
 
@@ -817,11 +824,30 @@
                     $("#tr_PreviousID").show();
                     $("#tr_UserID").show();
                 },
-                 reloadAfterSubmit: true,
-                errorTextFormat: function (data) {
-                    return 'Error: ' + data.responseText
-                },
+                reloadAfterSubmit: true,
+                //errorTextFormat: function (data) {
+                //    return 'Error: ' + data.responseText
+                //},
                 addCaption: "Add Task",
+                afterComplete: function (response) {
+                    
+                    if (response.responseJSON == "success") {
+                        
+                        Notiflix.Notify.success('Saved Successfully', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                        //closeAfterAdd: true;
+                        //recreateForm: true;
+
+                    }
+                    else if (response.responseJSON == "Task Name Exists") {
+                        
+                        //alert("Task Name Exists");
+                        Notiflix.Notify.Failure('Task Name Exists', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    }
+                    else {
+                        Notiflix.Notify.Failure('Please Enter all the details', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                    }
+                    
+                }
           //      onclickSubmit: function (response, postdata) {
           //          AddTask(postdata);
           //          closeAfterAdd: true;
@@ -901,7 +927,11 @@
             }
         });
     }
-    
+
+    function EsthrsDatechange() {
+
+    }
+
     function GetPreviousTaskByParallelId(Parallel_Id) {
         debugger
          //$("#PreviousID")

@@ -370,7 +370,7 @@ namespace ProAcc.Controllers
 
             if (CheckTaskNameByInstance(Data.Task)==false)
             {
-                return Json("error", JsonRequestBehavior.AllowGet);
+                return Json("Task Name Exists", JsonRequestBehavior.AllowGet);
             }
             else
             {
