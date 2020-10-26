@@ -945,7 +945,7 @@
     }
 
     function GetPreviousTaskByParallelId(Parallel_Id) {
-        debugger
+        //debugger
          //$("#PreviousID")
          //   .html("<option value=''>Loading User...</option>")
          //   .attr("disabled", "disabled");
@@ -977,7 +977,7 @@
     }
 
     function TaskCheck(Task) {
-        debugger
+       // debugger
         var status = true;
         if (Task == "") {
             status= false
@@ -1003,7 +1003,7 @@
     }
 
     function AddTask(postdata) {
-        debugger
+        //debugger
         var EST_hours = postdata.EST_hrs;
          EST_hours = EST_hours.replace(":", ".");
         var BuldingBlockID= postdata.BuldingBlockID;
@@ -1191,56 +1191,85 @@
         var par_minID = 0
         var seq_min = 0
 
+        var isSeq = 0
+        var ispar = 0
+
        
         //debugger;
         if (UserType != 'Project Manager') {
+
+            //$('.app-main_Scroll').scrollLeft(+1000);
+
+            //$('.ui-jqgrid-bdiv').scrollTop($('.ui-jqgrid-bdiv')[0].scrollHeight);
+
+            
             for (var i = 0; i < ids.length; i++) {
-                var ParallelID = $('#jqGrid').jqGrid('getCell', ids[i], 'ParallelName');
-                var Status__Id = $('#jqGrid').jqGrid('getCell', ids[i], 'StatusId');
-                var sequen = $('#jqGrid').jqGrid('getCell', ids[i], 'Task_id');
-                var localid = ids[i];
-                if (Status__Id == 1||Status__Id == 3) {
+                var ParallelID = Number($('#jqGrid').jqGrid('getCell', ids[i], 'ParallelName'));
+                var Status__Id = Number($('#jqGrid').jqGrid('getCell', ids[i], 'StatusId'));
+                var sequen = Number ($('#jqGrid').jqGrid('getCell', ids[i], 'Task_id'));
+                var localid = Number(ids[i]);
+                if (Status__Id == 1 || Status__Id == 3 || Status__Id == 4) {
                     $('#jEditButton_' + ids[i]).hide();
                 }
-                if (ParallelID != 0 && Status__Id != 1 && par_minID == 0) {
-                    par_minID = ParallelID
-                }
-                if (Status__Id != 1 && sequen == 1 && seq_min==0) {
-                    seq_min = ids[i];
-                }
-                
-                 if (par_minID > 0 && ParallelID != par_minID && ParallelID>0) {
-                    if ($('#jEditButton_' + ids[i]).is(":visible")) {
-                        $('#jEditButton_' + ids[i]).hide();
+                else {
+                    if (ParallelID != 0 && Status__Id != 1 && par_minID == 0) {
+                        par_minID = Number(ParallelID);
+                        ispar = Number(ParallelID);
                     }
-                }
-                
-                
-                if (sequen == 1 && seq_min < localid) {
-                //    console.log("In");
-                    if ($('#jEditButton_' + ids[i]).is(":visible")) {
-                        $('#jEditButton_' + ids[i]).hide();
-                    }
-                }
+                    if (Status__Id != 1 && Status__Id != 3 && sequen == 1 && seq_min == 0) {
 
-                if (seq_min>0) {
-                    if (ParallelID > 0) {
-                        if ($('#jEditButton_' + ids[i]).is(":visible")) {
+                        seq_min = Number(localid);
+                        isSeq = Number(localid);
+                    }
+                    //console.log(isSeq);
+                    // if (par_minID > 0 && ParallelID != par_minID && ParallelID>0  ) {
+                    //        $('#jEditButton_' + ids[i]).hide();
+                    //}
+                    //if (sequen == 1 && seq_min < localid ) {
+                    //  //console.log("In");
+                    //   $('#jEditButton_' + ids[i]).hide();
+                    //}
+                    //console.log("IN--on" + localid);
+                    if (isSeq != 0) {
+                        if (localid>isSeq) {
+                           // console.log("IN--on" + ids[i]);
                             $('#jEditButton_' + ids[i]).hide();
                         }
+
                     }
-                }
-                if (par_minID>0) {
-                    if (sequen > 0) {
-                        if ($('#jEditButton_' + ids[i]).is(":visible")) {
+                    else if (ispar != 0) {
+                        if (ispar > 0 && ispar != ParallelID) {
                             $('#jEditButton_' + ids[i]).hide();
                         }
+
                     }
+
+                    //if (seq_min>0) {
+                    //    if (ParallelID > 0) {
+                    //        if ($('#jEditButton_' + ids[i]).is(":visible")) {
+                    //            $('#jEditButton_' + ids[i]).hide();
+                    //        }
+                    //    }
+                    //}
+                    //if (par_minID>0) {
+                    //    if (sequen > 0) {
+                    //        if ($('#jEditButton_' + ids[i]).is(":visible")) {
+                    //            $('#jEditButton_' + ids[i]).hide();
+                    //        }
+                    //    }
+                    //}
+                    //if (isSeq!=0 && isSeq < ids[i]) {
+
+                    //        $('#jEditButton_' + ids[i]).hide();
+                    //}
+
+                    //console.log(localid);
+                    //$('#jEditButton_' + ids[i]).hide();
+                    //console.log(isSeq);
                 }
-
-
                 
-                console.log(localid);
+
+
 
             }
         }

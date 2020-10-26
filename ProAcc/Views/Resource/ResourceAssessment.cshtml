@@ -43,14 +43,8 @@
         </div>
     </div>
 </div>
-<div class="row">
-        <div class="col-6">
-            <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
-        </div>
-        <div class="col-6">
-            <a class="card-title " style="float: right;">Instance Name :@Session["Instance_Name"]</a>
-        </div>
-    </div>
+
+<div id="Display_Status"></div>
 @{
     Html.RenderAction("ResourceAllocationAll", "Resource");
 }
@@ -60,7 +54,8 @@
     $(document).ready(function () {
         $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
-
+        var url = '@Url.Action("Display_Status", "Home")';
+        $("#Display_Status").load(url);
         $(window).on("resize", function () {
             var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
             $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
@@ -75,14 +70,14 @@
                 data: { 'IDInstance': IDInstance },
                 success: function (result) {
                     Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                    LoadTable(IDInstance);
 
-                    $('#jqGrid').trigger('reloadGrid');
+                    $('#jqGrid').trigger('reloadGrid');                    $("#Display_Status").html("");
 
+                    $("#Display_Status").load(url);
                 }
             });
         }
-         
+
 
     });
      $('#IDCustomer').change(function () {
@@ -176,6 +171,7 @@
     $('#SubmitInstance').click(function () {
         var IDInstance = $("#IDInstance").val();
         var IDProject = $("#IDProject").val();
+        var url = '@Url.Action("Display_Status", "Home")';
         $.ajax({
             //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
             url: '@Url.Action("SubmitInstance", "Home")',
@@ -184,8 +180,12 @@
             success: function (result) {
                 Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                 LoadTable(IDInstance);
+
                 //$("#Project_Name").val(IDProject);
-                 $('#jqGrid').trigger('reloadGrid');
+                $('#jqGrid').trigger('reloadGrid');
+                $("#Display_Status").html("");
+
+                $("#Display_Status").load(url);
                    //setTimeout(Redirect, 3000);
                 //$.alert({
                 //    title: 'Alert !',

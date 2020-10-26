@@ -1812,8 +1812,8 @@ namespace ProAcc.BL
                 dB.addIn("@Cre_By", PM.Cre_By);
                 dB.addIn("@Id", PM.Id);
                 dB.ExecuteScalar();
-                //Boolean s = UpdateMonitor_Mail(PM, PhaseId);
-                Boolean s = true;
+                Boolean s = UpdateMonitor_Mail(PM, PhaseId);
+                //Boolean s = true;
                 if (s)
                     Status = true;
                 
@@ -3202,7 +3202,7 @@ namespace ProAcc.BL
             catch (Exception ex)
             {
 
-                _log.createLog(ex, "-->AddQuestionnaire_Mail" + ex.Message.ToString());
+                _log.createLog(ex, "-->UpdateMonitor_Mail" + ex.Message.ToString());
             }
 
             return Status;

@@ -354,5 +354,11 @@ namespace ProAcc.Controllers
             }
         }
 
+
+        public ActionResult Display_Status()
+        {
+            return View();
+        }
+
     }
 }
