@@ -465,13 +465,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2013 18:15:20</publishTime>
     </File>
     <File Include="bin/ProAcc.dll">
-      <publishTime>10/26/2020 18:28:24</publishTime>
+      <publishTime>10/26/2020 20:14:04</publishTime>
     </File>
     <File Include="bin/ProAcc.dll.config">
       <publishTime>10/26/2020 16:29:52</publishTime>
     </File>
     <File Include="bin/ProAcc.pdb">
-      <publishTime>10/26/2020 18:28:24</publishTime>
+      <publishTime>10/26/2020 20:14:04</publishTime>
     </File>
     <File Include="bin/ProACC_DB.dll">
       <publishTime>10/26/2020 18:27:24</publishTime>
@@ -1385,6 +1385,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/ErrorLog/Multilogin_Error.cshtml">
       <publishTime>10/10/2020 13:35:32</publishTime>
     </File>
+    <File Include="Views/Home/Display_Status.cshtml">
+      <publishTime>10/26/2020 19:23:19</publishTime>
+    </File>
     <File Include="Views/Home/Home.cshtml">
       <publishTime>10/20/2020 17:24:04</publishTime>
     </File>
@@ -1581,13 +1584,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/19/2020 14:19:35</publishTime>
     </File>
     <File Include="Views/Resource/ResourceAssessment.cshtml">
-      <publishTime>09/18/2020 21:15:24</publishTime>
+      <publishTime>10/26/2020 19:56:00</publishTime>
     </File>
     <File Include="Views/Resource/ResourceConversion.cshtml">
       <publishTime>09/18/2020 21:15:24</publishTime>
     </File>
     <File Include="Views/Resource/ResourceMigration.cshtml">
-      <publishTime>09/18/2020 21:15:24</publishTime>
+      <publishTime>10/26/2020 18:47:04</publishTime>
     </File>
     <File Include="Views/Resource/ResourcePostConversion.cshtml">
       <publishTime>09/18/2020 21:15:24</publishTime>

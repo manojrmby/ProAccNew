@@ -11,33 +11,160 @@
     a#cData {
         background: #808080;
     }
+
     .ui-jqdialog-content input.FormElement {
-    border:2px solid #ccc !important
+        border: 2px solid #ccc !important
     }
 </style>
 
+<div id="Display_Status"></div>
 <div>
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
 <script>
+    var link_Url = '@Url.Action("Display_Status", "Home")';
     //document.body.style.zoom = "67%";
     document.body.style.zoom = "90%";
 
     $(document).ready(function () {
+         $("#IDInstance").prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+
+        var Instance=$("#hdnSessionInstance_ID").val();
+        if (Instance != "") {
+            var IDInstance = $("#hdnSessionInstance_ID").val();
+            $.ajax({
+                url: '@Url.Action("SubmitInstance", "Home")',
+                type: "POST",
+                data: { 'IDInstance': IDInstance },
+                success: function (result) {
+                    Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                     LoadTable(IDInstance);
+                    $('#jqGrid').trigger('reloadGrid');
+                    $("#Display_Status").html("");
+                    $("#Display_Status").load(link_Url);
+                }
+            });
+        }
         $(".app-main_Scroll").css("height", "calc(100vh - 62px)");
         //var PhaseId=
         //debugger;
        // LoadTable(1);
     });
-  
+
+     $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+         $('#IDCustomer').prop('title', $("#IDCustomer option:selected").text());
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                },
+                error: function (a) {
+                    //debugger;
+                    alert(a);
+                }
+            });
+        });
+    $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+        $('#IDProject').prop('title', $("#IDProject option:selected").text());
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstanceforResource","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+            });
+    $('#IDInstance').change(function () {
+                var id = $(this).val();
+                if (id == ""||id =="0") {
+                     $('#SubmitInstance').prop("disabled", true);
+                } else {
+					$('#SubmitInstance').prop("disabled", false);
+        }
+        $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
+            });
+   $('#SubmitInstance').click(function () {
+        var IDInstance = $("#IDInstance").val();
+        $.ajax({
+            //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+            url: '@Url.Action("SubmitInstance", "Home")',
+            type: "POST",
+            data: { 'IDInstance': IDInstance },
+            success: function (result) {
+                Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                LoadTable(IDInstance);
+                //location.reload()
+                $('#jqGrid').trigger('reloadGrid');
+                $("#Display_Status").html("");
+                $("#Display_Status").load(link_Url);
+            }
+        });
+   });
+
     var useCustomDialog = false, oldInfoDialog = $.jgrid.info_dialog;
     function LoadTable(Instance) {
 
         $.jgrid.styleUI.Bootstrap.base.rowTable = "table table-bordered";
 
         var Planed_StartDate = function (element, options) {
-            var ID = options.rowId;           
+            var ID = options.rowId;
             $(element).on('keypress', function (e) {
                 e.preventDefault();
             })
@@ -65,7 +192,7 @@
             //var ST_Date=$('#').val();
             $(element).on('keypress', function (e) {
                 e.preventDefault();
-            })            
+            })
             $(element).datepicker({
                 duration: "slow",
                 // defaultDate: +1,
@@ -180,7 +307,7 @@
                 //            "type":"change",
                 //            "fn": function (e) {
                 //               GetPreviousTaskID($("#PhaseId").val())
-                                
+
                 //            }
                 //        }]
                 //    },
@@ -231,10 +358,10 @@
                                 }
                         }]
                     }
-                },                
+                },
               {
                     label: 'Parallel Name', name: 'Parallel_Name', index: 'Parallel_Name', width: 75, align: 'center', editable: false, hidden: false,
-                    cellEdit: true, 
+                    cellEdit: true,
                     editoptions: {
                         //value: GetUserDropDown()
                     }
@@ -258,7 +385,7 @@
                 },
                  {
                     label: 'Parallel Name', name: 'Parallel_Name', index: 'Parallel_Name', width: 75, align: 'center', editable: true, hidden: true,
-                    cellEdit: true, 
+                    cellEdit: true,
                     editoptions: {
                         //value: GetUserDropDown()
                     }
@@ -348,7 +475,7 @@
                         //value: GetUserDropDown()
                     }
                 },
-                
+
                 {
                     label: 'Status', name: 'StatusId', index: 'StatusId', width: 100,  align: 'center', editable: true,
                     cellEdit: true, edittype: 'select', formatter: 'select',
@@ -489,7 +616,7 @@
                 },
                 {
                     label: 'ParallelID', name: 'ParallelName', index: 'ParallelName', width: 75, align: 'center', editable: false, hidden: true,
-                    cellEdit: true, 
+                    cellEdit: true,
                     editoptions: {
                         //value: GetUserDropDown()
                     }
@@ -555,7 +682,7 @@
             onSelectRow: editRow,
 
             serializeRowData: function (postdata) {
-                debugger
+                //debugger
                 var ColValue = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 
                 var EST_hours = $("#jqGrid").jqGrid('getCell', ColValue, 'EST_hrs');
@@ -789,9 +916,9 @@
             //    }
             //}
             //alert(id);
-       
+
         $('#jqGrid').navGrid('#jqGridPager',
-            // the buttons to appear on the toolbar of the grid        
+            // the buttons to appear on the toolbar of the grid
             { edit: false, add: true, del: false, search: false, refresh: true, view: false, position: "left", cloneToTop: false },
             // options for the Edit Dialog
             {
@@ -842,23 +969,23 @@
                 //},
                 addCaption: "Add Task",
                 afterComplete: function (response) {
-                    
+
                     if (response.responseJSON == "success") {
-                        
+
                         Notiflix.Notify.success('Saved Successfully', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                         //closeAfterAdd: true;
                         //recreateForm: true;
 
                     }
                     else if (response.responseJSON == "Task Name Exists") {
-                        
+
                         //alert("Task Name Exists");
                         Notiflix.Notify.Failure('Task Name Exists', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                     }
                     else {
                         Notiflix.Notify.Failure('Please Enter all the details', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                     }
-                    
+
                 }
           //      onclickSubmit: function (response, postdata) {
           //          AddTask(postdata);
@@ -892,7 +1019,7 @@
         });
     }
 
-    
+
      function UpdateUserByRole(RoleID) {
          $("#UserID")
             .html("<option value=''>Loading User...</option>")
@@ -922,16 +1049,16 @@
             .html("<option value=''>Loading User...</option>")
             .attr("disabled", "disabled");
         $('#PreviousID').empty()
-        $.ajax({  
-             url: '@Url.Action("PreviousTaskPhase","ProjectMonitor")', //+"?PhaseID="+PhaseID, 
+        $.ajax({
+             url: '@Url.Action("PreviousTaskPhase","ProjectMonitor")', //+"?PhaseID="+PhaseID,
             dataType: "json",
             async: false,
 			contentType: "application/json; charset=utf-8",
             success: function (res) {
                 $("#PreviousID")
                     .removeAttr("disabled");
-                $.each(res, function (data, value) {                  
-                   $('#PreviousID').append($("<option value='" + value.Activity_ID + "'>" + value.Task + "</option>"));                                                            
+                $.each(res, function (data, value) {
+                   $('#PreviousID').append($("<option value='" + value.Activity_ID + "'>" + value.Task + "</option>"));
                 })
             },
             error: function (data) {
@@ -956,16 +1083,16 @@
         }
         else {
             $("#tr_Parallel_Name").hide();
-            $.ajax({  
-                 url: '@Url.Action("PreviousTaskByParallelId","ProjectMonitor")'+"?Parallel_Id="+Parallel_Id, 
+            $.ajax({
+                 url: '@Url.Action("PreviousTaskByParallelId","ProjectMonitor")'+"?Parallel_Id="+Parallel_Id,
                 dataType: "json",
                 async: false,
 			    contentType: "application/json; charset=utf-8",
                 success: function (res) {
                      $("#PreviousID")
                         .removeAttr("disabled");
-                    $.each(res, function (data, value) {                  
-                       $('#PreviousID').append($("<option value='" + value.Activity_ID + "'>" + value.Task + "</option>"));                                                            
+                    $.each(res, function (data, value) {
+                       $('#PreviousID').append($("<option value='" + value.Activity_ID + "'>" + value.Task + "</option>"));
                     })
                 },
                 error: function (data) {
@@ -973,7 +1100,7 @@
                 }
             });
         }
-        
+
     }
 
     function TaskCheck(Task) {
@@ -992,7 +1119,7 @@
             success: function (data) {
                if (data == "success") {
                    status= false
-               }                  
+               }
             },
             error: function (err) {
                 status= false
@@ -1017,7 +1144,7 @@
         if (Taskid == '2') {
             var ParallelID = postdata.Parallel_Id;
             var Parallel_Name = postdata.Parallel_Name
-        }        
+        }
 
         var UserID = postdata.UserID;
 
@@ -1056,7 +1183,7 @@
                    alert("GetPhase fail");
              }
          });
-        }        
+        }
     }
 
     function Show_PMEdit() {
@@ -1178,7 +1305,7 @@
         for (var i = 0; i < ids.length; i++) {
             if ($('#jEditButton_' + ids[i]).is(":visible")) {a = a + 1;}
         }
-       
+
 
         if (UserType != 'Project Manager') {
 
@@ -1194,33 +1321,38 @@
         var isSeq = 0
         var ispar = 0
 
-       
+
         //debugger;
         if (UserType != 'Project Manager') {
 
             //$('.app-main_Scroll').scrollLeft(+1000);
 
             //$('.ui-jqgrid-bdiv').scrollTop($('.ui-jqgrid-bdiv')[0].scrollHeight);
-
-            
+            debugger
             for (var i = 0; i < ids.length; i++) {
                 var ParallelID = Number($('#jqGrid').jqGrid('getCell', ids[i], 'ParallelName'));
                 var Status__Id = Number($('#jqGrid').jqGrid('getCell', ids[i], 'StatusId'));
-                var sequen = Number ($('#jqGrid').jqGrid('getCell', ids[i], 'Task_id'));
+                var sequen = Number($('#jqGrid').jqGrid('getCell', ids[i], 'Task_id'));
+                
                 var localid = Number(ids[i]);
                 if (Status__Id == 1 || Status__Id == 3 || Status__Id == 4) {
                     $('#jEditButton_' + ids[i]).hide();
                 }
                 else {
-                    if (ParallelID != 0 && Status__Id != 1 && par_minID == 0) {
+                    
+                    if (ParallelID != 0 && Status__Id != 1 && par_minID == 0 && isSeq == 0) {
                         par_minID = Number(ParallelID);
                         ispar = Number(ParallelID);
                     }
-                    if (Status__Id != 1 && Status__Id != 3 && sequen == 1 && seq_min == 0) {
+                    if (Status__Id != 1 && Status__Id != 3 && sequen == 1 && seq_min == 0 && ispar == 0) {
 
                         seq_min = Number(localid);
                         isSeq = Number(localid);
                     }
+                    //console.log("localid=" + localid);
+                    //console.log("sequenID=" + sequen);
+                    //console.log("ispar=" + ispar);
+                    //console.log("isSeq=" + isSeq);
                     //console.log(isSeq);
                     // if (par_minID > 0 && ParallelID != par_minID && ParallelID>0  ) {
                     //        $('#jEditButton_' + ids[i]).hide();
@@ -1231,17 +1363,27 @@
                     //}
                     //console.log("IN--on" + localid);
                     if (isSeq != 0) {
-                        if (localid>isSeq) {
+                        if (localid > isSeq) {
+                            console.log(isSeq);
                            // console.log("IN--on" + ids[i]);
                             $('#jEditButton_' + ids[i]).hide();
                         }
 
                     }
                     else if (ispar != 0) {
+                        
+                        console.log("ispar="+ispar);
                         if (ispar > 0 && ispar != ParallelID) {
+
+                            $('#jEditButton_' + ids[i]).hide();
+                        }
+                        if (sequen==1) {
                             $('#jEditButton_' + ids[i]).hide();
                         }
 
+                    }
+                    if (sequen==3) {
+                        $('#jEditButton_' + ids[i]).show();
                     }
 
                     //if (seq_min>0) {
@@ -1267,13 +1409,13 @@
                     //$('#jEditButton_' + ids[i]).hide();
                     //console.log(isSeq);
                 }
-                
+
 
 
 
             }
         }
-        
+
     }
 
 
@@ -1338,7 +1480,7 @@
                     url: '@Url.Action("GetTaskType","ProjectMonitor")',
                     dataType: "json",
 					async: false,
-                    contentType: "application/json; charset=utf-8",                    
+                    contentType: "application/json; charset=utf-8",
                     success: function (Data) {
                         var TaskName = 'Select Task Name';
                         var key = '0';
@@ -1381,7 +1523,7 @@
     }
     function UpdateParallelName(Taskid) {
         if (Taskid == 2) {
-            
+
             $("#tr_Parallel_Id").show();
             $("#tr_Parallel_Name").show();
               $.ajax({
@@ -1395,8 +1537,8 @@
                          //$('#PreviousID').empty()
                       $('#Parallel_Id').empty();
                         $('#Parallel_Id').append($("<option value='00000000-0000-0000-0000-000000000000'>" + 'New Parallel Name' + "</option>"));
-                        $.each(res, function (data, value) {                  
-                           $('#Parallel_Id').append($("<option value='" + value.ParallelId + "'>" +value.Parallel_Name + "</option>"));                                                            
+                        $.each(res, function (data, value) {
+                           $('#Parallel_Id').append($("<option value='" + value.ParallelId + "'>" +value.Parallel_Name + "</option>"));
                         })
                     },
                     error: function (data) {
@@ -1404,7 +1546,7 @@
                     }
               });
         }
-       
+
 
     }
 
@@ -1515,7 +1657,7 @@
     function GetPreviousTask() {
 
         var Parameters = {};
-       
+
         $.ajax({
                type: "POST",
                 url: '@Url.Action("PreviousTask","ProjectMonitor")',

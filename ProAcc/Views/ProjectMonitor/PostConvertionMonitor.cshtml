@@ -118,21 +118,21 @@
     @*<table id="jqGrid"></table>
         <div id="jqGridPager"></div>*@
     @{
-        <div class="row">
+        @*<div class="row">
             <div class="col-6">
                 <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
             </div>
             <div class="col-6">
                 <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
             </div>
-        </div>
+        </div>*@
         Html.RenderAction("Monitor", "ProjectMonitor");
     }
 </div>
 <input type="hidden" id="hdnSessionProject_ID" value="@Session["Project_ID"]" />
 <input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />
 <script>
-    $(document).ready(function () {
+    @*$(document).ready(function () {
         $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
 
@@ -273,6 +273,6 @@
 
             }
         });
-   });
+   });*@
 
 </script>

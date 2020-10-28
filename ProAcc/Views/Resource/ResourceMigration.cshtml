@@ -78,6 +78,7 @@
         </div>
     </div>
 </div>
+<div id="Display_Status"></div>
 
 @{
     Html.RenderAction("ResourceAllocation", "Resource");
@@ -193,6 +194,8 @@
                             action: function (event, ui) {
                                 $(this).remove();
                                 LoadTable(IDInstance);
+                                $("#Display_Status").html("");
+                                $("#Display_Status").load(url);
                                 $('#jqGrid').trigger('reloadGrid');
                             }
                         }

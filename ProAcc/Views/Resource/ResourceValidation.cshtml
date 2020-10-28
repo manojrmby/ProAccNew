@@ -95,6 +95,7 @@
         </div>
     </div>
 </div>
+<div id="Display_Status"></div>
 
 @{
     Html.RenderAction("ResourceAllocation", "Resource");
@@ -203,7 +204,9 @@
             data: { 'IDInstance': IDInstance },
             success: function (result) {
                  Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                 LoadTable(IDInstance);
+                LoadTable(IDInstance);
+                $("#Display_Status").html("");
+                $("#Display_Status").load(url);
                  $('#jqGrid').trigger('reloadGrid');
                 //$.alert({
                 //    title: 'Alert !',

@@ -95,20 +95,14 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-6">
-        <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
-    </div>
-    <div class="col-6">
-        <a class="card-title " style="float: right;">Instance Name :@Session["Instance_Name"]</a>
-    </div>
-</div>
+
+
 @{
     Html.RenderAction("ResourceAllocationAll", "Resource");
 }
 <input type="hidden" id="hdnSessionProject_ID" value="@Session["Project_ID"]" />
 <input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />
-<script>
+@*<script>
     $(document).ready(function () {
             $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
@@ -128,7 +122,8 @@
                 success: function (result) {
                     Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                     LoadTable(IDInstance);
-
+                    $("#Display_Status").html("");
+                    $("#Display_Status").load(url);
                     $('#jqGrid').trigger('reloadGrid');
 
                 }
@@ -231,7 +226,9 @@
             data: { 'IDInstance': IDInstance },
             success: function (result) {
                  Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
-                 LoadTable(IDInstance);
+                LoadTable(IDInstance);
+                $("#Display_Status").html("");
+                $("#Display_Status").load(url);
                  $('#jqGrid').trigger('reloadGrid');
                 //$.alert({
                 //    title: 'Alert !',
@@ -255,4 +252,4 @@
             }
         });
     });
-</script>
+</script>*@

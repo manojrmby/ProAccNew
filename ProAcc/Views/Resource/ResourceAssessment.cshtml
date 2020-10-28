@@ -44,13 +44,13 @@
     </div>
 </div>
 
-<div id="Display_Status"></div>
+
 @{
     Html.RenderAction("ResourceAllocationAll", "Resource");
 }
 <input type="hidden" id="hdnSessionProject_ID" value="@Session["Project_ID"]" />
 <input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />
-<script>
+@*<script>
     $(document).ready(function () {
         $("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
@@ -71,8 +71,8 @@
                 success: function (result) {
                     Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
 
-                    $('#jqGrid').trigger('reloadGrid');                    $("#Display_Status").html("");
-
+                    $('#jqGrid').trigger('reloadGrid');
+                    $("#Display_Status").html("");
                     $("#Display_Status").load(url);
                 }
             });
@@ -214,6 +214,6 @@
     //    LoadTable(IDInstance);
     //    $('#jqGrid').trigger('reloadGrid');
     //}
-</script>
+</script>*@
 
 

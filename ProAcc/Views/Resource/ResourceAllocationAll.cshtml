@@ -37,10 +37,176 @@
         color:black
     }
 </style>
+<div id="Display_Status"></div>
 <div>
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
+    <script>
+    $(document).ready(function () {
+        $("#IDInstance").prop("disabled", true);
+        $('#SubmitInstance').prop("disabled", true);
+        var url = '@Url.Action("Display_Status", "Home")';
+        $("#Display_Status").load(url);
+        $(window).on("resize", function () {
+            var newWidth = $("#jqGrid").closest(".ui-jqgrid").parent().width();
+            $("#jqGrid").jqGrid("setGridWidth", newWidth, true);
+        });
+
+        var Instance=$("#hdnSessionInstance_ID").val();
+        if (Instance != "") {
+            var IDInstance = $("#hdnSessionInstance_ID").val();
+            $.ajax({
+                url: '@Url.Action("SubmitInstance", "Home")',
+                type: "POST",
+                data: { 'IDInstance': IDInstance },
+                success: function (result) {
+                    Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+
+                    $('#jqGrid').trigger('reloadGrid');
+                    $("#Display_Status").html("");
+                    $("#Display_Status").load(url);
+                }
+            });
+        }
+
+
+    });
+     $('#IDCustomer').change(function () {
+            $("#IDInstance").prop("disabled", false);
+            var id = $(this).val();
+             var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+         $('#IDCustomer').prop('title', $("#IDCustomer option:selected").text());
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadProject","Home")',
+                data: { 'CustomerId' : id},
+                success: function (data) {
+                    var select = $("#IDProject");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                    $("#IDProject").prop("disabled", false);
+                    $("#IDInstance").prop("disabled", true);
+                    $('#SubmitInstance').prop("disabled", true);
+                },
+                error: function (a) {
+                    debugger;
+                    alert(a);
+                }
+            });
+        });
+    $('#IDProject').change(function () {
+
+            var id = $(this).val();
+			$('#SubmitInstance').prop("disabled", true);
+             var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+        $('#IDProject').prop('title', $("#IDProject option:selected").text());
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadInstanceforResource","Home")',
+                data: { 'ProjectId' : id},
+                success: function (data) {
+                    var select = $("#IDInstance");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "-Select-"
+                    }));
+                    if (data.length > 0) {
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                        $("#IDInstance").prop("disabled", false);
+                    }
+                    else {
+                        $("#IDInstance").prop("disabled", true);
+						$('#SubmitInstance').prop("disabled", true);
+                    }
+                },
+                error: function (a) {
+                    alert(a);
+                }
+            });
+            });
+    $('#IDInstance').change(function () {
+                var id = $(this).val();
+                if (id == ""||id =="0") {
+                     $('#SubmitInstance').prop("disabled", true);
+                } else {
+					$('#SubmitInstance').prop("disabled", false);
+        }
+        $('#IDInstance').prop('title', $("#IDInstance option:selected").text());
+            });
+    $('#SubmitInstance').click(function () {
+        var IDInstance = $("#IDInstance").val();
+        var IDProject = $("#IDProject").val();
+        var url = '@Url.Action("Display_Status", "Home")';
+        $.ajax({
+            //url: '<%: Url.Action("Upload")%>?Cust_ID=' + Cust_ID + '&IDProject=' + IDProject+'&InstanceID='+InstanceID,
+            url: '@Url.Action("SubmitInstance", "Home")',
+            type: "POST",
+            data: { 'IDInstance': IDInstance },
+            success: function (result) {
+                Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
+                LoadTable(IDInstance);
+
+                //$("#Project_Name").val(IDProject);
+                $('#jqGrid').trigger('reloadGrid');
+                $("#Display_Status").html("");
+
+                $("#Display_Status").load(url);
+                   //setTimeout(Redirect, 3000);
+                //$.alert({
+                //    title: 'Alert !',
+                //    content: 'New Live Instance updated',// <br> with some <strong>HTML</strong> <em>contents</em>',
+                //    icon: 'fa fa-rocket',
+                //    animation: 'scale',
+                //    closeAnimation: 'scale',
+                //    buttons: {
+                //        okay: {
+                //            text: 'Okay',
+                //            btnClass: 'btn-wide mb-2 mr-2 btn btn-primary form-control',
+                //            action: function (event, ui) {
+                //                $(this).remove();
+
+                //            }
+                //        }
+                //    }
+
+                //});
+
+
+            }
+        });
+    });
+    //function Redirect() {
+    //    LoadTable(IDInstance);
+    //    $('#jqGrid').trigger('reloadGrid');
+    //}
+</script>
 <script>
     function LoadTable(Instance) {
         // altrows are set with table striped class for Boostrap

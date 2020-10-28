@@ -92,15 +92,9 @@
 <div style="margin-top:20px;">
     @*<table id="jqGrid"></table>
         <div id="jqGridPager"></div>*@
+    
     @{
-        <div class="row">
-            <div class="col-6">
-                <a class="card-title" style="float: left;">Project Name :@Session["Project_Name"]</a>
-            </div>
-            <div class="col-6">
-                <a class="card-title " style="float: right;">Instance Name : @Session["Instance_Name"]</a>
-            </div>
-        </div>
+
         Html.RenderAction("Monitor", "ProjectMonitor");
     }
 </div>
@@ -109,7 +103,7 @@
 <input type="hidden" id="hdnSessionInstance_ID" value="@Session["Instance_ID"]" />
 <script>
     $(document).ready(function () {
-        $("#IDInstance").prop("disabled", true);
+        @*$("#IDInstance").prop("disabled", true);
         $('#SubmitInstance').prop("disabled", true);
 
         var Instance=$("#hdnSessionInstance_ID").val();
@@ -123,12 +117,14 @@
                     Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                      LoadTable(IDInstance);
                     $('#jqGrid').trigger('reloadGrid');
+                    $("#Display_Status").html("");
+                    $("#Display_Status").load(link_Url);
                 }
             });
-        }
+        }*@
     });
 
-     $('#IDCustomer').change(function () {
+     @*$('#IDCustomer').change(function () {
             $("#IDInstance").prop("disabled", false);
             var id = $(this).val();
              var select = $("#IDProject");
@@ -226,10 +222,12 @@
                 Notiflix.Notify.Success('New Live Instance updated !', { cssAnimationStyle: 'zoom', cssAnimationDuration: 500, });
                 LoadTable(IDInstance);
                 //location.reload()
-             $('#jqGrid').trigger('reloadGrid');
+                $('#jqGrid').trigger('reloadGrid');
+                $("#Display_Status").html("");
+                $("#Display_Status").load(link_Url);
             }
         });
-   });
+   });*@
 
 </script>
 
